@@ -1,6 +1,6 @@
 <?php
 
-namespace (#plugin_namespace#);
+namespace ModularityResourceBooking;
 
 class App
 {
@@ -16,7 +16,7 @@ class App
      */
     public function enqueueStyles()
     {
-        wp_register_style('(#plugin_slug#)-css', (#plugin_cap#)_URL . '/dist/' . \(#plugin_namespace#)\Helper\CacheBust::name('css/(#plugin_slug#).css'));
+        wp_register_style('modularity-resource-booking-css', MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'));
     }
 
     /**
@@ -25,6 +25,6 @@ class App
      */
     public function enqueueScripts()
     {
-        wp_register_script('(#plugin_slug#)-js', (#plugin_cap#)_URL . '/dist/' . \(#plugin_namespace#)\Helper\CacheBust::name('js/(#plugin_slug#).js'));
+        wp_register_script('modularity-resource-booking-js', MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/modularity-resource-booking.js'));
     }
 }

@@ -1,0 +1,13 @@
+{
+    "name": "helsingborg-stad/modularity-resource-booking",
+    "description": "Book a resource for a predefined amount of time",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastian Thulin",
+            "email": "sebastian.thulin@helsingborg.se"
+        }
+    ],
+    "require": {}
+}
