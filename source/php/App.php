@@ -41,5 +41,16 @@ class App
      */
     public function init()
     {
+        //Product database
+        new Products(); //Main product library
+        /*new Packages(); //Packages of prodcts
+        new Orders(); //Order data
+
+        //Users (ei. users & roles)
+        new Customers(); //Manages system users that are considerd customers
+
+        //Options
+        new Slots(); //Time slots that are orderable
+        new CustomerGroups(); //Dynamic creation of roles*/
     }
 }
