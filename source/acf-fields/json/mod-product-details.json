@@ -1,0 +1,63 @@
+[{
+    "key": "group_5beacf4f7895b",
+    "title": "Product details",
+    "fields": [
+        {
+            "key": "field_5beacf5dac8a7",
+            "label": "Price",
+            "name": "product_price",
+            "type": "number",
+            "instructions": "A price for this specific product. This is used as a base to calculate the product package price.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ":-",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_5bead0faffc0e",
+            "label": "Product location",
+            "name": "product_location",
+            "type": "google_map",
+            "instructions": "Where the resource is located",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "center_lat": "56.0349681",
+            "center_lng": "12.6612786",
+            "zoom": 12,
+            "height": 400
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "product"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+

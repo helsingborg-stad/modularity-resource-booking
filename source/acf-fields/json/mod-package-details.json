@@ -1,0 +1,45 @@
+[{
+    "key": "group_5bead7869a8ed",
+    "title": "Package details",
+    "fields": [
+        {
+            "key": "field_5bead790418bf",
+            "label": "Package price",
+            "name": "package_price",
+            "type": "number",
+            "instructions": "We are automatically calculating a price from the procuct prices, but you may override this by entering a package price in this field.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ":-",
+            "min": "",
+            "max": "",
+            "step": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "product-package"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+

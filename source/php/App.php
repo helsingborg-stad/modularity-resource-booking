@@ -43,7 +43,8 @@ class App
     {
         //Product database
         new Products(); //Main product library
-        /*new Packages(); //Packages of prodcts
+        new Packages(); //Packages of prodcts
+        /*
         new Orders(); //Order data
 
         //Users (ei. users & roles)

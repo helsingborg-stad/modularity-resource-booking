@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       Modularity Resource Booking
  * Plugin URI:        https://github.com/helsingborg-stad/modularity-resource-booking
- * Description:       Book a resource for a predefined period of time
+ * Description:       Book a physical resource for a predefined period of time
  * Version:           1.0.0
  * Author:            Sebastian Thulin
  * Author URI:        https://github.com/sebastianthulin
@@ -32,6 +32,19 @@ $loader = new ModularityResourceBooking\Vendor\Psr4ClassLoader();
 $loader->addPrefix('ModularityResourceBooking', MODULARITYRESOURCEBOOKING_PATH);
 $loader->addPrefix('ModularityResourceBooking', MODULARITYRESOURCEBOOKING_PATH . 'source/php/');
 $loader->register();
+
+//Load fields
+// Acf auto import and export
+add_action('plugins_loaded', function () {
+    $acfExportManager = new \AcfExportManager\AcfExportManager();
+    $acfExportManager->setTextdomain('modularity-resource-booking');
+    $acfExportManager->setExportFolder(MODULARITYRESOURCEBOOKING_PATH . 'source/acf-fields/');
+    $acfExportManager->autoExport(array(
+        'mod-product-details' => 'group_5beacf4f7895b',
+        'mod-package-details' => 'group_5bead7869a8ed'
+    ));
+    $acfExportManager->import();
+});
 
 // Start application
 new ModularityResourceBooking\App();
