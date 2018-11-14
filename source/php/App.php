@@ -45,9 +45,12 @@ class App
         new Products(); //Main product library
         new Packages(); //Packages of prodcts
 
+        //Ordering
         new Orders(); //Order data
+        new Frontend\Orders();
 
-/*
+
+        /*
         //Users (ei. users & roles)
         new Customers(); //Manages system users that are considerd customers
 
