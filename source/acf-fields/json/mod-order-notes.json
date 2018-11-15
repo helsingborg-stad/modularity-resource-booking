@@ -1,0 +1,43 @@
+[{
+    "key": "group_5bed90f741b0e",
+    "title": "Order notations",
+    "fields": [
+        {
+            "key": "field_5bed9195a4cd2",
+            "label": "Notes about this order",
+            "name": "order_notations",
+            "type": "textarea",
+            "instructions": "Internal instructions or notes about this order.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "No notes has been made about this order yet...",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "purchase"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+
