@@ -50,6 +50,9 @@ class App
         new Orders(); //Order data
         new Frontend\Orders();
 
+        //Account stuff
+        new Customer();
+
 
         /*
         //Users (ei. users & roles)

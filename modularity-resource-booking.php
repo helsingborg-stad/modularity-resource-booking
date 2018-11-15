@@ -33,7 +33,6 @@ $loader->addPrefix('ModularityResourceBooking', MODULARITYRESOURCEBOOKING_PATH);
 $loader->addPrefix('ModularityResourceBooking', MODULARITYRESOURCEBOOKING_PATH . 'source/php/');
 $loader->register();
 
-//Load fields
 // Acf auto import and export
 add_action('plugins_loaded', function () {
     $acfExportManager = new \AcfExportManager\AcfExportManager();
