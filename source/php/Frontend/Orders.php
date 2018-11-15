@@ -110,7 +110,13 @@ class Orders
      */
     public function getOrder($request)
     {
-        return new \WP_REST_Response(array("Single item order!"), 200);
+        return new \WP_REST_Response(
+            array_pop(
+                $this->filterorderOutput(
+                    get_post($request->get_param('id'))
+                )
+            ), 200
+        );
     }
 
     /**
@@ -227,12 +233,12 @@ class Orders
         if (is_array($orders) && !empty($orders)) {
             foreach ($orders as $order) {
                 $result[] = array(
-                    'id' => $order->ID,
-                    'uid' => $order->post_author,
-                    'uname' => get_userdata($order->post_author)->first_name . " " . get_userdata($order->post_author)->last_name,
-                    'name' => $order->post_title,
-                    'date' => $order->post_date,
-                    'slug' => $order->post_name,
+                    'id' => (int) $order->ID,
+                    'uid' => (int) $order->post_author,
+                    'uname' => (string) get_userdata($order->post_author)->first_name . " " . get_userdata($order->post_author)->last_name,
+                    'name' => (string) $order->post_title,
+                    'date' => (string) $order->post_date,
+                    'slug' => (string) $order->post_name,
                     'period' => array(
                         'start' => '',
                         'stop' => ''
