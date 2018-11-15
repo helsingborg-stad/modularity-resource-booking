@@ -68,7 +68,7 @@
             'name' => 'order_status',
             'type' => 'taxonomy',
             'instructions' => '',
-            'required' => 0,
+            'required' => 1,
             'conditional_logic' => 0,
             'wrapper' => array(
                 'width' => '',
@@ -84,13 +84,39 @@
             'return_format' => 'id',
             'multiple' => 0,
         ),
+        4 => array(
+            'key' => 'field_5bed4570a30e0',
+            'label' => __('Time period', 'modularity-resource-booking'),
+            'name' => 'time_period',
+            'type' => 'select',
+            'instructions' => '',
+            'required' => 1,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'choices' => array(
+                'undefined' => __('Undefined', 'modularity-resource-booking'),
+            ),
+            'default_value' => array(
+                0 => 'undefined',
+            ),
+            'allow_null' => 0,
+            'multiple' => 0,
+            'ui' => 0,
+            'return_format' => 'value',
+            'ajax' => 0,
+            'placeholder' => '',
+        ),
     ),
     'location' => array(
         0 => array(
             0 => array(
                 'param' => 'post_type',
                 'operator' => '==',
-                'value' => 'order',
+                'value' => 'purchase',
             ),
         ),
     ),

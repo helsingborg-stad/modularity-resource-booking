@@ -11,7 +11,7 @@ class App
         add_action('admin_enqueue_scripts', array($this, 'enqueueScripts'));
 
         //Register plugin classes
-        add_action('plugins_loaded', array($this, 'init'));
+        $this->init();
     }
 
     /**
@@ -44,6 +44,7 @@ class App
         //Product database
         new Products(); //Main product library
         new Packages(); //Packages of prodcts
+        new TimePeriod(); // Time slots that packages can be reserved for
 
         //Ordering
         new Orders(); //Order data
