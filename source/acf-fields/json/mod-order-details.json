@@ -18,6 +18,68 @@
             "message": "{{ORDER_ID}}",
             "new_lines": "",
             "esc_html": 0
+        },
+        {
+            "key": "field_5bed438cc99db",
+            "label": "Customer",
+            "name": "customer_id",
+            "type": "user",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "role": "",
+            "allow_null": 0,
+            "multiple": 0,
+            "return_format": "object"
+        },
+        {
+            "key": "field_5bed43f2bf1f2",
+            "label": "Product",
+            "name": "product_package_id",
+            "type": "taxonomy",
+            "instructions": "The product package that the customer has ordered.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "product-package",
+            "field_type": "select",
+            "allow_null": 0,
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "object",
+            "multiple": 0
+        },
+        {
+            "key": "field_5bed44c343f42",
+            "label": "Order Status",
+            "name": "order_status",
+            "type": "taxonomy",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "order-status",
+            "field_type": "radio",
+            "allow_null": 0,
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "multiple": 0
         }
     ],
     "location": [
