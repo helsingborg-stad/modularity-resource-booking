@@ -16,9 +16,13 @@ class Orders
         add_action('rest_api_init', array($this, 'registerRestRoutes'));
     }
 
+    /**
+     * Registers all rest routes for managing orders
+     *
+     * @return void
+     */
     public function registerRestRoutes()
     {
-
         //Get single order
         register_rest_route(
             "ModularityResourceBooking/v1",
@@ -97,21 +101,49 @@ class Orders
         );
     }
 
-    public function getOrder()
+    /**
+     * Get a single order
+     *
+     * @param object $request Object containing request details
+     *
+     * @return WP_REST_Response
+     */
+    public function getOrder($request)
     {
         return new \WP_REST_Response(array("Single item order!"), 200);
     }
 
-    public function listOrders()
+    /**
+     * Get all orders for n amout of time
+     *
+     * @param object $request Object containing request details
+     *
+     * @return WP_REST_Response
+     */
+    public function listOrders($request)
     {
         return new \WP_REST_Response(get_posts(array()), 200);
     }
 
+    /**
+     * Create a new order
+     *
+     * @param object $request Object containing request details
+     *
+     * @return WP_REST_Response
+     */
     public function create($request)
     {
         return new \WP_REST_Response(array('result' => __("Your order has been registered.")), 201);
     }
 
+    /**
+     * Remove order with id x
+     *
+     * @param integer $orderId The order to remove
+     *
+     * @return WP_REST_Response
+     */
     public function remove($orderId)
     {
         if (get_post_type($orderId) == "order") {
@@ -121,6 +153,13 @@ class Orders
         return new \WP_REST_Response(array('result' => __("Your order has been removed.")), 200);
     }
 
+    /**
+     * Modify order with id x
+     *
+     * @param integer $orderId The order to modify
+     *
+     * @return WP_REST_Response
+     */
     public function modify($orderId)
     {
         if (get_post_type($orderId) == "order") {
@@ -130,6 +169,13 @@ class Orders
         return new \WP_REST_Response(array('result' => __("Your order has been modified.")), 200);
     }
 
+    /**
+     * Check that the current user is the owner of order x
+     *
+     * @param integer $orderId The order to remove
+     *
+     * @return bool
+     */
     public function checkOrderOwnership($orderId) : bool
     {
         if (true || get_post_meta($orderId, 'user_id', true) === self::$userId) {
@@ -138,6 +184,11 @@ class Orders
         return false;
     }
 
+    /**
+     * Check that the current user can enter a new item
+     *
+     * @return bool
+     */
     public function checkInsertCapability()
     {
         if (is_user_logged_in() && current_user_can('create_posts')) {
