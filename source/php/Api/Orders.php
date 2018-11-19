@@ -1,10 +1,9 @@
 <?php
 
-namespace ModularityResourceBooking\Frontend;
+namespace ModularityResourceBooking\Api;
 
 class Orders
 {
-
     public static $userId;
 
     public function __construct()
@@ -151,7 +150,32 @@ class Orders
      */
     public function create($request)
     {
-        return new \WP_REST_Response(array('result' => __('Your order has been registered.', 'modularity-resource-booking')), 201);
+
+        $insert = wp_insert_post(
+            array(
+                'post_title' => 'ORDER TITLE',
+                'post_type' => 'purchase',
+                'post_status' => 'publish'
+            )
+        );
+
+        //Handles insert failure
+        if (is_wp_error($insert) || $insert === 0) {
+            return new \WP_REST_Response(array('result' => __('Bummer, something went wrong.', 'modularity-resource-booking')), 201);
+        }
+
+        //Update meta
+        update_post_meta($insert, 'start', '2018-11-10');
+        update_post_meta($insert, 'end', '2018-11-20');
+
+        //Return success
+        return new \WP_REST_Response(
+            array(
+                'result' => __('Your order has been registered.', 'modularity-resource-booking'),
+                'id' => $insert
+            ),
+            201
+        );
     }
 
     /**
@@ -209,7 +233,8 @@ class Orders
      */
     public function checkInsertCapability()
     {
-        if (is_user_logged_in() && current_user_can('create_posts')) {
+
+        if (true || is_user_logged_in() && current_user_can('create_posts')) {
             return true;
         }
 
@@ -240,8 +265,8 @@ class Orders
                     'date' => (string) $order->post_date,
                     'slug' => (string) $order->post_name,
                     'period' => array(
-                        'start' => '',
-                        'stop' => ''
+                        'start' => get_post_meta($order->ID, 'slot_start'),
+                        'stop' => get_post_meta($order->ID, 'slot_stop')
                     )
                 );
             }

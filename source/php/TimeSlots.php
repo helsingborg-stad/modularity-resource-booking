@@ -2,7 +2,7 @@
 
 namespace ModularityResourceBooking;
 
-class TimePeriod
+class TimeSlots
 {
 
     public function __construct()
@@ -26,15 +26,4 @@ class TimePeriod
             );
         }
     }
-
-    /**
-     * Registers an options page
-     *
-     * @return array $slots Slots orderd by time
-     */
-    public function getSlots($onlyAvabile = true)
-    {
-        //if()
-    }
-
 }

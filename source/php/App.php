@@ -44,14 +44,17 @@ class App
         //Product database
         new Products(); //Main product library
         new Packages(); //Packages of prodcts
-        new TimePeriod(); // Time slots that packages can be reserved for
+        new TimeSlots(); // Time slots that packages can be reserved for
 
         //Ordering
         new Orders(); //Order data
-        new Frontend\Orders();
 
         //Account stuff
         new Customer();
+
+        //Fronted API
+        new Api\Orders();
+        new Api\TimeSlots();
 
 
         /*
