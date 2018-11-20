@@ -151,6 +151,22 @@ class Orders
     public function create($request)
     {
 
+        //Verify that post data is avabile
+        if (isset($_POST) && !empty($_POST)) {
+
+            $requiredKeys = array("start", "end");
+
+            foreach ($requiredKeys as $requirement) {
+                if (!array_key_exists($requirement, $_POST)) {
+                    return new \WP_REST_Response(array('result' => __('A parameter is missing: ', 'modularity-resource-booking') . $requirement), 400);
+                }
+            }
+
+            $data = $_POST;
+        } else {
+            return new \WP_REST_Response(array('result' => __('The post request sent was empty.', 'modularity-resource-booking')), 400);
+        }
+
         $insert = wp_insert_post(
             array(
                 'post_title' => 'ORDER TITLE',
@@ -165,8 +181,8 @@ class Orders
         }
 
         //Update meta
-        update_post_meta($insert, 'start', '2018-11-10');
-        update_post_meta($insert, 'end', '2018-11-20');
+        update_post_meta($insert, 'start', $data['start']);
+        update_post_meta($insert, 'end', $data['end']);
 
         //Return success
         return new \WP_REST_Response(
