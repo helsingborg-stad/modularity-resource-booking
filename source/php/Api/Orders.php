@@ -188,7 +188,11 @@ class Orders
         return new \WP_REST_Response(
             array(
                 'result' => __('Your order has been registered.', 'modularity-resource-booking'),
-                'id' => $insert
+                'order' => array_pop(
+                    $this->filterorderOutput(
+                        get_post($insert)
+                    )
+                )
             ),
             201
         );
