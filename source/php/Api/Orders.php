@@ -8,9 +8,6 @@ class Orders
 
     public function __construct()
     {
-        //Get current user
-        self::$userId = get_current_user_id();
-
         //Run register rest routes
         add_action('rest_api_init', array($this, 'registerRestRoutes'));
     }
@@ -22,6 +19,10 @@ class Orders
      */
     public function registerRestRoutes()
     {
+
+        //Get user id
+        self::$userId = get_current_user_id();
+
         //Get single order
         register_rest_route(
             "ModularityResourceBooking/v1",
@@ -158,18 +159,33 @@ class Orders
 
             foreach ($requiredKeys as $requirement) {
                 if (!array_key_exists($requirement, $_POST)) {
-                    return new \WP_REST_Response(array('message' => __('A parameter is missing: ', 'modularity-resource-booking') . $requirement), 400);
+                    return new \WP_REST_Response(
+                        array(
+                            'message' => __('A parameter is missing: ', 'modularity-resource-booking') . $requirement,
+                            'state' => 'error'
+                        ),
+                        400
+                    );
                 }
             }
 
-            $data = $_POST;
+            $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
         } else {
-            return new \WP_REST_Response(array('message' => __('The post request sent was empty.', 'modularity-resource-booking')), 400);
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('The post request sent was empty.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                400
+            );
         }
 
         $insert = wp_insert_post(
             array(
-                'post_title' => 'ORDER TITLE',
+                'post_title' => (
+                    __('Order of', 'modularity-resource-booking') . " " . $this->getPackageName($data['product_package_id']) . " " .
+                    "(" . $data['slot_start'] . " " . __('to', 'modularity-resource-booking') . " " . $data['slot_stop'] . ")"),
                 'post_type' => 'purchase',
                 'post_status' => 'publish'
             )
@@ -177,18 +193,30 @@ class Orders
 
         //Handles insert failure
         if (is_wp_error($insert) || $insert === 0) {
-            return new \WP_REST_Response(array('message' => __('Bummer, something went wrong.', 'modularity-resource-booking')), 201);
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('Bummer, something went wrong.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                201
+            );
         }
 
         //Update meta
         update_post_meta($insert, 'slot_start', $data['slot_start']);
         update_post_meta($insert, 'slot_stop', $data['slot_stop']);
         update_post_meta($insert, 'product_package_id', $data['product_package_id']);
+        update_post_meta($insert, 'customer_id', self::$userId);
 
         //Return success
         return new \WP_REST_Response(
             array(
-                'message' => __('Your order has been registered.', 'modularity-resource-booking'),
+                'message' => sprintf(
+                    __('Your order of "%s" between %s and %s has been registered.', 'modularity-resource-booking'),
+                    $this->getPackageName($data['product_package_id']),
+                    $data['slot_start'],
+                    $data['slot_stop']
+                ),
                 'order' => array_pop(
                     $this->filterorderOutput(
                         get_post($insert)
@@ -225,7 +253,13 @@ class Orders
     public function modify($orderId)
     {
         if (get_post_type($orderId) == "order") {
-            return new \WP_REST_Response(array('message' => __("This is not a valid order id.")), 404);
+            return new \WP_REST_Response(
+                array(
+                    'message' => __("This is not a valid order id."),
+                    'state' => 'error'
+                ),
+                404
+            );
         }
 
         return new \WP_REST_Response(array('message' => __('Your order has been modified.', 'modularity-resource-booking')), 200);
@@ -289,11 +323,28 @@ class Orders
                         'start' => (string) get_post_meta($order->ID, 'slot_start', true),
                         'stop' => (string) get_post_meta($order->ID, 'slot_stop', true)
                     ),
-                    'product_package_id' => (int) get_post_meta($order->ID, 'product_package_id', true)
+                    'product_package_id' => (int) get_post_meta($order->ID, 'product_package_id', true),
+                    'product_package_name' => (string) $this->getPackageName(get_post_meta($order->ID, 'product_package_id', true)),
                 );
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Get a name of the package
+     *
+     * @param int $packageId The id of the pagage
+     *
+     * @return mixed String on found, false on invalid
+     */
+    public function getPackageName($packageId)
+    {
+        if ($packageObject = get_term($packageId)) {
+            return $packageObject->name;
+        }
+
+        return false;
     }
 }

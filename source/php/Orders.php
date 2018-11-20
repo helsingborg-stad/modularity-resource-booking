@@ -58,7 +58,30 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
             )
         );
 
-        /* Price indication */
+        /* Customer column */
+        $postType->addTableColumn(
+            'customer',
+            __('Customer', 'modularity-resource-booking'),
+            true,
+            function ($column, $postId) {
+
+                $userId = get_post_meta($postId, 'customer_id', true);
+
+                if ($userId && $userData = get_user_by('id', $userId)) {
+
+                    if (empty($userData->first_name) && empty($userData->last_name)) {
+                        echo $userData->data->user_nicename;
+                    } else {
+                        echo $userData->first_name . " " . $userData->last_name;
+                    }
+
+                } else {
+                    _e("Undefined", 'modularity-resource-booking');
+                }
+            }
+        );
+
+        /* Status */
         $postType->addTableColumn(
             'status',
             __('Status', 'modularity-resource-booking'),
