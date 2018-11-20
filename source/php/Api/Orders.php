@@ -154,17 +154,17 @@ class Orders
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
 
-            $requiredKeys = array("start", "end");
+            $requiredKeys = array("start", "stop");
 
             foreach ($requiredKeys as $requirement) {
                 if (!array_key_exists($requirement, $_POST)) {
-                    return new \WP_REST_Response(array('result' => __('A parameter is missing: ', 'modularity-resource-booking') . $requirement), 400);
+                    return new \WP_REST_Response(array('message' => __('A parameter is missing: ', 'modularity-resource-booking') . $requirement), 400);
                 }
             }
 
             $data = $_POST;
         } else {
-            return new \WP_REST_Response(array('result' => __('The post request sent was empty.', 'modularity-resource-booking')), 400);
+            return new \WP_REST_Response(array('message' => __('The post request sent was empty.', 'modularity-resource-booking')), 400);
         }
 
         $insert = wp_insert_post(
@@ -177,17 +177,17 @@ class Orders
 
         //Handles insert failure
         if (is_wp_error($insert) || $insert === 0) {
-            return new \WP_REST_Response(array('result' => __('Bummer, something went wrong.', 'modularity-resource-booking')), 201);
+            return new \WP_REST_Response(array('message' => __('Bummer, something went wrong.', 'modularity-resource-booking')), 201);
         }
 
         //Update meta
-        update_post_meta($insert, 'start', $data['start']);
-        update_post_meta($insert, 'end', $data['end']);
+        update_post_meta($insert, 'slot_start', $data['start']);
+        update_post_meta($insert, 'slot_stop', $data['stop']);
 
         //Return success
         return new \WP_REST_Response(
             array(
-                'result' => __('Your order has been registered.', 'modularity-resource-booking'),
+                'message' => __('Your order has been registered.', 'modularity-resource-booking'),
                 'order' => array_pop(
                     $this->filterorderOutput(
                         get_post($insert)
@@ -208,10 +208,10 @@ class Orders
     public function remove($orderId)
     {
         if (get_post_type($orderId) == "order") {
-            return new \WP_REST_Response(array('result' => __('That is not av valid order id.', 'modularity-resource-booking')), 404);
+            return new \WP_REST_Response(array('message' => __('That is not av valid order id.', 'modularity-resource-booking')), 404);
         }
 
-        return new \WP_REST_Response(array('result' => __('Your order has been removed.', 'modularity-resource-booking')), 200);
+        return new \WP_REST_Response(array('message' => __('Your order has been removed.', 'modularity-resource-booking')), 200);
     }
 
     /**
@@ -224,10 +224,10 @@ class Orders
     public function modify($orderId)
     {
         if (get_post_type($orderId) == "order") {
-            return new \WP_REST_Response(array('result' => __("This is not a valid order id.")), 404);
+            return new \WP_REST_Response(array('message' => __("This is not a valid order id.")), 404);
         }
 
-        return new \WP_REST_Response(array('result' => __('Your order has been modified.', 'modularity-resource-booking')), 200);
+        return new \WP_REST_Response(array('message' => __('Your order has been modified.', 'modularity-resource-booking')), 200);
     }
 
     /**
@@ -285,8 +285,8 @@ class Orders
                     'date' => (string) $order->post_date,
                     'slug' => (string) $order->post_name,
                     'period' => array(
-                        'start' => get_post_meta($order->ID, 'slot_start'),
-                        'stop' => get_post_meta($order->ID, 'slot_stop')
+                        'start' => get_post_meta($order->ID, 'slot_start', true),
+                        'stop' => get_post_meta($order->ID, 'slot_stop', true)
                     )
                 );
             }
