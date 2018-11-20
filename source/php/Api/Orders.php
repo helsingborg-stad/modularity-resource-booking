@@ -154,7 +154,7 @@ class Orders
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
 
-            $requiredKeys = array("start", "stop");
+            $requiredKeys = array("slot_start", "slot_stop", "product_package_id");
 
             foreach ($requiredKeys as $requirement) {
                 if (!array_key_exists($requirement, $_POST)) {
@@ -181,8 +181,9 @@ class Orders
         }
 
         //Update meta
-        update_post_meta($insert, 'slot_start', $data['start']);
-        update_post_meta($insert, 'slot_stop', $data['stop']);
+        update_post_meta($insert, 'slot_start', $data['slot_start']);
+        update_post_meta($insert, 'slot_stop', $data['slot_stop']);
+        update_post_meta($insert, 'product_package_id', $data['product_package_id']);
 
         //Return success
         return new \WP_REST_Response(
@@ -285,9 +286,10 @@ class Orders
                     'date' => (string) $order->post_date,
                     'slug' => (string) $order->post_name,
                     'period' => array(
-                        'start' => get_post_meta($order->ID, 'slot_start', true),
-                        'stop' => get_post_meta($order->ID, 'slot_stop', true)
-                    )
+                        'start' => (string) get_post_meta($order->ID, 'slot_start', true),
+                        'stop' => (string) get_post_meta($order->ID, 'slot_stop', true)
+                    ),
+                    'product_package_id' => (int) get_post_meta($order->ID, 'product_package_id', true)
                 );
             }
         }
