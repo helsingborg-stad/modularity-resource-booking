@@ -12,6 +12,9 @@ class App
 
         //Register plugin classes
         $this->init();
+
+        // Register Modularity modules
+        add_action('plugins_loaded', array($this, 'registerModules'));
     }
 
     /**
@@ -64,5 +67,19 @@ class App
         //Options
         new Slots(); //Time slots that are orderable
         new CustomerGroups(); //Dynamic creation of roles*/
+    }
+
+    /**
+     * Register Modularity v2 modules
+     * @return void
+     */
+    public function registerModules()
+    {
+        if (function_exists('modularity_register_module')) {
+            modularity_register_module(
+                MODULARITYRESOURCEBOOKING_PATH . 'source/php/Module/Registration',
+                'RegistrationForm'
+            );
+        }
     }
 }
