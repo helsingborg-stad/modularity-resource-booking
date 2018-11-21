@@ -48,7 +48,7 @@ class Taxonomy
             'update_item'       => sprintf(__('Update %s', 'todo'), $this->nameSingular),
             'add_new_item'      => sprintf(__('Add New %s', 'todo'), $this->nameSingular),
             'new_item_name'     => sprintf(__('New %s Name', 'todo'), $this->nameSingular),
-            'menu_name'         => $this->nameSingular,
+            'menu_name'         => $this->namePlural,
         );
 
         $this->args['labels'] = $labels;
