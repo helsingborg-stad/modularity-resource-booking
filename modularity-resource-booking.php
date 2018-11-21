@@ -42,10 +42,14 @@ add_action('plugins_loaded', function () {
         'mod-product-details' => 'group_5beacf4f7895b',
         'mod-package-details' => 'group_5bead7869a8ed',
         'mod-order-details' => 'group_5bed425d9abc2',
-        'mod-order-notes' => 'group_5bed90f741b0e'
+        'mod-order-notes' => 'group_5bed90f741b0e',
+        'mod-customers' => 'group_5bf50cc73ff8a',
     ));
     $acfExportManager->import();
 });
+
+register_activation_hook(plugin_basename(__FILE__), '\ModularityResourceBooking\Customer::createUserRoles');
+register_deactivation_hook(plugin_basename(__FILE__), '\ModularityResourceBooking\Customer::removeUserRoles');
 
 // Start application
 new ModularityResourceBooking\App();
