@@ -79,8 +79,14 @@ class Customer
             'customer_group',
             'user',
             array(
-                'hierarchical' => false
+                'hierarchical' => false,
             )
+        );
+
+        //Add filter
+        new Entity\Filter(
+            'customer_group',
+            'users'
         );
 
         return $groups->slug;
