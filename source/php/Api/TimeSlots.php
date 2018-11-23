@@ -47,11 +47,11 @@ class TimeSlots
                     'start' => date(
                         'Y-m-d',
                         strtotime('monday', strtotime('+' .$n. ' week'))
-                    ),
+                    ) . " 00:00",
                     'stop' => date(
                         'Y-m-d',
                         strtotime('sunday', strtotime('+' . $n .' week'))
-                    )
+                    ) . " 23:59"
                 );
             }
 
@@ -65,8 +65,8 @@ class TimeSlots
             if (is_array($data) && !empty($data)) {
                 foreach ($data as $item) {
                     $result[] = array(
-                        'start' => $item['start_date'],
-                        'stop' => $item['end_date']
+                        'start' => $item['start_date'] . " 00:00",
+                        'stop' => $item['end_date'] . " 23:59"
                     );
                 }
             }
