@@ -37,16 +37,22 @@ class TimeSlots
      */
     public function getSlots()
     {
-
         $result = array();
 
         if (get_field('mod_res_book_automatic_or_manual', 'option') == "weekly") {
+
+            //Decide what monday to refer to
+            if (date("N") == 1) {
+                $whatMonday = "monday";
+            } else {
+                $whatMonday = "last monday";
+            }
 
             for ($n = 0; $n <= 52; $n++) {
                 $result[] = array(
                     'start' => date(
                         'Y-m-d',
-                        strtotime('monday', strtotime('+' .$n. ' week'))
+                        strtotime($whatMonday, strtotime('+' .$n. ' week'))
                     ) . " 00:00",
                     'stop' => date(
                         'Y-m-d',
