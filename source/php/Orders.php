@@ -18,9 +18,53 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         //Remove form Municipio template filter
         add_filter('Municipio/CustomPostType/ExcludedPostTypes', array($this, 'excludePostType'));
+
+        //Filter handlebars on admin page
+        add_filter('acf/prepare_field/key=field_5bed431057e88', array($this, 'replaceOrderId'), 10, 1); //Order ID
+        add_filter('acf/prepare_field/key=field_5bed4570a30e0', array($this, 'replaceTimeSlot'), 10, 1); //Time Slot
+
     }
 
-    //Exclude this post type from page template filter.
+    /**
+     * Replaces the order id hablebar
+     *
+     * @param array $field Field definitions
+     *
+     * @return array
+     */
+    public function replaceOrderId($field)
+    {
+        global $post;
+        if (isset($field['message']) && !empty($field['message'])) {
+            $field['message'] = str_replace("{{ORDER_ID}}", get_post_meta($post->ID, 'order_id', true), $field['message']);
+        }
+        return $field;
+    }
+
+    /**
+     * Replaces the start & end date handlebars
+     *
+     * @param array $field Field definitions
+     *
+     * @return array
+     */
+    public function replaceTimeSlot($field)
+    {
+        global $post;
+        if (isset($field['message']) && !empty($field['message'])) {
+            $field['message'] = str_replace("{{ORDER_START_DATE}}", get_post_meta($post->ID, 'slot_start', true), $field['message']);
+            $field['message'] = str_replace("{{ORDER_END_DATE}}", get_post_meta($post->ID, 'slot_stop', true), $field['message']);
+        }
+        return $field;
+    }
+
+    /**
+     * Exclude from post type from Muncipio posttype filters
+     *
+     * @param array $postTypes Array containing posttypes that should be filterable
+     *
+     * @return void
+     */
     public function excludePostType($postTypes)
     {
         $postTypes[] = $this->postType();
@@ -102,6 +146,23 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                         }
 
                     }
+                }
+            }
+        );
+
+        /* Customer column */
+        $postType->addTableColumn(
+            'orderid',
+            __('Order ID', 'modularity-resource-booking'),
+            true,
+            function ($column, $postId) {
+
+                $orderId = get_post_meta($postId, 'order_id', true);
+
+                if ($orderId) {
+                    echo $orderId;
+                } else {
+                    _e("Undefined", 'modularity-resource-booking');
                 }
             }
         );

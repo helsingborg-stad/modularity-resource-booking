@@ -203,6 +203,7 @@ class Orders
         }
 
         //Update meta
+        update_post_meta($insert, 'order_id', strtoupper(substr(md5(microtime()), rand(0, 26), 8)));
         update_post_meta($insert, 'slot_start', $data['slot_start']);
         update_post_meta($insert, 'slot_stop', $data['slot_stop']);
         update_post_meta($insert, 'product_package_id', $data['product_package_id']);
@@ -314,6 +315,7 @@ class Orders
             foreach ($orders as $order) {
                 $result[] = array(
                     'id' => (int) $order->ID,
+                    'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
                     'uid' => (int) $order->post_author,
                     'uname' => (string) get_userdata($order->post_author)->first_name . " " . get_userdata($order->post_author)->last_name,
                     'name' => (string) $order->post_title,
