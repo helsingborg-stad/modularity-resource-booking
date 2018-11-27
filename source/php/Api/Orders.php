@@ -187,7 +187,8 @@ class Orders
                     __('Order of', 'modularity-resource-booking') . " " . $this->getPackageName($data['product_package_id']) . " " .
                     "(" . $data['slot_start'] . " " . __('to', 'modularity-resource-booking') . " " . $data['slot_stop'] . ")"),
                 'post_type' => 'purchase',
-                'post_status' => 'publish'
+                'post_status' => 'publish',
+                'post_author' => self::$userId,
             )
         );
 

@@ -23,6 +23,49 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
         add_filter('acf/prepare_field/key=field_5bed431057e88', array($this, 'replaceOrderId'), 10, 1); //Order ID
         add_filter('acf/prepare_field/key=field_5bed4570a30e0', array($this, 'replaceTimeSlot'), 10, 1); //Time Slot
 
+        //Save author to post on change
+        add_action('save_post', array($this, 'updateAuthor'));
+
+    }
+
+    /**
+     * Replaces the order id hablebar
+     *
+     * @param int $postId The id of post being saved
+     *
+     * @return void
+     */
+    public function updateAuthor($postId)
+    {
+
+        //Not order posttype
+        if (get_post_type($postId) != self::$postTypeSlug) {
+            return;
+        }
+
+        //Only in admin
+        if (!is_admin()) {
+            return;
+        }
+
+        //Check if customer id is set & valid
+        if (!isset($_POST['field_5bed438cc99db'])) {
+            return;
+        }
+
+        if (!is_numeric($_POST['field_5bed438cc99db'])) {
+            return;
+        }
+
+        //Update author from meta
+        if ($authorId = $_POST['field_5bed438cc99db'] != get_post_field('post_author', $postId)) {
+            wp_update_post(
+                array(
+                    'ID' => $postId,
+                    'post_author' => $authorId
+                )
+            );
+        }
     }
 
     /**
