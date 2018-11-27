@@ -206,8 +206,10 @@ class Orders
         update_post_meta($insert, 'order_id', strtoupper(substr(md5(microtime()), rand(0, 26), 8)));
         update_post_meta($insert, 'slot_start', $data['slot_start']);
         update_post_meta($insert, 'slot_stop', $data['slot_stop']);
-        update_post_meta($insert, 'product_package_id', $data['product_package_id']);
-        update_post_meta($insert, 'customer_id', self::$userId);
+
+        //Update fields
+        update_field('product_package_id', $data['product_package_id'], $insert);
+        update_field('customer_id', self::$userId, $insert);
 
         //Return success
         return new \WP_REST_Response(
