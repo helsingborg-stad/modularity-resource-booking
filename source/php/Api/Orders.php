@@ -210,6 +210,7 @@ class Orders
         //Update fields
         update_field('product_package_id', $data['product_package_id'], $insert);
         update_field('customer_id', self::$userId, $insert);
+        update_field('order_status', get_field('order_status', 'option'), $insert);
 
         //Return success
         return new \WP_REST_Response(
