@@ -132,6 +132,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
             true,
             function ($column, $postId) {
                 $i = 0;
+
                 $types = get_the_terms($postId, self::$statusTaxonomySlug);
 
                 if (empty($types)) {
@@ -180,7 +181,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
     {
 
         //Register product packages
-        $packages = new \ModularityResourceBooking\Entity\Taxonomy(
+        $orderStatus = new \ModularityResourceBooking\Entity\Taxonomy(
             __('Order statuses', 'modularity-resource-booking'),
             __('Order status', 'modularity-resource-booking'),
             'order-status',
@@ -192,12 +193,24 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         //Add filter
         new \ModularityResourceBooking\Entity\Filter(
-            'product-package',
+            $orderStatus->slug,
             self::$postTypeSlug
         );
 
+        $TaxonomySlug = $orderStatus->slug;
+        $postTypeSlug = self::$postTypeSlug;
+
+        //Remove meta box
+        add_action(
+            'admin_menu',
+                function () use ($TaxonomySlug, $postTypeSlug) {
+                    \remove_meta_box("tagsdiv-" . $TaxonomySlug, $postTypeSlug, 'side');
+                },
+            10
+        );
+
         //Return taxonomy slug
-        return $packages->slug;
+        return $orderStatus->slug;
     }
 
 }
