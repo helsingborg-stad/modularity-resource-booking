@@ -43,7 +43,7 @@ class Orders
         //Get all orders (for a limited period of time)
         register_rest_route(
             "ModularityResourceBooking/v1",
-            "ListOrders",
+            "Order",
             array(
                 'methods' => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'listOrders')
@@ -241,7 +241,7 @@ class Orders
      */
     public function remove($orderId)
     {
-        if (get_post_type($orderId) == "order") {
+        if (get_post_type($orderId) == "purchase") {
             return new \WP_REST_Response(array('message' => __('That is not av valid order id.', 'modularity-resource-booking')), 404);
         }
 
