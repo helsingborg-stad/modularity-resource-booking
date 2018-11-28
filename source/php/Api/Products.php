@@ -175,6 +175,7 @@ class Products
                     'description' => (string) $postitem->post_content,
                     'price' => (int) get_field('product_price', $postitem->ID),
                     'location' => get_field('product_location', $postitem->ID),
+                    'total_stock' => (int) get_field('items_in_stock', $postitem->ID),
                     'packages' => wp_get_post_terms(
                         $postitem->ID,
                         'product-package',
