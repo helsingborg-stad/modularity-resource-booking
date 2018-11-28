@@ -18,7 +18,7 @@ class Products
     public function registerRestRoutes()
     {
 
-        //Get single order
+        //Get single product
         register_rest_route(
             "ModularityResourceBooking/v1",
             "Product/(?P<id>[\d]+)",
@@ -35,13 +35,40 @@ class Products
             )
         );
 
-        //Get all orders (for a limited period of time)
+        //Get all products (limited)
         register_rest_route(
             "ModularityResourceBooking/v1",
             "Product",
             array(
                 'methods' => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'getProducts')
+            )
+        );
+
+        //Get single package
+        register_rest_route(
+            "ModularityResourceBooking/v1",
+            "Package/(?P<id>[\d]+)",
+            array(
+                'methods' => \WP_REST_Server::READABLE,
+                'callback' => array($this, 'getPackage'),
+                'args' => array(
+                    'id' => array(
+                        'validate_callback' => function ($param, $request, $key) {
+                            return is_numeric($param);
+                        }
+                    ),
+                ),
+            )
+        );
+
+        //Get all packages (limited)
+        register_rest_route(
+            "ModularityResourceBooking/v1",
+            "Package",
+            array(
+                'methods' => \WP_REST_Server::READABLE,
+                'callback' => array($this, 'getPackages')
             )
         );
 
@@ -58,7 +85,7 @@ class Products
     {
         return new \WP_REST_Response(
             array_pop(
-                $this->filterorderOutput(
+                $this->filterPostOutput(
                     get_post($request->get_param('id'))
                 )
             ), 200
@@ -75,13 +102,34 @@ class Products
     public function getProducts($request)
     {
         return new \WP_REST_Response(
-            $this->filterorderOutput(
+            $this->filterPostOutput(
                 get_posts(
                     array(
                         'post_type' => 'product',
                         'posts_per_page' => 99,
                         'orderby' => 'date',
                         'order' => 'DESC'
+                    )
+                )
+            ), 200
+        );
+    }
+
+    /**
+     * Get all packages
+     *
+     * @param object $request Object containing request details
+     *
+     * @return WP_REST_Response
+     */
+    public function getPackages($request)
+    {
+        return new \WP_REST_Response(
+            $this->filterTaxonomyOutput(
+                get_terms(
+                    array(
+                        'taxonomy' => 'post_tag',
+                        'hide_empty' => false,
                     )
                 )
             ), 200
@@ -96,17 +144,29 @@ class Products
      *
      * @return array $result Resulting array object
      */
-    public function filterOrderOutput($orders, $result = array())
+    public function filterPostOutput($postdata, $result = array())
     {
+
         //Wrap single item in array
-        if (is_object($orders) && !is_array($orders)) {
-            $orders = array($orders);
+        if (is_object($postdata) && !is_array($postdata)) {
+            $postdata = array($postdata);
         }
 
-        if (is_array($orders) && !empty($orders)) {
-            foreach ($orders as $order) {
+        if (is_array($postdata) && !empty($postdata)) {
+            foreach ($postdata as $postitem) {
                 $result[] = array(
-                    'id' => (int) $order->ID
+                    'id' => (int) $postitem->ID,
+                    'title' => (string) $postitem->post_title,
+                    'description' => (string) $postitem->post_content,
+                    'price' => (int) get_field('product_price', $postitem->ID),
+                    'location' => get_field('product_location', $postitem->ID),
+                    'packages' => wp_get_post_terms(
+                        $postitem->ID,
+                        'product-package',
+                        array(
+                            'fields' => 'ids'
+                        )
+                    )
                 );
             }
         }
@@ -115,18 +175,17 @@ class Products
     }
 
     /**
-     * Get a name of the package
+     * Clean return array from uneccesary data (make it slimmer)
      *
-     * @param int $packageId The id of the pagage
+     * @param array $taxonomy Array (or object) reflecting items to output.
      *
-     * @return mixed String on found, false on invalid
+     * @return array $result Resulting array object
      */
-    public function getPackageName($packageId)
+    public function filterTaxonomyOutput($taxonomy, $result = array())
     {
-        if ($packageObject = get_term($packageId)) {
-            return $packageObject->name;
-        }
+        return $taxonomy;
 
-        return false;
+        return $result;
     }
+
 }
