@@ -350,6 +350,21 @@ class Orders
             }
         }
 
+        //Append action links if owner
+        if (is_array($result) && !empty($result)) {
+            foreach ($result as $key => $item) {
+
+                if ($item['uid'] == self::$userId) {
+                    $result[$key] = $item + array(
+                        'actions' => array(
+                            'modify' => rest_url('ModularityResourceBooking/v1/ModifyOrder/' . $item['id']),
+                            'delete' => rest_url('ModularityResourceBooking/v1/RemoveOrder/' . $item['id'])
+                        )
+                    );
+                }
+            }
+        }
+
         return $result;
     }
 
