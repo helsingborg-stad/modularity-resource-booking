@@ -241,17 +241,36 @@ class Orders
     /**
      * Remove order with id x
      *
-     * @param integer $orderId The order to remove
+     * @param integer $request The request of order to remove
      *
      * @return WP_REST_Response
      */
-    public function remove($orderId)
+    public function remove($request)
     {
-        if (get_post_type($orderId) == "purchase") {
-            return new \WP_REST_Response(array('message' => __('That is not av valid order id.', 'modularity-resource-booking')), 404);
+        if (get_post_type($request->get_param('id')) != "purchase") {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('That is not av valid order id.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ), 404
+            );
         }
 
-        return new \WP_REST_Response(array('message' => __('Your order has been removed.', 'modularity-resource-booking')), 200);
+        if (wp_delete_post($request->get_param('id'))) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('Your order has been removed.', 'modularity-resource-booking'),
+                    'state' => 'success'
+                ), 200
+            );
+        }
+
+        return new \WP_REST_Response(
+            array(
+                'message' => __('Could not remove that order due to an unknown error.', 'modularity-resource-booking'),
+                'state' => 'error'
+            ), 200
+        );
     }
 
     /**
