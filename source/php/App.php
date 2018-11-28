@@ -58,6 +58,7 @@ class App
         //Fronted API
         new Api\Orders();
         new Api\TimeSlots();
+        new Api\Products();
 
 
         /*
