@@ -93,7 +93,7 @@ class Products
     }
 
     /**
-     * Get all orders for n amout of time
+     * Get all products
      *
      * @param object $request Object containing request details
      *

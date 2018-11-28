@@ -151,7 +151,6 @@ class Orders
      */
     public function create($request)
     {
-
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
 
@@ -181,16 +180,23 @@ class Orders
             );
         }
 
-        $insert = wp_insert_post(
-            array(
-                'post_title' => (
-                    __('Order of', 'modularity-resource-booking') . " " . $this->getPackageName($data['product_package_id']) . " " .
-                    "(" . $data['slot_start'] . " " . __('to', 'modularity-resource-booking') . " " . $data['slot_stop'] . ")"),
-                'post_type' => 'purchase',
-                'post_status' => 'publish',
-                'post_author' => self::$userId,
-            )
+        //Define new post
+        $postItem = array(
+            'post_title' => (
+                __('Order of', 'modularity-resource-booking') . " " . $this->getPackageName($data['product_package_id']) . " " .
+                "(" . $data['slot_start'] . " " . __('to', 'modularity-resource-booking') . " " . $data['slot_stop'] . ")"),
+            'post_type' => 'purchase',
+            'post_status' => 'publish',
+            'post_author' => self::$userId,
         );
+
+        //Prepend id if proveided (converted to update)
+        if (is_numeric($request->get_param('id')) && get_post_type($request->get_param('id')) == "purchase") {
+            $postItem = array('ID' => $request->get_param('id')) + $postItem;
+        }
+
+        //Makr insert
+        $insert = wp_insert_post($postItem);
 
         //Handles insert failure
         if (is_wp_error($insert) || $insert === 0) {
@@ -251,23 +257,13 @@ class Orders
     /**
      * Modify order with id x
      *
-     * @param integer $orderId The order to modify
+     * @param integer $request The order to modify
      *
      * @return WP_REST_Response
      */
-    public function modify($orderId)
+    public function modify($request)
     {
-        if (get_post_type($orderId) == "order") {
-            return new \WP_REST_Response(
-                array(
-                    'message' => __("This is not a valid order id."),
-                    'state' => 'error'
-                ),
-                404
-            );
-        }
-
-        return new \WP_REST_Response(array('message' => __('Your order has been modified.', 'modularity-resource-booking')), 200);
+        return $this->create($request);
     }
 
     /**
