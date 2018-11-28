@@ -122,20 +122,35 @@ class Products
      *
      * @return WP_REST_Response
      */
+    public function getPackage($request)
+    {
+        return new \WP_REST_Response(
+            $this->filterTaxonomyOutput(
+                get_term($request->get_param('id'))
+            ), 200
+        );
+    }
+
+    /**
+     * Get all packages
+     *
+     * @param object $request Object containing request details
+     *
+     * @return WP_REST_Response
+     */
     public function getPackages($request)
     {
         return new \WP_REST_Response(
             $this->filterTaxonomyOutput(
                 get_terms(
                     array(
-                        'taxonomy' => 'post_tag',
-                        'hide_empty' => false,
+                        'taxonomy' => 'product-package',
+                        'hide_empty' => true,
                     )
                 )
             ), 200
         );
     }
-
 
     /**
      * Clean return array from uneccesary data (make it slimmer)
@@ -183,7 +198,54 @@ class Products
      */
     public function filterTaxonomyOutput($taxonomy, $result = array())
     {
-        return $taxonomy;
+
+        //Wrap single item in array
+        if (is_object($taxonomy) && !is_array($taxonomy)) {
+            $taxonomy = array($taxonomy);
+        }
+
+        //Get formatted object
+        if (is_array($taxonomy) && !empty($taxonomy)) {
+            foreach ($taxonomy as $term) {
+                $result[] = array(
+                    'id' => $term->term_id,
+                    'title' => $term->name,
+                    'description' => $term->description,
+                    'price' => (int) get_field('package_price', $term),
+                    'products' => $this->filterPostOutput(
+                        get_posts(
+                            array(
+                                'posts_per_page' => -1,
+                                'post_type' => 'product',
+                                'tax_query' => array(
+                                    array(
+                                        'taxonomy' => 'product-package',
+                                        'field' => 'term_id',
+                                        'terms' => $term->term_id,
+                                    )
+                                )
+                            )
+                        )
+                    )
+                );
+            }
+        }
+
+        //Calculate price of package if not set
+        if (is_array($result) && !empty($result)) {
+            foreach ($result as $key => $item) {
+                $price = 0;
+                if (!$item['price'] && count($item['products'])) {
+                    foreach ($item['products'] as $product) {
+                        $price = $price + $product['price'];
+                    }
+                }
+
+                if ($price != 0) {
+                    $result[$key]['price'] = $price;
+                }
+            }
+        }
 
         return $result;
     }
