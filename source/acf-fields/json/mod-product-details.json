@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_5beacf5dac8a7",
-            "label": "Price",
+            "label": "Base price",
             "name": "product_price",
             "type": "number",
             "instructions": "A price for this specific product. This is used as a base to calculate the product package price.",
@@ -22,6 +22,70 @@
             "min": "",
             "max": "",
             "step": ""
+        },
+        {
+            "key": "field_5bfe9585f90f4",
+            "label": "Customer group price variations",
+            "name": "customer_group_price_variations",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5bfe95b8f90f5",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Add price variation",
+            "sub_fields": [
+                {
+                    "key": "field_5bfe95b8f90f5",
+                    "label": "Product price",
+                    "name": "product_price",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ":-",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5bfe95daf90f6",
+                    "label": "Customer group",
+                    "name": "customer_group",
+                    "type": "taxonomy",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "taxonomy": "customer_group",
+                    "field_type": "select",
+                    "allow_null": 0,
+                    "add_term": 1,
+                    "save_terms": 0,
+                    "load_terms": 0,
+                    "return_format": "object",
+                    "multiple": 0
+                }
+            ]
         },
         {
             "key": "field_5bfe75f6f07f6",
