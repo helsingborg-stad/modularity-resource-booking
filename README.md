@@ -8,7 +8,7 @@ This plugin creates a complete API to integrate any frontend solution. The plugi
 ### Products
 
 * ``` ModularityResourceBooking/v1/Product/ ``` - List all avabile products. 
-* ``` ModularityResourceBooking/v1/Product/ID ``` - List a single product. 
+* ``` ModularityResourceBooking/v1/Product/ID ``` - Get a single product. 
 
 ### Order / Purchase
 
