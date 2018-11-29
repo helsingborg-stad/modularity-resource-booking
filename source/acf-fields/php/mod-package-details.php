@@ -43,7 +43,7 @@
             'min' => 0,
             'max' => 0,
             'layout' => 'table',
-            'button_label' => '',
+            'button_label' => __('Add price variation', 'modularity-resource-booking'),
             'sub_fields' => array(
                 0 => array(
                     'key' => 'field_5bfe9c16badad',
@@ -85,7 +85,7 @@
                     'add_term' => 0,
                     'save_terms' => 0,
                     'load_terms' => 0,
-                    'return_format' => 'object',
+                    'return_format' => 'id',
                     'multiple' => 0,
                 ),
             ),

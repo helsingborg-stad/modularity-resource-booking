@@ -85,7 +85,7 @@
                     'add_term' => 0,
                     'save_terms' => 0,
                     'load_terms' => 0,
-                    'return_format' => 'object',
+                    'return_format' => 'id',
                     'multiple' => 0,
                 ),
             ),

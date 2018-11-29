@@ -4,6 +4,8 @@ namespace ModularityResourceBooking\Api;
 
 class Products
 {
+    public static $userId;
+
     public function __construct()
     {
         //Run register rest routes
@@ -17,6 +19,9 @@ class Products
      */
     public function registerRestRoutes()
     {
+
+        //Get user id
+        self::$userId = get_current_user_id();
 
         //Get single product
         register_rest_route(
@@ -173,7 +178,7 @@ class Products
                     'id' => (int) $postitem->ID,
                     'title' => (string) $postitem->post_title,
                     'description' => (string) $postitem->post_content,
-                    'price' => (int) get_field('product_price', $postitem->ID),
+                    'price' => (int) $this->getPrice($postitem),
                     'location' => get_field('product_location', $postitem->ID),
                     'total_stock' => (int) get_field('items_in_stock', $postitem->ID),
                     'packages' => wp_get_post_terms(
@@ -212,7 +217,7 @@ class Products
                     'id' => $term->term_id,
                     'title' => $term->name,
                     'description' => $term->description,
-                    'price' => (int) get_field('package_price', $term),
+                    'price' => (int) $this->getPrice($term),
                     'products' => $this->filterPostOutput(
                         get_posts(
                             array(
@@ -249,6 +254,37 @@ class Products
         }
 
         return $result;
+    }
+
+    public function getPrice($item) {
+
+        //Get term or post keys
+        if (get_class($item) == "WP_Term") {
+            $fieldName = "package_price";
+        } else {
+            $fieldName = "product_price";
+        }
+
+        //Get this price
+        $basePrice = get_field($fieldName, $item);
+
+        //Get user group
+        $userGroup = get_field('customer_group', 'user_' . self::$userId);
+
+        //Get user groups
+        $userGroupPrices = get_field('customer_group_price_variations', $item);
+
+        //Get this user group price
+        if (is_array($userGroupPrices) && !empty($userGroupPrices)) {
+            foreach ($userGroupPrices as $userGroupPrice) {
+                if ($userGroupPrice['customer_group'] == $userGroup) {
+                    return $userGroupPrice['product_price'];
+                }
+            }
+        }
+
+        //No ug price found, return base price
+        return $basePrice;
     }
 
 }
