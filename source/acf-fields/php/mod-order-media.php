@@ -18,11 +18,11 @@
                 'class' => '',
                 'id' => '',
             ),
-            'collapsed' => '',
+            'collapsed' => 'field_5bffc9b93070a',
             'min' => 0,
             'max' => 0,
-            'layout' => 'table',
-            'button_label' => '',
+            'layout' => 'row',
+            'button_label' => __('Add media item', 'modularity-resource-booking'),
             'sub_fields' => array(
                 0 => array(
                     'key' => 'field_5bffc9b93070a',

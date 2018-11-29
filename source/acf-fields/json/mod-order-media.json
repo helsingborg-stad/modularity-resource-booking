@@ -15,11 +15,11 @@
                 "class": "",
                 "id": ""
             },
-            "collapsed": "",
+            "collapsed": "field_5bffc9b93070a",
             "min": 0,
             "max": 0,
-            "layout": "table",
-            "button_label": "",
+            "layout": "row",
+            "button_label": "Add media item",
             "sub_fields": [
                 {
                     "key": "field_5bffc9b93070a",
