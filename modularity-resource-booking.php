@@ -40,6 +40,7 @@ add_action('plugins_loaded', function () {
     $acfExportManager->setExportFolder(MODULARITYRESOURCEBOOKING_PATH . 'source/acf-fields/');
     $acfExportManager->autoExport(array(
         'mod-product-details' => 'group_5beacf4f7895b',
+        'mod-product-media-requirement' => 'group_5bffb822b9213',
         'mod-package-details' => 'group_5bead7869a8ed',
         'mod-order-details' => 'group_5bed425d9abc2',
         'mod-order-notes' => 'group_5bed90f741b0e',
