@@ -350,6 +350,17 @@ class Orders
             }
         }
 
+        //Append media data if owner
+        if (is_array($result) && !empty($result)) {
+            foreach ($result as $key => $item) {
+                if ($item['uid'] == self::$userId) {
+                    $result[$key] = $item + array(
+                        'media' => (array) get_field('media_items', $item['id'])
+                    );
+                }
+            }
+        }
+
         //Append action links if owner
         if (is_array($result) && !empty($result)) {
             foreach ($result as $key => $item) {
