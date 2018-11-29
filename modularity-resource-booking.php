@@ -44,6 +44,7 @@ add_action('plugins_loaded', function () {
         'mod-package-details' => 'group_5bead7869a8ed',
         'mod-order-details' => 'group_5bed425d9abc2',
         'mod-order-notes' => 'group_5bed90f741b0e',
+        'mod-order-media' => 'group_5bffbfe266f20',
         'mod-customers' => 'group_5bf50cc73ff8a',
         'mod-customer-group' => 'group_5bfe8d5fdeedd'
     ));

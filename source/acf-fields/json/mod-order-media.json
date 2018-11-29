@@ -1,0 +1,47 @@
+[{
+    "key": "group_5bffbfe266f20",
+    "title": "Attached order media",
+    "fields": [
+        {
+            "key": "field_5bffbfed18455",
+            "label": "Media items",
+            "name": "media_items",
+            "type": "dynamic_table",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "tableclass": "",
+            "maxrows": "",
+            "disable_sort": 0,
+            "fixed_columns": 0,
+            "default_headers": "Name\r\nDownload",
+            "default_header": "",
+            "readonly": 0,
+            "disabled": 0,
+            "sub_fields": false
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "purchase"
+            }
+        ]
+    ],
+    "menu_order": 10,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+
