@@ -283,6 +283,34 @@ class Products
             }
         }
 
+        //Could not find specified price, sum all products
+        if (get_class($item) == "WP_Term" && empty($basePrice)) {
+
+            $posts = get_posts(
+                array(
+                    'post_type' => 'product',
+                    'numberposts' => -1,
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'product-package',
+                            'field' => 'id',
+                            'terms' => $item->term_id
+                        )
+                    )
+                )
+            );
+
+            if (is_array($posts) && !empty($posts)) {
+                foreach ($posts as $subitem) {
+                    $productSumPrice = $productSumPrice + $this->getPrice($subitem);
+                }
+
+                if (!empty($productSumPrice)) {
+                    return $productSumPrice;
+                }
+            }
+        }
+
         //No ug price found, return base price
         return $basePrice;
     }
