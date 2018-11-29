@@ -160,20 +160,21 @@ class Products
     /**
      * Clean return array from uneccesary data (make it slimmer)
      *
-     * @param array $orders Array (or object) reflecting items to output.
+     * @param array $postData Array (or object) reflecting items to output.
+     * @param array $result   Declaration of end result var
      *
      * @return array $result Resulting array object
      */
-    public function filterPostOutput($postdata, $result = array())
+    public function filterPostOutput($postData, $result = array())
     {
 
         //Wrap single item in array
-        if (is_object($postdata) && !is_array($postdata)) {
-            $postdata = array($postdata);
+        if (is_object($postData) && !is_array($postData)) {
+            $postData = array($postData);
         }
 
-        if (is_array($postdata) && !empty($postdata)) {
-            foreach ($postdata as $postitem) {
+        if (is_array($postData) && !empty($postData)) {
+            foreach ($postData as $postitem) {
                 $result[] = array(
                     'id' => (int) $postitem->ID,
                     'title' => (string) $postitem->post_title,
@@ -199,6 +200,7 @@ class Products
      * Clean return array from uneccesary data (make it slimmer)
      *
      * @param array $taxonomy Array (or object) reflecting items to output.
+     * @param array $result   Declaration of end result var
      *
      * @return array $result Resulting array object
      */
@@ -256,7 +258,16 @@ class Products
         return $result;
     }
 
-    public function getPrice($item) {
+    /**
+     * Get the price of a product (post) or package (taxonomy)
+     *
+     * @param array $item Object representing a taxonomy or
+     *                    post that should be parsed for price data
+     *
+     * @return int $result Integer representing the product price
+     */
+    public function getPrice($item)
+    {
 
         //Get term or post keys
         if (get_class($item) == "WP_Term") {
@@ -311,7 +322,7 @@ class Products
             }
         }
 
-        //No ug price found, return base price
+        //No price found, return base price
         return $basePrice;
     }
 
