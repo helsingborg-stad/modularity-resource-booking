@@ -30,7 +30,7 @@
                     "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "33",
+                        "width": "25",
                         "class": "",
                         "id": ""
                     },
@@ -49,7 +49,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "33",
+                        "width": "15",
                         "class": "",
                         "id": ""
                     },
@@ -76,7 +76,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "33",
+                        "width": "15",
                         "class": "",
                         "id": ""
                     },
@@ -87,6 +87,64 @@
                     "min": 1,
                     "max": 50,
                     "step": 1
+                },
+                {
+                    "key": "field_5bffbac04a89f",
+                    "label": "Image width",
+                    "name": "image_width",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5bffb857f14ad",
+                                "operator": "==",
+                                "value": "image"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "23",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "px",
+                    "min": 100,
+                    "max": 10000,
+                    "step": ""
+                },
+                {
+                    "key": "field_5bffbb1a4a8a0",
+                    "label": "Image height",
+                    "name": "image_height",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5bffb857f14ad",
+                                "operator": "==",
+                                "value": "image"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "22",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "px",
+                    "min": 100,
+                    "max": 10000,
+                    "step": ""
                 }
             ]
         }
