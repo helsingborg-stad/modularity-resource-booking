@@ -188,7 +188,8 @@ class Products
                         array(
                             'fields' => 'ids'
                         )
-                    )
+                    ),
+                    'media_requirements' => (array) get_field('media_requirement', $postitem->ID)
                 );
             }
         }
