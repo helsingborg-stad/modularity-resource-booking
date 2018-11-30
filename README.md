@@ -5,10 +5,19 @@ Book a resource for a predefined period of time. This plugin provides a api-base
 ## REST API
 This plugin creates a complete API to integrate any frontend solution. The plugin is deliverd with a local frontend solution, but can work with a offsite frontend solution. Listed below is a index of possible endpoints, these should be prefixed with your json-url in WordPress, for example https://develop.local/wp-json/. 
 
+### Users / Customer
+
+* ``` ModularityResourceBooking/v1/UserEmailExists ``` - Check if a email exists $_POST['email'] must be set. 
+
 ### Products
 
 * ``` ModularityResourceBooking/v1/Product/ ``` - List all avabile products. 
 * ``` ModularityResourceBooking/v1/Product/ID ``` - Get a single product. 
+
+### Package
+
+* ``` ModularityResourceBooking/v1/Package/ ``` - List all avabile package. 
+* ``` ModularityResourceBooking/v1/Package/ID ``` - Get a single package. 
 
 ### Order / Purchase
 
