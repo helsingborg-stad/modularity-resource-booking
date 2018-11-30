@@ -8,6 +8,8 @@ This plugin creates a complete API to integrate any frontend solution. The plugi
 ### Users / Customer
 
 * ``` ModularityResourceBooking/v1/UserEmailExists ``` - Check if a email exists $_POST['email'] must be set. 
+* ``` ModularityResourceBooking/v1/CreateUser ``` - Create a user
+* ``` ModularityResourceBooking/v1/ModifyUser ``` - Modifies logged in user
 
 ### Products
 

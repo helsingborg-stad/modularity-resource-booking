@@ -23,7 +23,7 @@ class Customer
         //Get user id
         self::$userId = get_current_user_id();
 
-        //Check if emailo exists
+        //Check if email exists
         register_rest_route(
             "ModularityResourceBooking/v1",
             "UserEmailExists",
@@ -32,6 +32,43 @@ class Customer
                 'callback' => array($this, 'emailExists')
             )
         );
+
+        //Create user account
+        register_rest_route(
+            "ModularityResourceBooking/v1",
+            "CreateUser",
+            array(
+                'methods' => \WP_REST_Server::ALLMETHODS,
+                'callback' => array($this, 'create')
+            )
+        );
+
+    }
+
+    public function create()
+    {
+        $requiredKeys = array("email", "password");
+
+        foreach ($requiredKeys as $requirement) {
+            if (!array_key_exists($requirement, $_POST)) {
+                return new \WP_REST_Response(
+                    array(
+                        'message' => __('A parameter is missing: ', 'modularity-resource-booking') . $requirement,
+                        'state' => 'error'
+                    ),
+                    400
+                );
+            }
+        }
+
+        $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+        if ($userId = wp_create_user($data['email'], $data['password'])) {
+            return get_user_by('ID', $userId);
+        }
+    }
+
+    public function modify() {
 
     }
 
