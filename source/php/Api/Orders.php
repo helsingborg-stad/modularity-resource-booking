@@ -151,6 +151,7 @@ class Orders
      */
     public function create($request)
     {
+
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
 
@@ -218,6 +219,22 @@ class Orders
         update_field('product_package_id', $data['product_package_id'], $insert);
         update_field('customer_id', self::$userId, $insert);
         update_field('order_status', get_field('order_status', 'option'), $insert);
+
+        //Upload media
+        $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($_FILES);
+
+        //Append attachment data
+        if (is_array($mediaItems) && !empty($mediaItems)) {
+
+            //Add items for storage of each id
+            foreach ($mediaItems as $mediaKey => $mediaItem) {
+                update_sub_field(array('media_items', $mediaKey+1, 'file'), $mediaItem, $insert);
+            }
+
+            //Add number of items avabile (hotfix!)
+            update_post_meta($insert, 'media_items', count($mediaItems));
+            update_post_meta($insert, '_media_items', 'field_5bffbfed18455');
+        }
 
         //Return success
         return new \WP_REST_Response(
