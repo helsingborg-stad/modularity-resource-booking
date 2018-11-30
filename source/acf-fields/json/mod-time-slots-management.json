@@ -1,0 +1,136 @@
+[{
+    "key": "group_5bed4d621923e",
+    "title": "Time Slots Management",
+    "fields": [
+        {
+            "key": "field_5bed94b619d84",
+            "label": "Schedule setup",
+            "name": "mod_res_book_automatic_or_manual",
+            "type": "radio",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "weekly": "Weekly",
+                "manual": "Manual"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "automatic",
+            "layout": "horizontal",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_5bed4e08b48ec",
+            "label": "Time slots",
+            "name": "mod_res_book_time_slots",
+            "type": "repeater",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5bed94b619d84",
+                        "operator": "==",
+                        "value": "manual"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "",
+            "sub_fields": [
+                {
+                    "key": "field_5bed4e13b48ed",
+                    "label": "Start date",
+                    "name": "start_date",
+                    "type": "date_picker",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "display_format": "Y-m-d",
+                    "return_format": "Y-m-d",
+                    "first_day": 1
+                },
+                {
+                    "key": "field_5bed4e38b48ee",
+                    "label": "End date",
+                    "name": "end_date",
+                    "type": "date_picker",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "display_format": "Y-m-d",
+                    "return_format": "Y-m-d",
+                    "first_day": 1
+                }
+            ]
+        },
+        {
+            "key": "field_5bf2ad1d879c1",
+            "label": "Pattern mode",
+            "name": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5bed94b619d84",
+                        "operator": "==",
+                        "value": "weekly"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "You have selected a weekly pattern, the system will automatically create slots a year ahead.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "acf-options-resource-booking"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+
