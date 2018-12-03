@@ -111,7 +111,7 @@ class Products
                 get_posts(
                     array(
                         'post_type' => 'product',
-                        'posts_per_page' => 99,
+                        'posts_per_page' => -1,
                         'orderby' => 'date',
                         'order' => 'DESC'
                     )
@@ -129,10 +129,18 @@ class Products
      */
     public function getPackage($request)
     {
+        if ($term = get_term($request->get_param('id'), 'product-package')) {
+            return new \WP_REST_Response(
+                $this->filterTaxonomyOutput($term),
+                200
+            );
+        }
+
         return new \WP_REST_Response(
-            $this->filterTaxonomyOutput(
-                get_term($request->get_param('id'))
-            ), 200
+            array(
+                'message' => __('Could not find any package with that id.', 'modularity-resource-booking'),
+                'state' => 'error'
+            ), 404
         );
     }
 
