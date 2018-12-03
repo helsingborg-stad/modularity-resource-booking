@@ -205,7 +205,10 @@ class Customer
         }
 
         //Define update array
-        $updateArray = array('ID' =>  $request->get_param('id'));
+        $updateArray = array(
+            'ID' =>  $request->get_param('id'),
+            'user_login' => get_userdata($request->get_param('id'))->user_login
+        );
 
         //Update array creation of to be updated fields
         foreach (self::$fieldMap as $fielName => $inputField) {
@@ -222,7 +225,9 @@ class Customer
         }
 
         //Update user
-        if ($userId = wp_update_user($updateArray)) {
+        if ($userId = wp_insert_user($updateArray)) {
+
+            var_dump($userId);
             return array(
                 'message' => __('Your account details has been updated.', 'modularity-resource-booking'),
                 'state' => 'success',
