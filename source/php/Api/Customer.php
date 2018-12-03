@@ -62,7 +62,7 @@ class Customer
             "ModifyUser/(?P<id>[\d]+)",
             array(
                 'methods' => \WP_REST_Server::ALLMETHODS,
-                'callback' => array($this, 'create')
+                'callback' => array($this, 'modify')
             )
         );
 
@@ -96,8 +96,10 @@ class Customer
     {
         //Update user
         if ($userId = wp_update_user($updateArray)) {
-            return $this->filterCustomerOutput(
-                get_user_by('ID', $request->get_param('id'))
+            return array_pop(
+                $this->filterCustomerOutput(
+                    get_user_by('ID', $request->get_param('id'))
+                )
             );
         }
     }
@@ -184,9 +186,9 @@ class Customer
         }
 
         //Update user meta data
-        foreach (array('coprporatenumber') as $metaField) {
-            if (isset($data['metaField'])) {
-                update_usermeta($data['id'], $metaField, $data['metaField']);
+        foreach (self::$metaKeys as $metaKey => $metaField) {
+            if (isset($data[$metaKey])) {
+                update_usermeta($request->get_param('id'), $metaKey, $data[$metaKey]);
             }
         }
 
