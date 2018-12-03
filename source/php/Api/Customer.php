@@ -6,6 +6,7 @@ class Customer
 {
     public static $userId;
     public static $metaKeys;
+    public static $fieldMap;
 
     public function __construct()
     {
@@ -15,6 +16,14 @@ class Customer
         //Meta keys containing user meta (define to allow insert & modification on key)
         self::$metaKeys = array(
             'corporate_number' => __('Corporate number', 'modularity-resource-booking')
+        );
+
+        //Mapping table (api input to wp usert table names)
+        self::$fieldMap = array(
+            'user_email' => 'email',
+            'display_name' => 'company_name',
+            'first_name' => 'first_name',
+            'last_name' => 'last_name'
         );
     }
 
@@ -137,17 +146,18 @@ class Customer
             );
         }
 
-        //Insert the user
-        $userId = wp_insert_user(
-            array(
-                'user_login' => $data['email'],
-                'user_email' => $data['email'],
-                'display_name' => $data['company'],
-                'user_email' => $data['email']
-            )
-        );
+         //Define update array
+        $insertArray = array('user_login' => 'email');
 
-        if ($userId && is_numeric($userId)) {
+        //Update array creation of to be updated fields
+        foreach (self::$fieldMap as $fielName => $inputField) {
+            if (isset($data[$inputField])) {
+                $insertArray[$fielName] = $data[$inputField];
+            }
+        }
+
+        //Insert the user
+        if ($userId = wp_insert_user($insertArray)) {
 
             //Update user meta data
             foreach (self::$metaKeys as $metaKey => $metaField) {
@@ -178,13 +188,6 @@ class Customer
     {
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        //Mapping table (enables us to rename input variables in api)
-        $fieldMap = array(
-            'ID' => 'id',
-            'user_email' => 'email',
-            'display_name' => 'company'
-        );
-
         //Check if user id exists
         if (!get_user_by('ID',  $request->get_param('id'))) {
             return array(
@@ -193,11 +196,19 @@ class Customer
             );
         }
 
+        //Check if user id exists
+        if (email_exists($data[self::$fieldMap['user_email']]) != self::$userId) {
+            return array(
+                'message' => __('That email adress is already taken, sorry.', 'modularity-resource-booking'),
+                'state' => 'error'
+            );
+        }
+
         //Define update array
         $updateArray = array('ID' =>  $request->get_param('id'));
 
         //Update array creation of to be updated fields
-        foreach ($fieldMap as $fielName => $inputField) {
+        foreach (self::$fieldMap as $fielName => $inputField) {
             if (isset($data[$inputField])) {
                 $updateArray[$fielName] = $data[$inputField];
             }
@@ -233,7 +244,7 @@ class Customer
     {
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        if (!isset($data['email']) || empty($data['email'])) {
+        if (!isset($data[self::$fieldMap['user_email']]) || empty($data[self::$fieldMap['user_email']])) {
             return new \WP_REST_Response(
                 array(
                     'message' => __('Email cannot be empty.', 'modularity-resource-booking'),
@@ -242,7 +253,7 @@ class Customer
             );
         }
 
-        if (email_exists($data['email'])) {
+        if (email_exists($data[self::$fieldMap['user_email']])) {
             return new \WP_REST_Response(
                 array(
                     'message' => __('The email provided does already exist in our account system. It you think this is a error, please contact a administrator.', 'modularity-resource-booking'),
@@ -289,9 +300,11 @@ class Customer
                 $result[] = array(
                     'id' => (int) $user->data->ID,
                     'username' => (string) $user->data->user_login,
-                    'name' => (string) $user->data->display_name,
-                    'meta' => (array) $userMeta
-                );
+                    'email' => (string) $user->data->user_email,
+                    'first_name' => (string) get_user_meta($user->data->ID, 'first_name', true),
+                    'last_name' => (string) get_user_meta($user->data->ID, 'last_name', true),
+                    'company_name' => (string) $user->data->display_name
+                ) + (array) $userMeta;
             }
         }
 
@@ -307,6 +320,8 @@ class Customer
      */
     public function canUpdateUser($userId) : bool
     {
+
+        return true;
 
         if (is_super_admin()) {
             return true;
