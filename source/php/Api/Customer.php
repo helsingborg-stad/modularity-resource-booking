@@ -25,7 +25,6 @@ class Customer
      */
     public function registerRestRoutes()
     {
-
         //Get user id
         self::$userId = get_current_user_id();
 
@@ -62,7 +61,8 @@ class Customer
             "ModifyUser/(?P<id>[\d]+)",
             array(
                 'methods' => \WP_REST_Server::ALLMETHODS,
-                'callback' => array($this, 'modify')
+                'callback' => array($this, 'modify'),
+                'permission_callback' => array($this, 'canUpdateUser')
             )
         );
 
@@ -113,7 +113,7 @@ class Customer
      */
     public function create($request)
     {
-        $requiredKeys = array("email", "password");
+        $requiredKeys = array("email", "password", "company");
 
         foreach ($requiredKeys as $requirement) {
             if (!array_key_exists($requirement, $_POST)) {
@@ -137,7 +137,17 @@ class Customer
             );
         }
 
-        if ($userId = wp_create_user($data['email'], $data['password'], $data['email'])) {
+        //Insert the user
+        $userId = wp_insert_user(
+            array(
+                'user_login' => $data['email'],
+                'user_email' => $data['email'],
+                'display_name' => $data['company'],
+                'user_email' => $data['email']
+            )
+        );
+
+        if ($userId && is_numeric($userId)) {
 
             //Update user meta data
             foreach (self::$metaKeys as $metaKey => $metaField) {
@@ -286,5 +296,26 @@ class Customer
         }
 
         return $result;
+    }
+
+    /**
+     * Check that the current user is the ower of the current account
+     *
+     * @param integer $userId The order to remove
+     *
+     * @return bool
+     */
+    public function canUpdateUser($userId) : bool
+    {
+
+        if (is_super_admin()) {
+            return true;
+        }
+
+        if (self::$userId === $userId) {
+            return true;
+        }
+
+        return false;
     }
 }
