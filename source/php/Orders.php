@@ -26,13 +26,10 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
         //Save author to post on change
         add_action('save_post', array($this, 'updateAuthor'));
 
-        //Filter media items uploaded
-        add_filter('acf/prepare_field/key=field_5bffbfed18455', array($this, 'filterMediaItems'), 10, 1);
-
     }
 
     /**
-     * Replaces the order id hablebar
+     * Replaces the order id handlebar
      *
      * @param int $postId The id of post being saved
      *
@@ -101,18 +98,6 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
             $field['message'] = str_replace("{{ORDER_START_DATE}}", get_post_meta($post->ID, 'slot_start', true), $field['message']);
             $field['message'] = str_replace("{{ORDER_END_DATE}}", get_post_meta($post->ID, 'slot_stop', true), $field['message']);
         }
-        return $field;
-    }
-
-    /**
-     * Modifies uploaded media view
-     *
-     * @param array $field Field definitions
-     *
-     * @return array
-     */
-    public function filterMediaItems($field)
-    {
         return $field;
     }
 

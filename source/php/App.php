@@ -59,15 +59,7 @@ class App
         new Api\Orders();
         new Api\TimeSlots();
         new Api\Products();
-
-
-        /*
-        //Users (ei. users & roles)
-        new Customers(); //Manages system users that are considerd customers
-
-        //Options
-        new Slots(); //Time slots that are orderable
-        new CustomerGroups(); //Dynamic creation of roles*/
+        new Api\Customer();
     }
 
     /**

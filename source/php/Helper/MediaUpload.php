@@ -4,48 +4,84 @@ namespace ModularityResourceBooking\Helper;
 
 class MediaUpload
 {
-    public static function insertFromUrl($url, $parent_post_id = null) {
+    public static function upload($uploads, $mediaIds = array())
+    {
 
-        if (!class_exists( 'WP_Http')) {
-            include_once( ABSPATH . WPINC . '/class-http.php' );
+        //Require resources
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+        require_once(ABSPATH . 'wp-admin/includes/file.php');
+        require_once(ABSPATH . 'wp-admin/includes/media.php');
+
+        //Check if have file uploads
+        if (!is_array($uploads) || empty($uploads)) {
+            return;
         }
 
-        $http = new \WP_Http();
-        $response = $http->request($url);
-        if ($response['response']['code'] != 200) {
+        if (is_array($uploads) && !empty($uploads)) {
+
+            foreach ($uploads as $upload) {
+
+                //Not a valid upload for some reason, move to next
+                if (self::checkUploadErrors($upload) === false) {
+                    continue;
+                }
+
+                //Check if a valid mime type
+                if (self::checkMimeType($upload) !== true) {
+                    continue;
+                }
+
+                //Move to correct location
+                $fileData = \wp_handle_upload($upload, array('test_form' => false));
+
+                //Enter to WordPress media library
+                if (is_array($fileData) && !empty($fileData) && isset($fileData['file'])) {
+                    $mediaIds[] = \wp_insert_attachment(
+                        array(
+                            'post_title' => "",
+                            'post_content' => ""
+                        ),
+                        $fileData['file']
+                    );
+                }
+            }
+        }
+
+        //Return id's of uploaded media files
+        return array_filter($mediaIds);
+    }
+
+    public static function checkUploadErrors($file) {
+        switch ($file['error']) {
+            case UPLOAD_ERR_OK:
+                return true;
+                break;
+            case UPLOAD_ERR_NO_FILE:
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                return false;
+                break;
+        }
+    }
+
+    public static function checkMimeType($file)
+    {
+        $fileInformation = new \finfo(FILEINFO_MIME_TYPE);
+        if (false === $ext = array_search(
+            $fileInformation->file($file['tmp_name']),
+            array(
+                'jpg' => 'image/jpeg',
+                'png' => 'image/png',
+                'mp4' => 'video/mp4',
+            ),
+            true
+        )) {
             return false;
         }
+        return true;
+    }
 
-        $upload = wp_upload_bits(basename($url), null, $response['body']);
-        if (!empty($upload['error'])) {
-            return false;
-        }
+    public function checkDimensions($file) {
 
-        $file_path = $upload['file'];
-        $file_name = basename($file_path);
-        $file_type = wp_check_filetype($file_name, null);
-        $attachment_title = sanitize_file_name(pathinfo($file_name, PATHINFO_FILENAME));
-        $wp_upload_dir = wp_upload_dir();
-        $post_info = array(
-            'guid'           => $wp_upload_dir['url'] . '/' . $file_name,
-            'post_mime_type' => $file_type['type'],
-            'post_title'     => $attachment_title,
-            'post_content'   => '',
-            'post_status'    => 'inherit',
-        );
-
-        // Create the attachment
-        $attach_id = wp_insert_attachment($post_info, $file_path, $parent_post_id);
-
-        // Include image.php
-        require_once( ABSPATH . 'wp-admin/includes/image.php' );
-
-        // Define attachment metadata
-        $attach_data = wp_generate_attachment_metadata($attach_id, $file_path);
-
-        // Assign metadata to attachment
-        wp_update_attachment_metadata($attach_id,  $attach_data);
-
-        return $attach_id;
     }
 }
