@@ -12,7 +12,7 @@ class Customer
         //Run register rest routes
         add_action('rest_api_init', array($this, 'registerRestRoutes'));
 
-        //Add required meta keys as array
+        //Meta keys containing user meta (define to allow insert & modification on key)
         self::$metaKeys = array(
             'corporate_number' => __('Corporate number', 'modularity-resource-booking')
         );
@@ -137,7 +137,15 @@ class Customer
             );
         }
 
-        if ($user = wp_create_user($data['email'], $data['password'], $data['email'])) {
+        if ($userId = wp_create_user($data['email'], $data['password'], $data['email'])) {
+
+            //Update user meta data
+            foreach (self::$metaKeys as $metaKey => $metaField) {
+                if (isset($data[$metaKey])) {
+                    update_usermeta($userId, $metaKey, $data[$metaKey]);
+                }
+            }
+
             return array(
                 'message' => __('A new user account has been created.', 'modularity-resource-booking'),
                 'state' => 'success',
