@@ -1,0 +1,60 @@
+[{
+    "key": "group_5c063df1cb24f",
+    "title": "Email settings",
+    "fields": [
+        {
+            "key": "field_5c063e124e657",
+            "label": "Manager email",
+            "name": "mod_rb_manager_email",
+            "type": "email",
+            "instructions": "A email that will be contacted if there are any new user registrations and other requests that requires administration.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_5c063e7f2530b",
+            "label": "Economy email",
+            "name": "mod_rb_economy_email",
+            "type": "email",
+            "instructions": "Where to send automatically generated invoices.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "acf-options-resource-booking"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+
