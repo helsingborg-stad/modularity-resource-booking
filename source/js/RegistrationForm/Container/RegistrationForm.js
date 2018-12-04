@@ -148,7 +148,7 @@ class RegistrationForm extends React.Component {
 
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
-                                type="text"
+                                type="email"
                                 name="email"
                                 value={email}
                                 handleChange={this.handleInputChange}
@@ -169,7 +169,7 @@ class RegistrationForm extends React.Component {
                         </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
-                                type="text"
+                                type="tel"
                                 name="phone"
                                 value={phone}
                                 handleChange={this.handleInputChange}
