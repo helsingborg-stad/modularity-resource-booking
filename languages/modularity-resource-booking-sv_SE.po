@@ -1,0 +1,560 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Modularity Resource Booking\n"
+"POT-Creation-Date: 2018-12-04 09:14+0100\n"
+"PO-Revision-Date: 2018-12-04 09:35+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.12\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: modularity-resource-booking.php\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: source/acf-fields/php/mod-customer-group.php:6
+msgid "User Group"
+msgstr "Användargrupp\t"
+
+#: source/acf-fields/php/mod-customer-group.php:10
+msgid "Select the customer group of this profile"
+msgstr "Välj användargrupp för den här kunden"
+
+#: source/acf-fields/php/mod-customers.php:6
+msgid "Customer settings"
+msgstr "Kundinställningar"
+
+#: source/acf-fields/php/mod-customers.php:10
+#: source/acf-fields/php/mod-package-details.php:71
+#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:78
+msgid "Customer group"
+msgstr "Kundgrupp"
+
+#: source/acf-fields/php/mod-default-order-status.php:6
+msgid "Default order status"
+msgstr "Förvald orderstatus"
+
+#: source/acf-fields/php/mod-default-order-status.php:10
+#: source/php/Orders.php:229
+msgid "Order status"
+msgstr "Orderstatus"
+
+#: source/acf-fields/php/mod-default-order-status.php:13
+msgid "Defines a default order status on new orders."
+msgstr "Definierar en orderstatus på nya ordrar"
+
+#: source/acf-fields/php/mod-order-details.php:6
+msgid "Order details"
+msgstr "Detaljer för order"
+
+#: source/acf-fields/php/mod-order-details.php:10
+msgid "OrderID"
+msgstr "Order ID"
+
+#: source/acf-fields/php/mod-order-details.php:21
+msgid "{{ORDER_ID}}"
+msgstr ""
+
+#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:52
+#: source/php/Orders.php:151
+msgid "Customer"
+msgstr "Kund"
+
+#: source/acf-fields/php/mod-order-details.php:45
+msgid "Product"
+msgstr "Produkt"
+
+#: source/acf-fields/php/mod-order-details.php:48
+msgid "The product package that the customer has ordered."
+msgstr "Produktpaketet som har beställts."
+
+#: source/acf-fields/php/mod-order-details.php:67
+msgid "Order Status"
+msgstr "Orderstatus"
+
+#: source/acf-fields/php/mod-order-details.php:89
+msgid "Time period"
+msgstr "Tidsperiod"
+
+#: source/acf-fields/php/mod-order-details.php:100
+msgid ""
+"This order represents the time frame between <strong>{{ORDER_START_DATE}}</"
+"strong> and <strong>{{ORDER_END_DATE}}</strong>."
+msgstr ""
+"Den här ordern gäller för perioden mellan <strong>{{ORDER_START_DATE}}</"
+"strong> och <strong>{{ORDER_END_DATE}}</strong>."
+
+#: source/acf-fields/php/mod-order-media.php:6
+msgid "Attached order media"
+msgstr "Bifogade filer till den här ordern"
+
+#: source/acf-fields/php/mod-order-media.php:10
+msgid "Media items"
+msgstr "Orderunderlag"
+
+#: source/acf-fields/php/mod-order-media.php:25
+msgid "Add media item"
+msgstr "Lägg till orderunderlag"
+
+#: source/acf-fields/php/mod-order-media.php:29
+msgid "File"
+msgstr "Fil"
+
+#: source/acf-fields/php/mod-order-notes.php:6
+msgid "Order notations"
+msgstr "Anteckningar för ordern"
+
+#: source/acf-fields/php/mod-order-notes.php:10
+msgid "Notes about this order"
+msgstr "Orderanteckningar"
+
+#: source/acf-fields/php/mod-order-notes.php:13
+msgid "Internal instructions or notes about this order."
+msgstr "Interna anteckningar för den här ordern"
+
+#: source/acf-fields/php/mod-order-notes.php:22
+msgid "No notes has been made about this order yet..."
+msgstr "Inga anteckningar har gjorts kopplat till den här ordern ännu"
+
+#: source/acf-fields/php/mod-package-details.php:6
+msgid "Package details"
+msgstr "Paketdetaljer"
+
+#: source/acf-fields/php/mod-package-details.php:10
+msgid "Package price"
+msgstr "Paketpris"
+
+#: source/acf-fields/php/mod-package-details.php:13
+msgid ""
+"We are automatically calculating a price from the procuct prices, but you "
+"may override this by entering a package price in this field."
+msgstr ""
+"Vi räknar automatiskt ut ett pris på paketet, utifrån vilka produkter som "
+"ingår. Du kan ändra detta till ett manuellt inmatat pris."
+
+#: source/acf-fields/php/mod-package-details.php:24
+#: source/acf-fields/php/mod-package-details.php:64
+#: source/acf-fields/php/mod-product-details.php:24
+#: source/acf-fields/php/mod-product-details.php:64
+msgid ":-"
+msgstr "SEK"
+
+#: source/acf-fields/php/mod-package-details.php:31
+#: source/acf-fields/php/mod-product-details.php:31
+msgid "Customer group price variations"
+msgstr "Prisvariationer för kundgrupper"
+
+#: source/acf-fields/php/mod-package-details.php:46
+#: source/acf-fields/php/mod-product-details.php:46
+msgid "Add price variation"
+msgstr "Lägg till prisvariant"
+
+#: source/acf-fields/php/mod-package-details.php:50
+#: source/acf-fields/php/mod-product-details.php:50
+msgid "Product price"
+msgstr "Produktens pris"
+
+#: source/acf-fields/php/mod-product-details.php:6
+msgid "Product details"
+msgstr "Produktdetaljer"
+
+#: source/acf-fields/php/mod-product-details.php:10
+msgid "Base price"
+msgstr "Baspris"
+
+#: source/acf-fields/php/mod-product-details.php:13
+msgid ""
+"A price for this specific product. This is used as a base to calculate the "
+"product package price."
+msgstr ""
+"Priset för den här produkten. Det här priset används för att automatiskt "
+"prissätta ett paket."
+
+#: source/acf-fields/php/mod-product-details.php:95
+msgid "Items in stock"
+msgstr "Antal i lager"
+
+#: source/acf-fields/php/mod-product-details.php:108
+msgid "We have"
+msgstr "Det finns"
+
+#: source/acf-fields/php/mod-product-details.php:109
+msgid "items in stock"
+msgstr "i lager"
+
+#: source/acf-fields/php/mod-product-details.php:116
+msgid "Product location"
+msgstr "Produktens plats"
+
+#: source/acf-fields/php/mod-product-details.php:119
+msgid "Where the resource is located"
+msgstr "Var produkten finns geografiskt belägen (t.ex. upphämtningsplats)"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:6
+msgid "Product media requirements"
+msgstr "Produktens materialkrav"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:10
+msgid "Media requirement"
+msgstr "Materialkrav"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:25
+msgid "Add media requirement"
+msgstr "Lägg till materialkrav"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:29
+msgid "Media name"
+msgstr "Namn på material"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:41
+msgid "Enter the media name"
+msgstr "Ange materialets namn"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:48
+msgid "Media type"
+msgstr "Typ av media"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:60
+msgid "Image"
+msgstr "Bild"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:61
+msgid "Video"
+msgstr "Video"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:75
+msgid "Maxiumum filesize"
+msgstr "Maximal filstorlek"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:89
+msgid "MB"
+msgstr "MB"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:96
+msgid "Image width"
+msgstr "Bildens bredd"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:118
+#: source/acf-fields/php/mod-product-media-requirement.php:147
+msgid "px"
+msgstr "px"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:125
+msgid "Image height"
+msgstr "Bildens höjd"
+
+#: source/acf-fields/php/mod-time-slots-management.php:6
+msgid "Time Slots Management"
+msgstr "Schemaläggning"
+
+#: source/acf-fields/php/mod-time-slots-management.php:10
+msgid "Schedule setup"
+msgstr "Inställningar för schemaläggning"
+
+#: source/acf-fields/php/mod-time-slots-management.php:22
+msgid "Weekly"
+msgstr "Automatiska veckor"
+
+#: source/acf-fields/php/mod-time-slots-management.php:23
+msgid "Manual"
+msgstr "Manuell inmatning"
+
+#: source/acf-fields/php/mod-time-slots-management.php:34
+msgid "Time slots"
+msgstr "Schemaläggning"
+
+#: source/acf-fields/php/mod-time-slots-management.php:61
+msgid "Start date"
+msgstr "Startdatum"
+
+#: source/acf-fields/php/mod-time-slots-management.php:78
+msgid "End date"
+msgstr "Slutdatum"
+
+#: source/acf-fields/php/mod-time-slots-management.php:97
+msgid "Pattern mode"
+msgstr "Mönsterläge"
+
+#: source/acf-fields/php/mod-time-slots-management.php:116
+msgid ""
+"You have selected a weekly pattern, the system will automatically create "
+"slots a year ahead."
+msgstr ""
+"Du har angett ett automatiskt mönster baserat på veckor. Systemet skapar "
+"automatiskt upp mönster för ett år framöver."
+
+#: source/php/Api/Customer.php:18
+msgid "Corporate number"
+msgstr "Organisationsnummer"
+
+#: source/php/Api/Customer.php:131 source/php/Api/Orders.php:164
+msgid "A parameter is missing: "
+msgstr "Ett inmatningsvärde saknas: "
+
+#: source/php/Api/Customer.php:144
+msgid "A user account is already registered with this email."
+msgstr "Ett konto finns redan registrerat på denna epostadress."
+
+#: source/php/Api/Customer.php:152 source/php/Api/Customer.php:217
+msgid "Malformed email adress provided."
+msgstr "Epostadressen är inte av ett giltigt format."
+
+#: source/php/Api/Customer.php:178
+msgid "A new user account has been created."
+msgstr "Ditt konto har skapats."
+
+#: source/php/Api/Customer.php:201
+msgid "That is not a valid user identification."
+msgstr "Det här är inget giltigt användar-id."
+
+#: source/php/Api/Customer.php:209
+msgid "That email adress is already taken, sorry."
+msgstr "Den här e-postadressen är redan registrerad, "
+
+#: source/php/Api/Customer.php:247
+msgid "Your account details has been updated."
+msgstr "Dina kontouppgifter har uppdaterats."
+
+#: source/php/Api/Customer.php:270
+msgid "Email cannot be empty."
+msgstr "E-postadressen kan inte vara tom."
+
+#: source/php/Api/Customer.php:279
+msgid ""
+"The email provided does already exist in our account system. It you think "
+"this is a error, please contact a administrator."
+msgstr ""
+"Epostadressen som du har angivit finns redan registrerad i vårt system. Om "
+"du tror att det här inte stämmer, vänligen kontakta vår support. "
+
+#: source/php/Api/Customer.php:287
+msgid "No account found with that email."
+msgstr "Inget konto kunde hittas med den angivna e-postadressen."
+
+#: source/php/Api/Orders.php:177
+msgid "The post request sent was empty."
+msgstr "Fel: Ett anrop som var tomt skickades."
+
+#: source/php/Api/Orders.php:187
+msgid "Order of"
+msgstr "Beställning av "
+
+#: source/php/Api/Orders.php:188
+msgid "to"
+msgstr "till"
+
+#: source/php/Api/Orders.php:206
+msgid "Bummer, something went wrong."
+msgstr "Hoppsan, något gick fel."
+
+#: source/php/Api/Orders.php:243
+#, php-format
+msgid "Your order of \"%s\" between %s and %s has been registered."
+msgstr "Din beställning av \"%s\" mellan %s och %s har registrerats."
+
+#: source/php/Api/Orders.php:270
+msgid "That is not av valid order id."
+msgstr "Det här är ingen giltig beställning."
+
+#: source/php/Api/Orders.php:279
+msgid "Your order has been removed."
+msgstr "Din beställning har tagits bort."
+
+#: source/php/Api/Orders.php:287
+msgid "Could not remove that order due to an unknown error."
+msgstr "Kunde inte ta bort din beställning på grund av ett okänt fel."
+
+#: source/php/Api/Products.php:141
+msgid "Could not find any package with that id."
+msgstr "Kunde inte hitta något paket på det indetifikationsnumret som angavs."
+
+#: source/php/Customer.php:77
+msgid "Customer groups"
+msgstr "Kundgrupper"
+
+#: source/php/Entity/Filter.php:28 source/php/Entity/Filter.php:89
+msgid "Show All"
+msgstr "Visa alla"
+
+#: source/php/Entity/Filter.php:98
+msgid "Filter"
+msgstr "Filtrera"
+
+#: source/php/Entity/PostType.php:50 source/php/Entity/PostType.php:51
+#, php-format
+msgid "Add new %s"
+msgstr "Lägg till ny %s"
+
+#: source/php/Entity/PostType.php:52 source/php/Entity/Taxonomy.php:47
+#, php-format
+msgid "Edit %s"
+msgstr "Redigera %s"
+
+#: source/php/Entity/PostType.php:53
+#, php-format
+msgid "New %s"
+msgstr "Ny %s"
+
+#: source/php/Entity/PostType.php:54
+#, php-format
+msgid "View %s"
+msgstr "Visa %s"
+
+#: source/php/Entity/PostType.php:55 source/php/Entity/Taxonomy.php:43
+#, php-format
+msgid "Search %s"
+msgstr "Sök %s"
+
+#: source/php/Entity/PostType.php:56
+#, php-format
+msgid "No %s found"
+msgstr "Inga %s hittades"
+
+#: source/php/Entity/PostType.php:57
+#, php-format
+msgid "No %s found in trash"
+msgstr "Inga %s hittades i papperskorgen"
+
+#: source/php/Entity/PostType.php:58 source/php/Entity/Taxonomy.php:45
+#: source/php/Entity/Taxonomy.php:46
+#, php-format
+msgid "Parent %s:"
+msgstr "Förälder %s:"
+
+#: source/php/Entity/Taxonomy.php:44
+#, php-format
+msgid "All %s"
+msgstr "Alla %s"
+
+#: source/php/Entity/Taxonomy.php:48
+#, php-format
+msgid "Update %s"
+msgstr "Uppdatera %s"
+
+#: source/php/Entity/Taxonomy.php:49
+#, php-format
+msgid "Add New %s"
+msgstr "Lägg till ny %s"
+
+#: source/php/Entity/Taxonomy.php:50
+#, php-format
+msgid "New %s Name"
+msgstr "Ny %s namn"
+
+#: source/php/Module/Registration/RegistrationForm.php:12
+msgid "Registration form"
+msgstr "Registreringsformulär"
+
+#: source/php/Module/Registration/RegistrationForm.php:13
+msgid "Registration forms"
+msgstr "Registreingsformulär"
+
+#: source/php/Module/Registration/RegistrationForm.php:14
+msgid "Outputs a registration form for customers."
+msgstr "Visar ett registreringsformulär för kunder"
+
+#: source/php/Orders.php:126
+msgctxt "Post type plural"
+msgid "Orders"
+msgstr "Beställningar"
+
+#: source/php/Orders.php:127
+msgctxt "Post type singular"
+msgid "Order"
+msgstr "Beställning"
+
+#: source/php/Orders.php:130
+msgid "Order registry."
+msgstr "Beställningsregister"
+
+#: source/php/Orders.php:138
+msgid "purchase"
+msgstr ""
+
+#: source/php/Orders.php:166 source/php/Orders.php:182
+#: source/php/Orders.php:209 source/php/Products.php:71
+msgid "Undefined"
+msgstr "Odefinierat"
+
+#: source/php/Orders.php:174
+msgid "Status"
+msgstr "Status"
+
+#: source/php/Orders.php:200
+msgid "Order ID"
+msgstr "Beställnings ID"
+
+#: source/php/Orders.php:228
+msgid "Order statuses"
+msgstr "Orderstatusar"
+
+#: source/php/Products.php:39
+msgctxt "Post type plural"
+msgid "Products"
+msgstr "Produkter"
+
+#: source/php/Products.php:40
+msgctxt "Post type singular"
+msgid "Product"
+msgstr "Produkt"
+
+#: source/php/Products.php:43
+msgid "Product registry."
+msgstr "Produktregister"
+
+#: source/php/Products.php:51
+msgid "product"
+msgstr ""
+
+#: source/php/Products.php:64 source/php/Products.php:111
+msgid "Package"
+msgstr "Paket"
+
+#: source/php/Products.php:89
+msgid "Price"
+msgstr "Pris"
+
+#: source/php/Products.php:110
+msgid "Packages"
+msgstr "Paket"
+
+#: source/php/Settings.php:24
+msgid "Resource Booking"
+msgstr "Resursbokning"
+
+#: vendor/helsingborg-stad/acf-export-manager/src/AcfExportManager.php:364
+msgid "Export with AcfExportManager"
+msgstr "Exportera med ACF Export Manager"
+
+#: vendor/helsingborg-stad/acf-export-manager/src/AcfExportManager.php:408
+#, php-format
+msgid "Exported %d fieldgroup(s)."
+msgstr "Exporterade %d fältgrupper."
+
+#. Plugin Name of the plugin/theme
+msgid "Modularity Resource Booking"
+msgstr "Modularity Resursbokning"
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/helsingborg-stad/modularity-resource-booking"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Book a physical resource for a predefined period of time"
+msgstr "Boka en fysiskt resurs under en fördefinierad period"
+
+#. Author of the plugin/theme
+msgid "Sebastian Thulin"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://github.com/sebastianthulin"
+msgstr ""

@@ -5,8 +5,8 @@
  * Plugin URI:        https://github.com/helsingborg-stad/modularity-resource-booking
  * Description:       Book a physical resource for a predefined period of time
  * Version:           1.0.0
- * Author:            Sebastian Thulin
- * Author URI:        https://github.com/sebastianthulin
+ * Author:            Sebastian Thulin, Nikolas Ramstedt
+ * Author URI:        https://github.com/helsingborg-stad
  * License:           MIT
  * License URI:       https://opensource.org/licenses/MIT
  * Text Domain:       modularity-resource-booking
