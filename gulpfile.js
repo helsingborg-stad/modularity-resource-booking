@@ -101,6 +101,7 @@ gulp.task('scripts', function() {
     var filePath = 'source/js/';
     var files = [
         'RegistrationForm/Index.js',
+        'UserAccount/Index.js',
     ];
     var tasks = files.map(function(entry) {
         return browserify({
