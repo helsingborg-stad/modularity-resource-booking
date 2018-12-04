@@ -5,14 +5,21 @@ const createUser = (user) => {
     let url = restUrl + 'ModularityResourceBooking/v1/CreateUser';
     let formData = new FormData();
 
-    const {email, firstName, lastName, company, companyNumber} = user;
+    const {email, firstName, lastName, company, companyNumber, password, phone, billingAdress, website, contactPerson} = user;
 
     formData.append('email', email);
-    formData.append('company', company);
+    formData.append('password', password);
+
     formData.append('first_name', firstName);
     formData.append('last_name', lastName);
-    formData.append('corporate_number', companyNumber);
-    formData.append('password', '123');
+
+    formData.append('company', company);
+    formData.append('company_number', companyNumber);
+
+    formData.append('phone', phone);
+    formData.append('billing_address', billingAdress);
+    formData.append('contact_person', contactPerson);
+    formData.append('website', website);
 
     let options = {
         method: 'POST',

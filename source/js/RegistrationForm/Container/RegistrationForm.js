@@ -1,5 +1,6 @@
-import {Button, Input, Textarea, Notice} from 'hbg-react';
+import {Button, Input, Textarea, Notice, Pagination} from 'hbg-react';
 import {createUser} from '../Api/users.js';
+import {validateConfirmationField} from '../Helper/hyperForm.js';
 
 class RegistrationForm extends React.Component {
     constructor(props)
@@ -11,6 +12,9 @@ class RegistrationForm extends React.Component {
                 firstName: '',
                 lastName: '',
                 email: '',
+                emailConfirm: '',
+                password: '',
+                passwordConfirm: '',
                 phone: '',
                 company: '',
                 companyNumber: '',
@@ -26,11 +30,18 @@ class RegistrationForm extends React.Component {
             //Account created
             accountCreated: false,
 
+            //Lock input
             lockInput: false
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    }
+
+    componentDidMount()
+    {
+        validateConfirmationField('email','emailConfirm','The email does not match.');
+        validateConfirmationField('password','passwordConfirm','The password does not match.');
     }
 
     handleFormSubmit(e) {
@@ -50,7 +61,21 @@ class RegistrationForm extends React.Component {
                 lockInput: true,
                 notice: response.message,
                 noticeType: 'success',
-                accountCreated: true
+                accountCreated: true,
+                newUser: {
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    emailConfirm: '',
+                    password: '',
+                    passwordConfirm: '',
+                    phone: '',
+                    company: '',
+                    companyNumber: '',
+                    billingAdress: '',
+                    website: '',
+                    contactPerson: ''
+                }
             });
         })
         .catch((error) => {
@@ -80,7 +105,9 @@ class RegistrationForm extends React.Component {
         const {
             firstName,
             lastName,
-            email, phone,
+            email, emailConfirm,
+            password, passwordConfirm,
+            phone,
             company,
             companyNumber,
             billingAdress,
@@ -99,6 +126,52 @@ class RegistrationForm extends React.Component {
             <div>
                 {!accountCreated &&
                     <form onSubmit={this.handleFormSubmit} className="grid u-mt-2">
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                type="email"
+                                name="email"
+                                value={email}
+                                handleChange={this.handleInputChange}
+                                placeholder="Email"
+                                required
+                                {... commonProps}
+                            />
+                        </div>
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                type="email"
+                                name="emailConfirm"
+                                value={emailConfirm}
+                                handleChange={this.handleInputChange}
+                                placeholder="Confirm Email"
+                                required
+                                {... commonProps}
+                            />
+                        </div>
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                type="password"
+                                name="password"
+                                value={password}
+                                handleChange={this.handleInputChange}
+                                placeholder="Password"
+                                minLength="6"
+                                required
+                                {... commonProps}
+                            />
+                        </div>
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                type="password"
+                                name="passwordConfirm"
+                                value={passwordConfirm}
+                                handleChange={this.handleInputChange}
+                                placeholder="Confirm password"
+                                minLength="6"
+                                required
+                                {... commonProps}
+                            />
+                        </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 type="text"
@@ -148,17 +221,6 @@ class RegistrationForm extends React.Component {
 
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
-                                type="email"
-                                name="email"
-                                value={email}
-                                handleChange={this.handleInputChange}
-                                placeholder="Email"
-                                required
-                                {... commonProps}
-                            />
-                        </div>
-                        <div className="grid-xs-12 grid-md-6 u-mb-3">
-                            <Input
                                 type="text"
                                 name="contactPerson"
                                 value={contactPerson}
@@ -179,7 +241,7 @@ class RegistrationForm extends React.Component {
                         </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
-                                type="text"
+                                type="url"
                                 name="website"
                                 value={website}
                                 handleChange={this.handleInputChange}
