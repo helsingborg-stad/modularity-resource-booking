@@ -241,8 +241,6 @@ class Customer
 
         //Update user
         if ($userId = wp_insert_user($updateArray)) {
-
-            var_dump($userId);
             return array(
                 'message' => __('Your account details has been updated.', 'modularity-resource-booking'),
                 'state' => 'success',
