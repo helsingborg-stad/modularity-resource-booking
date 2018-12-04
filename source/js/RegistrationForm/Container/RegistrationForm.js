@@ -24,7 +24,9 @@ class RegistrationForm extends React.Component {
             noticeType: '',
 
             //Account created
-            accountCreated: false
+            accountCreated: false,
+
+            lockInput: false
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -33,16 +35,31 @@ class RegistrationForm extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        const {newUser} = this.state;
+        const {newUser, lockInput} = this.state;
+
+        if (lockInput) {
+            return;
+        }
+
+        this.setState({lockInput: true, notice: ''});
 
         createUser(newUser)
         .then((response) => {
             //Succesfully created user
-            console.log(response);
+            this.setState({
+                lockInput: true,
+                notice: response.message,
+                noticeType: 'success',
+                accountCreated: true
+            });
         })
         .catch((error) => {
             //Failed to create user
-            console.log(error);
+            this.setState({
+                lockInput: false,
+                notice: error.toString(),
+                noticeType: 'warning'
+            });
         });
     }
 
@@ -70,13 +87,19 @@ class RegistrationForm extends React.Component {
             website,
             contactPerson } = this.state.newUser;
 
-        const {notice, noticeType, accountCreated} = this.state;
+        const {notice, noticeType, accountCreated, lockInput} = this.state;
+
+        let commonProps = {};
+
+        if (lockInput) {
+            commonProps.disabled = true;
+        }
 
         return (
             <div>
                 {!accountCreated &&
-                    <form onSubmit={this.handleFormSubmit} className="grid">
-                        <div className="grid-xs-6 u-mb-3">
+                    <form onSubmit={this.handleFormSubmit} className="grid u-mt-2">
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 type="text"
                                 name="firstName"
@@ -84,9 +107,10 @@ class RegistrationForm extends React.Component {
                                 handleChange={this.handleInputChange}
                                 placeholder="First name"
                                 required
+                                {... commonProps}
                             />
                         </div>
-                        <div className="grid-xs-6 u-mb-3">
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 type="text"
                                 name="lastName"
@@ -94,10 +118,11 @@ class RegistrationForm extends React.Component {
                                 handleChange={this.handleInputChange}
                                 placeholder="Last name"
                                 required
+                                {... commonProps}
                             />
                         </div>
 
-                        <div className="grid-xs-6 u-mb-3">
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 type="text"
                                 name="company"
@@ -105,10 +130,11 @@ class RegistrationForm extends React.Component {
                                 handleChange={this.handleInputChange}
                                 placeholder="Company"
                                 required
+                                {... commonProps}
                             />
                         </div>
 
-                        <div className="grid-xs-6 u-mb-3">
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 type="text"
                                 name="companyNumber"
@@ -116,10 +142,11 @@ class RegistrationForm extends React.Component {
                                 handleChange={this.handleInputChange}
                                 placeholder="Organization number"
                                 required
+                                {... commonProps}
                             />
                         </div>
 
-                        <div className="grid-xs-6 u-mb-3">
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 type="text"
                                 name="email"
@@ -127,42 +154,47 @@ class RegistrationForm extends React.Component {
                                 handleChange={this.handleInputChange}
                                 placeholder="Email"
                                 required
+                                {... commonProps}
                             />
                         </div>
-                        <div className="grid-xs-6 u-mb-3">
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 type="text"
                                 name="contactPerson"
                                 value={contactPerson}
                                 handleChange={this.handleInputChange}
                                 placeholder="Contact Person"
+                                {... commonProps}
                             />
                         </div>
-                        <div className="grid-xs-6 u-mb-3">
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 type="text"
                                 name="phone"
                                 value={phone}
                                 handleChange={this.handleInputChange}
                                 placeholder="Phone number"
+                                {... commonProps}
                             />
                         </div>
-                        <div className="grid-xs-6 u-mb-3">
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 type="text"
                                 name="website"
                                 value={website}
                                 handleChange={this.handleInputChange}
                                 placeholder="Website"
+                                {... commonProps}
                             />
                         </div>
-                        <div className="grid-xs-6 u-mb-3">
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Textarea
                                 type="text"
                                 name="billingAdress"
                                 value={billingAdress}
                                 handleChange={this.handleInputChange}
                                 placeholder="Billing Address"
+                                {... commonProps}
                             />
                         </div>
                         <div className="grid-xs-12">
@@ -170,13 +202,14 @@ class RegistrationForm extends React.Component {
                                 color="primary"
                                 title="Submit"
                                 submit
+                                {... commonProps}
                             />
                         </div>
                     </form>
                 }
 
                 {notice.length > 0 &&
-                    <div class="grid-xs-12">
+                    <div className="u-mt-2">
                         <Notice type={noticeType} icon>
                             {notice}
                         </Notice>
