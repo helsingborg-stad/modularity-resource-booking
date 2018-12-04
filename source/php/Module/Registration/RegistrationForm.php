@@ -29,7 +29,8 @@ class RegistrationForm extends \Modularity\Module
             // Enqueue module script
             wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/RegistrationForm/Index.js'), array('jquery', 'react', 'react-dom'));
             wp_localize_script('modularity-' . $this->slug, 'modRegistrationForm', array(
-                'translation' => array()
+                'translation' => array(),
+                'restUrl' => get_rest_url()
             ));
         }
     }
