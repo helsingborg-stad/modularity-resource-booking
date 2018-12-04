@@ -1,6 +1,6 @@
 import {Button, Input, Textarea, Notice, Pagination} from 'hbg-react';
-import {createUser} from '../Api/users.js';
-import {validateConfirmationField} from '../Helper/hyperForm.js';
+import {createUser} from '../../Api/user.js';
+import {validateConfirmationField} from '../../Helper/hyperForm.js';
 
 class RegistrationForm extends React.Component {
     constructor(props)
