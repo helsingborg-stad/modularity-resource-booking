@@ -125,7 +125,7 @@ class Customer
         $requiredKeys = array("email", "password", "company");
 
         foreach ($requiredKeys as $requirement) {
-            if (!array_key_exists($requirement, $_POST)) {
+            if (!array_key_exists($requirement, $_POST) && !empty($_POST[$requirement])) {
                 return new \WP_REST_Response(
                     array(
                         'message' => __('A parameter is missing: ', 'modularity-resource-booking') . $requirement,
@@ -141,7 +141,15 @@ class Customer
         //Check if user id exists
         if (email_exists($data['email']) || username_exists($data['email'])) {
             return array(
-                'message' => __('A user account is already registered with this email or username.', 'modularity-resource-booking'),
+                'message' => __('A user account is already registered with this email.', 'modularity-resource-booking'),
+                'state' => 'error'
+            );
+        }
+
+        //Check if user id exists
+        if (!is_email($data['email'])) {
+            return array(
+                'message' => __('Malformed email adress provided.', 'modularity-resource-booking'),
                 'state' => 'error'
             );
         }
@@ -174,7 +182,6 @@ class Customer
                 )
             );
         }
-
     }
 
     /**
@@ -200,6 +207,14 @@ class Customer
         if (email_exists($data[self::$fieldMap['user_email']]) != self::$userId) {
             return array(
                 'message' => __('That email adress is already taken, sorry.', 'modularity-resource-booking'),
+                'state' => 'error'
+            );
+        }
+
+        //Check if user id exists
+        if (isset($data['email']) && !is_email($data['email'])) {
+            return array(
+                'message' => __('Malformed email adress provided.', 'modularity-resource-booking'),
                 'state' => 'error'
             );
         }
