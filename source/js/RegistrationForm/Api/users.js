@@ -12,6 +12,7 @@ const createUser = (user) => {
     formData.append('first_name', firstName);
     formData.append('last_name', lastName);
     formData.append('corporate_number', companyNumber);
+    formData.append('password', '123');
 
     let options = {
         method: 'POST',
