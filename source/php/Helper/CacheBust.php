@@ -6,8 +6,10 @@ class CacheBust
 {
     /**
      * Returns the revved/cache-busted file name of an asset.
-     * @param string $name Asset name (array key) from rev-mainfest.json
+     *
+     * @param string  $name       Asset name (array key) from rev-mainfest.json
      * @param boolean $returnName Returns $name if set to true while in dev mode
+     *
      * @return string filename of the asset (including directory above)
      */
     public static function name($name, $returnName = true)
@@ -27,6 +29,7 @@ class CacheBust
 
     /**
      * Decode assets json to array
+     *
      * @return array containg assets filenames
      */
     public static function getRevManifest()

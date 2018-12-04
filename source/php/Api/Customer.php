@@ -15,7 +15,7 @@ class Customer
 
         //Meta keys containing user meta (define to allow insert & modification on key)
         self::$metaKeys = array(
-            'corporate_number' => __('Corporate number', 'modularity-resource-booking')
+            'company_number' => __('Corporate number', 'modularity-resource-booking')
         );
 
         //Mapping table (api input to wp usert table names)
@@ -147,7 +147,7 @@ class Customer
         }
 
          //Define update array
-        $insertArray = array('user_login' => 'email');
+        $insertArray = array('user_login' => $data['email']);
 
         //Update array creation of to be updated fields
         foreach (self::$fieldMap as $fielName => $inputField) {
