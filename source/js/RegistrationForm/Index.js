@@ -1,5 +1,5 @@
 import '@babel/polyfill';
-import RegistrationForm from './Components/RegistrationForm';
+import RegistrationForm from './Container/RegistrationForm';
 
 const domElements = document.getElementsByClassName("modularity-registration-form");
 const {translation} = modRegistrationForm;
