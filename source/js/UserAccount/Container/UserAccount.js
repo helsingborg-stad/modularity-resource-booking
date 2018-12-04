@@ -199,4 +199,4 @@ class UserAccount extends React.Component {
     }
 }
 
-export default RegistrationForm;
+export default UserAccount;
