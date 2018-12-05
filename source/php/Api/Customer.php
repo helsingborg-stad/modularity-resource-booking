@@ -233,6 +233,11 @@ class Customer
             'user_login' => get_userdata($request->get_param('id'))->user_login
         );
 
+        //Set new password
+        if (isset($data['password']) && !empty($data['password'])) {
+            wp_set_password($data['password'], $request->get_param('id'));
+        }
+
         //Update array creation of to be updated fields
         foreach (self::$fieldMap as $fielName => $inputField) {
             if (isset($data[$inputField])) {
