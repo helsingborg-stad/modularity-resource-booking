@@ -13,13 +13,13 @@ const createUser = (user) => {
     formData.append('first_name', firstName);
     formData.append('last_name', lastName);
 
-    formData.append('company', company);
-    formData.append('company_number', companyNumber);
-
     formData.append('phone', phone);
-    formData.append('billing_address', billingAdress);
-    formData.append('contact_person', contactPerson);
     formData.append('website', website);
+
+    formData.append('billing_company', company);
+    formData.append('billing_company_number', companyNumber);
+    formData.append('billing_address', billingAdress);
+    formData.append('billing_contact_person', contactPerson);
 
     let options = {
         method: 'POST',
