@@ -12,6 +12,18 @@ class Customer
 
         add_action('admin_menu', array($this, 'registerTaxonomyPage'));
         add_action('parent_file', array($this, 'highlightTaxonomyParentMenu'));
+        add_filter('user_contactmethods', array($this, 'addUserContactFields'));
+    }
+
+    /**
+     * Customize the contact information fields available to WordPress user accounts
+     * @param array $userContactFields an associative array keyed by form field ids with human-readable text as values.
+     * @return array
+     */
+    public function addUserContactFields($userContactFields)
+    {
+        $userContactFields['phone'] = __( 'Phone number', 'modularity-resource-booking' );
+        return $userContactFields;
     }
 
     /**
