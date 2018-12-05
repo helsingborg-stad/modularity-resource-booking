@@ -159,8 +159,11 @@ class Customer
             );
         }
 
-         //Define update array
-        $insertArray = array('user_login' => $data['email']);
+        //Define update array
+        $insertArray = array(
+            'user_login' => $data['email'],
+            'user_pass' => $data['password']
+        );
 
         //Update array creation of to be updated fields
         foreach (self::$fieldMap as $fielName => $inputField) {
