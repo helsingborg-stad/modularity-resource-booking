@@ -243,7 +243,7 @@ class Customer
         //Update user meta data
         foreach (self::$metaKeys as $metaKey => $metaField) {
             if (isset($data[$metaKey])) {
-                update_usermeta($request->get_param('id'), $metaKey, $data[$metaKey]);
+                update_user_meta($request->get_param('id'), $metaKey, $data[$metaKey]);
             }
         }
 
