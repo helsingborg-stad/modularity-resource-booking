@@ -15,7 +15,11 @@ class Customer
 
         //Meta keys containing user meta (define to allow insert & modification on key)
         self::$metaKeys = array(
-            'company_number' => __('Corporate number', 'modularity-resource-booking')
+            'billing_company' => __('Company name', 'modularity-resource-booking'),
+            'billing_company_number' => __('Company number', 'modularity-resource-booking'),
+            'billing_contact_person' => __('Contact person', 'modularity-resource-booking'),
+            'billing_address' => __('Billing address', 'modularity-resource-booking'),
+            'phone' => __('Phone number', 'modularity-resource-booking')
         );
 
         //Mapping table (api input to wp usert table names)
@@ -23,7 +27,8 @@ class Customer
             'user_email' => 'email',
             'display_name' => 'company_name',
             'first_name' => 'first_name',
-            'last_name' => 'last_name'
+            'last_name' => 'last_name',
+            'user_url' => 'website'
         );
     }
 
@@ -170,7 +175,7 @@ class Customer
             //Update user meta data
             foreach (self::$metaKeys as $metaKey => $metaField) {
                 if (isset($data[$metaKey])) {
-                    update_usermeta($userId, $metaKey, $data[$metaKey]);
+                    update_user_meta($userId, $metaKey, $data[$metaKey]);
                 }
             }
 
