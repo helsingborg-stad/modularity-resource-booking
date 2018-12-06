@@ -1,14 +1,13 @@
 import {Button, Input, Textarea, Notice} from 'hbg-react';
 import {validateConfirmationField} from '../../Helper/hyperForm.js';
+import {updateUser} from '../../Api/user.js';
 
 class UserAccount extends React.Component {
     constructor(props)
     {
         super(props);
 
-        console.log(props.user);
-
-        const {id, firstName, lastName, email, phone, website, company, companyNumber, billingAdress, contactPerson} = props.user;
+        const {id, firstName, lastName, email, phone, website, company, companyNumber, billingAddress, contactPerson} = props.user;
 
         this.state = {
             //User data
@@ -20,7 +19,7 @@ class UserAccount extends React.Component {
                 phone: phone,
                 company: company,
                 companyNumber: companyNumber,
-                billingAdress: billingAdress,
+                billingAddress: billingAddress,
                 website: website,
                 contactPerson: contactPerson,
                 password: '',
@@ -52,9 +51,28 @@ class UserAccount extends React.Component {
             return;
         }
 
-        console.log(user);
+        //Lock fields
+        this.setState({
+            lockInput: true
+        });
 
-        // this.setState({lockInput: true, notice: ''});
+        updateUser(user)
+        .then((response) => {
+            //Succesfully created user
+            this.setState({
+                lockInput: false,
+                notice: response.message,
+                noticeType: 'success',
+            });
+        })
+        .catch((error) => {
+            //Failed to create user
+            this.setState({
+                lockInput: false,
+                notice: error.toString(),
+                noticeType: 'warning'
+            });
+        });
     }
 
     handleInputChange(e)
@@ -77,7 +95,7 @@ class UserAccount extends React.Component {
             email, phone,
             company,
             companyNumber,
-            billingAdress,
+            billingAddress,
             website,
             contactPerson,
             password, passwordConfirm } = this.state.user;
@@ -190,8 +208,8 @@ class UserAccount extends React.Component {
                     <div className="grid-xs-12 grid-md-6 u-mb-3">
                         <Textarea
                             type="text"
-                            name="billingAdress"
-                            value={billingAdress}
+                            name="billingAddress"
+                            value={billingAddress}
                             handleChange={this.handleInputChange}
                             label="Billing Address"
                             {... commonProps}
