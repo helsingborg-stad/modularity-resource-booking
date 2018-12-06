@@ -1,6 +1,5 @@
 import {Button, Input, Textarea, Notice, Pagination} from 'hbg-react';
 import {createUser} from '../../Api/user.js';
-import {validateConfirmationField} from '../../Helper/hyperForm.js';
 
 class RegistrationForm extends React.Component {
     constructor(props)
@@ -36,12 +35,6 @@ class RegistrationForm extends React.Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    }
-
-    componentDidMount()
-    {
-        validateConfirmationField('email','emailConfirm','The email does not match.');
-        validateConfirmationField('password','passwordConfirm','The password does not match.');
     }
 
     handleFormSubmit(e) {
@@ -144,6 +137,8 @@ class RegistrationForm extends React.Component {
                                 value={emailConfirm}
                                 handleChange={this.handleInputChange}
                                 placeholder="Confirm Email"
+                                confirmField="email"
+                                confirmFieldMessage="The email does not match."
                                 required
                                 {... commonProps}
                             />
@@ -168,6 +163,8 @@ class RegistrationForm extends React.Component {
                                 handleChange={this.handleInputChange}
                                 placeholder="Confirm password"
                                 minLength="6"
+                                confirmField="password"
+                                confirmFieldMessage="The password does not match."
                                 required
                                 {... commonProps}
                             />

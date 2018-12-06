@@ -1,5 +1,4 @@
 import {Button, Input, Textarea, Notice} from 'hbg-react';
-import {validateConfirmationField} from '../../Helper/hyperForm.js';
 import {updateUser} from '../../Api/user.js';
 
 class UserAccount extends React.Component {
@@ -36,11 +35,6 @@ class UserAccount extends React.Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    }
-
-    componentDidMount()
-    {
-        validateConfirmationField('password','passwordConfirm','The password does not match.');
     }
 
     handleFormSubmit(e) {
@@ -237,6 +231,8 @@ class UserAccount extends React.Component {
                             handleChange={this.handleInputChange}
                             label="Confirm password"
                             minLength="6"
+                            confirmField="password"
+                            confirmFieldMessage="The password does not match."
                             {... commonProps}
                         />
                     </div>
