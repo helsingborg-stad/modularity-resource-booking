@@ -30,14 +30,14 @@ class UserAccount extends \Modularity\Module
         $data = array(
             'id'             => get_current_user_id(),
             'email'          => wp_get_current_user()->data->user_email,
-            'firstName'      => get_user_meta(get_current_user_id())['first_name'][0],
-            'lastName'       => get_user_meta(get_current_user_id())['last_name'][0],
-            'company'        => '',
-            'companyNumber'  => '',
-            'phone'          => '',
-            'website'        => '',
-            'billingAddress' => '',
-            'contactPerson'  => ''
+            'firstName'      => get_user_meta(get_current_user_id(), 'first_name', true),
+            'lastName'       => get_user_meta(get_current_user_id(), 'last_name', true),
+            'phone'          => get_user_meta(get_current_user_id(), 'phone', true),
+            'website'        => get_userdata(get_current_user_id())->user_url,
+            'company'        => get_user_meta(get_current_user_id(), 'billing_company', true),
+            'companyNumber'  => get_user_meta(get_current_user_id(), 'billing_company_number', true),
+            'billingAddress' => get_user_meta(get_current_user_id(), 'billing_address', true),
+            'contactPerson'  => get_user_meta(get_current_user_id(), 'billing_contact_person', true)
         );
 
         return $data;
