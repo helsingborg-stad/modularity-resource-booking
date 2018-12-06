@@ -1,7 +1,5 @@
-//Localized data
-const {translation, restUrl} = modRegistrationForm || modUserAccount;
-
 const createUser = (user) => {
+    const {translation, restUrl} = modRegistrationForm;
     let url = restUrl + 'ModularityResourceBooking/v1/CreateUser';
     let formData = new FormData();
 
@@ -41,24 +39,28 @@ const createUser = (user) => {
 
 
 const updateUser = (user) => {
-    const {id, email, firstName, lastName, company, companyNumber, password, phone, billingAdress, website, contactPerson} = user;
+    const {id, email, firstName, lastName, company, companyNumber, password, phone, billingAddress, website, contactPerson} = user;
+    const {translation, restUrl} = modUserAccount;
 
-    let url = restUrl + 'ModularityResourceBooking/v1/CreateUser/' + id;
+    let url = restUrl + 'ModularityResourceBooking/v1/ModifyUser/' + id;
     let formData = new FormData();
 
     formData.append('email', email);
-    formData.append('password', password);
+
+    if (typeof(password) != 'undefined' && password.length > 0) {
+        formData.append('password', password);
+    }
 
     formData.append('first_name', firstName);
     formData.append('last_name', lastName);
 
-    formData.append('company', company);
-    formData.append('company_number', companyNumber);
-
     formData.append('phone', phone);
-    formData.append('billing_address', billingAdress);
-    formData.append('contact_person', contactPerson);
     formData.append('website', website);
+
+    formData.append('billing_company', company);
+    formData.append('billing_company_number', companyNumber);
+    formData.append('billing_address', billingAddress);
+    formData.append('billing_contact_person', contactPerson);
 
     let options = {
         method: 'POST',
@@ -79,5 +81,6 @@ const updateUser = (user) => {
 };
 
 module.exports = {
-    createUser: createUser
+    createUser: createUser,
+    updateUser: updateUser
 };
