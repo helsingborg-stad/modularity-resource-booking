@@ -47,7 +47,7 @@ class UserAccount extends \Modularity\Module
     {
         if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/RegistrationForm/Index.js'))) {
             // Enqueue react
-            \ModularityResourceBooking\Helper\React::enqueue();
+            \Modularity\Helper\React::enqueue();
 
             // Enqueue module script
             wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/UserAccount/Index.js'), array('jquery', 'react', 'react-dom'));
