@@ -77,6 +77,10 @@ class App
                 MODULARITYRESOURCEBOOKING_PATH . 'source/php/Module/UserAccount',
                 'UserAccount'
             );
+            modularity_register_module(
+                MODULARITYRESOURCEBOOKING_PATH . 'source/php/Module/BookingForm',
+                'BookingForm'
+            );
         }
     }
 }

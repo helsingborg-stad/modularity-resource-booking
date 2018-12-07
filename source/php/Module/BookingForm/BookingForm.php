@@ -1,0 +1,72 @@
+<?php
+
+namespace ModularityResourceBooking\Module;
+
+class BookingForm extends \Modularity\Module
+{
+    public $slug = 'resource-booking-form';
+    public $supports = array();
+
+    public function init()
+    {
+        $this->nameSingular = __('Resource Booking Form', 'modularity-resource-booking');
+        $this->namePlural = __('Resource Booking Forms', 'modularity-resource-booking');
+        $this->description = __('Outputs a form for booking resources.', 'modularity-resource-booking');
+    }
+
+    public function data() : array
+    {
+        $data = get_fields($this->ID);
+        $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array('box', 'box-panel'), $this->post_type, $this->args));
+        return $data;
+    }
+
+    public function getUserData() : array
+    {
+        if (!is_user_logged_in()) {
+            return array();
+        }
+
+        $data = array(
+            'id'             => get_current_user_id(),
+            'email'          => wp_get_current_user()->data->user_email,
+            'firstName'      => get_user_meta(get_current_user_id(), 'first_name', true),
+            'lastName'       => get_user_meta(get_current_user_id(), 'last_name', true),
+            'phone'          => get_user_meta(get_current_user_id(), 'phone', true),
+            'website'        => get_userdata(get_current_user_id())->user_url,
+            'company'        => get_user_meta(get_current_user_id(), 'billing_company', true),
+            'companyNumber'  => get_user_meta(get_current_user_id(), 'billing_company_number', true),
+            'billingAddress' => get_user_meta(get_current_user_id(), 'billing_address', true),
+            'contactPerson'  => get_user_meta(get_current_user_id(), 'billing_contact_person', true)
+        );
+
+        return $data;
+    }
+
+    public function script()
+    {
+        if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/BookingForm/Index.js'))) {
+            // Enqueue react
+            \Modularity\Helper\React::enqueue();
+
+            // Enqueue module script
+            wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/UserAccount/Index.js'), array('jquery', 'react', 'react-dom'));
+
+            //Localize
+            wp_localize_script('modularity-' . $this->slug, 'modResourceBookingForm', array(
+                'translation' => array(),
+                'restUrl' => get_rest_url()
+            ));
+        }
+    }
+
+    /**
+     * Available "magic" methods for modules:
+     * init()            What to do on initialization (if you must, use __construct with care, this will probably break stuff!!)
+     * data()            Use to send data to view (return array)
+     * style()           Enqueue style only when module is used on page
+     * script            Enqueue script only when module is used on page
+     * adminEnqueue()    Enqueue scripts for the module edit/add page in admin
+     * template()        Return the view template (blade) the module should use when displayed
+     */
+}
