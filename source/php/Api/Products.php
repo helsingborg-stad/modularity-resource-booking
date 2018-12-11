@@ -321,6 +321,7 @@ class Products
             );
 
             if (is_array($posts) && !empty($posts)) {
+                $productSumPrice = null;
                 foreach ($posts as $subitem) {
                     $productSumPrice = $productSumPrice + $this->getPrice($subitem);
                 }
