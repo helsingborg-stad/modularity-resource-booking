@@ -38,26 +38,68 @@
             "return_format": "object"
         },
         {
-            "key": "field_5bed43f2bf1f2",
-            "label": "Product",
-            "name": "product_package_id",
-            "type": "taxonomy",
-            "instructions": "The product package that the customer has ordered.",
-            "required": 1,
+            "key": "field_5c0fc16aaefa4",
+            "label": "Order items",
+            "name": "order_items",
+            "type": "repeater",
+            "instructions": "List of ordered products.",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "taxonomy": "product-package",
-            "field_type": "select",
-            "allow_null": 0,
-            "add_term": 0,
-            "save_terms": 0,
-            "load_terms": 0,
-            "return_format": "object",
-            "multiple": 0
+            "collapsed": "",
+            "min": 1,
+            "max": 0,
+            "layout": "block",
+            "button_label": "",
+            "sub_fields": [
+                {
+                    "key": "field_5bed43f2bf1f2",
+                    "label": "Product",
+                    "name": "product_package_id",
+                    "type": "taxonomy",
+                    "instructions": "The product package that the customer has ordered.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "taxonomy": "product-package",
+                    "field_type": "select",
+                    "allow_null": 0,
+                    "add_term": 0,
+                    "save_terms": 0,
+                    "load_terms": 0,
+                    "return_format": "id",
+                    "multiple": 0,
+                    "disabled": 1
+                },
+                {
+                    "key": "field_5c0fc17caefa5",
+                    "label": "Slot",
+                    "name": "slot_id",
+                    "type": "text",
+                    "instructions": "Booked time interval.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": "",
+                    "disabled": 1
+                }
+            ]
         },
         {
             "key": "field_5bed44c343f42",
@@ -80,23 +122,6 @@
             "load_terms": 1,
             "return_format": "id",
             "multiple": 0
-        },
-        {
-            "key": "field_5bed4570a30e0",
-            "label": "Time period",
-            "name": "",
-            "type": "message",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "message": "This order represents the time frame between <strong>{{ORDER_START_DATE}}<\/strong> and <strong>{{ORDER_END_DATE}}<\/strong>.",
-            "new_lines": "",
-            "esc_html": 0
         }
     ],
     "location": [
