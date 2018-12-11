@@ -21,11 +21,13 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         //Filter handlebars on admin page
         add_filter('acf/prepare_field/key=field_5bed431057e88', array($this, 'replaceOrderId'), 10, 1); //Order ID
-        add_filter('acf/prepare_field/key=field_5bed4570a30e0', array($this, 'replaceTimeSlot'), 10, 1); //Time Slot
+        add_filter('acf/prepare_field/key=field_5c0fc17caefa5', array($this, 'replaceTimeSlot'), 10, 1); //Time Slot
+        add_filter('acf/load_field/key=field_5bed43f2bf1f2', array($this, 'disableField'), 10, 1);
+        add_filter('acf/load_field/key=field_5c0fc17caefa5', array($this, 'disableField'), 10, 1);
+
 
         //Save author to post on change
         add_action('save_post', array($this, 'updateAuthor'));
-
     }
 
     /**
@@ -93,10 +95,9 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
      */
     public function replaceTimeSlot($field)
     {
-        global $post;
-        if (isset($field['message']) && !empty($field['message'])) {
-            $field['message'] = str_replace("{{ORDER_START_DATE}}", get_post_meta($post->ID, 'slot_start', true), $field['message']);
-            $field['message'] = str_replace("{{ORDER_END_DATE}}", get_post_meta($post->ID, 'slot_stop', true), $field['message']);
+        if (isset($field['value']) && !empty($field['value'])) {
+            $interval = Slots::getSlotInterval($field['value']);
+            $field['value'] = $interval ? $interval['start'] . ' - ' . $interval['stop'] : '';
         }
         return $field;
     }
@@ -256,4 +257,13 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
         return $orderStatus->slug;
     }
 
+    /**
+     * Disable ACF field
+     * @param $field
+     * @return mixed
+     */
+    public function disableField($field ) {
+        $field['disabled'] = 1;
+        return $field;
+    }
 }
