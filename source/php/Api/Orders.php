@@ -155,7 +155,7 @@ class Orders
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
 
-            $requiredKeys = array("slot_start", "slot_stop", "product_package_id");
+            $requiredKeys = array("order_items");
 
             foreach ($requiredKeys as $requirement) {
                 if (!array_key_exists($requirement, $_POST)) {
@@ -181,11 +181,11 @@ class Orders
             );
         }
 
+        $orderId = strtoupper(substr(md5(microtime()), rand(0, 26), 8));
+
         //Define new post
         $postItem = array(
-            'post_title' => (
-                __('Order of', 'modularity-resource-booking') . " " . $this->getPackageName($data['product_package_id']) . " " .
-                "(" . $data['slot_start'] . " " . __('to', 'modularity-resource-booking') . " " . $data['slot_stop'] . ")"),
+            'post_title' => $orderId,
             'post_type' => 'purchase',
             'post_status' => 'publish',
             'post_author' => self::$userId,
@@ -196,7 +196,7 @@ class Orders
             $postItem = array('ID' => $request->get_param('id')) + $postItem;
         }
 
-        //Makr insert
+        //Make insert
         $insert = wp_insert_post($postItem);
 
         //Handles insert failure
@@ -210,13 +210,31 @@ class Orders
             );
         }
 
+
+        error_log(print_r($data, true));
+
+        //Sanitize order items
+        $orderItems = $data['order_items'];
+        if (is_array($orderItems) && !empty($orderItems)) {
+            $orderItems = array_map(function($item) {
+                $data = json_decode(stripslashes(html_entity_decode($item)));
+                $item = array(
+                    'field_5bed43f2bf1f2' => $data->package_id ?? null,
+                    'field_5c0fc17caefa5' => $data->slot_id ?? null,
+                );
+                return $item;
+            }, $orderItems);
+        }
+
+        error_log(print_r($orderItems, true));
+        // Save order items to repeater field
+        update_field('field_5c0fc16aaefa4', $orderItems, $insert);
+
+
         //Update meta
-        update_post_meta($insert, 'order_id', strtoupper(substr(md5(microtime()), rand(0, 26), 8)));
-        update_post_meta($insert, 'slot_start', $data['slot_start']);
-        update_post_meta($insert, 'slot_stop', $data['slot_stop']);
+        update_post_meta($insert, 'order_id', $orderId);
 
         //Update fields
-        update_field('product_package_id', $data['product_package_id'], $insert);
         update_field('customer_id', self::$userId, $insert);
         update_field('order_status', get_field('order_status', 'option'), $insert);
 
@@ -240,11 +258,14 @@ class Orders
         return new \WP_REST_Response(
             array(
                 'message' => sprintf(
-                    __('Your order of "%s" between %s and %s has been registered.', 'modularity-resource-booking'),
-                    $this->getPackageName($data['product_package_id']),
-                    $data['slot_start'],
-                    $data['slot_stop']
+                    __('Your order has been registered.', 'modularity-resource-booking')
                 ),
+//                'message' => sprintf(
+//                    __('Your order of "%s" between %s and %s has been registered.', 'modularity-resource-booking'),
+//                    $this->getPackageName($data['product_package_id']),
+//                    $data['slot_start'],
+//                    $data['slot_stop']
+//                ),
                 'order' => array_pop(
                     $this->filterorderOutput(
                         get_post($insert)
