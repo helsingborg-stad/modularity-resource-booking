@@ -8,6 +8,8 @@ class TimeSlots
     {
         //Run register rest routes
         add_action('rest_api_init', array($this, 'registerRestRoutes'));
+        //add_action('init', array($this, 'getSlots'));
+        add_filter('posts_where', array($this, 'postsWhereWildcard'), 2, 10);
     }
 
     /**
@@ -55,13 +57,7 @@ class TimeSlots
      */
     public function getSlots($request)
     {
-        //$params = $request->get_params();
-        //error_log($params['user_id']);
-        //error_log($params['package_id']);
-
-        error_log("==================");
-        $userId = 3; // joah1032 admin
-        $packageId = 147; // Paket 1
+        $params = $request->get_params();
 
         $result = array();
 
@@ -78,9 +74,7 @@ class TimeSlots
 
                 $start = date('Y-m-d', strtotime($whatMonday, strtotime('+' . $n . ' week'))) . " 00:00";
                 $stop = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
-                $slotId = \ModularityResourceBooking\Slots::getSlotId($start, $stop);
-
-                $orders = \ModularityResourceBooking\Slots::getOrdersByPackageSlot($packageId, $slotId);
+                $slotId = \ModularityResourceBooking\Helper\Slots::getSlotId($start, $stop);
 
                 $result[] = array(
                     'id' => $slotId,
@@ -92,7 +86,7 @@ class TimeSlots
                 );
             }
 
-            return $result;
+           return $result;
         }
 
         if (get_field('mod_res_book_automatic_or_manual', 'option') == "manual") {
@@ -110,8 +104,21 @@ class TimeSlots
 
             return $result;
         }
-
-        //var_dump($result);
     }
 
+    /**
+     * Adds wildcards to meta query when searching for slot & package IDs
+     * @param $where
+     * @param $query
+     * @return mixed
+     */
+    public function postsWhereWildcard($where, $query) {
+        if (isset($query->query['post_type']) && $query->query['post_type'] === 'purchase') {
+            $where = str_replace("meta_key = 'order_articles_\$_type", "meta_key LIKE 'order_articles_%_type", $where);
+            $where = str_replace("meta_key = 'order_articles_\$_slot_id", "meta_key LIKE 'order_articles_%_slot_id", $where);
+            $where = str_replace("meta_key = 'order_articles_\$_article_id", "meta_key LIKE 'order_articles_%_article_id", $where);
+        }
+
+        return $where;
+    }
 }
