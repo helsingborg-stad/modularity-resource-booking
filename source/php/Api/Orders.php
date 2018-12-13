@@ -155,7 +155,7 @@ class Orders
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
 
-            $requiredKeys = array('order_articles');
+            $requiredKeys = array('order_articles', 'user_id');
 
             foreach ($requiredKeys as $requirement) {
                 if (!array_key_exists($requirement, $_POST)) {
@@ -188,7 +188,7 @@ class Orders
             'post_title' => $orderId,
             'post_type' => 'purchase',
             'post_status' => 'publish',
-            'post_author' => self::$userId,
+            'post_author' => (int)$data['user_id']
         );
 
         //Prepend id if proveided (converted to update)
@@ -263,10 +263,7 @@ class Orders
 //                    $data['slot_start'],
 //                    $data['slot_stop']
 //                ),
-                'order' => array_pop(
-                    $this->filterorderOutput(
-                        get_post($insert)
-                    )
+                'order' => $this->filterorderOutput(get_post($insert)
                 )
             ),
             201
@@ -375,12 +372,13 @@ class Orders
                     'name' => (string) $order->post_title,
                     'date' => (string) $order->post_date,
                     'slug' => (string) $order->post_name,
-                    'period' => array(
-                        'start' => (string) get_post_meta($order->ID, 'slot_start', true),
-                        'stop' => (string) get_post_meta($order->ID, 'slot_stop', true)
-                    ),
-                    'product_package_id' => (int) get_post_meta($order->ID, 'product_package_id', true),
-                    'product_package_name' => (string) $this->getPackageName(get_post_meta($order->ID, 'product_package_id', true)),
+// TODO display complete article list
+//                    'period' => array(
+//                        'start' => (string) get_post_meta($order->ID, 'slot_start', true),
+//                        'stop' => (string) get_post_meta($order->ID, 'slot_stop', true)
+//                    ),
+//                    'product_package_id' => (int) get_post_meta($order->ID, 'product_package_id', true),
+//                    'product_package_name' => (string) $this->getPackageName(get_post_meta($order->ID, 'product_package_id', true)),
                 );
             }
         }
