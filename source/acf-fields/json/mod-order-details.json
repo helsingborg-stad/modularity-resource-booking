@@ -39,8 +39,8 @@
         },
         {
             "key": "field_5c0fc16aaefa4",
-            "label": "Order items",
-            "name": "order_items",
+            "label": "Articles (hidden)",
+            "name": "order_articles",
             "type": "repeater",
             "instructions": "List of ordered articles.",
             "required": 0,
@@ -51,7 +51,7 @@
                 "id": ""
             },
             "collapsed": "",
-            "min": 1,
+            "min": 0,
             "max": 0,
             "layout": "block",
             "button_label": "",
@@ -78,9 +78,9 @@
                     ],
                     "allow_null": 0,
                     "multiple": 0,
-                    "ui": 1,
-                    "ajax": 0,
+                    "ui": 0,
                     "return_format": "value",
+                    "ajax": 0,
                     "placeholder": ""
                 },
                 {
@@ -102,8 +102,7 @@
                     "append": "",
                     "min": "",
                     "max": "",
-                    "step": "",
-                    "disabled": 1
+                    "step": ""
                 },
                 {
                     "key": "field_5c0fc17caefa5",
@@ -122,10 +121,26 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "maxlength": "",
-                    "disabled": 1
+                    "maxlength": ""
                 }
             ]
+        },
+        {
+            "key": "field_5c12369d5bc92",
+            "label": "Articles",
+            "name": "",
+            "type": "message",
+            "instructions": "List of ordered articles.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "new_lines": "wpautop",
+            "esc_html": 0
         },
         {
             "key": "field_5bed44c343f42",
