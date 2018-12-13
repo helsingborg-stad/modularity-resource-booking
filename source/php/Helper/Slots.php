@@ -43,12 +43,10 @@ class Slots
             }
         }
 
-        $availableSlots = 0;
-
         return $slotsTotal;
     }
 
-    public static function getOrdersByArticleSlot($type = null, $packageId = null, $slotId = null)
+    public static function getOrdersByArticleSlot($type = null, $articleId = null, $slotId = null)
     {
         // Todo fix exist checks for packages and products
         //Make sure package (term) exists
@@ -69,7 +67,7 @@ class Slots
                 ),
                 array(
                     'key' => 'order_articles_$_article_id',
-                    'value' => $packageId,
+                    'value' => $articleId,
                     'compare' => '='
                 ),
                 array(
