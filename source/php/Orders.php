@@ -20,10 +20,10 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         //Filter handlebars on admin page
         add_filter('acf/prepare_field/key=field_5bed431057e88', array($this, 'replaceOrderId'), 10, 1); //Order ID
-        add_filter('acf/prepare_field/key=field_5c0fc17caefa5', array($this, 'replaceTimeSlot'), 10, 1); //Time Slot
-        add_filter('acf/load_field/key=field_5c122674bc676', array($this, 'disableField'), 10, 1);
-        add_filter('acf/load_field/key=field_5bed43f2bf1f2', array($this, 'disableField'), 10, 1);
-        add_filter('acf/load_field/key=field_5c0fc17caefa5', array($this, 'disableField'), 10, 1);
+        add_filter('acf/prepare_field/key=field_5c12369d5bc92', array($this, 'listOrderArticles'), 10, 1); //Time Slot
+
+        // Hide ACF field
+        add_filter('acf/load_field/key=field_5c0fc16aaefa4', array($this, 'hideField'));
 
         //Save author to post on change
         add_action('save_post', array($this, 'updateAuthor'));
@@ -119,7 +119,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
      *
      * @return void
      */
-    public function postType() : string
+    public function postType(): string
     {
         // Create posttype
         $postType = new \ModularityResourceBooking\Entity\PostType(
@@ -185,7 +185,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
                         echo $type->name;
 
-                        if ($typeKey+1 !== count($types)) {
+                        if ($typeKey + 1 !== count($types)) {
                             echo ", ";
                         }
 
@@ -220,9 +220,8 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
      *
      * @return string
      */
-    public function taxonomyOrderStatus() : string
+    public function taxonomyOrderStatus(): string
     {
-
         //Register product packages
         $orderStatus = new \ModularityResourceBooking\Entity\Taxonomy(
             __('Order statuses', 'modularity-resource-booking'),
@@ -257,12 +256,13 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
     }
 
     /**
-     * Disable ACF field
+     * Hide ACF field
      * @param $field
      * @return mixed
      */
-    public function disableField($field ) {
-        $field['disabled'] = 1;
+    public function hideField($field)
+    {
+        $field['conditional_logic'] = 1;
         return $field;
     }
 }
