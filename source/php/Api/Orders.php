@@ -221,7 +221,16 @@ class Orders
         update_field('order_status', get_field('order_status', 'option'), $insert);
 
         //Upload media
-        $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($_FILES);
+        $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($_FILES, $request->get_param('id'));
+        if ($mediaItems['error']) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => $mediaItems['error'],
+                    'state' => 'error'
+                ),
+                201
+            );
+        }
 
         //Append attachment data
         if (is_array($mediaItems) && !empty($mediaItems)) {

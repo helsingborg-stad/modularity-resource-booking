@@ -24,6 +24,15 @@ define('MODULARITYRESOURCEBOOKING_TEMPLATE_PATH', MODULARITYRESOURCEBOOKING_PATH
 
 load_plugin_textdomain('modularity-resource-booking', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
+// Require composer dependencies (autoloader)
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+// Include vendor files
+if (file_exists(dirname(ABSPATH) . '/vendor/autoload.php')) {
+    require_once dirname(ABSPATH) . '/vendor/autoload.php';
+}
+
 require_once MODULARITYRESOURCEBOOKING_PATH . 'source/php/Vendor/Psr4ClassLoader.php';
 require_once MODULARITYRESOURCEBOOKING_PATH . 'Public.php';
 

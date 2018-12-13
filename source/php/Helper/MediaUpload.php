@@ -31,11 +31,25 @@ class MediaUpload
                     continue;
                 }
 
-                // check size
-                self::checkDimensions($upload);
-                return $mediaIds["apa 1apa"];
+
                 //Move to correct location
                 $fileData = \wp_handle_upload($upload, array('test_form' => false));
+
+                // check dimension of file upload ( Unlink the image if it contains size errors)
+                $dimensionsError = self::checkDimensions($fileData);
+                if (count($dimensionsError) > 0) {
+
+                    unlink($fileData['file']);
+
+                    $error['error'] = ($dimensionsError['width'] != null)
+                        ? $dimensionsError['width']
+                        : null;
+                    $error['error'] .= ($dimensionsError['width'] != null && $dimensionsError['height'] != null)
+                        ? __(' and ', 'modularity-resource-booking') . $dimensionsError['height']
+                        : $dimensionsError['height'];
+
+                    return $error;
+                }
 
                 //Enter to WordPress media library
                 if (is_array($fileData) && !empty($fileData) && isset($fileData['file'])) {
@@ -54,7 +68,8 @@ class MediaUpload
         return array_filter($mediaIds);
     }
 
-    public static function checkUploadErrors($file) {
+    public static function checkUploadErrors($file)
+    {
         switch ($file['error']) {
             case UPLOAD_ERR_OK:
                 return true;
@@ -85,26 +100,41 @@ class MediaUpload
         return true;
     }
 
-    public static function checkDimensions($file)
+    public static function checkDimensions($file, $prodId)
     {
-        $info = new SplFileInfo($file);
-        $fileFormat = pathinfo($info->getFilename(), PATHINFO_EXTENSION);
-        $fileInformation = new \finfo(FILEINFO_MIME_TYPE);
-        var_dump($fileInformation);
-        switch($fileFormat){
+        $widthFromProduct = get_option('image_width', $prodId);
+        $heightFromProduct = get_option('image_height', $prodId);
+        $format = pathinfo($file['file']);
+
+        switch ($format['extension']) {
             case "pdf":
-                $pdfinfo = shell_exec("pdfinfo ".$file);
 
-                // find height and width
-                preg_match('/Page size:\s+([0-9]{0,5}\.?[0-9]{0,3}) x ([0-9]{0,5}\.?[0-9]{0,3})/', $pdfinfo,$size);
-                $width = $size[1];
-                $height = $size[2];
+                if (!extension_loaded('imagick')) {
+                    return 'imagick not installed';
+                }
 
-                echo $width . " : " . $height;
+                $imageMagick = new \Imagick($file['file']);
+                $size = $imageMagick->getImageGeometry();
+                $error['width'] = ($size['width'] > $widthFromProduct) ?
+                    __('The width of file (' . $size['width'] . ' is to big', 'modularity-resource-booking') : null;
+                $error['height'] = ($size['height'] > $heightFromProduct) ?
+                    __('The height of file (' . $size['height'] . ' is to big', 'modularity-resource-booking') : null;
 
+                return $error;
                 break;
-            case "png":
-                echo "YO";
+
+            case "mp4":
+                return null;
+                break;
+
+            default:
+                $size = getimagesize($file['file']);
+                $error['width'] = ($size[0] > $widthFromProduct) ?
+                    __('The width of file (' . $size[0] . ') is to big', 'modularity-resource-booking') : null;
+                $error['height'] = ($size[1] > $heightFromProduct) ?
+                    __('The height of file (' . $size[1] . ') is to big', 'modularity-resource-booking') : null;
+
+                return $error;
                 break;
         }
     }
