@@ -1,6 +1,6 @@
 <?php
 
-namespace ModularityResourceBooking;
+namespace ModularityResourceBooking\Helper;
 
 class Slots
 {
@@ -48,25 +48,32 @@ class Slots
         return $slotsTotal;
     }
 
-    public static function getOrdersByPackageSlot($packageId, $slotId)
+    public static function getOrdersByArticleSlot($type = null, $packageId = null, $slotId = null)
     {
+        // Todo fix exist checks for packages and products
         //Make sure package (term) exists
-        if (!term_exists($packageId, 'product-package')) {
-            return false;
-        }
+//        if (!term_exists($packageId, 'product-package')) {
+//            return false;
+//        }
 
         $orders = get_posts(array(
             'post_type' => 'purchase',
             'numberposts' => -1,
+            'suppress_filters' => false,
             'meta_query' => array(
                 'relation' => 'AND',
                 array(
-                    'key' => 'product_package_id',
+                    'key' => 'order_articles_$_type',
+                    'value' => $type,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => 'order_articles_$_article_id',
                     'value' => $packageId,
                     'compare' => '='
                 ),
                 array(
-                    'key' => 'slot_id',
+                    'key' => 'order_articles_$_slot_id',
                     'value' => $slotId,
                     'compare' => '='
                 ),
