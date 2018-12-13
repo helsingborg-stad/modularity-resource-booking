@@ -9,7 +9,6 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
     public function __construct()
     {
-
         //Main post type
         self::$postTypeSlug = $this->postType();
 
@@ -22,9 +21,9 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
         //Filter handlebars on admin page
         add_filter('acf/prepare_field/key=field_5bed431057e88', array($this, 'replaceOrderId'), 10, 1); //Order ID
         add_filter('acf/prepare_field/key=field_5c0fc17caefa5', array($this, 'replaceTimeSlot'), 10, 1); //Time Slot
+        add_filter('acf/load_field/key=field_5c122674bc676', array($this, 'disableField'), 10, 1);
         add_filter('acf/load_field/key=field_5bed43f2bf1f2', array($this, 'disableField'), 10, 1);
         add_filter('acf/load_field/key=field_5c0fc17caefa5', array($this, 'disableField'), 10, 1);
-
 
         //Save author to post on change
         add_action('save_post', array($this, 'updateAuthor'));
@@ -96,7 +95,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
     public function replaceTimeSlot($field)
     {
         if (isset($field['value']) && !empty($field['value'])) {
-            $interval = Slots::getSlotInterval($field['value']);
+            $interval = Helper\Slots::getSlotInterval($field['value']);
             $field['value'] = $interval ? $interval['start'] . ' - ' . $interval['stop'] : '';
         }
         return $field;

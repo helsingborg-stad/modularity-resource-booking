@@ -155,7 +155,7 @@ class Orders
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
 
-            $requiredKeys = array("order_items");
+            $requiredKeys = array('order_articles');
 
             foreach ($requiredKeys as $requirement) {
                 if (!array_key_exists($requirement, $_POST)) {
@@ -210,25 +210,22 @@ class Orders
             );
         }
 
-
-        error_log(print_r($data, true));
-
         //Sanitize order items
-        $orderItems = $data['order_items'];
-        if (is_array($orderItems) && !empty($orderItems)) {
-            $orderItems = array_map(function($item) {
-                $data = json_decode(stripslashes(html_entity_decode($item)));
+        $orderArticles = $data['order_articles'];
+        if (is_array($orderArticles) && !empty($orderArticles)) {
+            $orderArticles = array_map(function($item) {
+                $data = (array)json_decode(stripslashes(html_entity_decode($item)));
                 $item = array(
-                    'field_5bed43f2bf1f2' => $data->package_id ?? null,
-                    'field_5c0fc17caefa5' => $data->slot_id ?? null,
+                    'field_5c122674bc676' => $data['type'] ?? null,
+                    'field_5bed43f2bf1f2' => $data['article_id'] ?? null,
+                    'field_5c0fc17caefa5' => $data['slot_id'] ?? null,
                 );
                 return $item;
-            }, $orderItems);
+            }, $orderArticles);
         }
 
-        error_log(print_r($orderItems, true));
         // Save order items to repeater field
-        update_field('field_5c0fc16aaefa4', $orderItems, $insert);
+        update_field('field_5c0fc16aaefa4', $orderArticles, $insert);
 
 
         //Update meta
