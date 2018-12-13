@@ -31,6 +31,9 @@ class MediaUpload
                     continue;
                 }
 
+                // check size
+                self::checkDimensions($upload);
+                return $mediaIds["apa 1apa"];
                 //Move to correct location
                 $fileData = \wp_handle_upload($upload, array('test_form' => false));
 
@@ -68,20 +71,41 @@ class MediaUpload
     {
         $fileInformation = new \finfo(FILEINFO_MIME_TYPE);
         if (false === $ext = array_search(
-            $fileInformation->file($file['tmp_name']),
-            array(
-                'jpg' => 'image/jpeg',
-                'png' => 'image/png',
-                'mp4' => 'video/mp4',
-            ),
-            true
-        )) {
+                $fileInformation->file($file['tmp_name']),
+                array(
+                    'jpg' => 'image/jpeg',
+                    'png' => 'image/png',
+                    'mp4' => 'video/mp4',
+                    'pdf' => 'application/pdf'
+                ),
+                true
+            )) {
             return false;
         }
         return true;
     }
 
-    public function checkDimensions($file) {
+    public static function checkDimensions($file)
+    {
+        $info = new SplFileInfo($file);
+        $fileFormat = pathinfo($info->getFilename(), PATHINFO_EXTENSION);
+        $fileInformation = new \finfo(FILEINFO_MIME_TYPE);
+        var_dump($fileInformation);
+        switch($fileFormat){
+            case "pdf":
+                $pdfinfo = shell_exec("pdfinfo ".$file);
 
+                // find height and width
+                preg_match('/Page size:\s+([0-9]{0,5}\.?[0-9]{0,3}) x ([0-9]{0,5}\.?[0-9]{0,3})/', $pdfinfo,$size);
+                $width = $size[1];
+                $height = $size[2];
+
+                echo $width . " : " . $height;
+
+                break;
+            case "png":
+                echo "YO";
+                break;
+        }
     }
 }
