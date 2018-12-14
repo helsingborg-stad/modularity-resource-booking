@@ -37,14 +37,20 @@ class TimeSlots
     public function getCollectionParams()
     {
         return array(
+            'type' => array(
+                'description' => 'The article type.',
+                'type' => 'string',
+                'default' => 'product',
+                'sanitize_callback' => 'sanitize_text_field',
+            ),
             'user_id' => array(
                 'description' => 'User ID.',
                 'type' => 'integer',
                 'default' => 0,
                 'sanitize_callback' => 'absint',
             ),
-            'package_id' => array(
-                'description' => 'Package ID.',
+            'article_id' => array(
+                'description' => 'Article ID.',
                 'type' => 'integer',
                 'default' => 0,
                 'sanitize_callback' => 'absint',
@@ -53,14 +59,15 @@ class TimeSlots
     }
 
     /**
-     * @return array $slots Slots ordered by time
+     * Get slots with stock data
+     * @return \WP_REST_Response
      */
     public function getSlots($request)
     {
+        // Request params
         $params = $request->get_params();
 
         $result = array();
-
         if (get_field('mod_res_book_automatic_or_manual', 'option') == "weekly") {
             //Decide what monday to refer to
             if (date("N") == 1) {
@@ -70,29 +77,33 @@ class TimeSlots
             }
 
             for ($n = 0; $n <= 52; $n++) {
-                $available = true;
-
                 $start = date('Y-m-d', strtotime($whatMonday, strtotime('+' . $n . ' week'))) . " 00:00";
                 $stop = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
                 $slotId = \ModularityResourceBooking\Helper\Slots::getSlotId($start, $stop);
+
+                $articleStock = \ModularityResourceBooking\Helper\Slots::getArticleStock($params['type'], $params['article_id'], $slotId, $params['user_id']);
+                if (is_wp_error($articleStock)) {
+                    return new \WP_REST_Response(
+                        array(
+                            'message' => $articleStock->get_error_message(),
+                            'state' => 'error'
+                        ), 404
+                    );
+                }
 
                 $result[] = array(
                     'id' => $slotId,
                     'start' => $start,
                     'stop' => $stop,
-                    'is_available' => $available,
-                    'total_stock' => null, // innehållande vilken som är en produkts lägsta stockvärde, oklart om det funkar??
-                    'available_stock' => null, // total_stock - antal ordrar för det datumet, som innehåller samma produkt. - slot limit
+                    'unlimited_stock' => $articleStock['unlimited_stock'],
+                    'total_stock' => $articleStock['total_stock'],
+                    'available_stock' => $articleStock['available_stock'],
                 );
             }
-
-           return $result;
         }
 
         if (get_field('mod_res_book_automatic_or_manual', 'option') == "manual") {
-
             $data = get_field('mod_res_book_time_slots', 'option');
-
             if (is_array($data) && !empty($data)) {
                 foreach ($data as $item) {
                     $result[] = array(
@@ -101,8 +112,17 @@ class TimeSlots
                     );
                 }
             }
+        }
 
-            return $result;
+        if (!empty($result)) {
+            return new \WP_REST_Response($result, 200);
+        } else {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('No result found.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ), 404
+            );
         }
     }
 
@@ -112,7 +132,8 @@ class TimeSlots
      * @param $query
      * @return mixed
      */
-    public function postsWhereWildcard($where, $query) {
+    public function postsWhereWildcard($where, $query)
+    {
         if (isset($query->query['post_type']) && $query->query['post_type'] === 'purchase') {
             $where = str_replace("meta_key = 'order_articles_\$_type", "meta_key LIKE 'order_articles_%_type", $where);
             $where = str_replace("meta_key = 'order_articles_\$_slot_id", "meta_key LIKE 'order_articles_%_slot_id", $where);
