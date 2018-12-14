@@ -155,7 +155,7 @@ class Orders
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
 
-            $requiredKeys = array("slot_start", "slot_stop", "product_package_id");
+            $requiredKeys = array('order_articles', 'user_id');
 
             foreach ($requiredKeys as $requirement) {
                 if (!array_key_exists($requirement, $_POST)) {
@@ -181,14 +181,14 @@ class Orders
             );
         }
 
+        $orderId = strtoupper(substr(md5(microtime()), rand(0, 26), 8));
+
         //Define new post
         $postItem = array(
-            'post_title' => (
-                __('Order of', 'modularity-resource-booking') . " " . $this->getPackageName($data['product_package_id']) . " " .
-                "(" . $data['slot_start'] . " " . __('to', 'modularity-resource-booking') . " " . $data['slot_stop'] . ")"),
+            'post_title' => $orderId,
             'post_type' => 'purchase',
             'post_status' => 'publish',
-            'post_author' => self::$userId,
+            'post_author' => (int)$data['user_id']
         );
 
         //Prepend id if proveided (converted to update)
@@ -196,7 +196,7 @@ class Orders
             $postItem = array('ID' => $request->get_param('id')) + $postItem;
         }
 
-        //Makr insert
+        //Make insert
         $insert = wp_insert_post($postItem);
 
         //Handles insert failure
@@ -210,13 +210,28 @@ class Orders
             );
         }
 
+        //Sanitize order items
+        $orderArticles = $data['order_articles'];
+        if (is_array($orderArticles) && !empty($orderArticles)) {
+            $orderArticles = array_map(function($item) {
+                $data = (array)json_decode(stripslashes(html_entity_decode($item)));
+                $item = array(
+                    'field_5c122674bc676' => $data['type'] ?? null,
+                    'field_5bed43f2bf1f2' => $data['article_id'] ?? null,
+                    'field_5c0fc17caefa5' => $data['slot_id'] ?? null,
+                );
+                return $item;
+            }, $orderArticles);
+        }
+
+        // Save order items to repeater field
+        update_field('field_5c0fc16aaefa4', $orderArticles, $insert);
+
+
         //Update meta
-        update_post_meta($insert, 'order_id', strtoupper(substr(md5(microtime()), rand(0, 26), 8)));
-        update_post_meta($insert, 'slot_start', $data['slot_start']);
-        update_post_meta($insert, 'slot_stop', $data['slot_stop']);
+        update_post_meta($insert, 'order_id', $orderId);
 
         //Update fields
-        update_field('product_package_id', $data['product_package_id'], $insert);
         update_field('customer_id', self::$userId, $insert);
         update_field('order_status', get_field('order_status', 'option'), $insert);
 
@@ -249,15 +264,15 @@ class Orders
         return new \WP_REST_Response(
             array(
                 'message' => sprintf(
-                    __('Your order of "%s" between %s and %s has been registered.', 'modularity-resource-booking'),
-                    $this->getPackageName($data['product_package_id']),
-                    $data['slot_start'],
-                    $data['slot_stop']
+                    __('Your order has been registered.', 'modularity-resource-booking')
                 ),
-                'order' => array_pop(
-                    $this->filterorderOutput(
-                        get_post($insert)
-                    )
+//                'message' => sprintf(
+//                    __('Your order of "%s" between %s and %s has been registered.', 'modularity-resource-booking'),
+//                    $this->getPackageName($data['product_package_id']),
+//                    $data['slot_start'],
+//                    $data['slot_stop']
+//                ),
+                'order' => $this->filterorderOutput(get_post($insert)
                 )
             ),
             201
@@ -366,12 +381,13 @@ class Orders
                     'name' => (string) $order->post_title,
                     'date' => (string) $order->post_date,
                     'slug' => (string) $order->post_name,
-                    'period' => array(
-                        'start' => (string) get_post_meta($order->ID, 'slot_start', true),
-                        'stop' => (string) get_post_meta($order->ID, 'slot_stop', true)
-                    ),
-                    'product_package_id' => (int) get_post_meta($order->ID, 'product_package_id', true),
-                    'product_package_name' => (string) $this->getPackageName(get_post_meta($order->ID, 'product_package_id', true)),
+// TODO display complete article list
+//                    'period' => array(
+//                        'start' => (string) get_post_meta($order->ID, 'slot_start', true),
+//                        'stop' => (string) get_post_meta($order->ID, 'slot_stop', true)
+//                    ),
+//                    'product_package_id' => (int) get_post_meta($order->ID, 'product_package_id', true),
+//                    'product_package_name' => (string) $this->getPackageName(get_post_meta($order->ID, 'product_package_id', true)),
                 );
             }
         }
