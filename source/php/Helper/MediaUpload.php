@@ -4,7 +4,7 @@ namespace ModularityResourceBooking\Helper;
 
 class MediaUpload
 {
-    public static function upload($uploads, $mediaIds = array())
+    public static function upload($ProdId, $uploads, $mediaIds = array())
     {
 
         //Require resources
@@ -36,19 +36,11 @@ class MediaUpload
                 $fileData = \wp_handle_upload($upload, array('test_form' => false));
 
                 // check dimension of file upload ( Unlink the image if it contains size errors)
-                $dimensionsError = self::checkDimensions($fileData);
-                if (count($dimensionsError) > 0) {
+                $dimensionErrors = self::checkDimensions($ProdId, $fileData);
 
+                if ($dimensionErrors->error != null) {
                     unlink($fileData['file']);
-
-                    $error['error'] = ($dimensionsError['width'] != null)
-                        ? $dimensionsError['width']
-                        : null;
-                    $error['error'] .= ($dimensionsError['width'] != null && $dimensionsError['height'] != null)
-                        ? __(' and ', 'modularity-resource-booking') . $dimensionsError['height']
-                        : $dimensionsError['height'];
-
-                    return $error;
+                    return $dimensionErrors;
                 }
 
                 //Enter to WordPress media library
@@ -100,42 +92,61 @@ class MediaUpload
         return true;
     }
 
-    public static function checkDimensions($file, $prodId)
+    public static function checkDimensions($prodId, $fileData)
     {
-        $widthFromProduct = get_option('image_width', $prodId);
-        $heightFromProduct = get_option('image_height', $prodId);
-        $format = pathinfo($file['file']);
+        $rows = get_field('media_requirement', $prodId);
+        $error = array();
 
-        switch ($format['extension']) {
-            case "pdf":
+        if ($rows) {
+            foreach ($rows as $row) {
 
-                if (!extension_loaded('imagick')) {
-                    return 'imagick not installed';
+                $widthFromProduct = $row['image_width'];
+                $heightFromProduct = $row['image_height'];
+
+                $format = pathinfo($fileData['file']);
+                $errorStr = 'Error! Dimensions of your image: ' . basename($fileData['url']) . ', size: ({width}px x {height}px), 
+                is to large. Please upload image with max dimensions: ' . $widthFromProduct . 'px x ' . $widthFromProduct . 'px';
+
+                switch ($format['extension']) {
+
+                    case "pdf":
+
+                        if (!extension_loaded('imagick')) {
+                            return 'imagick not installed';
+                        }
+
+                        $imageMagick = new \Imagick($fileData['file']);
+                        $size = $imageMagick->getImageGeometry();
+
+                        $error['width'] = ($size['width'] > $widthFromProduct) ? true : false;
+                        $error['height'] = ($size['height'] > $heightFromProduct) ? true : false;
+
+                        $error['error'] = (in_array(true, $error)) ?
+                            __(str_replace('{width}', $size['width'], str_replace('{height}', $size['height'], $errorStr)), 'modularity-resource-booking')
+                            : null;
+
+                        return (object) $error;
+                        break;
+
+                    case "mp4":
+                        return null;
+                        break;
+
+                    default:
+
+                        $size = getimagesize($fileData['file']);
+
+                        $error['width'] = ($size[0] > $widthFromProduct) ? true : false;
+                        $error['height'] = ($size[1] > $heightFromProduct) ? true : false;
+
+                        $error['error'] = (in_array(true, $error)) ?
+                            __(str_replace('{width}', $size[0], str_replace('{height}', $size[1], $errorStr)), 'modularity-resource-booking')
+                            : null;
+
+                        return (object) $error;
+                        break;
                 }
-
-                $imageMagick = new \Imagick($file['file']);
-                $size = $imageMagick->getImageGeometry();
-                $error['width'] = ($size['width'] > $widthFromProduct) ?
-                    __('The width of file (' . $size['width'] . ' is to big', 'modularity-resource-booking') : null;
-                $error['height'] = ($size['height'] > $heightFromProduct) ?
-                    __('The height of file (' . $size['height'] . ' is to big', 'modularity-resource-booking') : null;
-
-                return $error;
-                break;
-
-            case "mp4":
-                return null;
-                break;
-
-            default:
-                $size = getimagesize($file['file']);
-                $error['width'] = ($size[0] > $widthFromProduct) ?
-                    __('The width of file (' . $size[0] . ') is to big', 'modularity-resource-booking') : null;
-                $error['height'] = ($size[1] > $heightFromProduct) ?
-                    __('The height of file (' . $size[1] . ') is to big', 'modularity-resource-booking') : null;
-
-                return $error;
-                break;
+            }
         }
     }
 }

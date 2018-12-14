@@ -3,7 +3,7 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5bffb822b9213',
-    'title' => __('Product media requirements', 'modularity-resource-booking'),
+    'title' => 'Product media requirements',
     'fields' => array(
         0 => array(
             'key' => 'field_5bffb829f14ab',
@@ -61,7 +61,7 @@
                         'video' => __('Video', 'modularity-resource-booking'),
                     ),
                     'default_value' => array(
-                        0 => 'image',
+                        0 => __('image', 'modularity-resource-booking'),
                     ),
                     'allow_null' => 0,
                     'multiple' => 0,

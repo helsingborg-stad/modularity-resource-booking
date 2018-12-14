@@ -234,9 +234,10 @@ class Orders
         //Update fields
         update_field('customer_id', self::$userId, $insert);
         update_field('order_status', get_field('order_status', 'option'), $insert);
-        
+
         //Upload media /// HOLA AMiGO !!!!!! Byt ut statiskt ID mot dynamiskt !!!
         $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload(256176, $_FILES);
+
         if (is_object($mediaItems) && $mediaItems->error != null) {
             return new \WP_REST_Response(
                 array(
@@ -246,7 +247,7 @@ class Orders
                 201
             );
         }
-
+        
         //Append attachment data
         if (is_array($mediaItems) && !empty($mediaItems)) {
 
@@ -335,7 +336,7 @@ class Orders
      */
     public function checkOrderOwnership($orderId) : bool
     {
-        if (true || get_post_meta($orderId, 'user_id', true) === self::$userId) {
+        if (true || get_post_meta($orderId, 'user_id', true) === self::$userId) {
             return true;
         }
 
@@ -397,8 +398,8 @@ class Orders
             foreach ($result as $key => $item) {
                 if ($item['uid'] == self::$userId) {
                     $result[$key] = $item + array(
-                        'media' => (array) get_field('media_items', $item['id'])
-                    );
+                            'media' => (array) get_field('media_items', $item['id'])
+                        );
                 }
             }
         }
@@ -409,11 +410,11 @@ class Orders
 
                 if ($item['uid'] == self::$userId) {
                     $result[$key] = $item + array(
-                        'actions' => array(
-                            'modify' => rest_url('ModularityResourceBooking/v1/ModifyOrder/' . $item['id']),
-                            'delete' => rest_url('ModularityResourceBooking/v1/RemoveOrder/' . $item['id'])
-                        )
-                    );
+                            'actions' => array(
+                                'modify' => rest_url('ModularityResourceBooking/v1/ModifyOrder/' . $item['id']),
+                                'delete' => rest_url('ModularityResourceBooking/v1/RemoveOrder/' . $item['id'])
+                            )
+                        );
                 }
             }
         }
