@@ -234,13 +234,13 @@ class Orders
         //Update fields
         update_field('customer_id', self::$userId, $insert);
         update_field('order_status', get_field('order_status', 'option'), $insert);
-
-        //Upload media
-        $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($_FILES, $request->get_param('id'));
-        if ($mediaItems['error']) {
+        
+        //Upload media /// HOLA AMiGO !!!!!! Byt ut statiskt ID mot dynamiskt !!!
+        $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload(256176, $_FILES);
+        if (is_object($mediaItems) && $mediaItems->error != null) {
             return new \WP_REST_Response(
                 array(
-                    'message' => $mediaItems['error'],
+                    'message' => $mediaItems->error,
                     'state' => 'error'
                 ),
                 201
