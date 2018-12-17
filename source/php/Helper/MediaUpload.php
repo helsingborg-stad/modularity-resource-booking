@@ -97,7 +97,7 @@ class MediaUpload
         $rows = get_field('media_requirement', $prodId);
         $error = array();
 
-        if ($rows) {
+        if ($rows && $fileData) {
             foreach ($rows as $row) {
 
                 $widthFromProduct = $row['image_width'];
@@ -112,9 +112,10 @@ class MediaUpload
                     case "pdf":
 
                         if (!extension_loaded('imagick')) {
-                            return 'imagick not installed';
+                            $error['error'] = 'imagick not installed'
+                            return (object) $error;
                         }
-
+                        
                         $imageMagick = new \Imagick($fileData['file']);
                         $size = $imageMagick->getImageGeometry();
 
