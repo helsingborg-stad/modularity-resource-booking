@@ -67,6 +67,26 @@ class TimeSlots
         // Request params
         $params = $request->get_params();
         $result = array();
+
+        // Get customer group data
+        $customerGroup = wp_get_object_terms($params['user_id'], 'customer_group', array('fields' => 'ids'));
+        $groupLimit = null;
+        $groupMembers = array($params['user_id']);
+        if (isset($customerGroup[0]) && !empty($customerGroup[0])) {
+            // Get customer group limit
+            $groupLimit = get_field('customer_slot_limit', 'customer_group' . '_' . $customerGroup[0]);
+            $groupLimit = $groupLimit === '' ? null : (int)$groupLimit;
+            // List of users within same customer group
+            $groupMembers = \ModularityResourceBooking\Entity\Filter::getUserByTaxonomy('customer_group', $customerGroup[0]);
+            $groupMembers = array_column($groupMembers, 'ID');
+        }
+        error_log("USER GROUP");
+        error_log(print_r($customerGroup, true));
+        error_log("GROUP LIMIT");
+        error_log(print_r($groupLimit, true));
+        error_log("CUSTOMER GROUP Members");
+        error_log(print_r($groupMembers, true));
+
         $products = self::getProductsByArticle($params['article_id'], $params['type']);
 
         if (empty($products)) {
@@ -91,7 +111,7 @@ class TimeSlots
                 $stop = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
                 $slotId = self::getSlotId($start, $stop);
 
-                $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $params['user_id']);
+                $articleStock = $this->getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
                 if (is_wp_error($articleStock)) {
                     return new \WP_REST_Response(
                         array(
@@ -120,7 +140,7 @@ class TimeSlots
                     $stop = $item['end_date'] . " 23:59";
                     $slotId = self::getSlotId( $item['start_date'] . " 00:00", $stop);
 
-                    $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $params['user_id']);
+                    $articleStock = $this->getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
                     if (is_wp_error($articleStock)) {
                         return new \WP_REST_Response(
                             array(
@@ -171,30 +191,9 @@ class TimeSlots
         return $where;
     }
 
-
-
-    public static function getArticleSlotStock($products, $articleType, $slotId, $userId)
+    public function getArticleSlotStock($products, $articleType, $slotId, $groupMembers, $groupLimit)
     {
-        // Get customer group
-        $customerGroup = wp_get_object_terms($userId, 'customer_group', array('fields' => 'ids'));
-        $groupLimit = null;
-        $customerIds = null;
-        if (isset($customerGroup[0]) && !empty($customerGroup[0])) {
-            // Get customer group limit
-            $groupLimit = get_field('customer_slot_limit', 'customer_group' . '_' . $customerGroup[0]);
-            $groupLimit = $groupLimit === '' ? null : (int)$groupLimit;
-            // List of users within same customer group
-            $customerIds = \ModularityResourceBooking\Entity\Filter::getUserByTaxonomy('customer_group', $customerGroup[0]);
-            $customerIds = array_column($customerIds, 'ID');
-        }
-        error_log("USER GROUP");
-        error_log(print_r($customerGroup, true));
-        error_log("GROUP LIMIT");
-        error_log(print_r($groupLimit, true));
-        error_log("CUSTOMER GROUP Users");
-        error_log(print_r($customerIds, true));
-
-        $products = array_map(function ($product) use ($articleType, $slotId, $customerIds, $groupLimit) {
+        $products = array_map(function ($product) use ($articleType, $slotId, $groupMembers, $groupLimit) {
             // List of packages where the product is included
             $packages = wp_get_post_terms($product->ID, 'product-package', array('fields' => 'ids'));
             $packages = is_array($packages) && !empty($packages) ? $packages : array();
@@ -211,7 +210,7 @@ class TimeSlots
             // Get number of times the customer/group have purchased this product
             $purchaseCount = 0;
             foreach ($orders as $order) {
-                if (in_array($order->post_author, $customerIds)) {
+                if (in_array($order->post_author, $groupMembers)) {
                     $purchaseCount++;
                 }
             }
@@ -250,13 +249,14 @@ class TimeSlots
         if (!empty($articlesWithStock)) {
             // Get minimum stock value from all products
             $minimumStock = min($articlesWithStock);
-
             error_log("Min stock");
             error_log(print_r($minimumStock, true));
             // Get the product with the minimum stock value
             $productsWithMinStock = array_filter($products, function ($product) use ($minimumStock) {
                 return ($product['available_stock'] === $minimumStock);
             });
+            // Reset keys
+            $productsWithMinStock = array_values($productsWithMinStock);
             error_log("Filtered Products");
             error_log(print_r($productsWithMinStock, true));
             // Return first object, in case more than one article have the same available stock left
