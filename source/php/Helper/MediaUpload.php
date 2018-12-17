@@ -130,7 +130,10 @@ class MediaUpload
                 $heightFromProduct = $row['image_height'];
 
                 $format = pathinfo($fileData['file']);
-                $errorStr = 'Error! Your image: ' . basename($fileData['url']) . ', size: ({width}px x {height}px), has wrong dimensions. Please upload image with following dimensions: ' . $widthFromProduct . 'px x ' . $widthFromProduct . 'px';
+
+                $dimensions = $widthFromProduct . 'px x ' . $widthFromProduct . 'px';
+                $errorStr = sprintf(__('Your image: %s, size: ({width}px x {height}px), has wrong dimensions.', 'modularity-resource-booking'), basename($fileData['url']));
+                $errorStr .= sprintf(__(' Please upload image with following dimensions: %s' , 'modularity-resource-booking'), $dimensions);
 
                 switch ($format['extension']) {
 
@@ -144,9 +147,8 @@ class MediaUpload
                         $imageMagick = new \Imagick($fileData['file']);
                         $size = $imageMagick->getImageGeometry();
                         $error->size = ($size['width'] == $widthFromProduct && $size['height'] == $heightFromProduct) ? false : true;
-                        $error->error = ($error->size) ?
-                            __(str_replace('{width}', $size['width'], str_replace('{height}', $size['height'], $errorStr)), 'modularity-resource-booking')
-                            : null;
+                        $message = str_replace('{width}', $size['width'], str_replace('{height}', $size['height'], $errorStr));
+                        $error->error = ($error->size) ? sprintf(__('Error! %s', 'modularity-resource-booking'), $message) : null;
 
                         return $error;
                         break;
@@ -159,9 +161,8 @@ class MediaUpload
 
                         $size = getimagesize($fileData['file']);
                         $error->size = ($size[0] == $widthFromProduct && $size[1] == $heightFromProduct) ? false : true;
-                        $error->error = ($error->size) ?
-                            __(str_replace('{width}', $size[0], str_replace('{height}', $size[1], $errorStr)), 'modularity-resource-booking')
-                            : null;
+                        $message = str_replace('{width}', $size[0], str_replace('{height}', $size[1], $errorStr));
+                        $error->error = ($error->size) ? sprintf(__('Error! %s', 'modularity-resource-booking'), $message) : null;
 
                         return $error;
                         break;

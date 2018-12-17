@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2018-12-04 09:14+0100\n"
-"PO-Revision-Date: 2018-12-04 09:35+0100\n"
+"POT-Creation-Date: 2018-12-17 15:13+0100\n"
+"PO-Revision-Date: 2018-12-17 15:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -15,10 +15,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
-"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: source/acf-fields/php/mod-billing-info.php:6
+msgid "Billing info"
+msgstr ""
+
+#: source/acf-fields/php/mod-billing-info.php:10 source/php/Api/Customer.php:18
+msgid "Company name"
+msgstr ""
+
+#: source/acf-fields/php/mod-billing-info.php:29 source/php/Api/Customer.php:19
+msgid "Company number"
+msgstr ""
+
+#: source/acf-fields/php/mod-billing-info.php:50 source/php/Api/Customer.php:20
+msgid "Contact person"
+msgstr ""
+
+#: source/acf-fields/php/mod-billing-info.php:69 source/php/Api/Customer.php:21
+msgid "Billing address"
+msgstr ""
 
 #: source/acf-fields/php/mod-customer-group.php:6
 msgid "User Group"
@@ -34,7 +54,7 @@ msgstr "Kundinställningar"
 
 #: source/acf-fields/php/mod-customers.php:10
 #: source/acf-fields/php/mod-package-details.php:71
-#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:78
+#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:90
 msgid "Customer group"
 msgstr "Kundgrupp"
 
@@ -43,13 +63,35 @@ msgid "Default order status"
 msgstr "Förvald orderstatus"
 
 #: source/acf-fields/php/mod-default-order-status.php:10
-#: source/php/Orders.php:229
+#: source/php/Orders.php:259
 msgid "Order status"
 msgstr "Orderstatus"
 
 #: source/acf-fields/php/mod-default-order-status.php:13
 msgid "Defines a default order status on new orders."
 msgstr "Definierar en orderstatus på nya ordrar"
+
+#: source/acf-fields/php/mod-email-settings.php:6
+msgid "Email settings"
+msgstr "E-post inställningar"
+
+#: source/acf-fields/php/mod-email-settings.php:10
+msgid "Manager email"
+msgstr ""
+
+#: source/acf-fields/php/mod-email-settings.php:13
+msgid ""
+"A email that will be contacted if there are any new user registrations and "
+"other requests that requires administration."
+msgstr ""
+
+#: source/acf-fields/php/mod-email-settings.php:28
+msgid "Economy email"
+msgstr ""
+
+#: source/acf-fields/php/mod-email-settings.php:31
+msgid "Where to send automatically generated invoices."
+msgstr ""
 
 #: source/acf-fields/php/mod-order-details.php:6
 msgid "Order details"
@@ -63,34 +105,60 @@ msgstr "Order ID"
 msgid "{{ORDER_ID}}"
 msgstr ""
 
-#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:52
-#: source/php/Orders.php:151
+#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:64
+#: source/php/Orders.php:182
 msgid "Customer"
 msgstr "Kund"
 
 #: source/acf-fields/php/mod-order-details.php:45
+msgid "Articles (hidden)"
+msgstr ""
+
+#: source/acf-fields/php/mod-order-details.php:48
+#: source/acf-fields/php/mod-order-details.php:136
+msgid "List of ordered articles."
+msgstr ""
+
+#: source/acf-fields/php/mod-order-details.php:64 source/php/Orders.php:103
+msgid "Type"
+msgstr "Typ"
+
+#: source/acf-fields/php/mod-order-details.php:67
+msgid "The article type."
+msgstr "Artikeltyp"
+
+#: source/acf-fields/php/mod-order-details.php:76
 msgid "Product"
 msgstr "Produkt"
 
-#: source/acf-fields/php/mod-order-details.php:48
-msgid "The product package that the customer has ordered."
-msgstr "Produktpaketet som har beställts."
+#: source/acf-fields/php/mod-order-details.php:77 source/php/Products.php:64
+#: source/php/Products.php:111
+msgid "Package"
+msgstr "Paket"
 
-#: source/acf-fields/php/mod-order-details.php:67
+#: source/acf-fields/php/mod-order-details.php:91 source/php/Orders.php:102
+msgid "Article"
+msgstr "Artikel"
+
+#: source/acf-fields/php/mod-order-details.php:94
+msgid "The article that the customer has ordered."
+msgstr "Artikeln som kunded har beställt"
+
+#: source/acf-fields/php/mod-order-details.php:112
+msgid "Slot"
+msgstr "Slot"
+
+#: source/acf-fields/php/mod-order-details.php:115
+msgid "Booked time interval."
+msgstr "Bokad tidsintervall"
+
+#: source/acf-fields/php/mod-order-details.php:133
+msgid "Articles"
+msgstr "Artiklar"
+
+#: source/acf-fields/php/mod-order-details.php:150
 msgid "Order Status"
 msgstr "Orderstatus"
-
-#: source/acf-fields/php/mod-order-details.php:89
-msgid "Time period"
-msgstr "Tidsperiod"
-
-#: source/acf-fields/php/mod-order-details.php:100
-msgid ""
-"This order represents the time frame between <strong>{{ORDER_START_DATE}}</"
-"strong> and <strong>{{ORDER_END_DATE}}</strong>."
-msgstr ""
-"Den här ordern gäller för perioden mellan <strong>{{ORDER_START_DATE}}</"
-"strong> och <strong>{{ORDER_END_DATE}}</strong>."
 
 #: source/acf-fields/php/mod-order-media.php:6
 msgid "Attached order media"
@@ -198,10 +266,6 @@ msgstr "Produktens plats"
 msgid "Where the resource is located"
 msgstr "Var produkten finns geografiskt belägen (t.ex. upphämtningsplats)"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:6
-msgid "Product media requirements"
-msgstr "Produktens materialkrav"
-
 #: source/acf-fields/php/mod-product-media-requirement.php:10
 msgid "Media requirement"
 msgstr "Materialkrav"
@@ -229,6 +293,10 @@ msgstr "Bild"
 #: source/acf-fields/php/mod-product-media-requirement.php:61
 msgid "Video"
 msgstr "Video"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:64
+msgid "image"
+msgstr "bild"
 
 #: source/acf-fields/php/mod-product-media-requirement.php:75
 msgid "Maxiumum filesize"
@@ -291,43 +359,43 @@ msgstr ""
 "Du har angett ett automatiskt mönster baserat på veckor. Systemet skapar "
 "automatiskt upp mönster för ett år framöver."
 
-#: source/php/Api/Customer.php:18
-msgid "Corporate number"
-msgstr "Organisationsnummer"
+#: source/php/Api/Customer.php:22 source/php/Customer.php:25
+msgid "Phone number"
+msgstr ""
 
-#: source/php/Api/Customer.php:131 source/php/Api/Orders.php:164
+#: source/php/Api/Customer.php:136 source/php/Api/Orders.php:176
 msgid "A parameter is missing: "
 msgstr "Ett inmatningsvärde saknas: "
 
-#: source/php/Api/Customer.php:144
+#: source/php/Api/Customer.php:149
 msgid "A user account is already registered with this email."
 msgstr "Ett konto finns redan registrerat på denna epostadress."
 
-#: source/php/Api/Customer.php:152 source/php/Api/Customer.php:217
+#: source/php/Api/Customer.php:157 source/php/Api/Customer.php:225
 msgid "Malformed email adress provided."
 msgstr "Epostadressen är inte av ett giltigt format."
 
-#: source/php/Api/Customer.php:178
+#: source/php/Api/Customer.php:186
 msgid "A new user account has been created."
 msgstr "Ditt konto har skapats."
 
-#: source/php/Api/Customer.php:201
+#: source/php/Api/Customer.php:209
 msgid "That is not a valid user identification."
 msgstr "Det här är inget giltigt användar-id."
 
-#: source/php/Api/Customer.php:209
+#: source/php/Api/Customer.php:217
 msgid "That email adress is already taken, sorry."
 msgstr "Den här e-postadressen är redan registrerad, "
 
-#: source/php/Api/Customer.php:247
+#: source/php/Api/Customer.php:258
 msgid "Your account details has been updated."
 msgstr "Dina kontouppgifter har uppdaterats."
 
-#: source/php/Api/Customer.php:270
+#: source/php/Api/Customer.php:281
 msgid "Email cannot be empty."
 msgstr "E-postadressen kan inte vara tom."
 
-#: source/php/Api/Customer.php:279
+#: source/php/Api/Customer.php:290
 msgid ""
 "The email provided does already exist in our account system. It you think "
 "this is a error, please contact a administrator."
@@ -335,40 +403,31 @@ msgstr ""
 "Epostadressen som du har angivit finns redan registrerad i vårt system. Om "
 "du tror att det här inte stämmer, vänligen kontakta vår support. "
 
-#: source/php/Api/Customer.php:287
+#: source/php/Api/Customer.php:298
 msgid "No account found with that email."
 msgstr "Inget konto kunde hittas med den angivna e-postadressen."
 
-#: source/php/Api/Orders.php:177
+#: source/php/Api/Orders.php:189
 msgid "The post request sent was empty."
 msgstr "Fel: Ett anrop som var tomt skickades."
 
-#: source/php/Api/Orders.php:187
-msgid "Order of"
-msgstr "Beställning av "
-
-#: source/php/Api/Orders.php:188
-msgid "to"
-msgstr "till"
-
-#: source/php/Api/Orders.php:206
+#: source/php/Api/Orders.php:218
 msgid "Bummer, something went wrong."
 msgstr "Hoppsan, något gick fel."
 
-#: source/php/Api/Orders.php:243
-#, php-format
-msgid "Your order of \"%s\" between %s and %s has been registered."
-msgstr "Din beställning av \"%s\" mellan %s och %s har registrerats."
+#: source/php/Api/Orders.php:304
+msgid "Your order has been registered."
+msgstr "Din beställningar blev registrerad"
 
-#: source/php/Api/Orders.php:270
+#: source/php/Api/Orders.php:331
 msgid "That is not av valid order id."
 msgstr "Det här är ingen giltig beställning."
 
-#: source/php/Api/Orders.php:279
+#: source/php/Api/Orders.php:340
 msgid "Your order has been removed."
 msgstr "Din beställning har tagits bort."
 
-#: source/php/Api/Orders.php:287
+#: source/php/Api/Orders.php:348
 msgid "Could not remove that order due to an unknown error."
 msgstr "Kunde inte ta bort din beställning på grund av ett okänt fel."
 
@@ -376,7 +435,11 @@ msgstr "Kunde inte ta bort din beställning på grund av ett okänt fel."
 msgid "Could not find any package with that id."
 msgstr "Kunde inte hitta något paket på det indetifikationsnumret som angavs."
 
-#: source/php/Customer.php:77
+#: source/php/Api/TimeSlots.php:122
+msgid "No result found."
+msgstr "Hittade inget resultat"
+
+#: source/php/Customer.php:89
 msgid "Customer groups"
 msgstr "Kundgrupper"
 
@@ -449,6 +512,25 @@ msgstr "Lägg till ny %s"
 msgid "New %s Name"
 msgstr "Ny %s namn"
 
+#: source/php/Helper/MediaUpload.php:135
+#, php-format
+msgid "Your image: %s, size: ({width}px x {height}px), has wrong dimensions."
+msgstr "Din bild: %s, storlek: ({width}px x {height}px), har fel dimensioner."
+
+#: source/php/Helper/MediaUpload.php:136
+#, php-format
+msgid " Please upload image with following dimensions: %s"
+msgstr " Ladda upp en bild med följande mått: %s"
+
+#: source/php/Helper/MediaUpload.php:151 source/php/Helper/MediaUpload.php:165
+#, php-format
+msgid "Error! %s"
+msgstr ""
+
+#: source/php/Helper/Slots.php:30
+msgid "No articles could be found with 'article_id': "
+msgstr "Det fanns ingen artikel med följande artikel-id: "
+
 #: source/php/Module/Registration/RegistrationForm.php:12
 msgid "Registration form"
 msgstr "Registreringsformulär"
@@ -461,38 +543,51 @@ msgstr "Registreingsformulär"
 msgid "Outputs a registration form for customers."
 msgstr "Visar ett registreringsformulär för kunder"
 
-#: source/php/Orders.php:126
+#: source/php/Module/UserAccount/UserAccount.php:12
+#: source/php/Module/UserAccount/UserAccount.php:13
+msgid "User account settings"
+msgstr "Kontoinställningar"
+
+#: source/php/Module/UserAccount/UserAccount.php:14
+msgid "Outputs a form for user account settings."
+msgstr ""
+
+#: source/php/Orders.php:104
+msgid "Time period"
+msgstr "Tidsperiod"
+
+#: source/php/Orders.php:157
 msgctxt "Post type plural"
 msgid "Orders"
 msgstr "Beställningar"
 
-#: source/php/Orders.php:127
+#: source/php/Orders.php:158
 msgctxt "Post type singular"
 msgid "Order"
 msgstr "Beställning"
 
-#: source/php/Orders.php:130
+#: source/php/Orders.php:161
 msgid "Order registry."
 msgstr "Beställningsregister"
 
-#: source/php/Orders.php:138
+#: source/php/Orders.php:169
 msgid "purchase"
-msgstr ""
+msgstr "köp"
 
-#: source/php/Orders.php:166 source/php/Orders.php:182
-#: source/php/Orders.php:209 source/php/Products.php:71
+#: source/php/Orders.php:197 source/php/Orders.php:213
+#: source/php/Orders.php:240 source/php/Products.php:71
 msgid "Undefined"
 msgstr "Odefinierat"
 
-#: source/php/Orders.php:174
+#: source/php/Orders.php:205
 msgid "Status"
 msgstr "Status"
 
-#: source/php/Orders.php:200
+#: source/php/Orders.php:231
 msgid "Order ID"
 msgstr "Beställnings ID"
 
-#: source/php/Orders.php:228
+#: source/php/Orders.php:258
 msgid "Order statuses"
 msgstr "Orderstatusar"
 
@@ -512,11 +607,7 @@ msgstr "Produktregister"
 
 #: source/php/Products.php:51
 msgid "product"
-msgstr ""
-
-#: source/php/Products.php:64 source/php/Products.php:111
-msgid "Package"
-msgstr "Paket"
+msgstr "produkt"
 
 #: source/php/Products.php:89
 msgid "Price"
@@ -552,9 +643,37 @@ msgid "Book a physical resource for a predefined period of time"
 msgstr "Boka en fysiskt resurs under en fördefinierad period"
 
 #. Author of the plugin/theme
-msgid "Sebastian Thulin"
+msgid "Sebastian Thulin, Nikolas Ramstedt"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://github.com/sebastianthulin"
+msgid "https://github.com/helsingborg-stad"
 msgstr ""
+
+#~ msgid "Please upload image with following dimensions: %s"
+#~ msgstr "Ladda upp en bild med följande dimensioner: %s"
+
+#~ msgid "The product package that the customer has ordered."
+#~ msgstr "Produktpaketet som har beställts."
+
+#~ msgid ""
+#~ "This order represents the time frame between <strong>{{ORDER_START_DATE}}"
+#~ "</strong> and <strong>{{ORDER_END_DATE}}</strong>."
+#~ msgstr ""
+#~ "Den här ordern gäller för perioden mellan <strong>{{ORDER_START_DATE}}</"
+#~ "strong> och <strong>{{ORDER_END_DATE}}</strong>."
+
+#~ msgid "Product media requirements"
+#~ msgstr "Produktens materialkrav"
+
+#~ msgid "Corporate number"
+#~ msgstr "Organisationsnummer"
+
+#~ msgid "Order of"
+#~ msgstr "Beställning av "
+
+#~ msgid "to"
+#~ msgstr "till"
+
+#~ msgid "Your order of \"%s\" between %s and %s has been registered."
+#~ msgstr "Din beställning av \"%s\" mellan %s och %s har registrerats."
