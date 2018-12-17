@@ -81,7 +81,7 @@ class TimeSlots
                 $stop = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
                 $slotId = \ModularityResourceBooking\Helper\Slots::getSlotId($start, $stop);
 
-                $articleStock = \ModularityResourceBooking\Helper\Slots::getArticleStock($params['type'], $params['article_id'], $slotId, $params['user_id']);
+                $articleStock = \ModularityResourceBooking\Helper\Slots::getArticleSlotStock($params['type'], $params['article_id'], $slotId, $params['user_id']);
                 if (is_wp_error($articleStock)) {
                     return new \WP_REST_Response(
                         array(
@@ -106,9 +106,27 @@ class TimeSlots
             $data = get_field('mod_res_book_time_slots', 'option');
             if (is_array($data) && !empty($data)) {
                 foreach ($data as $item) {
+                    $start = $item['start_date'] . " 00:00";
+                    $stop = $item['end_date'] . " 23:59";
+                    $slotId = \ModularityResourceBooking\Helper\Slots::getSlotId( $item['start_date'] . " 00:00", $stop);
+
+                    $articleStock = \ModularityResourceBooking\Helper\Slots::getArticleSlotStock($params['type'], $params['article_id'], $slotId, $params['user_id']);
+                    if (is_wp_error($articleStock)) {
+                        return new \WP_REST_Response(
+                            array(
+                                'message' => $articleStock->get_error_message(),
+                                'state' => 'error'
+                            ), 404
+                        );
+                    }
+
                     $result[] = array(
-                        'start' => $item['start_date'] . " 00:00",
-                        'stop' => $item['end_date'] . " 23:59"
+                        'id' => $slotId,
+                        'start' => $start,
+                        'stop' => $stop,
+                        'unlimited_stock' => $articleStock['unlimited_stock'],
+                        'total_stock' => $articleStock['total_stock'],
+                        'available_stock' => $articleStock['available_stock'],
                     );
                 }
             }
