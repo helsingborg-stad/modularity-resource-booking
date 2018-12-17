@@ -7,10 +7,10 @@ class Slots
     public static function getArticleStock($articleType, $articleId, $slotId, $userId)
     {
         error_log("Article ID");
-        error_log ($articleId);
+        error_log($articleId);
 
-        error_log ("Slot ID");
-        error_log ($slotId);
+        error_log("Slot ID");
+        error_log($slotId);
 
         $products = array();
         if ($articleType === 'package') {
@@ -21,7 +21,9 @@ class Slots
             // The product
             //echo "<br><b>Products in package</b><br>";
             $product = get_post($articleId);
-            $products = !empty($product) ? $products[$product] : $products;
+            if (!empty($product)) {
+                $products[] = $product;
+            }
         }
 
         if (empty($products)) {
@@ -31,23 +33,28 @@ class Slots
             );
         }
 
-        // Todo move to method
+        // Todo move to own method
 
         // Get customer group
         $customerGroup = wp_get_object_terms($userId, 'customer_group', array('fields' => 'ids'));
         $groupLimit = null;
+        $customerIds = null;
         if (isset($customerGroup[0]) && !empty($customerGroup[0])) {
+            // Get customer group limit
             $groupLimit = get_field('customer_slot_limit', 'customer_group' . '_' . $customerGroup[0]);
             $groupLimit = $groupLimit === '' ? null : (int)$groupLimit;
+            // List of users within same customer group
+            $customerIds = \ModularityResourceBooking\Entity\Filter::getUserByTaxonomy('customer_group', $customerGroup[0]);
+            $customerIds = array_column($customerIds, 'ID');
         }
         error_log("USER GROUP");
         error_log(print_r($customerGroup, true));
         error_log("GROUP LIMIT");
         error_log(print_r($groupLimit, true));
+        error_log("CUSTOMER GROUP Users");
+        error_log(print_r($customerIds, true));
 
-        // Todo Get all user IDs within same group
-
-        $products = array_map(function ($product) use ($articleType, $slotId) {
+        $products = array_map(function ($product) use ($articleType, $slotId, $customerIds, $groupLimit) {
             // List of packages where the product is included
             $packages = wp_get_post_terms($product->ID, 'product-package', array('fields' => 'ids'));
             $packages = is_array($packages) && !empty($packages) ? $packages : array();
@@ -55,36 +62,74 @@ class Slots
             $stock = get_field('items_in_stock', $product->ID);
             // Check if product if unlimited
             $unlimited = $stock === '' ? true : false;
+            $stock = (int)$stock;
             // Calculate every time the product have been purchased within the slot period
             $articleIds = array_merge(array($product->ID), $packages);
             $orders = self::getOrdersByArticles($articleType, $articleIds, $slotId);
-            error_log("Orders");
-            error_log(print_r($orders, true));
             $orderCount = count($orders);
-            //var_dump($orderCount);
 
-            // Todo Get the group from orders to calculate available stock
+            // Get number of times the customer/group have purchased this product
+            $purchaseCount = 0;
+            foreach ($orders as $order) {
+                if (in_array($order->post_author, $customerIds)) {
+                    $purchaseCount++;
+                }
+            }
+            error_log("Unlimited:" . ($unlimited ? "true" : "false"));
+            error_log("Stock total:" . $stock);
+            error_log("Purchase Count:" . $purchaseCount);
+            error_log("Order Count:" . $orderCount);
 
-            // Calculate available stock number
-            $available = ((int)$stock - $orderCount);
+            // Calculate available stock
+            $availableStock = $stock - $orderCount;
+            error_log("Available after stock - orderCount:" . $availableStock);
+
+            // Calculate with limit
+            if ($groupLimit !== null) {
+                $groupStock = $groupLimit - $purchaseCount;
+                $availableStock = (!$unlimited && $availableStock < $groupStock) ? $availableStock : $groupStock;
+                error_log("If Group Limit is set:" . $availableStock);
+            } elseif ($groupLimit === null && $unlimited) {
+                $availableStock = null;
+            }
+
+            error_log("FINISHED AVAILABLE STOCK:" . $availableStock);
 
             $product = array(
                 'id' => $product->ID,
                 'unlimited_stock' => $unlimited,
-                'total_stock' => $unlimited ? null : (int)$stock,
-                'available_stock' => $available
+                'total_stock' => $unlimited ? null : $stock,
+                'available_stock' => $availableStock
             );
 
             return $product;
         }, $products);
 
+        // Remove null(Unlimited stock) values, to get list of products with a stock value
+        $articlesWithStock = array_diff(array_column($products, 'available_stock'), array(null));
+        if (!empty($articlesWithStock)) {
+            // Get minimum stock value from all products
+            $minimumStock = min($articlesWithStock);
+
+            error_log("Min stock");
+            error_log(print_r($minimumStock, true));
+            // Get the product with the minimum stock value
+            $productsWithMinStock = array_filter($products, function ($product) use ($minimumStock) {
+                return ($product['available_stock'] === $minimumStock);
+            });
+            error_log("Filtered Products");
+            error_log(print_r($productsWithMinStock, true));
+            // Return first object, in case more than one article have the same available stock left
+            return $productsWithMinStock[0];
+        }
+
+        error_log("Last Products");
         error_log(print_r($products, true));
 
-        // Todo Return the product data with least amount of stock left, or unlimited, and calc User limit
+        error_log("===========================END==================================");
 
-        $min = min(array_column($products, 'available_stock'));
-        error_log("Minimum available Stock");
-        error_log($min, true);
+        // Return first object (it should be a single product or all the products has unlimited stock)
+        return $products[0];
     }
 
 
@@ -110,25 +155,6 @@ class Slots
 
         return $products;
     }
-
-//    public static function getSlotsTotalByPackage($termId)
-//    {
-//        $products = self::getProductsByPackage($termId);
-//
-//        if (empty($products)) {
-//            return false;
-//        }
-//
-//        $slotsTotal = 0;
-//        //Get total slots (based on the product will the lowest stock)
-//        foreach ($products as $product) {
-//            if ($slotsTotal > get_field('items_in_stock', $product->ID) || $slotsTotal == 0) {
-//                $slotsTotal = get_field('items_in_stock', $product->ID);
-//            }
-//        }
-//
-//        return $slotsTotal;
-//    }
 
     public static function getOrdersByArticles($type = null, $articleIds = array(), $slotId = null)
     {
