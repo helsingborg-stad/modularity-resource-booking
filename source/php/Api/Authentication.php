@@ -43,7 +43,7 @@ class Authentication
     }
 
     /**
-     * Get a user by id
+     * Login a user
      *
      * @param object $request Object containing request details
      *
@@ -67,11 +67,20 @@ class Authentication
                 );
             }
 
-            return array(
-                'message' => $result->get_error_message(),
-                'state' => 'error'
-            );
+            //Incorrect password
+            if (is_wp_error($result) && $result->get_error_code() == "incorrect_password") {
+                return array(
+                    'message' => __('The password you provided was incorrect.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                );
+            }
 
+            if (is_wp_error($result) && $result->get_error_code() == "invalid_username") {
+                return array(
+                    'message' => __('The username or email that you provided does not exists.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                );
+            }
         }
 
         return array(
