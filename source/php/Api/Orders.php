@@ -62,7 +62,7 @@ class Orders
             )
         );
 
-        //Get all orders (for a limited period of time)
+        //Get my orders (for a limited period of time)
         register_rest_route(
             "ModularityResourceBooking/v1",
             "MyOrders",
