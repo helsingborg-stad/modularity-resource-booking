@@ -151,16 +151,23 @@ class Orders
      */
     public function listOrders($request, $metaQuery = null)
     {
+
+        //Basic query
+        $query = array(
+                    'post_type' => 'purchase',
+                    'posts_per_page' => 99,
+                    'orderby' => 'date',
+                    'order' => 'DESC'
+                );
+
+        //Append meta query
+        if (!is_null($metaQuery) && is_array($metaQuery)) {
+            $query['meta_query'] = $metaQuery;
+        }
+
         return new \WP_REST_Response(
             $this->filterorderOutput(
-                get_posts(
-                    array(
-                        'post_type' => 'purchase',
-                        'posts_per_page' => 99,
-                        'orderby' => 'date',
-                        'order' => 'DESC'
-                    )
-                )
+                get_posts($query)
             ), 200
         );
     }
@@ -174,7 +181,15 @@ class Orders
      */
     public function listMyOrders($request)
     {
-        return $this->listOrders($request);
+        return $this->listOrders(
+            $request,
+            array(
+                array(
+                    'key' => 'customer_id',
+                    'value' => self::$userId,
+                )
+            )
+        );
     }
 
     /**
