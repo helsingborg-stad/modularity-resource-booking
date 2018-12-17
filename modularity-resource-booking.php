@@ -45,7 +45,6 @@ add_action('plugins_loaded', function () {
         'mod-order-details' => 'group_5bed425d9abc2',
         'mod-order-notes' => 'group_5bed90f741b0e',
         'mod-order-media' => 'group_5bffbfe266f20',
-        'mod-customers' => 'group_5bf50cc73ff8a',
         'mod-customer-group' => 'group_5bfe8d5fdeedd',
         'mod-time-slots-management' => 'group_5bed4d621923e',
         'mod-default-order-status' => 'group_5bfd2dab2fd89',
