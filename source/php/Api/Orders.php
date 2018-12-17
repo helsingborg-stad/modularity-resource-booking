@@ -224,6 +224,42 @@ class Orders
             }, $orderArticles);
         }
 
+        for($int=0; $int < count($orderArticles); $int++){
+            if(isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
+                $productIds =  \ModularityResourceBooking\Helper::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
+
+                foreach($productIds as $prodId){
+                    $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
+
+                    if (is_object($mediaItems) && $mediaItems->error != null) {
+                        return new \WP_REST_Response(
+                            array(
+                                'message' => $mediaItems->error,
+                                'state' => 'error'
+                            ),
+                            201
+                        );
+                    }
+                }
+
+            } else {
+
+                $prodId = $orderArticles[$int]['field_5bed43f2bf1f2'];
+                $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
+
+                if (is_object($mediaItems) && $mediaItems->error != null) {
+                    return new \WP_REST_Response(
+                        array(
+                            'message' => $mediaItems->error,
+                            'state' => 'error'
+                        ),
+                        201
+                    );
+                }
+            }
+        }
+
+
         // Save order items to repeater field
         update_field('field_5c0fc16aaefa4', $orderArticles, $insert);
 
@@ -236,21 +272,6 @@ class Orders
         update_field('order_status', get_field('order_status', 'option'), $insert);
 
 
-        //Upload media /// HOLA AMiGO !!!!!! Byt ut statiskt ID mot dynamiskt !!!
-        $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload(256176, $_FILES);
-
-       // var_dump($mediaItems->error);
-
-        if (is_object($mediaItems) && $mediaItems->error != null) {
-            return new \WP_REST_Response(
-                array(
-                    'message' => $mediaItems->error,
-                    'state' => 'error'
-                ),
-                201
-            );
-        }
-        echo 23452345;
         //Append attachment data
         if (is_array($mediaItems) && !empty($mediaItems)) {
 

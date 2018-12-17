@@ -37,7 +37,7 @@ class MediaUpload
 
                 // check dimension of file upload ( Unlink the image if it contains size errors)
                 $dimensionErrors = self::checkDimensions($ProdId, $fileData);
-                var_dump($dimensionErrors);
+
                 if ($dimensionErrors->error != null) {
                     unlink($fileData['file']);
                     return $dimensionErrors;
@@ -96,15 +96,15 @@ class MediaUpload
     {
         $rows = get_field('media_requirement', $prodId);
         $error = (object) array('error' => null);
+
         if ($rows) {
             foreach ($rows as $row) {
-                echo $row['image_width'];
+
                 $widthFromProduct = $row['image_width'];
                 $heightFromProduct = $row['image_height'];
 
                 $format = pathinfo($fileData['file']);
-                $errorStr = 'Error! Dimensions of your image: ' . basename($fileData['url']) . ', size: ({width}px x {height}px), 
-                is to large. Please upload image with max dimensions: ' . $widthFromProduct . 'px x ' . $widthFromProduct . 'px';
+                $errorStr = 'Error! Your image: ' . basename($fileData['url']) . ', size: ({width}px x {height}px), has wrong dimensions. Please upload image with following dimensions: ' . $widthFromProduct . 'px x ' . $widthFromProduct . 'px';
 
                 switch ($format['extension']) {
 
@@ -117,7 +117,7 @@ class MediaUpload
 
                         $imageMagick = new \Imagick($fileData['file']);
                         $size = $imageMagick->getImageGeometry();
-                        $error->size = ($size['width'] < $widthFromProduct && $size['height'] < $heightFromProduct) ? false : true;
+                        $error->size = ($size['width'] == $widthFromProduct && $size['height'] == $heightFromProduct) ? false : true;
                         $error->error = ($error->size) ?
                             __(str_replace('{width}', $size['width'], str_replace('{height}', $size['height'], $errorStr)), 'modularity-resource-booking')
                             : null;
@@ -132,14 +132,13 @@ class MediaUpload
                     default:
 
                         $size = getimagesize($fileData['file']);
-                        $error->size = ($size[0] < $widthFromProduct && $size[1] < $heightFromProduct) ? false : true;
+                        $error->size = ($size[0] == $widthFromProduct && $size[1] == $heightFromProduct) ? false : true;
                         $error->error = ($error->size) ?
                             __(str_replace('{width}', $size[0], str_replace('{height}', $size[1], $errorStr)), 'modularity-resource-booking')
                             : null;
 
                         return $error;
                         break;
-
                 }
             }
         } else {
