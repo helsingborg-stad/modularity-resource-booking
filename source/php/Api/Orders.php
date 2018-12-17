@@ -2,10 +2,22 @@
 
 namespace ModularityResourceBooking\Api;
 
+/**
+ * Class Orders
+ * @package ModularityResourceBooking\Api
+ */
 class Orders
 {
+
+    /**
+     * @var
+     */
     public static $userId;
 
+
+    /**
+     * Orders constructor.
+     */
     public function __construct()
     {
         //Run register rest routes

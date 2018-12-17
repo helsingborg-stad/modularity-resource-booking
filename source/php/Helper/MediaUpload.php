@@ -2,8 +2,19 @@
 
 namespace ModularityResourceBooking\Helper;
 
+/**
+ * Class MediaUpload
+ * @package ModularityResourceBooking\Helper
+ */
 class MediaUpload
 {
+    /**
+     * @param $ProdId
+     * @param $uploads
+     * @param array $mediaIds
+     * @return array|object|void|null
+     * @throws \ImagickException
+     */
     public static function upload($ProdId, $uploads, $mediaIds = array())
     {
 
@@ -30,7 +41,6 @@ class MediaUpload
                 if (self::checkMimeType($upload) !== true) {
                     continue;
                 }
-
 
                 //Move to correct location
                 $fileData = \wp_handle_upload($upload, array('test_form' => false));
@@ -60,6 +70,11 @@ class MediaUpload
         return array_filter($mediaIds);
     }
 
+
+    /**
+     * @param $file
+     * @return bool
+     */
     public static function checkUploadErrors($file)
     {
         switch ($file['error']) {
@@ -74,6 +89,10 @@ class MediaUpload
         }
     }
 
+    /**
+     * @param $file
+     * @return bool
+     */
     public static function checkMimeType($file)
     {
         $fileInformation = new \finfo(FILEINFO_MIME_TYPE);
@@ -92,6 +111,13 @@ class MediaUpload
         return true;
     }
 
+
+    /**
+     * @param $prodId int
+     * @param $fileData array
+     * @return object|null
+     * @throws \ImagickException
+     */
     public static function checkDimensions($prodId, $fileData)
     {
         $rows = get_field('media_requirement', $prodId);
