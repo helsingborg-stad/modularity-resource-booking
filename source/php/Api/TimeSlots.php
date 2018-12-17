@@ -14,7 +14,6 @@ class TimeSlots
 
     /**
      * Registers all rest routes for managing orders
-     *
      * @return void
      */
     public function registerRestRoutes()
@@ -80,15 +79,9 @@ class TimeSlots
             $groupMembers = \ModularityResourceBooking\Entity\Filter::getUserByTaxonomy('customer_group', $customerGroup[0]);
             $groupMembers = array_column($groupMembers, 'ID');
         }
-        error_log("USER GROUP");
-        error_log(print_r($customerGroup, true));
-        error_log("GROUP LIMIT");
-        error_log(print_r($groupLimit, true));
-        error_log("CUSTOMER GROUP Members");
-        error_log(print_r($groupMembers, true));
 
+        // Get list of product objects
         $products = self::getProductsByArticle($params['article_id'], $params['type']);
-
         if (empty($products)) {
             return new \WP_REST_Response(
                 array(
@@ -191,6 +184,15 @@ class TimeSlots
         return $where;
     }
 
+    /**
+     * Calculate and returns stock values for slot periods
+     * @param $products
+     * @param $articleType
+     * @param $slotId
+     * @param $groupMembers
+     * @param $groupLimit
+     * @return array
+     */
     public function getArticleSlotStock($products, $articleType, $slotId, $groupMembers, $groupLimit)
     {
         $products = array_map(function ($product) use ($articleType, $slotId, $groupMembers, $groupLimit) {
@@ -206,72 +208,56 @@ class TimeSlots
             $articleIds = array_merge(array($product->ID), $packages);
             $orders = self::getOrdersByArticles($articleType, $articleIds, $slotId);
             $orderCount = count($orders);
-
-            // Get number of times the customer/group have purchased this product
+            // Get number of times the customer(or other group members) have purchased this product
             $purchaseCount = 0;
             foreach ($orders as $order) {
                 if (in_array($order->post_author, $groupMembers)) {
                     $purchaseCount++;
                 }
             }
-            error_log("Unlimited:" . ($unlimited ? "true" : "false"));
-            error_log("Stock total:" . $stock);
-            error_log("Purchase Count:" . $purchaseCount);
-            error_log("Order Count:" . $orderCount);
-
             // Calculate available stock
             $availableStock = $stock - $orderCount;
-            error_log("Available after stock - orderCount:" . $availableStock);
-
-            // Calculate with limit
+            // Calculate stock if limit is set
             if ($groupLimit !== null) {
                 $groupStock = $groupLimit - $purchaseCount;
                 $availableStock = (!$unlimited && $availableStock < $groupStock) ? $availableStock : $groupStock;
-                error_log("If Group Limit is set:" . $availableStock);
             } elseif ($groupLimit === null && $unlimited) {
-                $availableStock = null;
+                $availableStock = null; // Set to null if no limit is set and stock is unlimited
             }
-
-            error_log("FINISHED AVAILABLE STOCK:" . $availableStock);
-
+            // Product with complete stock data
             $product = array(
                 'id' => $product->ID,
                 'unlimited_stock' => $unlimited,
                 'total_stock' => $unlimited ? null : $stock,
                 'available_stock' => $availableStock
             );
-
             return $product;
         }, $products);
 
-        // Remove null(Unlimited stock) values, to get list of products with a stock value
+        // Remove NULL(Unlimited stock) values, to get list of products with a stock value
         $articlesWithStock = array_diff(array_column($products, 'available_stock'), array(null));
         if (!empty($articlesWithStock)) {
             // Get minimum stock value from all products
             $minimumStock = min($articlesWithStock);
-            error_log("Min stock");
-            error_log(print_r($minimumStock, true));
-            // Get the product with the minimum stock value
+            // Get the product with minimum stock value
             $productsWithMinStock = array_filter($products, function ($product) use ($minimumStock) {
                 return ($product['available_stock'] === $minimumStock);
             });
-            // Reset keys
+            // Reset array keys
             $productsWithMinStock = array_values($productsWithMinStock);
-            error_log("Filtered Products");
-            error_log(print_r($productsWithMinStock, true));
             // Return first object, in case more than one article have the same available stock left
             return $productsWithMinStock[0];
         }
-
-        error_log("Last Products");
-        error_log(print_r($products, true));
-
-        error_log("===========================END==================================");
-
-        // Return first object (it should be a single product or all the products has unlimited stock)
+        // Return first object (should be a product with unlimited stock)
         return $products[0];
     }
 
+    /**
+     * Get a list of product objects, handles both single products and packages
+     * @param $articleId
+     * @param $articleType
+     * @return array|bool
+     */
     public static function getProductsByArticle($articleId, $articleType)
     {
         $products = array();
@@ -287,6 +273,11 @@ class TimeSlots
         return $products;
     }
 
+    /**
+     * Get all products in a package
+     * @param $termId
+     * @return array|bool
+     */
     public static function getProductsByPackage($termId)
     {
         //Make sure package (term) exists
@@ -310,6 +301,13 @@ class TimeSlots
         return $products;
     }
 
+    /**
+     * Get all orders containing a list of article IDs
+     * @param null  $type
+     * @param array $articleIds
+     * @param null  $slotId
+     * @return array
+     */
     public static function getOrdersByArticles($type = null, $articleIds = array(), $slotId = null)
     {
         $orders = get_posts(array(
@@ -339,6 +337,12 @@ class TimeSlots
         return $orders;
     }
 
+    /**
+     * Transform slot interval to ID
+     * @param $start
+     * @param $stop
+     * @return string
+     */
     public static function getSlotId($start, $stop)
     {
         $start = base_convert(strtotime($start), 10, 36);
@@ -346,6 +350,11 @@ class TimeSlots
         return $start . '.' . $stop;
     }
 
+    /**
+     * Transform slot ID to readable interval
+     * @param $slotId
+     * @return array|bool
+     */
     public static function getSlotInterval($slotId)
     {
         $dates = explode('.', $slotId);
