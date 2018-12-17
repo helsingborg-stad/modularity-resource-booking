@@ -1,0 +1,99 @@
+<?php
+
+namespace ModularityResourceBooking\Api;
+
+class Authentication
+{
+    public static $userId;
+
+    public function __construct()
+    {
+        //Run register rest routes
+        add_action('rest_api_init', array($this, 'registerRestRoutes'));
+    }
+
+    /**
+     * Registers all rest routes for managing customers
+     *
+     * @return void
+     */
+    public function registerRestRoutes()
+    {
+
+        //Login rest route
+        register_rest_route(
+            "ModularityResourceBooking/v1",
+            "Authentication/Login",
+            array(
+                'methods' => \WP_REST_Server::ALLMETHODS,
+                'callback' => array($this, 'login')
+            )
+        );
+
+        //Login rest route
+        register_rest_route(
+            "ModularityResourceBooking/v1",
+            "Authentication/Logout",
+            array(
+                'methods' => \WP_REST_Server::ALLMETHODS,
+                'callback' => array($this, 'logout')
+            )
+        );
+
+    }
+
+    /**
+     * Get a user by id
+     *
+     * @param object $request Object containing request details
+     *
+     * @return WP_REST_Response
+     */
+    public function login($request)
+    {
+        if ($request->get_param('username') && $request->get_param('password')) {
+
+            $result = wp_signon(
+                array(
+                    'user_login' => $request->get_param('username'),
+                    'user_password' => $request->get_param('password')
+                )
+            );
+
+            if (!is_wp_error($result)) {
+                return array(
+                    'message' => __('Login successful, reloading page.', 'modularity-resource-booking'),
+                    'state' => 'success'
+                );
+            }
+
+            return array(
+                'message' => $result->get_error_message(),
+                'state' => 'error'
+            );
+
+        }
+
+        return array(
+            'message' => __('Email and password not provided.', 'modularity-resource-booking'),
+            'state' => 'error'
+        );
+    }
+
+    /**
+     * Logout the user
+     *
+     * @param object $request Object containing request details
+     *
+     * @return WP_REST_Response
+     */
+    public function logout($request)
+    {
+        wp_logout();
+        return array(
+            'message' => __('Logging out user.', 'modularity-resource-booking'),
+            'state' => 'success'
+        );
+    }
+
+}
