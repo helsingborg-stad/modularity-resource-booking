@@ -236,6 +236,10 @@ class Orders
         update_field('order_status', get_field('order_status', 'option'), $insert);
 
 
+        //Upload media /// HOLA AMiGO !!!!!! Byt ut statiskt ID mot dynamiskt !!!
+        $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload(256176, $_FILES);
+
+       // var_dump($mediaItems->error);
 
         if (is_object($mediaItems) && $mediaItems->error != null) {
             return new \WP_REST_Response(
@@ -246,7 +250,7 @@ class Orders
                 201
             );
         }
-
+        echo 23452345;
         //Append attachment data
         if (is_array($mediaItems) && !empty($mediaItems)) {
 

@@ -37,7 +37,7 @@ class MediaUpload
 
                 // check dimension of file upload ( Unlink the image if it contains size errors)
                 $dimensionErrors = self::checkDimensions($ProdId, $fileData);
-
+                var_dump($dimensionErrors);
                 if ($dimensionErrors->error != null) {
                     unlink($fileData['file']);
                     return $dimensionErrors;
@@ -95,11 +95,10 @@ class MediaUpload
     public static function checkDimensions($prodId, $fileData)
     {
         $rows = get_field('media_requirement', $prodId);
-        $error = array();
-
-        if ($rows && $fileData) {
+        $error = (object) array('error' => null);
+        if ($rows) {
             foreach ($rows as $row) {
-
+                echo $row['image_width'];
                 $widthFromProduct = $row['image_width'];
                 $heightFromProduct = $row['image_height'];
 
@@ -112,21 +111,18 @@ class MediaUpload
                     case "pdf":
 
                         if (!extension_loaded('imagick')) {
-                            $error['error'] = 'imagick not installed'
-                            return (object) $error;
+                            $error->error = 'imagick not installed';
+                            return $error;
                         }
-                        
+
                         $imageMagick = new \Imagick($fileData['file']);
                         $size = $imageMagick->getImageGeometry();
-
-                        $error['width'] = ($size['width'] > $widthFromProduct) ? true : false;
-                        $error['height'] = ($size['height'] > $heightFromProduct) ? true : false;
-
-                        $error['error'] = (in_array(true, $error)) ?
+                        $error->size = ($size['width'] < $widthFromProduct && $size['height'] < $heightFromProduct) ? false : true;
+                        $error->error = ($error->size) ?
                             __(str_replace('{width}', $size['width'], str_replace('{height}', $size['height'], $errorStr)), 'modularity-resource-booking')
                             : null;
 
-                        return (object) $error;
+                        return $error;
                         break;
 
                     case "mp4":
@@ -136,18 +132,18 @@ class MediaUpload
                     default:
 
                         $size = getimagesize($fileData['file']);
-
-                        $error['width'] = ($size[0] > $widthFromProduct) ? true : false;
-                        $error['height'] = ($size[1] > $heightFromProduct) ? true : false;
-
-                        $error['error'] = (in_array(true, $error)) ?
+                        $error->size = ($size[0] < $widthFromProduct && $size[1] < $heightFromProduct) ? false : true;
+                        $error->error = ($error->size) ?
                             __(str_replace('{width}', $size[0], str_replace('{height}', $size[1], $errorStr)), 'modularity-resource-booking')
                             : null;
 
-                        return (object) $error;
+                        return $error;
                         break;
+
                 }
             }
+        } else {
+            return $error;
         }
     }
 }
