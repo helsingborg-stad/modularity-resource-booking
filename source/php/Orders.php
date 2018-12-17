@@ -106,7 +106,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                 </thead>
 	                            <tbody>';
                 foreach ($rows as $row) {
-                    $interval = Helper\Slots::getSlotInterval($row['slot_id']);
+                    $interval = Api\TimeSlots::getSlotInterval($row['slot_id']);
 
                     switch ($row['type']) {
                         case 'package':
