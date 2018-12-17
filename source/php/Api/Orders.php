@@ -62,6 +62,16 @@ class Orders
             )
         );
 
+        //Get all orders (for a limited period of time)
+        register_rest_route(
+            "ModularityResourceBooking/v1",
+            "MyOrders",
+            array(
+                'methods' => \WP_REST_Server::READABLE,
+                'callback' => array($this, 'listMyOrders')
+            )
+        );
+
         //Create a new order
         register_rest_route(
             "ModularityResourceBooking/v1",
@@ -134,11 +144,12 @@ class Orders
     /**
      * Get all orders for n amout of time
      *
-     * @param object $request Object containing request details
+     * @param object $request   Object containing request details
+     * @param array  $metaQuery Containing meta query information
      *
      * @return WP_REST_Response
      */
-    public function listOrders($request)
+    public function listOrders($request, $metaQuery = null)
     {
         return new \WP_REST_Response(
             $this->filterorderOutput(
@@ -152,6 +163,18 @@ class Orders
                 )
             ), 200
         );
+    }
+
+    /**
+     * Get all orders for n amout of time that i own / are the customer on
+     *
+     * @param object $request Object containing request details
+     *
+     * @return WP_REST_Response
+     */
+    public function listMyOrders($request)
+    {
+        return $this->listOrders($request);
     }
 
     /**
