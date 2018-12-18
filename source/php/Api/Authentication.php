@@ -25,7 +25,7 @@ class Authentication
             "ModularityResourceBooking/v1",
             "Authentication/Login",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'login')
             )
         );
@@ -53,11 +53,8 @@ class Authentication
     {
 
         //Verify nonce
-        if (!wp_verify_nonce('nonce', 'wp_rest')) {
-            return array(
-                'message' => __('Oops, could not verify your requests origin. Try to login again.', 'modularity-resource-booking'),
-                'state' => 'error'
-            );
+        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+            return $message;
         }
 
         //Verify provided data

@@ -8,6 +8,9 @@ class Settings
     public function __construct()
     {
         add_action('init', array($this, 'registerOptionsPage'));
+
+        //Add nonce message for su admins
+        add_action('admin_notices', array($this, 'nonceKeyMessage'));
     }
 
     /**
@@ -25,6 +28,18 @@ class Settings
                     'parent_slug' => 'options-general.php'
                 )
             );
+        }
+    }
+
+    /**
+     * Prints the nonce key
+     *
+     * @return void
+     */
+    public function nonceKeyMessage()
+    {
+        if ((isset($_GET['page']) && $_GET['page'] == "acf-options-resource-booking") && (is_super_admin() || current_user_can('administrator'))) {
+            printf('<div class="updated notice"><p>%s: %s</p></div>', __('Current nonce key is: ', 'modularity-resource-booking'), wp_create_nonce('wp_rest'));
         }
     }
 }

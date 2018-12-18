@@ -47,7 +47,7 @@ class Customer
             "ModularityResourceBooking/v1",
             "UserEmailExists",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::EDITABLE,
                 'callback' => array($this, 'emailExists')
             )
         );
@@ -57,7 +57,7 @@ class Customer
             "ModularityResourceBooking/v1",
             "CreateUser",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'create'),
                 'args' => array(
                     'id' => array(
@@ -74,7 +74,7 @@ class Customer
             "ModularityResourceBooking/v1",
             "ModifyUser/(?P<id>[\d]+)",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::EDITABLE,
                 'callback' => array($this, 'modify'),
                 'permission_callback' => array($this, 'canUpdateUser')
             )
@@ -85,7 +85,7 @@ class Customer
             "ModularityResourceBooking/v1",
             "GetUser/(?P<id>[\d]+)",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'get'),
                 'args' => array(
                     'id' => array(
@@ -127,6 +127,12 @@ class Customer
      */
     public function create($request)
     {
+
+        //Verify nonce
+        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+            return $message;
+        }
+
         $requiredKeys = array("email", "password", "company");
 
         foreach ($requiredKeys as $requirement) {
@@ -201,6 +207,12 @@ class Customer
      */
     public function modify($request)
     {
+
+        //Verify nonce
+        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+            return $message;
+        }
+
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         //Check if user id exists
