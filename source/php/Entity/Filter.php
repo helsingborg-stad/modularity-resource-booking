@@ -63,20 +63,25 @@ class Filter
         $value = $_GET[$this->taxonomySlug] ?? null;
 
         if (is_admin() && $pagenow === 'users.php' && $role === 'customer' && $value) {
-            global $wpdb;
-            $dbQuery = "
+            $result = self::getUserByTaxonomy($this->taxonomySlug, $value);
+            $result = !empty($result) ? array_column($result, 'ID') : array(0);
+
+            $query->set('include', $result);
+        }
+    }
+
+    public static function getUserByTaxonomy($slug, $id)
+    {
+        global $wpdb;
+        $dbQuery = "
                 SELECT ID
                 FROM {$wpdb->users} AS users
                 LEFT JOIN {$wpdb->term_relationships} AS tax_rel ON (users.ID = tax_rel.object_id)
                 LEFT JOIN {$wpdb->term_taxonomy} AS term_tax ON (tax_rel.term_taxonomy_id = term_tax.term_taxonomy_id)
                 LEFT JOIN {$wpdb->terms} AS terms ON (terms.term_id = term_tax.term_id)
-                WHERE terms.term_id = '{$value}'
-                AND term_tax.taxonomy = '{$this->taxonomySlug}'";
-            $result = $wpdb->get_results($dbQuery, ARRAY_A);
-            $result = !empty($result) ? array_column($result, 'ID') : array(0);
-
-            $query->set('include', $result);
-        }
+                WHERE terms.term_id = '{$id}'
+                AND term_tax.taxonomy = '{$slug}'";
+        return $wpdb->get_results($dbQuery, ARRAY_A);
     }
 
     public function graphicSelectUsers($which)
