@@ -94,7 +94,7 @@ class TimeSlots
                 $stop = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
                 $slotId = self::getSlotId($start, $stop);
 
-                $articleStock = $this->getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
+                $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
                 if (is_wp_error($articleStock)) {
                     return new \WP_REST_Response(
                         array(
@@ -123,7 +123,7 @@ class TimeSlots
                     $stop = $item['end_date'] . " 23:59";
                     $slotId = self::getSlotId( $item['start_date'] . " 00:00", $stop);
 
-                    $articleStock = $this->getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
+                    $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
                     if (is_wp_error($articleStock)) {
                         return new \WP_REST_Response(
                             array(
@@ -221,7 +221,7 @@ class TimeSlots
      * @param $groupLimit
      * @return array
      */
-    public function getArticleSlotStock($products, $articleType, $slotId, $groupMembers, $groupLimit)
+    public static function getArticleSlotStock($products, $articleType, $slotId, $groupMembers, $groupLimit)
     {
         $products = array_map(function ($product) use ($articleType, $slotId, $groupMembers, $groupLimit) {
             // List of packages where the product is included
