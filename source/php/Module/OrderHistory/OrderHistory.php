@@ -21,6 +21,19 @@ class OrderHistory extends \Modularity\Module
         return $data;
     }
 
+    public function script()
+    {
+        if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/OrderHistory/Index.js'))) {
+            // Enqueue react
+            \Modularity\Helper\React::enqueue();
+            // Enqueue module script
+            wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/OrderHistory/Index.js'), array('jquery', 'react', 'react-dom'));
+            wp_localize_script('modularity-' . $this->slug, 'modOrderHistory', array(
+                'translation' => array(),
+            ));
+        }
+    }
+
     /**
      * Available "magic" methods for modules:
      * init()            What to do on initialization (if you must, use __construct with care, this will probably break stuff!!)
