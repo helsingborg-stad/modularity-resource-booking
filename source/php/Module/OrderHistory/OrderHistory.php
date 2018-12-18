@@ -2,16 +2,16 @@
 
 namespace ModularityResourceBooking\Module;
 
-class UserDashboard extends \Modularity\Module
+class OrderHistory extends \Modularity\Module
 {
-    public $slug = 'user-dashboard';
+    public $slug = 'order-history';
     public $supports = array();
 
     public function init()
     {
-        $this->nameSingular = __('User dashboard', 'modularity-resource-booking');
-        $this->namePlural = __('User dashboards', 'modularity-resource-booking');
-        $this->description = __('Outputs a dashboard for user accounts.', 'modularity-resource-booking');
+        $this->nameSingular = __('Order history', 'modularity-resource-booking');
+        $this->namePlural = __('Order histories', 'modularity-resource-booking');
+        $this->description = __('Outputs a list of previous orders.', 'modularity-resource-booking');
     }
 
     public function data() : array

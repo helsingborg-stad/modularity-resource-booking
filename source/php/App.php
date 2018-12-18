@@ -80,8 +80,8 @@ class App
                 'UserAccount'
             );
             modularity_register_module(
-                MODULARITYRESOURCEBOOKING_PATH . 'source/php/Module/UserDashboard',
-                'UserDashboard'
+                MODULARITYRESOURCEBOOKING_PATH . 'source/php/Module/OrderHistory',
+                'OrderHistory'
             );
         }
     }
