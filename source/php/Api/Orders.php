@@ -77,8 +77,7 @@ class Orders
             "ModularityResourceBooking/v1",
             "CreateOrder",
             array(
-                //'methods' => \WP_REST_Server::CREATABLE,
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'create'),
                 'permission_callback' => array($this, 'checkInsertCapability')
             )
@@ -89,8 +88,7 @@ class Orders
             "ModularityResourceBooking/v1",
             "ModifyOrder/(?P<id>[\d]+)",
             array(
-                //'methods' => \WP_REST_Server::EDITABLE,
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::EDITABLE,
                 'callback' => array($this, 'modify'),
                 'permission_callback' => array($this, 'checkOrderOwnership'),
                 'args' => array(
