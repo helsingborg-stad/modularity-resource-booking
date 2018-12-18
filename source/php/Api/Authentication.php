@@ -13,7 +13,7 @@ class Authentication
     }
 
     /**
-     * Registers all rest routes for managing customers
+     * Registers all rest routes for login / logout
      *
      * @return void
      */
@@ -51,15 +51,20 @@ class Authentication
      */
     public function login($request)
     {
+
+        //Verify provided data
         if ($request->get_param('username') && $request->get_param('password')) {
 
+            //Try to signon
             $result = wp_signon(
                 array(
                     'user_login' => $request->get_param('username'),
-                    'user_password' => $request->get_param('password')
+                    'user_password' => $request->get_param('password'),
+                    'rememberme' => 1
                 )
             );
 
+            //Login successful
             if (!is_wp_error($result)) {
                 return array(
                     'message' => __('Login successful, reloading page.', 'modularity-resource-booking'),
@@ -75,6 +80,7 @@ class Authentication
                 );
             }
 
+            //User not exists
             if (is_wp_error($result) && $result->get_error_code() == "invalid_username") {
                 return array(
                     'message' => __('The username or email that you provided does not exists.', 'modularity-resource-booking'),
@@ -84,7 +90,7 @@ class Authentication
         }
 
         return array(
-            'message' => __('Email and password not provided.', 'modularity-resource-booking'),
+            'message' => __('You have to provide both email and password.', 'modularity-resource-booking'),
             'state' => 'error'
         );
     }
@@ -100,7 +106,7 @@ class Authentication
     {
         wp_logout();
         return array(
-            'message' => __('Logging out user.', 'modularity-resource-booking'),
+            'message' => __('You have now logged out.', 'modularity-resource-booking'),
             'state' => 'success'
         );
     }
