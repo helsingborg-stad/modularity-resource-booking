@@ -276,7 +276,7 @@ class Orders
 
         for($int=0; $int < count($orderArticles); $int++){
             if(isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
-                $productIds =  \ModularityResourceBooking\Helper::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
+                $productIds =  TimeSlots::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
 
                 foreach($productIds as $prodId){
                     $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
