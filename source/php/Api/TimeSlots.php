@@ -66,19 +66,9 @@ class TimeSlots
         // Request params
         $params = $request->get_params();
         $result = array();
-
         // Get customer group data
-        $customerGroup = wp_get_object_terms($params['user_id'], 'customer_group', array('fields' => 'ids'));
-        $groupLimit = null;
-        $groupMembers = array($params['user_id']);
-        if (isset($customerGroup[0]) && !empty($customerGroup[0])) {
-            // Get customer group limit
-            $groupLimit = get_field('customer_slot_limit', 'customer_group' . '_' . $customerGroup[0]);
-            $groupLimit = $groupLimit === '' ? null : (int)$groupLimit;
-            // List of users within same customer group
-            $groupMembers = \ModularityResourceBooking\Entity\Filter::getUserByTaxonomy('customer_group', $customerGroup[0]);
-            $groupMembers = array_column($groupMembers, 'ID');
-        }
+        $groupLimit = self::customerGroupLimit($params['user_id']);
+        $groupMembers = self::customerGroupMembers($params['user_id']);
 
         // Get list of product objects
         $products = self::getProductsByArticle($params['article_id'], $params['type']);
@@ -165,6 +155,44 @@ class TimeSlots
                 ), 404
             );
         }
+    }
+
+    /**
+     * Get customer group limit
+     * @param $userId
+     * @return null|int
+     */
+    public static function customerGroupLimit($userId = 0)
+    {
+        // Get user ID if missing
+        $userId = $userId ? $userId : get_current_user_id();
+        $customerGroup = wp_get_object_terms($userId, 'customer_group', array('fields' => 'ids'));
+        $groupLimit = null;
+        if (isset($customerGroup[0]) && !empty($customerGroup[0])) {
+            $groupLimit = get_field('customer_slot_limit', 'customer_group' . '_' . $customerGroup[0]);
+            $groupLimit = $groupLimit === '' ? null : (int)$groupLimit;
+        }
+
+        return $groupLimit;
+    }
+
+    /**
+     * List of users within same customer group
+     * @param int $userId
+     * @return array
+     */
+    public static function customerGroupMembers($userId = 0)
+    {
+        // Get user ID if missing
+        $userId = $userId ? $userId : get_current_user_id();
+        $customerGroup = wp_get_object_terms($userId, 'customer_group', array('fields' => 'ids'));
+        $groupMembers = array($userId);
+        if (isset($customerGroup[0]) && !empty($customerGroup[0])) {
+            $groupMembers = \ModularityResourceBooking\Entity\Filter::getUserByTaxonomy('customer_group', $customerGroup[0]);
+            $groupMembers = array_column($groupMembers, 'ID');
+        }
+
+        return $groupMembers;
     }
 
     /**
