@@ -14,7 +14,6 @@ class Orders
      */
     public static $userId;
 
-
     /**
      * Orders constructor.
      */
@@ -107,7 +106,7 @@ class Orders
             "RemoveOrder/(?P<id>[\d]+)",
             array(
                 //'methods' => \WP_REST_Server::DELETABLE,
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::DELETABLE,
                 'callback' => array($this, 'remove'),
                 'permission_callback' => array($this, 'checkOrderOwnership'),
                 'args' => array(
