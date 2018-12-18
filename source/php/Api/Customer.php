@@ -47,7 +47,7 @@ class Customer
             "ModularityResourceBooking/v1",
             "UserEmailExists",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::EDITABLE,
                 'callback' => array($this, 'emailExists')
             )
         );
@@ -57,7 +57,7 @@ class Customer
             "ModularityResourceBooking/v1",
             "CreateUser",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'create'),
                 'args' => array(
                     'id' => array(
@@ -74,7 +74,7 @@ class Customer
             "ModularityResourceBooking/v1",
             "ModifyUser/(?P<id>[\d]+)",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::EDITABLE,
                 'callback' => array($this, 'modify'),
                 'permission_callback' => array($this, 'canUpdateUser')
             )
@@ -85,7 +85,7 @@ class Customer
             "ModularityResourceBooking/v1",
             "GetUser/(?P<id>[\d]+)",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'get'),
                 'args' => array(
                     'id' => array(
