@@ -8,7 +8,7 @@ class TimeSlots
     {
         //Run register rest routes
         add_action('rest_api_init', array($this, 'registerRestRoutes'));
-        //add_action('init', array($this, 'getSlots'));
+
         add_filter('posts_where', array($this, 'postsWhereWildcard'), 2, 10);
     }
 
@@ -31,6 +31,7 @@ class TimeSlots
 
     /**
      * Get the query params for collections
+     *
      * @return array
      */
     public function getCollectionParams()

@@ -7,6 +7,9 @@ This plugin creates a complete API to integrate any frontend solution. The plugi
 
 For detailed documentation of the API, please refer to our Postman page at https://documenter.getpostman.com/view/5930358/RzffHp48 . 
 
+### Nonces
+All requests interacting with user bound data this api requires a nonce field to be posted with the request. Documentation here: https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
+
 ### Users / Customer
 
 * ``` ModularityResourceBooking/v1/UserEmailExists ``` - Check if a email exists $_POST['email'] must be set. 
@@ -33,6 +36,11 @@ For detailed documentation of the API, please refer to our Postman page at https
 ### Time slots
 
 * ``` ModularityResourceBooking/v1/Slots ``` - List all slots, avabile and unavabile.
+
+### Authentication
+
+* ``` ModularityResourceBooking/v1/Authentication/Login ``` - Login. Params: username, password
+* ``` ModularityResourceBooking/v1/Authentication/Login ```  - Logout
 
 ## Why is the order posttype called purchase? 
 You cannot name a posttype "order" in WordPress. This is a reserved keyword that will break all post-listings. We have renamed it to "purchase" but still want to present the name as "order" due to simplicity & logical reasons for the user. 
