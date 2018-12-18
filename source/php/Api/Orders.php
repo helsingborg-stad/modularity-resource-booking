@@ -78,7 +78,7 @@ class Orders
             array(
                 'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'create'),
-                'permission_callback' => array($this, 'checkInsertCapability')
+                //'permission_callback' => array($this, 'checkInsertCapability') TODO: activate later
             )
         );
 
