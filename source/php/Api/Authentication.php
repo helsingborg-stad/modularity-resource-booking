@@ -67,7 +67,7 @@ class Authentication
             //Login successful
             if (!is_wp_error($result)) {
                 return array(
-                    'message' => __('Login successful, reloading page.', 'modularity-resource-booking'),
+                    'message' => __('Login successful.', 'modularity-resource-booking'),
                     'state' => 'success'
                 );
             }
@@ -75,7 +75,7 @@ class Authentication
             //Incorrect password
             if (is_wp_error($result) && $result->get_error_code() == "incorrect_password") {
                 return array(
-                    'message' => __('The password you provided was incorrect.', 'modularity-resource-booking'),
+                    'message' => __('The username and password you provided did not match.', 'modularity-resource-booking'),
                     'state' => 'error'
                 );
             }
