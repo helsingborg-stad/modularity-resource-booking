@@ -178,7 +178,7 @@ class Orders
     public function listMyOrders($request)
     {
         //Verify nonce
-        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
             return $message;
         }
 
@@ -204,7 +204,7 @@ class Orders
     {
 
         //Verify nonce
-        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
             return $message;
         }
 
@@ -370,7 +370,7 @@ class Orders
     {
 
         //Verify nonce
-        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
             return $message;
         }
 

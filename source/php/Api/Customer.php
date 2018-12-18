@@ -129,7 +129,7 @@ class Customer
     {
 
         //Verify nonce
-        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
             return $message;
         }
 
@@ -209,7 +209,7 @@ class Customer
     {
 
         //Verify nonce
-        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
             return $message;
         }
 
