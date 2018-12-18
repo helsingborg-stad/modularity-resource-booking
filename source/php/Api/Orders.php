@@ -105,7 +105,6 @@ class Orders
             "ModularityResourceBooking/v1",
             "RemoveOrder/(?P<id>[\d]+)",
             array(
-                //'methods' => \WP_REST_Server::DELETABLE,
                 'methods' => \WP_REST_Server::DELETABLE,
                 'callback' => array($this, 'remove'),
                 'permission_callback' => array($this, 'checkOrderOwnership'),
