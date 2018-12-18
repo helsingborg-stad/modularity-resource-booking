@@ -195,14 +195,12 @@ class Orders
 
     /**
      * Create a new order
-     *
      * @param object $request Object containing request details
-     *
-     * @return WP_REST_Response
+     * @return \WP_REST_Response|bool
+     * @throws \ImagickException
      */
     public function create($request)
     {
-
         //Verify nonce
         if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
             return $message;
