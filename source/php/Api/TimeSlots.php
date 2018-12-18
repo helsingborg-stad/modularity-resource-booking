@@ -31,6 +31,7 @@ class TimeSlots
 
     /**
      * Get the query params for collections
+     *
      * @return array
      */
     public function getCollectionParams()
