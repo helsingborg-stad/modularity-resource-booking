@@ -187,6 +187,25 @@ class TimeSlots
     }
 
     /**
+     * List of users within same customer group
+     * @param int $userId
+     * @return array
+     */
+    public static function customerGroupMembers($userId = 0)
+    {
+        // Get user ID if missing
+        $userId = $userId ? $userId : get_current_user_id();
+        $customerGroup = wp_get_object_terms($userId, 'customer_group', array('fields' => 'ids'));
+        $groupMembers = array($userId);
+        if (isset($customerGroup[0]) && !empty($customerGroup[0])) {
+            $groupMembers = \ModularityResourceBooking\Entity\Filter::getUserByTaxonomy('customer_group', $customerGroup[0]);
+            $groupMembers = array_column($groupMembers, 'ID');
+        }
+
+        return $groupMembers;
+    }
+
+    /**
      * Adds wildcards to meta query when searching for slot & package IDs
      * @param $where
      * @param $query
