@@ -35,7 +35,7 @@ class Authentication
             "ModularityResourceBooking/v1",
             "Authentication/Logout",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'logout')
             )
         );
@@ -51,6 +51,14 @@ class Authentication
      */
     public function login($request)
     {
+
+        //Verify nonce
+        if (!wp_verify_nonce('nonce', 'wp_rest')) {
+            return array(
+                'message' => __('Oops, could not verify your requests origin. Try to login again.', 'modularity-resource-booking'),
+                'state' => 'error'
+            );
+        }
 
         //Verify provided data
         if ($request->get_param('username') && $request->get_param('password')) {
