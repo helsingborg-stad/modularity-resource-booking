@@ -68,7 +68,14 @@ class Authentication
             if (!is_wp_error($result)) {
                 return array(
                     'message' => __('Login successful.', 'modularity-resource-booking'),
-                    'state' => 'success'
+                    'state' => 'success',
+                    'user' => array_filter(
+                        (array) $result->data,
+                        function ($itemKey) {
+                            return in_array($itemKey, array('ID', 'user_login', 'display_name'));
+                        },
+                        ARRAY_FILTER_USE_KEY
+                    )
                 );
             }
 
