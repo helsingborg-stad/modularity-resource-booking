@@ -127,6 +127,12 @@ class Customer
      */
     public function create($request)
     {
+
+        //Verify nonce
+        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+            return $message;
+        }
+
         $requiredKeys = array("email", "password", "company");
 
         foreach ($requiredKeys as $requirement) {
@@ -201,6 +207,12 @@ class Customer
      */
     public function modify($request)
     {
+
+        //Verify nonce
+        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+            return $message;
+        }
+
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         //Check if user id exists

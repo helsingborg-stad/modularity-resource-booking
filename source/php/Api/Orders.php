@@ -181,6 +181,11 @@ class Orders
      */
     public function listMyOrders($request)
     {
+        //Verify nonce
+        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+            return $message;
+        }
+
         return $this->listOrders(
             $request,
             array(
@@ -201,6 +206,11 @@ class Orders
      */
     public function create($request)
     {
+
+        //Verify nonce
+        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+            return $message;
+        }
 
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
@@ -313,7 +323,6 @@ class Orders
         // Save order items to repeater field
         update_field('field_5c0fc16aaefa4', $orderArticles, $insert);
 
-
         //Update meta
         update_post_meta($insert, 'order_id', $orderId);
 
@@ -363,6 +372,12 @@ class Orders
      */
     public function remove($request)
     {
+
+        //Verify nonce
+        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+            return $message;
+        }
+
         if (get_post_type($request->get_param('id')) != "purchase") {
             return new \WP_REST_Response(
                 array(
@@ -410,7 +425,7 @@ class Orders
      */
     public function checkOrderOwnership($orderId) : bool
     {
-        if (true || get_post_meta($orderId, 'user_id', true) === self::$userId) {
+        if (get_post_meta($orderId, 'user_id', true) === self::$userId) {
             return true;
         }
 
@@ -424,8 +439,7 @@ class Orders
      */
     public function checkInsertCapability()
     {
-
-        if (true || is_user_logged_in() && current_user_can('create_posts')) {
+        if (is_user_logged_in() && current_user_can('create_posts')) {
             return true;
         }
 
