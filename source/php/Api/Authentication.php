@@ -25,7 +25,7 @@ class Authentication
             "ModularityResourceBooking/v1",
             "Authentication/Login",
             array(
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'login')
             )
         );
@@ -53,7 +53,7 @@ class Authentication
     {
 
         //Verify nonce
-        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
             return $message;
         }
 

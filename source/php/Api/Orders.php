@@ -14,7 +14,6 @@ class Orders
      */
     public static $userId;
 
-
     /**
      * Orders constructor.
      */
@@ -77,10 +76,9 @@ class Orders
             "ModularityResourceBooking/v1",
             "CreateOrder",
             array(
-                //'methods' => \WP_REST_Server::CREATABLE,
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'create'),
-                'permission_callback' => array($this, 'checkInsertCapability')
+                //'permission_callback' => array($this, 'checkInsertCapability') TODO: activate later
             )
         );
 
@@ -89,8 +87,7 @@ class Orders
             "ModularityResourceBooking/v1",
             "ModifyOrder/(?P<id>[\d]+)",
             array(
-                //'methods' => \WP_REST_Server::EDITABLE,
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::EDITABLE,
                 'callback' => array($this, 'modify'),
                 'permission_callback' => array($this, 'checkOrderOwnership'),
                 'args' => array(
@@ -108,8 +105,7 @@ class Orders
             "ModularityResourceBooking/v1",
             "RemoveOrder/(?P<id>[\d]+)",
             array(
-                //'methods' => \WP_REST_Server::DELETABLE,
-                'methods' => \WP_REST_Server::ALLMETHODS,
+                'methods' => \WP_REST_Server::DELETABLE,
                 'callback' => array($this, 'remove'),
                 'permission_callback' => array($this, 'checkOrderOwnership'),
                 'args' => array(
@@ -182,7 +178,7 @@ class Orders
     public function listMyOrders($request)
     {
         //Verify nonce
-        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
             return $message;
         }
 
@@ -199,16 +195,14 @@ class Orders
 
     /**
      * Create a new order
-     *
      * @param object $request Object containing request details
-     *
-     * @return WP_REST_Response
+     * @return \WP_REST_Response|bool
+     * @throws \ImagickException
      */
     public function create($request)
     {
-
         //Verify nonce
-        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
             return $message;
         }
 
@@ -241,6 +235,45 @@ class Orders
             );
         }
 
+        // Get customer group data
+        $groupLimit = TimeSlots::customerGroupLimit($data['user_id']);
+        $groupMembers = TimeSlots::customerGroupMembers($data['user_id']);
+
+        // Remap order items and check stock availability
+        $orderArticles = $data['order_articles'];
+
+        if (is_array($orderArticles) && !empty($orderArticles)) {
+            foreach ($orderArticles as $key => &$item) {
+                $data = (array)json_decode(stripslashes(html_entity_decode($item)));
+
+                // Get list of product objects
+                $products = TimeSlots::getProductsByArticle($data['article_id'], $data['type']);
+                if (empty($products)) {
+                    return new \WP_REST_Response(
+                        array(
+                            'message' => __('No articles could be found with \'article_id\': ' . $data['article_id'], 'modularity-resource-booking'),
+                            'state' => 'error'
+                        ), 400
+                    );
+                }
+                $articleStock = TimeSlots::getArticleSlotStock($products, $data['type'], $data['slot_id'], $groupMembers, $groupLimit);
+                if ($articleStock['available_stock'] !== null && $articleStock['available_stock'] <= 0) {
+                    return new \WP_REST_Response(
+                        array(
+                            'message' => __('Out of stock for \'article_id\': ' . $data['article_id'], 'modularity-resource-booking'),
+                            'state' => 'error'
+                        ), 403
+                    );
+                }
+
+                $item = array(
+                    'field_5c122674bc676' => $data['type'] ?? null,
+                    'field_5bed43f2bf1f2' => $data['article_id'] ?? null,
+                    'field_5c0fc17caefa5' => $data['slot_id'] ?? null,
+                );
+            }
+        }
+
         $orderId = strtoupper(substr(md5(microtime()), rand(0, 26), 8));
 
         //Define new post
@@ -268,20 +301,6 @@ class Orders
                 ),
                 201
             );
-        }
-
-        //Sanitize order items
-        $orderArticles = $data['order_articles'];
-        if (is_array($orderArticles) && !empty($orderArticles)) {
-            $orderArticles = array_map(function($item) {
-                $data = (array)json_decode(stripslashes(html_entity_decode($item)));
-                $item = array(
-                    'field_5c122674bc676' => $data['type'] ?? null,
-                    'field_5bed43f2bf1f2' => $data['article_id'] ?? null,
-                    'field_5c0fc17caefa5' => $data['slot_id'] ?? null,
-                );
-                return $item;
-            }, $orderArticles);
         }
 
         for($int=0; $int < count($orderArticles); $int++){
@@ -318,7 +337,6 @@ class Orders
                 }
             }
         }
-
 
         // Save order items to repeater field
         update_field('field_5c0fc16aaefa4', $orderArticles, $insert);
@@ -374,7 +392,7 @@ class Orders
     {
 
         //Verify nonce
-        if (!$message = ModularityResourceBooking\Helper\ApiNonce::verify()) {
+        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
             return $message;
         }
 
