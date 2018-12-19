@@ -16,9 +16,19 @@ class OrderHistory extends \Modularity\Module
 
     public function data() : array
     {
+        $orders = $this->getOrders();
         $data = get_fields($this->ID);
         $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array('box', 'box-panel'), $this->post_type, $this->args));
+        $data['orders'] = $orders;
+
         return $data;
+    }
+
+    public function getOrders()
+    {
+        $users = \ModularityResourceBooking\Api\TimeSlots::customerGroupMembers();
+        $orders = \ModularityResourceBooking\Api\TimeSlots::getOrders(array('author__in' => $users));
+        return $orders;
     }
 
     public function script()
