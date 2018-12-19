@@ -234,7 +234,7 @@ class TimeSlots
             $stock = (int)$stock;
             // Calculate every time the product have been purchased within the slot period
             $articleIds = array_merge(array($product->ID), $packages);
-            $orders = self::getOrdersByArticles($articleType, $articleIds, $slotId);
+            $orders = self::getOrders(array(), $articleType, $articleIds, $slotId);
             $orderCount = count($orders);
             // Get number of times the customer(or other group members) have purchased this product
             $purchaseCount = 0;
@@ -330,37 +330,52 @@ class TimeSlots
     }
 
     /**
-     * Get all orders containing a list of article IDs
+     * Get orders
      * @param null  $type
      * @param array $articleIds
      * @param null  $slotId
+     * @param array $args
      * @return array
      */
-    public static function getOrdersByArticles($type = null, $articleIds = array(), $slotId = null)
+    public static function getOrders($args = array(), $type = null, $articleIds = null, $slotId = null)
     {
-        $orders = get_posts(array(
+        $args = array_merge(array(
             'post_type' => 'purchase',
+            'orderby' => 'date',
             'numberposts' => -1,
             'suppress_filters' => false,
-            'meta_query' => array(
-                'relation' => 'AND',
-                array(
-                    'key' => 'order_articles_$_type',
-                    'value' => $type,
-                    'compare' => '='
-                ),
-                array(
-                    'key' => 'order_articles_$_article_id',
-                    'value' => $articleIds,
-                    'compare' => 'IN'
-                ),
-                array(
-                    'key' => 'order_articles_$_slot_id',
-                    'value' => $slotId,
-                    'compare' => '='
-                ),
-            )
-        ));
+        ), $args);
+
+        $metaQuery = array(
+            'relation' => 'AND',
+        );
+
+        if (!(empty($type))) {
+            $metaQuery[] = array(
+                'key' => 'order_articles_$_type',
+                'value' => $type,
+                'compare' => '='
+            );
+        }
+
+        if (!(empty($articleIds))) {
+            $metaQuery[] = array(
+                'key' => 'order_articles_$_article_id',
+                'value' => $articleIds,
+                'compare' => 'IN'
+            );
+        }
+
+        if (!(empty($slotId))) {
+            $metaQuery[] = array(
+                'key' => 'order_articles_$_slot_id',
+                'value' => $slotId,
+                'compare' => '='
+            );
+        }
+
+        $args['meta_query'] = $metaQuery;
+        $orders = get_posts($args);
 
         return $orders;
     }
