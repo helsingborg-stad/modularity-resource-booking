@@ -244,32 +244,32 @@ class Orders
 
         if (is_array($orderArticles) && !empty($orderArticles)) {
             foreach ($orderArticles as $key => &$item) {
-                $data = (array)json_decode(stripslashes(html_entity_decode($item)));
+                $itemData = (array)json_decode(stripslashes(html_entity_decode($item)));
 
                 // Get list of product objects
-                $products = TimeSlots::getProductsByArticle($data['article_id'], $data['type']);
+                $products = TimeSlots::getProductsByArticle($itemData['article_id'], $itemData['type']);
                 if (empty($products)) {
                     return new \WP_REST_Response(
                         array(
-                            'message' => __('No articles could be found with \'article_id\': ' . $data['article_id'], 'modularity-resource-booking'),
+                            'message' => __('No articles could be found with \'article_id\': ' . $itemData['article_id'], 'modularity-resource-booking'),
                             'state' => 'error'
                         ), 400
                     );
                 }
-                $articleStock = TimeSlots::getArticleSlotStock($products, $data['type'], $data['slot_id'], $groupMembers, $groupLimit);
+                $articleStock = TimeSlots::getArticleSlotStock($products, $itemData['type'], $itemData['slot_id'], $groupMembers, $groupLimit);
                 if ($articleStock['available_stock'] !== null && $articleStock['available_stock'] <= 0) {
                     return new \WP_REST_Response(
                         array(
-                            'message' => __('Out of stock for \'article_id\': ' . $data['article_id'], 'modularity-resource-booking'),
+                            'message' => __('Out of stock for \'article_id\': ' . $itemData['article_id'], 'modularity-resource-booking'),
                             'state' => 'error'
                         ), 403
                     );
                 }
 
                 $item = array(
-                    'field_5c122674bc676' => $data['type'] ?? null,
-                    'field_5bed43f2bf1f2' => $data['article_id'] ?? null,
-                    'field_5c0fc17caefa5' => $data['slot_id'] ?? null,
+                    'field_5c122674bc676' => $itemData['type'] ?? null,
+                    'field_5bed43f2bf1f2' => $itemData['article_id'] ?? null,
+                    'field_5c0fc17caefa5' => $itemData['slot_id'] ?? null,
                 );
             }
         }
