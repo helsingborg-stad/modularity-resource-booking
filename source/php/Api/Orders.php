@@ -480,14 +480,18 @@ class Orders
 
         if (is_array($orders) && !empty($orders)) {
             foreach ($orders as $order) {
+                $orderStatus = get_post_meta($order->ID, 'order_status', true);
+                $orderStatus = $orderStatus ? get_term((int)$orderStatus, 'order-status') : null;
                 $result[] = array(
                     'id' => (int) $order->ID,
                     'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
-                    'uid' => (int) $order->post_author,
+                    'user_id' => (int) $order->post_author,
                     'uname' => (string) get_userdata($order->post_author)->first_name . " " . get_userdata($order->post_author)->last_name,
                     'name' => (string) $order->post_title,
-                    'date' => (string) $order->post_date,
+                    'date' => date('Y-m-d', strtotime($order->post_date)),
                     'slug' => (string) $order->post_name,
+                    'status' => $orderStatus->name ?? null,
+
 // TODO display complete article list
 //                    'period' => array(
 //                        'start' => (string) get_post_meta($order->ID, 'slot_start', true),
@@ -502,7 +506,7 @@ class Orders
         //Append media data if owner
         if (is_array($result) && !empty($result)) {
             foreach ($result as $key => $item) {
-                if ($item['uid'] == self::$userId) {
+                if ($item['user_id'] == self::$userId) {
                     $result[$key] = $item + array(
                             'media' => (array) get_field('media_items', $item['id'])
                         );
@@ -514,7 +518,7 @@ class Orders
         if (is_array($result) && !empty($result)) {
             foreach ($result as $key => $item) {
 
-                if ($item['uid'] == self::$userId) {
+                if ($item['user_id'] == self::$userId) {
                     $result[$key] = $item + array(
                             'actions' => array(
                                 'modify' => rest_url('ModularityResourceBooking/v1/ModifyOrder/' . $item['id']),
