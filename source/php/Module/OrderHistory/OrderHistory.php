@@ -34,6 +34,10 @@ class OrderHistory extends \Modularity\Module
                     'next' => __('Next', 'modularity-resource-booking'),
                     'prev' => __('Previous', 'modularity-resource-booking'),
                     'somethingWentWrong' => __('Something went wrong.', 'modularity-resource-booking'),
+                    'noOrdersFound' => __('No orders found.', 'modularity-resource-booking'),
+                    'orderNumber' => __('Order #', 'modularity-resource-booking'),
+                    'date' => __('Date', 'modularity-resource-booking'),
+                    'status' => __('Status', 'modularity-resource-booking'),
                 ),
                 'restUrl' => get_rest_url()
             ));
