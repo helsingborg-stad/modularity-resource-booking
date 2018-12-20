@@ -54,7 +54,7 @@ class OrderHistory extends React.Component {
             headings: [
                 item.order_id,
                 item.date,
-                "insert status here",
+                item.status
             ],
             content: '<p>Insert content here</p>'
         }));
