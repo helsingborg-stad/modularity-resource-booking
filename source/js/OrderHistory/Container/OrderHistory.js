@@ -24,9 +24,9 @@ class OrderHistory extends React.Component {
         getCustomerOrders()
             .then(
                 ({result}) => {
-                    console.log(result);
-
-                    if (!result || Object.keys(result).length === 0) {
+                    const data = this.mapData(result);
+                     // Todo fix error handling
+                    if (!data || Object.keys(data).length === 0) {
                         this.setState({
                             error: Error('Could not fetch data from URL.'),
                             isLoaded: true
@@ -35,9 +35,9 @@ class OrderHistory extends React.Component {
                     }
                     this.setState({
                             isLoaded: true,
-                            items: result,
-                            filteredItems: result,
-                            totalPages: Math.ceil(result.length / perPage)
+                            items: data,
+                            filteredItems: data,
+                            totalPages: Math.ceil(data.length / perPage)
                         },
                         () => {
                             this.updateItemList();
@@ -46,6 +46,18 @@ class OrderHistory extends React.Component {
                     this.setState({isLoaded: true, error});
                 }
             );
+    };
+
+    mapData = (jsonData) => {
+        return jsonData.map(item => ({
+            id: item.id,
+            headings: [
+                item.order_id,
+                item.date,
+                "insert status here",
+            ],
+            content: '<p>Insert content here</p>'
+        }));
     };
 
     updateItemList = () => {
@@ -91,6 +103,7 @@ class OrderHistory extends React.Component {
     render() {
         const {filteredItems, error, isLoaded, totalPages, currentPage} = this.state;
         const {translation} = this.props;
+        const headings = [translation.orderNumber, translation.date, translation.status];
 
         if (error) {
             return (
