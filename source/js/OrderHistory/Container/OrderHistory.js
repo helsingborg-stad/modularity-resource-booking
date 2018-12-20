@@ -83,6 +83,19 @@ class OrderHistory extends React.Component {
                         items={filteredItems}
                         translation={translation}
                     />
+                    <div className="grid gutter">
+                        <div className="grid-fit-content u-ml-auto">
+                            <Pagination
+                                current={currentPage}
+                                total={totalPages}
+                                next={this.nextPage}
+                                prev={this.prevPage}
+                                input={this.paginationInput}
+                                langPrev={translation.prev}
+                                langNext={translation.next}
+                            />
+                        </div>
+                    </div>
                 </div>
             );
         }
