@@ -1,6 +1,7 @@
 import OrderList from '../Components/OrderList';
 import {getCustomerOrders} from '../../Api/orders';
 import {Pagination} from 'hbg-react';
+import PreLoader from "../Components/PreLoader";
 
 class OrderHistory extends React.Component {
     constructor() {
@@ -65,11 +66,26 @@ class OrderHistory extends React.Component {
         const {filteredItems, error, isLoaded, totalPages, currentPage} = this.state;
         const {translation} = this.props;
 
-        return (
-            <div>
-                <OrderList items={filteredItems} />
-            </div>
-        );
+        if (error) {
+            return (
+                <div className="gutter">
+                    <div className="notice warning">
+                        <i className="pricon pricon-notice-warning"></i> {translation.somethingWentWrong}
+                    </div>
+                </div>
+            );
+        } else if (!isLoaded) {
+            return <PreLoader/>;
+        } else {
+            return (
+                <div className="grid">
+                    <OrderList
+                        items={filteredItems}
+                        translation={translation}
+                    />
+                </div>
+            );
+        }
     }
 }
 
