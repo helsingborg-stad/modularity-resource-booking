@@ -10,7 +10,6 @@ class OrderHistory extends React.Component {
             error: null,
             isLoaded: false,
             items: [],
-            itemValues: [],
             filteredItems: [],
             totalPages: 0,
             currentPage: 1
@@ -60,6 +59,35 @@ class OrderHistory extends React.Component {
         this.setState({
             filteredItems: items.slice(begin, end)
         });
+    };
+
+    nextPage = () => {
+        if (this.state.currentPage === this.state.totalPages) {
+            return;
+        }
+        const currentPage = this.state.currentPage += 1;
+        this.setState({currentPage: currentPage}, () => this.updateItemList());
+    };
+
+    prevPage = () => {
+        if (this.state.currentPage <= 1) {
+            return;
+        }
+        const currentPage = this.state.currentPage -= 1;
+        this.setState({currentPage: currentPage}, () => this.updateItemList());
+    };
+
+    paginationInput = (e) => {
+        let currentPage = e.target.value ? parseInt(e.target.value) : '';
+        currentPage = (currentPage > this.state.totalPages) ? this.state.totalPages : currentPage;
+        this.setState(
+            {currentPage: currentPage},
+            () => {
+                if (currentPage) {
+                    this.updateItemList();
+                }
+            }
+        );
     };
 
     render() {
