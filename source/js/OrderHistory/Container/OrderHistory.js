@@ -1,7 +1,5 @@
-import OrderList from '../Components/OrderList';
 import {getCustomerOrders} from '../../Api/orders';
-import {Pagination} from 'hbg-react';
-import PreLoader from "../Components/PreLoader";
+import {Pagination, PreLoader, AccordionTable} from 'hbg-react';
 
 class OrderHistory extends React.Component {
     constructor() {
@@ -103,13 +101,18 @@ class OrderHistory extends React.Component {
                 </div>
             );
         } else if (!isLoaded) {
-            return <PreLoader/>;
+            return (
+                <div className="gutter">
+                    <PreLoader/>
+                </div>);
         } else {
             return (
                 <div className="grid">
-                    <OrderList
+                    <AccordionTable
                         items={filteredItems}
-                        translation={translation}
+                        headings={headings}
+                        showSearch={false}
+                        langNoResults={translation.noOrdersFound}
                     />
                     <div className="grid gutter">
                         <div className="grid-fit-content u-ml-auto">
