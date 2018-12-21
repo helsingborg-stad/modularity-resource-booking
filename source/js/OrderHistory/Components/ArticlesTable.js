@@ -1,6 +1,5 @@
 const ArticlesTable = ({headings, articles}) =>
     <table className="table">
-        {console.log(headings)}
         <thead>
         <tr>
             {headings.map(heading =>
