@@ -40,8 +40,8 @@ class OrderHistory extends \Modularity\Module
                     'status' => __('Status', 'modularity-resource-booking'),
                     'article' => __('Article', 'modularity-resource-booking'),
                     'type' => __('Type', 'modularity-resource-booking'),
+                    'price' => __('Price', 'modularity-resource-booking'),
                     'period' => __('Period', 'modularity-resource-booking'),
-                    'price' => __('Pris', 'modularity-resource-booking'),
                 ),
                 'restUrl' => get_rest_url()
             ));
