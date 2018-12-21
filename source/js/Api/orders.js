@@ -1,5 +1,5 @@
 const getCustomerOrders = () => {
-    const {translation, restUrl} = modOrderHistory;
+    const {restUrl} = modOrderHistory;
     const url = restUrl + 'ModularityResourceBooking/v1/MyOrders';
 
     return fetch(url)
