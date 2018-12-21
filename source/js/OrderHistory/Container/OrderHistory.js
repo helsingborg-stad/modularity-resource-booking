@@ -1,5 +1,6 @@
+import AccordionTable from '../Components/AccordionTable';
 import {getCustomerOrders} from '../../Api/orders';
-import {Pagination, PreLoader, AccordionTable} from 'hbg-react';
+import {Pagination, PreLoader} from 'hbg-react';
 
 class OrderHistory extends React.Component {
     constructor() {
@@ -25,14 +26,6 @@ class OrderHistory extends React.Component {
             .then(
                 ({result}) => {
                     const data = this.mapData(result);
-                     // Todo fix error handling
-                    if (!data || Object.keys(data).length === 0) {
-                        this.setState({
-                            error: Error('Could not fetch data from URL.'),
-                            isLoaded: true
-                        });
-                        return;
-                    }
                     this.setState({
                             isLoaded: true,
                             items: data,
@@ -56,7 +49,7 @@ class OrderHistory extends React.Component {
                 item.date,
                 item.status
             ],
-            content: '<p>Insert content here</p>'
+            articles: item.articles
         }));
     };
 
@@ -104,6 +97,7 @@ class OrderHistory extends React.Component {
         const {filteredItems, error, isLoaded, totalPages, currentPage} = this.state;
         const {translation} = this.props;
         const headings = [translation.orderNumber, translation.date, translation.status];
+        const articleHeadings = [translation.article, translation.type, translation.period, translation.price];
 
         if (error) {
             return (
@@ -117,13 +111,15 @@ class OrderHistory extends React.Component {
             return (
                 <div className="gutter">
                     <PreLoader/>
-                </div>);
+                </div>
+            );
         } else {
             return (
                 <div className="grid">
                     <AccordionTable
                         items={filteredItems}
                         headings={headings}
+                        articleHeadings={articleHeadings}
                         showSearch={false}
                         langNoResults={translation.noOrdersFound}
                     />

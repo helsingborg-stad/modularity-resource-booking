@@ -1,7 +1,7 @@
 import AccordionItem from './AccordionItem';
 import SearchField from './SearchField';
 
-const AccordionTable = ({headings, items, showSearch, doSearch, langFilterOn, langNoResults}) =>
+const AccordionTable = ({headings, items, articleHeadings, showSearch, doSearch, langFilterOn, langNoResults}) =>
     <div>
         <header className="accordion-table accordion-table-head">
             {headings.map((heading, i) => (
@@ -24,7 +24,8 @@ const AccordionTable = ({headings, items, showSearch, doSearch, langFilterOn, la
                 <AccordionItem
                     key={item.id}
                     headings={item.headings}
-                    content={item.content}
+                    articleHeadings={articleHeadings}
+                    articles={item.articles}
                 />
             ))}
         </div>
