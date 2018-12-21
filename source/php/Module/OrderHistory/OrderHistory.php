@@ -38,6 +38,10 @@ class OrderHistory extends \Modularity\Module
                     'orderNumber' => __('Order #', 'modularity-resource-booking'),
                     'date' => __('Date', 'modularity-resource-booking'),
                     'status' => __('Status', 'modularity-resource-booking'),
+                    'article' => __('Article', 'modularity-resource-booking'),
+                    'type' => __('Type', 'modularity-resource-booking'),
+                    'period' => __('Period', 'modularity-resource-booking'),
+                    'price' => __('Pris', 'modularity-resource-booking'),
                 ),
                 'restUrl' => get_rest_url()
             ));
