@@ -482,6 +482,7 @@ class Orders
             foreach ($orders as $order) {
                 $orderStatus = get_post_meta($order->ID, 'order_status', true);
                 $orderStatus = $orderStatus ? get_term((int)$orderStatus, 'order-status') : null;
+                $articles = get_field('order_articles', $order->ID);
                 $result[] = array(
                     'id' => (int) $order->ID,
                     'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
@@ -491,14 +492,7 @@ class Orders
                     'date' => date('Y-m-d', strtotime($order->post_date)),
                     'slug' => (string) $order->post_name,
                     'status' => $orderStatus->name ?? null,
-
-// TODO display complete article list
-//                    'period' => array(
-//                        'start' => (string) get_post_meta($order->ID, 'slot_start', true),
-//                        'stop' => (string) get_post_meta($order->ID, 'slot_stop', true)
-//                    ),
-//                    'product_package_id' => (int) get_post_meta($order->ID, 'product_package_id', true),
-//                    'product_package_name' => (string) $this->getPackageName(get_post_meta($order->ID, 'product_package_id', true)),
+                    'articles' => is_array($articles) && !empty($articles) ? $this->filterArticlesOutput($articles) : array()
                 );
             }
         }
@@ -546,5 +540,33 @@ class Orders
         }
 
         return false;
+    }
+
+    /**
+     * Filter the article list output
+     * @param array $articles List of articles
+     * @return array Filtered articles
+     */
+    public function filterArticlesOutput($articles)
+    {
+        foreach ($articles as $key => &$article) {
+            $slot = TimeSlots::getSlotInterval($article['slot_id']);
+            $title = '';
+            if ($article['type'] === 'package') {
+                $title = get_term($article['article_id'], 'product-package')->name ?? '';
+            } elseif ($article['type'] === 'product') {
+                $title = get_the_title($article['article_id']);
+            }
+
+            $article = array(
+                'id' => $article['article_id'],
+                'title' => $title,
+                'type' => $article['type'] == 'package' ? __('Package', 'modularity-resource-booking') :  __('Product', 'modularity-resource-booking'),
+                'start' => $slot['start'],
+                'stop' => $slot['stop']
+            );
+        }
+
+        return $articles;
     }
 }
