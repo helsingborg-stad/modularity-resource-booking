@@ -143,7 +143,7 @@ class Orders
      * @param object $request   Object containing request details
      * @param array  $metaQuery Containing meta query information
      *
-     * @return WP_REST_Response
+     * @return \WP_REST_Response
      */
     public function listOrders($request, $metaQuery = null)
     {
@@ -209,7 +209,7 @@ class Orders
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
 
-            $requiredKeys = array('order_articles', 'user_id');
+            $requiredKeys = array('order_articles');
 
             foreach ($requiredKeys as $requirement) {
                 if (!array_key_exists($requirement, $_POST)) {
@@ -235,9 +235,11 @@ class Orders
             );
         }
 
+        $userId = self::$userId;
+
         // Get customer group data
-        $groupLimit = TimeSlots::customerGroupLimit($data['user_id']);
-        $groupMembers = TimeSlots::customerGroupMembers($data['user_id']);
+        $groupLimit = TimeSlots::customerGroupLimit($userId);
+        $groupMembers = TimeSlots::customerGroupMembers($userId);
 
         // Remap order items and check stock availability
         $orderArticles = $data['order_articles'];
@@ -281,7 +283,7 @@ class Orders
             'post_title' => $orderId,
             'post_type' => 'purchase',
             'post_status' => 'publish',
-            'post_author' => (int)$data['user_id']
+            'post_author' => $userId
         );
 
         //Prepend id if proveided (converted to update)
@@ -305,7 +307,7 @@ class Orders
 
         for($int=0; $int < count($orderArticles); $int++){
             if(isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
-                $productIds =  TimeSlots::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
+                $productIds = TimeSlots::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
 
                 foreach($productIds as $prodId){
                     $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
@@ -345,7 +347,7 @@ class Orders
         update_post_meta($insert, 'order_id', $orderId);
 
         //Update fields
-        update_field('customer_id', self::$userId, $insert);
+        update_field('customer_id', $userId, $insert);
         update_field('order_status', get_field('order_status', 'option'), $insert);
 
 
@@ -368,12 +370,6 @@ class Orders
                 'message' => sprintf(
                     __('Your order has been registered.', 'modularity-resource-booking')
                 ),
-//                'message' => sprintf(
-//                    __('Your order of "%s" between %s and %s has been registered.', 'modularity-resource-booking'),
-//                    $this->getPackageName($data['product_package_id']),
-//                    $data['slot_start'],
-//                    $data['slot_stop']
-//                ),
                 'order' => $this->filterorderOutput(get_post($insert)
                 )
             ),
@@ -386,7 +382,7 @@ class Orders
      *
      * @param integer $request The request of order to remove
      *
-     * @return WP_REST_Response
+     * @return \WP_REST_Response
      */
     public function remove($request)
     {
