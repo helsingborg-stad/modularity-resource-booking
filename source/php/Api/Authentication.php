@@ -53,8 +53,11 @@ class Authentication
     {
 
         //Verify nonce
-        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
-            return $message;
+        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
+            return array(
+                'message' => $nonce->get_error_message(),
+                'state' => 'error'
+            );
         }
 
         //Verify provided data

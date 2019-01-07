@@ -3,7 +3,7 @@
 namespace ModularityResourceBooking\Helper;
 
 /**
- * Class Nonce
+ * Class ApiNonce
  *
  * @category Helpers
  * @package  ModularityResourceBooking\Helper
@@ -17,21 +17,14 @@ class ApiNonce
     /**
      * Returns the revved/cache-busted file name of an asset.
      *
-     * @return true if verified, array if not verofyed (with response message)
+     * @return true if verified, array if not verified (with response message)
      */
     public static function verify()
     {
-
-        return true; //TEMP DISABLE FOR NONCE
-
-        //Verify nonce
+        return true; //TEMP DISABLE
         if (!wp_verify_nonce('nonce', 'wp_rest')) {
-            return array(
-                'message' => __('Oops, could not verify your requests origin.', 'modularity-resource-booking'),
-                'state' => 'error'
-            );
+            return new \WP_Error('nonce_validation_failure', __('Oops, could not verify your requests origin.', 'modularity-resource-booking'));
         }
-
         return true;
     }
 }

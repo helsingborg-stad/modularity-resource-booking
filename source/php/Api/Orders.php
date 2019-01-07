@@ -178,8 +178,11 @@ class Orders
     public function listMyOrders($request)
     {
         //Verify nonce
-        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
-            return $message;
+        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
+            return array(
+                'message' => $nonce->get_error_message(),
+                'state' => 'error'
+            );
         }
 
         return $this->listOrders(
@@ -202,8 +205,11 @@ class Orders
     public function create($request)
     {
         //Verify nonce
-        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
-            return $message;
+        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
+            return array(
+                'message' => $nonce->get_error_message(),
+                'state' => 'error'
+            );
         }
 
         //Verify that post data is avabile
@@ -392,8 +398,11 @@ class Orders
     {
 
         //Verify nonce
-        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
-            return $message;
+        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
+            return array(
+                'message' => $nonce->get_error_message(),
+                'state' => 'error'
+            );
         }
 
         if (get_post_type($request->get_param('id')) != "purchase") {

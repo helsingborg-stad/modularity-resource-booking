@@ -129,8 +129,11 @@ class Customer
     {
 
         //Verify nonce
-        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
-            return $message;
+        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
+            return array(
+                'message' => $nonce->get_error_message(),
+                'state' => 'error'
+            );
         }
 
         $requiredKeys = array("email", "password", "company");
@@ -209,8 +212,11 @@ class Customer
     {
 
         //Verify nonce
-        if (!$message = \ModularityResourceBooking\Helper\ApiNonce::verify()) {
-            return $message;
+        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
+            return array(
+                'message' => $nonce->get_error_message(),
+                'state' => 'error'
+            );
         }
 
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
