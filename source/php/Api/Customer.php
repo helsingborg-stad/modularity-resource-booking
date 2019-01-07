@@ -206,6 +206,11 @@ class Customer
                     get_user_by('ID', $userId)
                 )
             );
+        } else {
+            return array(
+                'message' => __('Something unexpected happened.', 'modularity-resource-booking'),
+                'state' => 'error'
+            );
         }
     }
 
@@ -246,9 +251,17 @@ class Customer
         }
 
         //Check if user id exists
-        if (isset($data['email']) && !is_email($data['email'])) {
+        if (isset($data['email']) && !is_email($data['email']) || strpos($data['email'], "+")) {
             return array(
                 'message' => __('Malformed email adress provided.', 'modularity-resource-booking'),
+                'state' => 'error'
+            );
+        }
+
+        //Check password strength
+        if (is_wp_error($strength = \ModularityResourceBooking\Helper\PasswordStrength::check($data['password']))) {
+            return array(
+                'message' => $strength->get_error_message(),
                 'state' => 'error'
             );
         }
@@ -286,6 +299,11 @@ class Customer
                 'customer' => $this->filterCustomerOutput(
                     get_user_by('ID', $userId)
                 )
+            );
+        } else {
+            return array(
+                'message' => __('Something unexpected happened.', 'modularity-resource-booking'),
+                'state' => 'error'
             );
         }
     }
