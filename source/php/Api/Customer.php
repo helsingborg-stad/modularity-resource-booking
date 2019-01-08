@@ -266,14 +266,6 @@ class Customer
             );
         }
 
-        //Check password strength
-        if (is_wp_error($strength = \ModularityResourceBooking\Helper\PasswordStrength::check($data['password']))) {
-            return array(
-                'message' => $strength->get_error_message(),
-                'state' => 'error'
-            );
-        }
-
         //Define update array
         $updateArray = array(
             'ID' =>  $request->get_param('id'),
@@ -282,6 +274,14 @@ class Customer
 
         //Set new password
         if (isset($data['password']) && !empty($data['password'])) {
+
+            if (is_wp_error($strength = \ModularityResourceBooking\Helper\PasswordStrength::check($data['password']))) {
+                return array(
+                    'message' => $strength->get_error_message(),
+                    'state' => 'error'
+                );
+            }
+
             wp_set_password($data['password'], $request->get_param('id'));
         }
 
