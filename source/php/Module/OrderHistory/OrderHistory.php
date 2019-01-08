@@ -16,19 +16,10 @@ class OrderHistory extends \Modularity\Module
 
     public function data() : array
     {
-        $orders = $this->getOrders();
         $data = get_fields($this->ID);
         $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array('box', 'box-panel'), $this->post_type, $this->args));
-        $data['orders'] = $orders;
 
         return $data;
-    }
-
-    public function getOrders()
-    {
-        $users = \ModularityResourceBooking\Api\TimeSlots::customerGroupMembers();
-        $orders = \ModularityResourceBooking\Api\TimeSlots::getOrders(array('author__in' => $users));
-        return $orders;
     }
 
     public function script()
@@ -39,7 +30,20 @@ class OrderHistory extends \Modularity\Module
             // Enqueue module script
             wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/OrderHistory/Index.js'), array('jquery', 'react', 'react-dom'));
             wp_localize_script('modularity-' . $this->slug, 'modOrderHistory', array(
-                'translation' => array(),
+                'translation' => array(
+                    'next' => __('Next', 'modularity-resource-booking'),
+                    'prev' => __('Previous', 'modularity-resource-booking'),
+                    'somethingWentWrong' => __('Something went wrong.', 'modularity-resource-booking'),
+                    'noOrdersFound' => __('No orders found.', 'modularity-resource-booking'),
+                    'orderNumber' => __('Order #', 'modularity-resource-booking'),
+                    'date' => __('Date', 'modularity-resource-booking'),
+                    'status' => __('Status', 'modularity-resource-booking'),
+                    'article' => __('Article', 'modularity-resource-booking'),
+                    'type' => __('Type', 'modularity-resource-booking'),
+                    'price' => __('Price', 'modularity-resource-booking'),
+                    'period' => __('Period', 'modularity-resource-booking'),
+                ),
+                'restUrl' => get_rest_url()
             ));
         }
     }

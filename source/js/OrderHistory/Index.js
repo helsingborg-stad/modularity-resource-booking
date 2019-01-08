@@ -8,6 +8,7 @@ for (let i = 0; i < domElements.length; i++) {
     ReactDOM.render(
         <OrderHistory
             translation={translation}
+            perPage={10}
         />,
         element
     );
