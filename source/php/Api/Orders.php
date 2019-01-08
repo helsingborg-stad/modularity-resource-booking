@@ -414,6 +414,15 @@ class Orders
             );
         }
 
+        if (!$this->checkOrderOwnership($request->get_param('id'))) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('You are not the owner of that order.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ), 401
+            );
+        }
+
         if (wp_delete_post($request->get_param('id'))) {
             return new \WP_REST_Response(
                 array(
