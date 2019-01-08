@@ -4,13 +4,16 @@ namespace ModularityResourceBooking\Api;
 
 /**
  * Class Orders
+ *
  * @package ModularityResourceBooking\Api
  */
 class Orders
 {
 
     /**
-     * @var
+     * Class variables
+     *
+     * @var The current user id
      */
     public static $userId;
 
@@ -45,7 +48,11 @@ class Orders
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The order id.'
                     ),
                 ),
             )
@@ -67,7 +74,8 @@ class Orders
             "MyOrders",
             array(
                 'methods' => \WP_REST_Server::READABLE,
-                'callback' => array($this, 'listMyOrders')
+                'callback' => array($this, 'listMyOrders'),
+                //'permission_callback' => 'is_user_logged_in', TODO: activate later
             )
         );
 
@@ -94,7 +102,11 @@ class Orders
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The order id.'
                     ),
                 ),
             )
@@ -112,7 +124,11 @@ class Orders
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The order id.'
                     ),
                 ),
             )
@@ -311,11 +327,11 @@ class Orders
             );
         }
 
-        for($int=0; $int < count($orderArticles); $int++){
-            if(isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
+        for ($int=0; $int < count($orderArticles); $int++) {
+            if (isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
                 $productIds = TimeSlots::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
 
-                foreach($productIds as $prodId){
+                foreach ($productIds as $prodId) {
                     $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
 
                     if (is_object($mediaItems) && $mediaItems->error != null) {
@@ -375,8 +391,7 @@ class Orders
                 'message' => sprintf(
                     __('Your order has been registered.', 'modularity-resource-booking')
                 ),
-                'order' => $this->filterorderOutput(get_post($insert)
-                )
+                'order' => $this->filterorderOutput(get_post($insert))
             ),
             201
         );
@@ -391,7 +406,6 @@ class Orders
      */
     public function remove($request)
     {
-
         //Verify nonce
         if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
             return array(
@@ -492,6 +506,7 @@ class Orders
      * Clean return array from uneccesary data (make it slimmer)
      *
      * @param array $orders Array (or object) reflecting items to output.
+     * @param array $result Array contining the output (basically a declaration)
      *
      * @return array $result Resulting array object
      */
@@ -504,14 +519,33 @@ class Orders
 
         if (is_array($orders) && !empty($orders)) {
             foreach ($orders as $order) {
+
+                //Order status
                 $orderStatus = get_post_meta($order->ID, 'order_status', true);
                 $orderStatus = $orderStatus ? get_term((int)$orderStatus, 'order-status') : null;
+
+                //Get ordered items
                 $articles = get_field('order_articles', $order->ID);
+
+                //Get author, check if exists
+                if (is_array($authorData = get_userdata($order->post_author))) {
+                    $author = array(
+                        'first_name' => $authorData->first_name,
+                        'last_name' => $authorData->last_name
+                    );
+                } else {
+                    $author = array(
+                        'first_name' => '',
+                        'last_name' => ''
+                    );
+                }
+
+                //Create result array
                 $result[] = array(
                     'id' => (int) $order->ID,
                     'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
                     'user_id' => (int) $order->post_author,
-                    'uname' => (string) get_userdata($order->post_author)->first_name . " " . get_userdata($order->post_author)->last_name,
+                    'uname' => (string) $author['first_name'] . " " . $author['last_name'],
                     'name' => (string) $order->post_title,
                     'date' => date('Y-m-d', strtotime($order->post_date)),
                     'slug' => (string) $order->post_name,
@@ -568,7 +602,9 @@ class Orders
 
     /**
      * Filter the article list output
+     *
      * @param array $articles List of articles
+     *
      * @return array Filtered articles
      */
     public function filterArticlesOutput($articles)

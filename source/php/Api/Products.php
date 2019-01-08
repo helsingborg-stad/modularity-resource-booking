@@ -34,7 +34,10 @@ class Products
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The product id.'
                     ),
                 ),
             )
@@ -61,7 +64,10 @@ class Products
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The product id.'
                     ),
                 ),
             )

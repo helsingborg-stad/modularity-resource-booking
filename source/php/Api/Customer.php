@@ -59,13 +59,6 @@ class Customer
             array(
                 'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'create'),
-                'args' => array(
-                    'id' => array(
-                        'validate_callback' => function ($param, $request, $key) {
-                            return is_numeric($param);
-                        }
-                    ),
-                )
             )
         );
 
@@ -76,7 +69,18 @@ class Customer
             array(
                 'methods' => \WP_REST_Server::EDITABLE,
                 'callback' => array($this, 'modify'),
-                'permission_callback' => array($this, 'canUpdateUser')
+                'permission_callback' => array($this, 'canUpdateUser'),
+                'args' => array(
+                    'id' => array(
+                        'validate_callback' => function ($param, $request, $key) {
+                            return is_numeric($param);
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The user id.'
+                    ),
+                ),
             )
         );
 
@@ -91,7 +95,11 @@ class Customer
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The user id.'
                     ),
                 )
             )
