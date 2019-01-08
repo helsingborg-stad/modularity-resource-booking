@@ -554,12 +554,37 @@ class Orders
      */
     public function filterArticlesOutput($articles)
     {
+        error_log(print_r($articles, true));
+        $group = $this->getCustomerGroup();
+
         foreach ($articles as $key => &$article) {
             $slot = TimeSlots::getSlotInterval($article['slot_id']);
             $title = '';
+
             if ($article['type'] === 'package') {
-                $title = get_term($article['article_id'], 'product-package')->name ?? '';
+                $term = get_term($article['article_id'], 'product-package');
+                // todo Get total price of all products
+
+                // Get custom price for package
+                if (get_field('package_price', $term) !== '') {
+                    $price = get_field('package_price', $term);
+                }
+
+                // todo Get group variation price
+
+                $title = $term->name ?? '';
             } elseif ($article['type'] === 'product') {
+                $price = get_field('product_price', $article['article_id']);
+                if ($group) {
+                    $groupVariations = get_field('customer_group_price_variations', $article['article_id']);
+                    if (is_array($groupVariations) && !empty($groupVariations)) {
+                        $key = array_search($group, array_column($groupVariations, 'customer_group'));
+                        if ($key !== false) {
+                            $price = $groupVariations[$key]['product_price'];
+                        }
+                    }
+                }
+
                 $title = get_the_title($article['article_id']);
             }
 
@@ -568,10 +593,23 @@ class Orders
                 'title' => $title,
                 'type' => $article['type'] == 'package' ? __('Package', 'modularity-resource-booking') :  __('Product', 'modularity-resource-booking'),
                 'start' => $slot['start'],
-                'stop' => $slot['stop']
+                'stop' => $slot['stop'],
+                'price' => $price
             );
         }
 
         return $articles;
     }
+
+    /**
+     * Get customer group
+     * @return null|int
+     */
+    public function getCustomerGroup()
+    {
+        $customerGroup = wp_get_object_terms(self::$userId, 'customer_group', array('fields' => 'ids'));
+        $customerGroup = $customerGroup[0] ?? null;
+        return $customerGroup;
+    }
+
 }
