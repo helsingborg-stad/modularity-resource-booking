@@ -13,7 +13,7 @@ const ArticlesTable = ({headings, articles}) =>
                 <td>{article.title}</td>
                 <td>{article.type}</td>
                 <td>{article.start} - {article.stop}</td>
-                <td></td>
+                <td>{article.price} SEK</td>
             </tr>
         )}
         </tbody>
