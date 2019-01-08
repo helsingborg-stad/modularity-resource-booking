@@ -431,7 +431,7 @@ class Orders
             array(
                 'message' => __('Could not remove that order due to an unknown error.', 'modularity-resource-booking'),
                 'state' => 'error'
-            ), 200
+            ), 409
         );
     }
 
