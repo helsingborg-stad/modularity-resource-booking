@@ -1,4 +1,3 @@
-import '@babel/polyfill';
 import UserAccount from './Container/UserAccount';
 
 const domElements = document.getElementsByClassName("modularity-user-account");
