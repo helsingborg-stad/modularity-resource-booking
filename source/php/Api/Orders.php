@@ -75,7 +75,7 @@ class Orders
             array(
                 'methods' => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'listMyOrders'),
-                //'permission_callback' => 'is_user_logged_in', TODO: activate later
+                'permission_callback' => array($this, 'CheckUserAuthentication'),
             )
         );
 
@@ -86,7 +86,7 @@ class Orders
             array(
                 'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'create'),
-                //'permission_callback' => array($this, 'checkInsertCapability') TODO: activate later
+                'permission_callback' => array($this, 'checkInsertCapability')
             )
         );
 
@@ -481,6 +481,11 @@ class Orders
      */
     public function checkOrderOwnership($orderId) : bool
     {
+        //Bypass security, by constant
+        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
+            return true;
+        }
+
         if ((get_post_meta($orderId, 'user_id', true) === self::$userId) || get_post($orderId)->post_author === self::$userId) {
             return true;
         }
@@ -495,11 +500,33 @@ class Orders
      */
     public function checkInsertCapability()
     {
+
+        //Bypass security, by constant
+        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
+            return true;
+        }
+
         if (is_user_logged_in() && current_user_can('create_posts')) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Check if a user is logged in
+     *
+     * @return bool
+     */
+    public function checkUserAuthentication()
+    {
+
+        //Bypass security, by constant
+        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
+            return true;
+        }
+
+        return is_user_logged_in();
     }
 
     /**

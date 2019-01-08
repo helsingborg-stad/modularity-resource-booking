@@ -22,6 +22,11 @@ define('MODULARITYRESOURCEBOOKING_PATH', plugin_dir_path(__FILE__));
 define('MODULARITYRESOURCEBOOKING_URL', plugins_url('', __FILE__));
 define('MODULARITYRESOURCEBOOKING_TEMPLATE_PATH', MODULARITYRESOURCEBOOKING_PATH . 'templates/');
 
+//Disable security mode
+if (!defined('RESOURCE_BOOKING_DISABLE_SECURITY')) {
+    define('RESOURCE_BOOKING_DISABLE_SECURITY', false);
+}
+
 load_plugin_textdomain('modularity-resource-booking', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
 // Require composer dependencies (autoloader)

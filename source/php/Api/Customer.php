@@ -403,8 +403,10 @@ class Customer
      */
     public function canUpdateUser($userId) : bool
     {
-
-        return true;
+        //Bypass security, by constant
+        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
+            return true;
+        }
 
         if (is_super_admin()) {
             return true;

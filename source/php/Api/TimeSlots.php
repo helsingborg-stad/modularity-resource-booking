@@ -304,7 +304,9 @@ class TimeSlots
 
     /**
      * Get all products in a package
+     *
      * @param $termId
+     *
      * @return array|bool
      */
     public static function getProductsByPackage($termId)
