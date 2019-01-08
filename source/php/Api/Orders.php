@@ -356,7 +356,6 @@ class Orders
         update_field('customer_id', $userId, $insert);
         update_field('order_status', get_field('order_status', 'option'), $insert);
 
-
         //Append attachment data
         if (is_array($mediaItems) && !empty($mediaItems)) {
 
@@ -445,6 +444,17 @@ class Orders
      */
     public function modify($request)
     {
+
+        //Check ownership
+        if (!$this->checkOrderOwnership($request->get_param('id'))) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('You are not the owner of that order.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ), 401
+            );
+        }
+
         return $this->create($request);
     }
 
