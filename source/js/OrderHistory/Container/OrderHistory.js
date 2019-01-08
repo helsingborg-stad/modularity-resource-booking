@@ -123,6 +123,7 @@ class OrderHistory extends React.Component {
                         showSearch={false}
                         langNoResults={translation.noOrdersFound}
                     />
+                    {filteredItems.length > 0 &&
                     <div className="grid gutter">
                         <div className="grid-fit-content u-ml-auto">
                             <Pagination
@@ -136,6 +137,7 @@ class OrderHistory extends React.Component {
                             />
                         </div>
                     </div>
+                    }
                 </div>
             );
         }
