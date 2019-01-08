@@ -1,7 +1,9 @@
 <?php 
 
-if (function_exists('acf_add_local_field_group')) {
-    acf_add_local_field_group(array(
+
+if (function_exists('acf_add_local_field_group')) {
+
+    acf_add_local_field_group(array(
     'key' => 'group_5bed4d621923e',
     'title' => __('Time Slots Management', 'modularity-resource-booking'),
     'fields' => array(
@@ -123,7 +125,7 @@
             0 => array(
                 'param' => 'options_page',
                 'operator' => '==',
-                'value' => 'acf-options-resource-booking',
+                'value' => 'resource-booking-options',
             ),
         ),
     ),
@@ -136,4 +138,5 @@
     'active' => 1,
     'description' => '',
 ));
-}
+
+}

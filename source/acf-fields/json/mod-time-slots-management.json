@@ -120,7 +120,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "acf-options-resource-booking"
+                "value": "resource-booking-options"
             }
         ]
     ],
@@ -133,4 +133,4 @@
     "active": 1,
     "description": ""
 }]
-
+
