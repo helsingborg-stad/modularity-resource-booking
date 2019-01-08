@@ -467,7 +467,7 @@ class Orders
      */
     public function checkOrderOwnership($orderId) : bool
     {
-        if (get_post_meta($orderId, 'user_id', true) === self::$userId) {
+        if ((get_post_meta($orderId, 'user_id', true) === self::$userId) || get_post($orderId)->post_author === self::$userId) {
             return true;
         }
 
