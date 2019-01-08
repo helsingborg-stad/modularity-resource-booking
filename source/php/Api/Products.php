@@ -35,6 +35,7 @@ class Products
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
                         },
+                        'sanitize_callback' => 'absint',
                         'required' => true,
                         'type' => 'integer',
                         'description' => 'The product id.'
@@ -43,7 +44,7 @@ class Products
             )
         );
 
-        //Get all products (limited)
+        //Get all products
         register_rest_route(
             "ModularityResourceBooking/v1",
             "Product",
@@ -65,9 +66,10 @@ class Products
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
                         },
+                        'sanitize_callback' =>'absint',
                         'required' => true,
                         'type' => 'integer',
-                        'description' => 'The product id.'
+                        'description' => 'The package id.'
                     ),
                 ),
             )
