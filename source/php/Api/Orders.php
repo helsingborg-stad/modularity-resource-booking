@@ -228,22 +228,6 @@ class Orders
             );
         }
 
-        //Send manager email
-        new \ModularityResourceBooking\Helper\ManagerMail(
-            __('A new order has been registered.', 'modularity-resource-booking'),
-            __('Order details.', 'modularity-resource-booking'),
-            array(
-                array(
-                    'heading' => __('Order number.', 'modularity-resource-booking'),
-                    'content' => 'FGHUJVHG'
-                ),
-                array(
-                    'heading' => __('Customer', 'modularity-resource-booking'),
-                    'content' => 'Sven Svensson'
-                )
-            )
-        );
-
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
 
@@ -273,11 +257,9 @@ class Orders
             );
         }
 
-        $userId = self::$userId;
-
         // Get customer group data
-        $groupLimit = TimeSlots::customerGroupLimit($userId);
-        $groupMembers = TimeSlots::customerGroupMembers($userId);
+        $groupLimit = TimeSlots::customerGroupLimit(self::$userId);
+        $groupMembers = TimeSlots::customerGroupMembers(self::$userId);
 
         // Remap order items and check stock availability
         $orderArticles = $data['order_articles'];
@@ -333,7 +315,7 @@ class Orders
             'post_title' => $orderId,
             'post_type' => 'purchase',
             'post_status' => 'publish',
-            'post_author' => $userId
+            'post_author' => self::$userId
         );
 
         //Prepend id if proveided (converted to update)
@@ -399,7 +381,7 @@ class Orders
         update_post_meta($insert, 'order_id', $orderId);
 
         //Update fields
-        update_field('customer_id', $userId, $insert);
+        update_field('customer_id', self::$userId, $insert);
         update_field('order_status', get_field('order_status', 'option'), $insert);
 
         //Append attachment data
@@ -415,7 +397,25 @@ class Orders
             update_post_meta($insert, '_media_items', 'field_5bffbfed18455');
         }
 
-
+        //Send manager email
+        new \ModularityResourceBooking\Helper\ManagerMail(
+            __('New order', 'modularity-resource-booking'),
+            __('A new order has been submitted, please review it and accept it as soon as possible.', 'modularity-resource-booking'),
+            array(
+                array(
+                    'heading' => __('Order number:', 'modularity-resource-booking'),
+                    'content' => $orderId
+                ),
+                array(
+                    'heading' => __('Order number:', 'modularity-resource-booking'),
+                    'content' => $this->getPackageName($data['order_articles'])
+                ),
+                array(
+                    'heading' => __('Customer: ', 'modularity-resource-booking'),
+                    'content' => wp_get_current_user()->user_firstname . ' ' . wp_get_current_user()->user_lastname
+                )
+            )
+        );
 
         //Return success
         return new \WP_REST_Response(
@@ -646,14 +646,29 @@ class Orders
     /**
      * Get a name of the package
      *
-     * @param int $packageId The id of the pagage
+     * @param int|array $packages The id of the packages(s)
      *
      * @return mixed String on found, false on invalid
      */
-    public function getPackageName($packageId)
+    public function getPackageName($packages)
     {
-        if ($packageObject = get_term($packageId)) {
-            return $packageObject->name;
+        //Declarations
+        $result = array();
+
+        //Steamline data (takes both int and array)
+        if (!is_array($packages)) {
+            $packages = array($packages);
+        }
+
+        //Get packages
+        if (is_array($packages) && !empty($packages)) {
+            foreach ($packages as $packageId) {
+                if ($packageObject = get_term($packageId)) {
+                    $result[] = $packageObject->name;
+                }
+            }
+
+            return implode(", ", $result);
         }
 
         return false;

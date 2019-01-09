@@ -110,7 +110,7 @@ class Mail
 
         return wp_mail(
             implode(", ", $this->_reciver),
-            $this->_subject,
+            $this->_subject . " - " . get_bloginfo('name'),
             $this->html($this->_content),
             $this->_headers
         );
@@ -125,8 +125,9 @@ class Mail
     {
         //Create data
         $data = array(
-            'content' => apply_filters('the_content', $content),
             'title' => $this->_subject,
+            'preheader' => wp_trim_words($content, 10, "..."),
+            'content' => apply_filters('the_content', $content),
             'table' => $this->_table
         );
 
