@@ -1,0 +1,155 @@
+$gray: #E5E5E5;
+$creamy: #F5F5F5;
+$primary: #AE0B05;
+.calendar {
+    max-width: 400px;
+
+
+    .calendar__cell {
+        position: relative;
+    }
+
+    .calendar__cell_inner {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+}
+
+
+//Borders
+// .calendar__body {
+//     border: solid 1px black;
+// }
+
+// .calendar__row {
+//     .calendar__cell {
+//         border-bottom: solid 1px black;
+//         border-right: solid 1px black;
+//     }
+
+//     .calendar__cell:last-child {
+//         border-right: none;
+//     }
+// }
+
+// .calendar__row:last-child {
+//     .calendar__cell {
+//         border-bottom: none;
+//     }
+// }
+
+
+.calendar__cell.selected:before,
+.calendar__row.selected:before {
+    background: gray;
+}
+
+.calendar__cell:before {
+    border-radius: 100%;
+}
+
+.calendar__cell {
+    &.calendar__cell--selectable {
+        cursor: pointer;
+        &:before {
+            background: $gray;
+        }
+        &.is-selected {
+            &:before {
+                background: $primary !important;
+            }
+
+            color: white;
+        }
+
+        &.is-disabled {
+            cursor: not-allowed;
+            &:before {
+                background: $creamy !important;
+            }
+        }
+    }
+}
+
+.calendar__row {
+    &.calendar__row--selectable {
+        cursor: pointer;
+        .calendar__cell {
+            &:before {
+                background: $gray;
+            }
+        }
+
+
+            &.is-selected {
+                .calendar__cell {
+                    &:before {
+                        background: $primary !important;
+                    }
+
+                    color: white;
+                }
+            }
+
+            &.is-disabled {
+                cursor: not-allowed;
+
+                .calendar__cell:before {
+                    background-color: $creamy;
+                }
+            }
+
+        .calendar__cell--begin:before {
+            border-radius: 100% 0% 0% 100%;
+        }
+
+        .calendar__cell--end:before {
+            border-radius: 0% 100% 100% 0%;
+        }
+
+        .calendar__cell--junction:before {
+            border-radius: 0%;
+        }
+
+        &.is-selected {
+
+        }
+
+        &.is-disabled {
+
+        }
+    }
+}
+
+.calendar__cell.calendar__cell--selectable {
+}
+
+.calendar__cell.calendar__cell--selectable.is-selected {
+}
+
+.calendar__row.calendar__row--selectable.is-selected {
+}
+
+.calendar__row.calendar__row--selectable.is-selected {
+}
+
+
+.calendar__cell--selectable.calendar__cell--begin.is-selected {
+
+}
+
+.calendar__cell--selectable.calendar__cell--junction.is-selected {
+
+}
+
+.calendar__cell--selectable.calendar__cell--end.is-selected {
+
+}
+
+.calendar__cell.is-selected.is-between {
+
+}
