@@ -118,10 +118,11 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                             $title = get_the_title($row['article_id']);
                             $url = get_edit_post_link($row['article_id']);
                     }
-                    $orders .= '                            
+
+                    $orders .= '
                                 <tr>
                                     <td class="row-title"><label for="tablecell"><a href="' . $url . '">' . $title . '</a></label></td>
-                                    <td>' . ucfirst($row['type']) . '</td>
+                                    <td>' . ucfirst(array_pop($row['type'])) . '</td>
                                     <td>' . $interval['start'] . ' - ' . $interval['stop'] . '</td>
                                 </tr>';
                 }

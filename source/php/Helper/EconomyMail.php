@@ -1,6 +1,6 @@
 <?php
 
-namespace ModularityResourceBooking\;
+namespace ModularityResourceBooking\Helper;
 
 /**
  * Class Mail
@@ -11,7 +11,7 @@ namespace ModularityResourceBooking\;
  * @license  MIT https://opensource.org/licenses/MIT
  * @link     https://helsingborg.se
  */
-class EconomyMail extends \Helper\Mail
+class EconomyMail extends Mail
 {
     /**
      * Send manager email
@@ -21,11 +21,12 @@ class EconomyMail extends \Helper\Mail
      *
      * @return bool true if sent, false if undefined or malformed email
      */
-    public static function __construct($subject, $content)
+    public function __construct($subject, $content, $table = array())
     {
-        if (!is_wp_error($this->setReciver(get_option('mod_rb_manager_email')))) {
+        if (!is_wp_error($this->setReciver(get_field('mod_rb_economy_email', 'option')))) {
             $this->setSubject($subject);
             $this->setContent($content);
+            $this->setTable($table);
             $this->dispatch();
             return true;
         }
