@@ -27,6 +27,72 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         //Save author to post on change
         add_action('save_post', array($this, 'updateAuthor'));
+
+        //Do actions on taxonomy change
+        add_action('save_post', array($this, 'taxonomyChangeActions'), 1);
+    }
+
+    /**
+     * Do action on status change
+     *
+     * @param int $postId The id of post being saved
+     *
+     * @return void
+     */
+    public function taxonomyChangeActions($postId)
+    {
+
+        //Not order posttype
+        if (get_post_type($postId) != self::$postTypeSlug) {
+            return;
+        }
+
+        //Only in admin
+        if (!is_admin()) {
+            return;
+        }
+
+        //Not defined
+        if (!isset($_POST["acf"][get_field_object('order_status')['key']])) {
+            return;
+        }
+
+        //Get term setups
+        $newTermSetup = $_POST["acf"][get_field_object('order_status')['key']];
+        $oldTermSetup = get_the_terms($postId, self::$statusTaxonomySlug);
+
+        if (is_array($oldTermSetup) && !empty($oldTermSetup)) {
+            foreach ($oldTermSetup as $term) {
+                if ($term->term_id != $newTermSetup) {
+
+                    //Get actions
+                    $actionOnAcquisition = get_field('do_action_on_aqusition', self::$statusTaxonomySlug . "_" . $newTermSetup);
+
+                    //Send email to economy
+                    if (!is_null($actionOnAcquisition) && in_array('economy_mail', $actionOnAcquisition)) {
+                        new \ModularityResourceBooking\Helper\EconomyMail(
+                            __('Request of new invoice', 'modularity-resource-booking'),
+                            __('This is a request to create an invoice to the specifications below.', 'modularity-resource-booking'),
+                            array(
+                                array(
+                                    'heading' => __('Order number:', 'modularity-resource-booking'),
+                                    'content' => 'z'
+                                ),
+                                array(
+                                    'heading' => __('Ordered articles:', 'modularity-resource-booking'),
+                                    'content' => 'y'
+                                ),
+                                array(
+                                    'heading' => __('Their reference: ', 'modularity-resource-booking'),
+                                    'content' => 'x'
+                                )
+                            )
+                        );
+                    }
+                }
+            }
+        }
+
     }
 
     /**
