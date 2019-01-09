@@ -63,7 +63,8 @@ add_action('plugins_loaded', function () {
         'mod-time-slots-management' => 'group_5bed4d621923e',
         'mod-default-order-status' => 'group_5bfd2dab2fd89',
         'mod-email-settings' => 'group_5c063df1cb24f',
-        'mod-billing-info' => 'group_5c010376c78be'
+        'mod-billing-info' => 'group_5c010376c78be',
+        'mod-order-status-actions' => 'group_5c360bf77a6cf'
     ));
     $acfExportManager->import();
 });
