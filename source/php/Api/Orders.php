@@ -602,6 +602,27 @@ class Orders
     }
 
     /**
+     * Get the product price
+     * @param $productId
+     * @param $groupId
+     * @return int
+     */
+    public function getProductPrice($productId, $groupId = 0)
+    {
+        $price = get_field('product_price', $productId);
+        // Check if a user group price variation is set
+        $groupVariations = get_field('customer_group_price_variations', $productId);
+        if ($groupId && is_array($groupVariations) && !empty($groupVariations)) {
+            $key = array_search($groupId, array_column($groupVariations, 'customer_group'));
+            if ($key !== false) {
+                $price = $groupVariations[$key]['product_price'];
+            }
+        }
+
+        return (int)$price;
+    }
+
+    /**
      * Get customer group
      * @return null|int
      */
