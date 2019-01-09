@@ -17,30 +17,16 @@ class BookingForm extends \Modularity\Module
     public function data() : array
     {
         $data = get_fields($this->ID);
-        $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array('box', 'box-panel'), $this->post_type, $this->args));
+        $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array(), $this->post_type, $this->args));
         return $data;
     }
 
-    public function getUserData() : array
+    public function style()
     {
-        if (!is_user_logged_in()) {
-            return array();
+        if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'))) {
+            // Enqueue module script
+            wp_enqueue_style('modularity-resource-booking-css', MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'));
         }
-
-        $data = array(
-            'id'             => get_current_user_id(),
-            'email'          => wp_get_current_user()->data->user_email,
-            'firstName'      => get_user_meta(get_current_user_id(), 'first_name', true),
-            'lastName'       => get_user_meta(get_current_user_id(), 'last_name', true),
-            'phone'          => get_user_meta(get_current_user_id(), 'phone', true),
-            'website'        => get_userdata(get_current_user_id())->user_url,
-            'company'        => get_user_meta(get_current_user_id(), 'billing_company', true),
-            'companyNumber'  => get_user_meta(get_current_user_id(), 'billing_company_number', true),
-            'billingAddress' => get_user_meta(get_current_user_id(), 'billing_address', true),
-            'contactPerson'  => get_user_meta(get_current_user_id(), 'billing_contact_person', true)
-        );
-
-        return $data;
     }
 
     public function script()
@@ -50,7 +36,7 @@ class BookingForm extends \Modularity\Module
             \Modularity\Helper\React::enqueue();
 
             // Enqueue module script
-            wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/UserAccount/Index.js'), array('jquery', 'react', 'react-dom'));
+            wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/BookingForm/Index.js'), array('jquery', 'react', 'react-dom'));
 
             //Localize
             wp_localize_script('modularity-' . $this->slug, 'modResourceBookingForm', array(
@@ -60,6 +46,11 @@ class BookingForm extends \Modularity\Module
         }
     }
 
+
+    public function template()
+    {
+        return 'booking-form.blade.php';
+    }
     /**
      * Available "magic" methods for modules:
      * init()            What to do on initialization (if you must, use __construct with care, this will probably break stuff!!)
