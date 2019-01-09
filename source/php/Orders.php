@@ -83,7 +83,15 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                     'content' => 'y'
                                 ),
                                 array(
+                                    'heading' => __('Our reference: ', 'modularity-resource-booking'),
+                                    'content' => 'x'
+                                ),
+                                array(
                                     'heading' => __('Their reference: ', 'modularity-resource-booking'),
+                                    'content' => 'x'
+                                ),
+                                array(
+                                    'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
                                     'content' => 'x'
                                 )
                             )
