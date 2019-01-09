@@ -84,7 +84,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                 ),
                                 array(
                                     'heading' => __('Our reference: ', 'modularity-resource-booking'),
-                                    'content' => 'x'
+                                    'content' => get_field('mod_rb_our_reference', 'options')
                                 ),
                                 array(
                                     'heading' => __('Their reference: ', 'modularity-resource-booking'),
