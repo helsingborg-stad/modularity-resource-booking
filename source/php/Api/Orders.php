@@ -150,11 +150,11 @@ class Orders
 
         //Basic query
         $query = array(
-                    'post_type' => 'purchase',
-                    'posts_per_page' => 99,
-                    'orderby' => 'date',
-                    'order' => 'DESC'
-                );
+            'post_type' => 'purchase',
+            'posts_per_page' => 99,
+            'orderby' => 'date',
+            'order' => 'DESC'
+        );
 
         //Append meta query
         if (!is_null($metaQuery) && is_array($metaQuery)) {
@@ -311,11 +311,11 @@ class Orders
             );
         }
 
-        for($int=0; $int < count($orderArticles); $int++){
-            if(isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
+        for ($int = 0; $int < count($orderArticles); $int++) {
+            if (isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
                 $productIds = TimeSlots::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
 
-                foreach($productIds as $prodId){
+                foreach ($productIds as $prodId) {
                     $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
 
                     if (is_object($mediaItems) && $mediaItems->error != null) {
@@ -362,7 +362,7 @@ class Orders
 
             //Add items for storage of each id
             foreach ($mediaItems as $mediaKey => $mediaItem) {
-                update_sub_field(array('media_items', $mediaKey+1, 'file'), $mediaItem, $insert);
+                update_sub_field(array('media_items', $mediaKey + 1, 'file'), $mediaItem, $insert);
             }
 
             //Add number of items avabile (hotfix!)
@@ -446,7 +446,7 @@ class Orders
      *
      * @return bool
      */
-    public function checkOrderOwnership($orderId) : bool
+    public function checkOrderOwnership($orderId): bool
     {
         if (get_post_meta($orderId, 'user_id', true) === self::$userId) {
             return true;
@@ -489,13 +489,13 @@ class Orders
                 $orderStatus = $orderStatus ? get_term((int)$orderStatus, 'order-status') : null;
                 $articles = get_field('order_articles', $order->ID);
                 $result[] = array(
-                    'id' => (int) $order->ID,
-                    'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
-                    'user_id' => (int) $order->post_author,
-                    'uname' => (string) get_userdata($order->post_author)->first_name . " " . get_userdata($order->post_author)->last_name,
-                    'name' => (string) $order->post_title,
+                    'id' => (int)$order->ID,
+                    'order_id' => (string)get_post_meta($order->ID, 'order_id', true),
+                    'user_id' => (int)$order->post_author,
+                    'uname' => (string)get_userdata($order->post_author)->first_name . " " . get_userdata($order->post_author)->last_name,
+                    'name' => (string)$order->post_title,
                     'date' => date('Y-m-d', strtotime($order->post_date)),
-                    'slug' => (string) $order->post_name,
+                    'slug' => (string)$order->post_name,
                     'status' => $orderStatus->name ?? null,
                     'articles' => is_array($articles) && !empty($articles) ? $this->filterArticlesOutput($articles) : array()
                 );
@@ -507,7 +507,7 @@ class Orders
             foreach ($result as $key => $item) {
                 if ($item['user_id'] == self::$userId) {
                     $result[$key] = $item + array(
-                            'media' => (array) get_field('media_items', $item['id'])
+                            'media' => (array)get_field('media_items', $item['id'])
                         );
                 }
             }
