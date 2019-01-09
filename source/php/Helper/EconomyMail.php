@@ -1,6 +1,6 @@
 <?php
 
-namespace ModularityResourceBooking;
+namespace ModularityResourceBooking\;
 
 /**
  * Class Mail
@@ -11,7 +11,7 @@ namespace ModularityResourceBooking;
  * @license  MIT https://opensource.org/licenses/MIT
  * @link     https://helsingborg.se
  */
-class Mail extends \Helper\Mail
+class EconomyMail extends \Helper\Mail
 {
     /**
      * Send manager email
