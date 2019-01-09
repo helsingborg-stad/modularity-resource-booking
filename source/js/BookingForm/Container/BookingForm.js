@@ -1,16 +1,16 @@
-// import {Button, Input, Textarea, Notice, Pagination} from 'hbg-react';
+import { Button, Calendar } from 'hbg-react';
 
 class BookingForm extends React.Component {
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
-        this.state = {
-        }
+        this.state = {};
     }
 
     render() {
         return (
-           <div></div>
+            <div>
+                <Calendar />
+            </div>
         );
     }
 }
