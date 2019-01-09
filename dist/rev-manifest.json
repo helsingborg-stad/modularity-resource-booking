@@ -1,6 +1,7 @@
 {
   "css/modularity-resource-booking.css": "css/modularity-resource-booking-e0b6f9762a.css",
   "js/BookingForm/Index.js": "js/BookingForm/Index-b9ed82816e.js",
+  "js/OrderHistory/Index.js": "js/OrderHistory/Index-fb24df2661.js",
   "js/RegistrationForm/Index.js": "js/RegistrationForm/Index-1da8086311.js",
-  "js/UserAccount/Index.js": "js/UserAccount/Index-df597164da.js"
+  "js/UserAccount/Index.js": "js/UserAccount/Index-0031856f5e.js"
 }
