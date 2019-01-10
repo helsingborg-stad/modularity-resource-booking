@@ -24,6 +24,10 @@ class OrderHistory extends \Modularity\Module
 
     public function script()
     {
+        if (!is_user_logged_in()) {
+            return;
+        }
+
         if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/OrderHistory/Index.js'))) {
             // Enqueue react
             \Modularity\Helper\React::enqueue();
@@ -43,7 +47,8 @@ class OrderHistory extends \Modularity\Module
                     'price' => __('Price', 'modularity-resource-booking'),
                     'period' => __('Period', 'modularity-resource-booking'),
                 ),
-                'restUrl' => get_rest_url()
+                'restUrl' => get_rest_url(),
+                'nonce' => wp_create_nonce('wp_rest')
             ));
         }
     }
