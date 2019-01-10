@@ -22,6 +22,11 @@ define('MODULARITYRESOURCEBOOKING_PATH', plugin_dir_path(__FILE__));
 define('MODULARITYRESOURCEBOOKING_URL', plugins_url('', __FILE__));
 define('MODULARITYRESOURCEBOOKING_TEMPLATE_PATH', MODULARITYRESOURCEBOOKING_PATH . 'templates/');
 
+//Disable security mode
+if (!defined('RESOURCE_BOOKING_DISABLE_SECURITY')) {
+    define('RESOURCE_BOOKING_DISABLE_SECURITY', false);
+}
+
 load_plugin_textdomain('modularity-resource-booking', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
 // Require composer dependencies (autoloader)
@@ -58,7 +63,8 @@ add_action('plugins_loaded', function () {
         'mod-time-slots-management' => 'group_5bed4d621923e',
         'mod-default-order-status' => 'group_5bfd2dab2fd89',
         'mod-email-settings' => 'group_5c063df1cb24f',
-        'mod-billing-info' => 'group_5c010376c78be'
+        'mod-billing-info' => 'group_5c010376c78be',
+        'mod-booking-form' => 'group_5c35f66a679df'
     ));
     $acfExportManager->import();
 });

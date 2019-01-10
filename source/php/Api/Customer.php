@@ -59,13 +59,6 @@ class Customer
             array(
                 'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'create'),
-                'args' => array(
-                    'id' => array(
-                        'validate_callback' => function ($param, $request, $key) {
-                            return is_numeric($param);
-                        }
-                    ),
-                )
             )
         );
 
@@ -76,7 +69,18 @@ class Customer
             array(
                 'methods' => \WP_REST_Server::EDITABLE,
                 'callback' => array($this, 'modify'),
-                'permission_callback' => array($this, 'canUpdateUser')
+                'permission_callback' => array($this, 'canUpdateUser'),
+                'args' => array(
+                    'id' => array(
+                        'validate_callback' => function ($param, $request, $key) {
+                            return is_numeric($param);
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The user id.'
+                    ),
+                ),
             )
         );
 
@@ -91,7 +95,11 @@ class Customer
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The user id.'
                     ),
                 )
             )
@@ -258,14 +266,6 @@ class Customer
             );
         }
 
-        //Check password strength
-        if (is_wp_error($strength = \ModularityResourceBooking\Helper\PasswordStrength::check($data['password']))) {
-            return array(
-                'message' => $strength->get_error_message(),
-                'state' => 'error'
-            );
-        }
-
         //Define update array
         $updateArray = array(
             'ID' =>  $request->get_param('id'),
@@ -274,6 +274,14 @@ class Customer
 
         //Set new password
         if (isset($data['password']) && !empty($data['password'])) {
+
+            if (is_wp_error($strength = \ModularityResourceBooking\Helper\PasswordStrength::check($data['password']))) {
+                return array(
+                    'message' => $strength->get_error_message(),
+                    'state' => 'error'
+                );
+            }
+
             wp_set_password($data['password'], $request->get_param('id'));
         }
 
@@ -395,8 +403,10 @@ class Customer
      */
     public function canUpdateUser($userId) : bool
     {
-
-        return true;
+        //Bypass security, by constant
+        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
+            return true;
+        }
 
         if (is_super_admin()) {
             return true;

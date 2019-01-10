@@ -4,13 +4,16 @@ namespace ModularityResourceBooking\Api;
 
 /**
  * Class Orders
+ *
  * @package ModularityResourceBooking\Api
  */
 class Orders
 {
 
     /**
-     * @var
+     * Class variables
+     *
+     * @var The current user id
      */
     public static $userId;
 
@@ -45,7 +48,11 @@ class Orders
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The order id.'
                     ),
                 ),
             )
@@ -67,7 +74,8 @@ class Orders
             "MyOrders",
             array(
                 'methods' => \WP_REST_Server::READABLE,
-                'callback' => array($this, 'listMyOrders')
+                'callback' => array($this, 'listMyOrders'),
+                'permission_callback' => array($this, 'CheckUserAuthentication'),
             )
         );
 
@@ -78,7 +86,7 @@ class Orders
             array(
                 'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'create'),
-                //'permission_callback' => array($this, 'checkInsertCapability') TODO: activate later
+                'permission_callback' => array($this, 'checkInsertCapability')
             )
         );
 
@@ -94,7 +102,11 @@ class Orders
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The order id.'
                     ),
                 ),
             )
@@ -112,7 +124,11 @@ class Orders
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The order id.'
                     ),
                 ),
             )
@@ -150,11 +166,11 @@ class Orders
 
         //Basic query
         $query = array(
-            'post_type' => 'purchase',
-            'posts_per_page' => 99,
-            'orderby' => 'date',
-            'order' => 'DESC'
-        );
+                    'post_type' => 'purchase',
+                    'posts_per_page' => 99,
+                    'orderby' => 'date',
+                    'order' => 'DESC'
+                );
 
         //Append meta query
         if (!is_null($metaQuery) && is_array($metaQuery)) {
@@ -311,7 +327,7 @@ class Orders
             );
         }
 
-        for ($int = 0; $int < count($orderArticles); $int++) {
+        for ($int=0; $int < count($orderArticles); $int++) {
             if (isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
                 $productIds = TimeSlots::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
 
@@ -356,13 +372,12 @@ class Orders
         update_field('customer_id', $userId, $insert);
         update_field('order_status', get_field('order_status', 'option'), $insert);
 
-
         //Append attachment data
         if (is_array($mediaItems) && !empty($mediaItems)) {
 
             //Add items for storage of each id
             foreach ($mediaItems as $mediaKey => $mediaItem) {
-                update_sub_field(array('media_items', $mediaKey + 1, 'file'), $mediaItem, $insert);
+                update_sub_field(array('media_items', $mediaKey+1, 'file'), $mediaItem, $insert);
             }
 
             //Add number of items avabile (hotfix!)
@@ -376,8 +391,7 @@ class Orders
                 'message' => sprintf(
                     __('Your order has been registered.', 'modularity-resource-booking')
                 ),
-                'order' => $this->filterorderOutput(get_post($insert)
-                )
+                'order' => $this->filterorderOutput(get_post($insert))
             ),
             201
         );
@@ -392,7 +406,6 @@ class Orders
      */
     public function remove($request)
     {
-
         //Verify nonce
         if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
             return array(
@@ -410,6 +423,15 @@ class Orders
             );
         }
 
+        if (!$this->checkOrderOwnership($request->get_param('id'))) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('You are not the owner of that order.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ), 401
+            );
+        }
+
         if (wp_delete_post($request->get_param('id'))) {
             return new \WP_REST_Response(
                 array(
@@ -423,7 +445,7 @@ class Orders
             array(
                 'message' => __('Could not remove that order due to an unknown error.', 'modularity-resource-booking'),
                 'state' => 'error'
-            ), 200
+            ), 409
         );
     }
 
@@ -436,6 +458,17 @@ class Orders
      */
     public function modify($request)
     {
+
+        //Check ownership
+        if (!$this->checkOrderOwnership($request->get_param('id'))) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('You are not the owner of that order.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ), 401
+            );
+        }
+
         return $this->create($request);
     }
 
@@ -446,9 +479,14 @@ class Orders
      *
      * @return bool
      */
-    public function checkOrderOwnership($orderId): bool
+    public function checkOrderOwnership($orderId) : bool
     {
-        if (get_post_meta($orderId, 'user_id', true) === self::$userId) {
+        //Bypass security, by constant
+        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
+            return true;
+        }
+
+        if ((get_post_meta($orderId, 'user_id', true) === self::$userId) || get_post($orderId)->post_author === self::$userId) {
             return true;
         }
 
@@ -462,6 +500,12 @@ class Orders
      */
     public function checkInsertCapability()
     {
+
+        //Bypass security, by constant
+        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
+            return true;
+        }
+
         if (is_user_logged_in() && current_user_can('create_posts')) {
             return true;
         }
@@ -470,9 +514,26 @@ class Orders
     }
 
     /**
+     * Check if a user is logged in
+     *
+     * @return bool
+     */
+    public function checkUserAuthentication()
+    {
+
+        //Bypass security, by constant
+        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
+            return true;
+        }
+
+        return is_user_logged_in();
+    }
+
+    /**
      * Clean return array from uneccesary data (make it slimmer)
      *
      * @param array $orders Array (or object) reflecting items to output.
+     * @param array $result Array contining the output (basically a declaration)
      *
      * @return array $result Resulting array object
      */
@@ -485,17 +546,36 @@ class Orders
 
         if (is_array($orders) && !empty($orders)) {
             foreach ($orders as $order) {
+
+                //Order status
                 $orderStatus = get_post_meta($order->ID, 'order_status', true);
                 $orderStatus = $orderStatus ? get_term((int)$orderStatus, 'order-status') : null;
+
+                //Get ordered items
                 $articles = get_field('order_articles', $order->ID);
+
+                //Get author, check if exists
+                if (is_array($authorData = get_userdata($order->post_author))) {
+                    $author = array(
+                        'first_name' => $authorData->first_name,
+                        'last_name' => $authorData->last_name
+                    );
+                } else {
+                    $author = array(
+                        'first_name' => '',
+                        'last_name' => ''
+                    );
+                }
+
+                //Create result array
                 $result[] = array(
-                    'id' => (int)$order->ID,
-                    'order_id' => (string)get_post_meta($order->ID, 'order_id', true),
-                    'user_id' => (int)$order->post_author,
-                    'uname' => (string)get_userdata($order->post_author)->first_name . " " . get_userdata($order->post_author)->last_name,
-                    'name' => (string)$order->post_title,
+                    'id' => (int) $order->ID,
+                    'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
+                    'user_id' => (int) $order->post_author,
+                    'uname' => (string) $author['first_name'] . " " . $author['last_name'],
+                    'name' => (string) $order->post_title,
                     'date' => date('Y-m-d', strtotime($order->post_date)),
-                    'slug' => (string)$order->post_name,
+                    'slug' => (string) $order->post_name,
                     'status' => $orderStatus->name ?? null,
                     'articles' => is_array($articles) && !empty($articles) ? $this->filterArticlesOutput($articles) : array()
                 );
@@ -507,7 +587,7 @@ class Orders
             foreach ($result as $key => $item) {
                 if ($item['user_id'] == self::$userId) {
                     $result[$key] = $item + array(
-                            'media' => (array)get_field('media_items', $item['id'])
+                            'media' => (array) get_field('media_items', $item['id'])
                         );
                 }
             }
@@ -549,89 +629,31 @@ class Orders
 
     /**
      * Filter the article list output
+     *
      * @param array $articles List of articles
+     *
      * @return array Filtered articles
      */
     public function filterArticlesOutput($articles)
     {
-        $groupId = $this->getCustomerGroup();
-
-        $price = 0;
         foreach ($articles as $key => &$article) {
             $slot = TimeSlots::getSlotInterval($article['slot_id']);
             $title = '';
-
             if ($article['type'] === 'package') {
-                $term = get_term($article['article_id'], 'product-package');
-                $products = TimeSlots::getProductsByPackage((int)$article['article_id']);
-                // Calculate total price of all included products
-                foreach ($products as $product) {
-                    $price += $this->getProductPrice($product->ID, $groupId);
-                }
-                // Get custom price for package
-                if (get_field('package_price', $term) !== '') {
-                    $price = get_field('package_price', $term);
-                }
-                // Get group variation price
-                $groupVariations = get_field('customer_group_price_variations', 'product-package' . '_' . $article['article_id']);
-                if ($groupId && is_array($groupVariations) && !empty($groupVariations)) {
-                    $key = array_search($groupId, array_column($groupVariations, 'customer_group'));
-                    if ($key !== false) {
-                        $price = $groupVariations[$key]['product_price'];
-                    }
-                }
-                // Get the title
-                $title = $term->name ?? '';
+                $title = get_term($article['article_id'], 'product-package')->name ?? '';
             } elseif ($article['type'] === 'product') {
-                // Get product price
-                $price = $this->getProductPrice($article['article_id'], $groupId);
-                // Get the title
                 $title = get_the_title($article['article_id']);
             }
 
             $article = array(
                 'id' => $article['article_id'],
                 'title' => $title,
-                'type' => $article['type'] == 'package' ? __('Package', 'modularity-resource-booking') : __('Product', 'modularity-resource-booking'),
+                'type' => $article['type'] == 'package' ? __('Package', 'modularity-resource-booking') :  __('Product', 'modularity-resource-booking'),
                 'start' => $slot['start'],
-                'stop' => $slot['stop'],
-                'price' => $price
+                'stop' => $slot['stop']
             );
         }
 
         return $articles;
     }
-
-    /**
-     * Get the product price
-     * @param $productId
-     * @param $groupId
-     * @return int
-     */
-    public function getProductPrice($productId, $groupId = 0)
-    {
-        $price = get_field('product_price', $productId);
-        // Check if a user group price variation is set
-        $groupVariations = get_field('customer_group_price_variations', $productId);
-        if ($groupId && is_array($groupVariations) && !empty($groupVariations)) {
-            $key = array_search($groupId, array_column($groupVariations, 'customer_group'));
-            if ($key !== false) {
-                $price = $groupVariations[$key]['product_price'];
-            }
-        }
-
-        return (int)$price;
-    }
-
-    /**
-     * Get customer group
-     * @return null|int
-     */
-    public function getCustomerGroup()
-    {
-        $customerGroup = wp_get_object_terms(self::$userId, 'customer_group', array('fields' => 'ids'));
-        $customerGroup = $customerGroup[0] ?? null;
-        return $customerGroup;
-    }
-
 }

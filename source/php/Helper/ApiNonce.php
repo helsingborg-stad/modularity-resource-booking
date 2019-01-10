@@ -21,10 +21,15 @@ class ApiNonce
      */
     public static function verify()
     {
-        return true; //TEMP DISABLE
+        //Bypass security, by constant
+        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
+            return true;
+        }
+
         if (!wp_verify_nonce('nonce', 'wp_rest')) {
             return new \WP_Error('nonce_validation_failure', __('Oops, could not verify your requests origin.', 'modularity-resource-booking'));
         }
+
         return true;
     }
 }

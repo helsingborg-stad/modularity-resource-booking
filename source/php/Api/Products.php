@@ -34,13 +34,17 @@ class Products
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The product id.'
                     ),
                 ),
             )
         );
 
-        //Get all products (limited)
+        //Get all products
         register_rest_route(
             "ModularityResourceBooking/v1",
             "Product",
@@ -61,7 +65,11 @@ class Products
                     'id' => array(
                         'validate_callback' => function ($param, $request, $key) {
                             return is_numeric($param);
-                        }
+                        },
+                        'sanitize_callback' =>'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The package id.'
                     ),
                 ),
             )
@@ -229,6 +237,7 @@ class Products
                     'title' => $term->name,
                     'description' => $term->description,
                     'price' => (int) $this->getPrice($term),
+                    'media_requirements' => $this->getPackageMediaRequirements($term->term_id),
                     'products' => $this->filterPostOutput(
                         get_posts(
                             array(
@@ -336,4 +345,69 @@ class Products
         return $basePrice;
     }
 
+    /**
+     * Returns a merged array of media requirements from all products within a package
+     * @param  [int/string] $termId Package (term) ID
+     * @return [array/boolean]
+     */
+    public function getPackageMediaRequirements($termId)
+    {
+        $term = get_term($termId, 'product-package');
+
+        if (!$term) {
+            return false;
+        }
+
+        $products = get_posts(
+            array(
+                'posts_per_page' => -1,
+                'post_type' => 'product',
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'product-package',
+                        'field' => 'term_id',
+                        'terms' => $term->term_id,
+                    )
+                )
+            )
+        );
+
+        $mediaRequirements = [];
+
+        if (empty($products)) {
+            return [];
+        }
+
+        foreach ($products as $product) {
+            if (empty(get_field('media_requirement', $product->ID))) {
+                continue;
+            }
+
+            foreach (get_field('media_requirement', $product->ID) as $media) {
+                $mediaName = $media['media_name'];
+                unset($media['media_name']);
+                $mediaKey = md5(json_encode($media));
+
+                if (empty($mediaRequirements) || !isset($mediaRequirements[$mediaKey])) {
+                    $mediaRequirements[$mediaKey] = array_merge(array('media_name' => [$mediaName]), $media);
+                    continue;
+                }
+
+                if (!in_array($mediaName, $mediaRequirements[$mediaKey]['media_name'])) {
+                    array_push($mediaRequirements[$mediaKey]['media_name'], $mediaName);
+                }
+            }
+        }
+
+        if (empty($mediaRequirements)) {
+            return [];
+        }
+
+        return array_values(array_map(function($media) {
+            if (isset($media['media_name']) && is_array($media['media_name'])) {
+                $media['media_name'] = implode(', ', $media['media_name']);
+            }
+            return $media;
+        }, $mediaRequirements));
+    }
 }
