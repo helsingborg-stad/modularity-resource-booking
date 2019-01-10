@@ -96,6 +96,32 @@ class Mail
     }
 
     /**
+     * Convert content to HTML
+     *
+     * @return string Html formatted string
+     */
+    public function html($content)
+    {
+        //Create data
+        $data = array(
+            'title' => $this->_subject,
+            'preheader' => wp_trim_words($content, 10, "..."),
+            'content' => apply_filters('the_content', $content),
+            'table' => $this->_table
+        );
+
+        //Enshure that cache folder exits
+        wp_mkdir_p(trailingslashit(wp_upload_dir()['basedir']) . 'cache/modularity-resource-booking/');
+
+        //Run blade template
+        $blade = new \Philo\Blade\Blade(
+            MODULARITYRESOURCEBOOKING_PATH . "/templates",
+            trailingslashit(wp_upload_dir()['basedir']) . 'cache/modularity-resource-booking/'
+        );
+        return $blade->view()->make('email', $data)->render();
+    }
+
+    /**
      * Validate input data and send the actual mail.
      *
      * @return true if sent, WP_Error if malformed input, false if unknown failure.
@@ -120,32 +146,6 @@ class Mail
             $this->html($this->_content),
             $this->_headers
         );
-    }
-
-    /**
-     * Convert content to HTML
-     *
-     * @return string Html formatted string
-     */
-    public function html($content)
-    {
-        //Create data
-        $data = array(
-            'title' => $this->_subject,
-            'preheader' => wp_trim_words($content, 10, "..."),
-            'content' => apply_filters('the_content', $content),
-            'table' => $this->_table
-        );
-
-        //Enshure that cache folder exits
-        wp_mkdir_p(trailingslashit(wp_upload_dir()['basedir']) . 'cache/modularity-resource-booking/');
-
-        //Run blade template
-        $blade = new \Philo\Blade\Blade(
-            MODULARITYRESOURCEBOOKING_PATH . "/templates",
-            trailingslashit(wp_upload_dir()['basedir']) . 'cache/modularity-resource-booking/'
-        );
-        return $blade->view()->make('email', $data)->render();
     }
 
     /**

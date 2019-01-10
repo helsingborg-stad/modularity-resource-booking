@@ -2,7 +2,7 @@
 
 namespace ModularityResourceBooking\Helper;
 
-class Price
+class Product
 {
     /**
      * Get the price of a product (post) or package (taxonomy)
@@ -15,6 +15,17 @@ class Price
      */
     public static function price($item, $currencySymbol = false)
     {
+
+        //Multiple items (split, and recuse)
+        if (is_array($item) && !empty($item)) {
+            foreach ($item as $multi) {
+                $productArraySumPrice = $productArraySumPrice + self::price($multi);
+            }
+            if ($currencySymbol) {
+                return (string) $productArraySumPrice . " " . RESOURCE_BOOKING_CURRENCY_SYMBOL;
+            }
+            return (int) $productArraySumPrice;
+        }
 
         //Get object
         if (is_numeric($item)) {
@@ -37,8 +48,13 @@ class Price
         //Get term or post keys
         if (get_class($item) == "WP_Term") {
             $fieldName = "package_price";
-        } else {
+        } elseif (get_class($item) == "WP_Post") {
             $fieldName = "product_price";
+        } else {
+            return new \WP_Error(
+                'type_not_valid',
+                __('The type sent for price calculation is not valid, must be WP_Post or WP_Term.', 'modularity-resource-booking')
+            );
         }
 
         //Get this price
@@ -101,6 +117,15 @@ class Price
             return (string) $basePrice . " " . RESOURCE_BOOKING_CURRENCY_SYMBOL;
         }
         return (int) $basePrice;
+    }
+
+    public static function name($item)
+    {
+
+        var_dump($name);
+
+
+        return $item;
     }
 }
 
