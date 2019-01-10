@@ -80,11 +80,11 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                             array(
                                 array(
                                     'heading' => __('Order number:', 'modularity-resource-booking'),
-                                    'content' => ''
+                                    'content' => get_post_meta($postId, 'order_id', true)
                                 ),
                                 array(
                                     'heading' => __('Ordered articles:', 'modularity-resource-booking'),
-                                    'content' => ''
+                                    'content' => implode(", ", get_field('order_articles', $postId))
                                 ),
                                 array(
                                     'heading' => __('Our reference: ', 'modularity-resource-booking'),
@@ -96,7 +96,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                 ),
                                 array(
                                     'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
-                                    'content' => Helper\Price::get(805, true)
+                                    'content' => Helper\Product::price(805, true)
                                 ),
                                 array(
                                     'heading' => __('Notes: ', 'modularity-resource-booking'),
@@ -105,7 +105,6 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                             )
                         );
                     }
-
 
                     //Send email to customer
                     if (!is_null($actionOnAcquisition) && in_array('customer_approval_mail', $actionOnAcquisition)) {
@@ -116,11 +115,11 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                             array(
                                 array(
                                     'heading' => __('Order number:', 'modularity-resource-booking'),
-                                    'content' => ''
+                                    'content' => get_post_meta($postId, 'order_id', true)
                                 ),
                                 array(
                                     'heading' => __('Articles:', 'modularity-resource-booking'),
-                                    'content' => ''
+                                    'content' => implode(", ", get_field('order_articles', $postId))
                                 ),
                                 array(
                                     'heading' => __('Our reference: ', 'modularity-resource-booking'),
@@ -128,7 +127,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                 ),
                                 array(
                                     'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
-                                    'content' => Helper\Price::get(805, true)
+                                    'content' => Helper\Product::price(805, true)
                                 )
                             )
                         );

@@ -13,7 +13,7 @@ class Price
      *
      * @return int|WP_Error $result Integer representing the product price
      */
-    public static function get($item, $currencySymbol = false)
+    public static function price($item, $currencySymbol = false)
     {
 
         //Get object
@@ -84,7 +84,7 @@ class Price
             if (is_array($posts) && !empty($posts)) {
                 $productSumPrice = null;
                 foreach ($posts as $subitem) {
-                    $productSumPrice = $productSumPrice + self::get($subitem);
+                    $productSumPrice = $productSumPrice + self::price($subitem);
                 }
 
                 if (!empty($productSumPrice)) {

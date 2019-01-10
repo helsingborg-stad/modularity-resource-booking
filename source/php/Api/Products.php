@@ -195,7 +195,7 @@ class Products
                     'id' => (int) $postitem->ID,
                     'title' => (string) $postitem->post_title,
                     'description' => (string) $postitem->post_content,
-                    'price' => (int) Helper\Price::get($postitem),
+                    'price' => (int) Helper\Product::price($postitem),
                     'location' => get_field('product_location', $postitem->ID),
                     'total_stock' => (int) get_field('items_in_stock', $postitem->ID),
                     'packages' => wp_get_post_terms(
@@ -236,7 +236,7 @@ class Products
                     'id' => $term->term_id,
                     'title' => $term->name,
                     'description' => $term->description,
-                    'price' => (int) Helper\Price::get($term),
+                    'price' => (int) Helper\Product::price($term),
                     'products' => $this->filterPostOutput(
                         get_posts(
                             array(
