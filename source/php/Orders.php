@@ -78,7 +78,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                         $mail = array(
                             'order_number' => '',
                             'articles' => '',
-                            'our_reference' => get_field('mod_rb_our_reference', 'options'),
+                            'our_reference' => Helper\Customer::getName(get_current_user_id()),
                             'their_reference' => Helper\Customer::getName($data["acf"][get_field_object('customer_id')['key']]),
                             'price_exl_vat' => Helper\Price::get(805, true),
                             'order_notations' => $data["acf"][get_field_object('order_notations')['key']]
