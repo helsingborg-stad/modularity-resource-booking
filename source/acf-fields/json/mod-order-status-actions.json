@@ -16,7 +16,8 @@
                 "id": ""
             },
             "choices": {
-                "economy_mail": "Send a invoice request to economy"
+                "economy_mail": "Send a invoice request to economy",
+                "customer_approval_mail": "Send a message to the customer (order approved)"
             },
             "default_value": [],
             "allow_null": 1,

@@ -74,43 +74,61 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                     //Send email to economy
                     if (!is_null($actionOnAcquisition) && in_array('economy_mail', $actionOnAcquisition)) {
 
-                        //Gather required data for email
-                        $mail = array(
-                            'order_number' => '',
-                            'articles' => '',
-                            'our_reference' => Helper\Customer::getName(get_current_user_id()),
-                            'their_reference' => Helper\Customer::getName($data["acf"][get_field_object('customer_id')['key']]),
-                            'price_exl_vat' => Helper\Price::get(805, true),
-                            'order_notations' => $data["acf"][get_field_object('order_notations')['key']]
-                        );
-
                         new \ModularityResourceBooking\Helper\EconomyMail(
                             __('Request of new invoice', 'modularity-resource-booking'),
                             __('This is a request to create an invoice to the specifications below.', 'modularity-resource-booking'),
                             array(
                                 array(
                                     'heading' => __('Order number:', 'modularity-resource-booking'),
-                                    'content' => $mail['order_number']
+                                    'content' => ''
                                 ),
                                 array(
                                     'heading' => __('Ordered articles:', 'modularity-resource-booking'),
-                                    'content' => $mail['articles']
+                                    'content' => ''
                                 ),
                                 array(
                                     'heading' => __('Our reference: ', 'modularity-resource-booking'),
-                                    'content' => $mail['our_reference']
+                                    'content' => Helper\Customer::getName(get_current_user_id()),
                                 ),
                                 array(
                                     'heading' => __('Their reference: ', 'modularity-resource-booking'),
-                                    'content' => $mail['their_reference']
+                                    'content' => Helper\Customer::getName($data["acf"][get_field_object('customer_id')['key']])
                                 ),
                                 array(
                                     'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
-                                    'content' => $mail['price_exl_vat']
+                                    'content' => Helper\Price::get(805, true)
                                 ),
                                 array(
                                     'heading' => __('Notes: ', 'modularity-resource-booking'),
-                                    'content' => $mail['order_notations']
+                                    'content' => $data["acf"][get_field_object('order_notations')['key']]
+                                )
+                            )
+                        );
+                    }
+
+
+                    //Send email to customer
+                    if (!is_null($actionOnAcquisition) && in_array('customer_approval_mail', $actionOnAcquisition)) {
+                        new \ModularityResourceBooking\Helper\CustomerMail(
+                            Helper\Customer::getEmail($data["acf"][get_field_object('customer_id')['key']]),
+                            __('Order approved', 'modularity-resource-booking'),
+                            __('Your order has been verified by us, and scheduled at your desired occasion.', 'modularity-resource-booking'),
+                            array(
+                                array(
+                                    'heading' => __('Order number:', 'modularity-resource-booking'),
+                                    'content' => ''
+                                ),
+                                array(
+                                    'heading' => __('Articles:', 'modularity-resource-booking'),
+                                    'content' => ''
+                                ),
+                                array(
+                                    'heading' => __('Our reference: ', 'modularity-resource-booking'),
+                                    'content' => Helper\Customer::getName(get_current_user_id())
+                                ),
+                                array(
+                                    'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
+                                    'content' => Helper\Price::get(805, true)
                                 )
                             )
                         );

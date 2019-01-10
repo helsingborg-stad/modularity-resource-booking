@@ -5,9 +5,9 @@ namespace ModularityResourceBooking\Helper;
 class Customer
 {
     /**
-     * Decode assets json to array
+     * Get a customers first and lastname as string
      *
-     * @param int|WP_User $user Data to be streamlined
+     * @param int|WP_User The user object or user id
      *
      * @return string with the user name or WP_Error if not found.
      */
@@ -26,7 +26,28 @@ class Customer
     }
 
     /**
-     * Decode assets json to array
+     * Get a customer email
+     *
+     * @param int|WP_User The user object or user id
+     *
+     * @return string with the user name or WP_Error if not found.
+     */
+    public static function getEmail($user)
+    {
+        $user = self::transformUserItem($user);
+
+        if (get_class($user) == "WP_User") {
+            return $user->user_email;
+        }
+
+        return new \WP_Error(
+            'user_not_found',
+            __('The user you requested was not found.', 'modularity-resource-booking')
+        );
+    }
+
+    /**
+     * Transform user id's to object
      *
      * @param int|WP_User $user Data to be streamlined
      *

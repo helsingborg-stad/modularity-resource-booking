@@ -20,6 +20,7 @@
             ),
             'choices' => array(
                 'economy_mail' => __('Send a invoice request to economy', 'modularity-resource-booking'),
+                'customer_approval_mail' => __('Send a message to the customer (order approved)', 'modularity-resource-booking'),
             ),
             'default_value' => array(
             ),
