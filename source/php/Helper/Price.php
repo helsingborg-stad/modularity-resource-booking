@@ -84,7 +84,7 @@ class Price
             if (is_array($posts) && !empty($posts)) {
                 $productSumPrice = null;
                 foreach ($posts as $subitem) {
-                    $productSumPrice = $productSumPrice + self::getPrice($subitem);
+                    $productSumPrice = $productSumPrice + self::get($subitem);
                 }
 
                 if (!empty($productSumPrice)) {
