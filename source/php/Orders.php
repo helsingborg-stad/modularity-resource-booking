@@ -55,8 +55,6 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
         //Get post data
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        var_dump($data);
-
         //Not defined
         if (!isset($data["acf"][get_field_object('order_status')['key']])) {
             return;
@@ -81,7 +79,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                             'order_number' => '',
                             'articles' => '',
                             'our_reference' => get_field('mod_rb_our_reference', 'options'),
-                            'their_reference' => $data["acf"][get_field_object('customer_id')['key']],
+                            'their_reference' => Helper\Customer::getName($data["acf"][get_field_object('customer_id')['key']]),
                             'price_exl_vat' => Helper\Price::get(805, true),
                             'order_notations' => $data["acf"][get_field_object('order_notations')['key']]
                         );
@@ -280,14 +278,8 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
                 $userId = get_post_meta($postId, 'customer_id', true);
 
-                if ($userId && $userData = get_user_by('id', $userId)) {
-
-                    if (empty($userData->first_name) && empty($userData->last_name)) {
-                        echo $userData->data->user_nicename;
-                    } else {
-                        echo $userData->first_name . " " . $userData->last_name;
-                    }
-
+                if ($userId) {
+                    echo Helper\Customer::getName($userId);
                 } else {
                     _e("Undefined", 'modularity-resource-booking');
                 }

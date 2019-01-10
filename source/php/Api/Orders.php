@@ -586,25 +586,12 @@ class Orders
                 //Get ordered items
                 $articles = get_field('order_articles', $order->ID);
 
-                //Get author, check if exists
-                if (is_array($authorData = get_userdata($order->post_author))) {
-                    $author = array(
-                        'first_name' => $authorData->first_name,
-                        'last_name' => $authorData->last_name
-                    );
-                } else {
-                    $author = array(
-                        'first_name' => '',
-                        'last_name' => ''
-                    );
-                }
-
                 //Create result array
                 $result[] = array(
                     'id' => (int) $order->ID,
                     'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
                     'user_id' => (int) $order->post_author,
-                    'uname' => (string) $author['first_name'] . " " . $author['last_name'],
+                    'uname' => (string) Helper\Customer::getName($order->post_author),
                     'name' => (string) $order->post_title,
                     'date' => date('Y-m-d', strtotime($order->post_date)),
                     'slug' => (string) $order->post_name,
