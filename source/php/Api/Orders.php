@@ -520,13 +520,12 @@ class Orders
      */
     public function checkUserAuthentication()
     {
-
         //Bypass security, by constant
         if (RESOURCE_BOOKING_DISABLE_SECURITY) {
             return true;
         }
-
-        return is_user_logged_in();
+        
+        return is_user_logged_in() || self::$userId;
     }
 
     /**
