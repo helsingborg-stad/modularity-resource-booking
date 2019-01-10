@@ -71,18 +71,24 @@ class Mail
     /**
      * Set email table
      *
-     * @param array $table Array containing table rows array(array('heading' => 'Title', 'content' => 'The content'))
+     * @param array   $table           Array containing table rows array(array('heading' => 'Title', 'content' => 'The content'))
+     * @param boolean $removeEmptyRows Boolean to controll if empty rows should be stripped from mail.
      *
      * @return true if set, WP_Error if malformed.
      */
-    public function setTable($table)
+    public function setTable($table, $removeEmptyRows = true)
     {
-
         if (!empty($table) && is_array($table)) {
-            if (!isset($table[0]['heading']) ||!isset($table[0]['content'])) {
-                return new \WP_Error('malformed_table_content', __("Each table array item must contain 'content' and 'title' sub keys.", 'modularity-resource-booking'));
+            foreach ($table as $rowKey => $row) {
+                if (!isset($row['heading']) ||!isset($row['content'])) {
+                    return new \WP_Error('malformed_table_content', __("Each table array item must contain 'content' and 'title' sub keys.", 'modularity-resource-booking'));
+                }
+                if ((boolean) $removeEmptyRows && empty($row['content'])) {
+                    unset($table[$rowKey]);
+                }
             }
             $this->_table = $table;
+
             return true;
         }
 
