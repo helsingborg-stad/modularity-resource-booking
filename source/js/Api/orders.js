@@ -3,8 +3,14 @@ const getCustomerOrders = () => {
     const url = restUrl + 'ModularityResourceBooking/v1/MyOrders';
 
     return fetch(url)
-        .then(res => res.json())
-        .then(result => ({ result }), error => ({ error }));
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('HTTP error, status = ' + response.status);
+            }
+            return response.json();
+        })
+        .then(result => ({ result }), error => ({ error }))
+        .catch(e => console.log('Request went wrong.'));
 };
 
 export { getCustomerOrders };

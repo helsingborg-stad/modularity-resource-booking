@@ -24,6 +24,13 @@ class OrderHistory extends React.Component {
 
         getCustomerOrders().then(
             ({ result }) => {
+                if (!result) {
+                    this.setState({
+                        error: Error('Could not fetch data from URL.'),
+                        isLoaded: true,
+                    });
+                    return;
+                }
                 const data = this.mapData(result);
                 this.setState(
                     {
