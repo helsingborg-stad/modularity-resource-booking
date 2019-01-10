@@ -75,3 +75,6 @@ register_deactivation_hook(plugin_basename(__FILE__), '\ModularityResourceBookin
 
 // Start application
 new ModularityResourceBooking\App();
+
+$x = new Helper\Price::getPrice(805);
+var_dump($x);

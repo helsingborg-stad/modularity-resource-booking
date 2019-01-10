@@ -52,13 +52,18 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
             return;
         }
 
+        //Get post data
+        $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+        var_dump($data);
+
         //Not defined
-        if (!isset($_POST["acf"][get_field_object('order_status')['key']])) {
+        if (!isset($data["acf"][get_field_object('order_status')['key']])) {
             return;
         }
 
         //Get term setups
-        $newTermSetup = $_POST["acf"][get_field_object('order_status')['key']];
+        $newTermSetup = $data["acf"][get_field_object('order_status')['key']];
         $oldTermSetup = get_the_terms($postId, self::$statusTaxonomySlug);
 
         if (is_array($oldTermSetup) && !empty($oldTermSetup)) {
@@ -70,29 +75,44 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
                     //Send email to economy
                     if (!is_null($actionOnAcquisition) && in_array('economy_mail', $actionOnAcquisition)) {
+
+                        //Gather required data for email
+                        $mail = array(
+                            'order_number' => '',
+                            'articles' => '',
+                            'our_reference' => get_field('mod_rb_our_reference', 'options'),
+                            'their_reference' => $data["acf"][get_field_object('customer_id')['key']],
+                            'price_exl_vat' => Helper\Price::get(54),
+                            'order_notations' => $data["acf"][get_field_object('order_notations')['key']]
+                        );
+
                         new \ModularityResourceBooking\Helper\EconomyMail(
                             __('Request of new invoice', 'modularity-resource-booking'),
                             __('This is a request to create an invoice to the specifications below.', 'modularity-resource-booking'),
                             array(
                                 array(
                                     'heading' => __('Order number:', 'modularity-resource-booking'),
-                                    'content' => 'z'
+                                    'content' => $mail['order_number']
                                 ),
                                 array(
                                     'heading' => __('Ordered articles:', 'modularity-resource-booking'),
-                                    'content' => 'y'
+                                    'content' => $mail['articles']
                                 ),
                                 array(
                                     'heading' => __('Our reference: ', 'modularity-resource-booking'),
-                                    'content' => get_field('mod_rb_our_reference', 'options')
+                                    'content' => $mail['our_reference']
                                 ),
                                 array(
                                     'heading' => __('Their reference: ', 'modularity-resource-booking'),
-                                    'content' => 'x'
+                                    'content' => $mail['their_reference']
                                 ),
                                 array(
                                     'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
-                                    'content' => 'x'
+                                    'content' => $mail['price_exl_vat']
+                                ),
+                                array(
+                                    'heading' => __('Notes: ', 'modularity-resource-booking'),
+                                    'content' => $mail['order_notations']
                                 )
                             )
                         );
