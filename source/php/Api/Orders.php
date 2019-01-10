@@ -166,11 +166,11 @@ class Orders
 
         //Basic query
         $query = array(
-                    'post_type' => 'purchase',
-                    'posts_per_page' => 99,
-                    'orderby' => 'date',
-                    'order' => 'DESC'
-                );
+            'post_type' => 'purchase',
+            'posts_per_page' => 99,
+            'orderby' => 'date',
+            'order' => 'DESC'
+        );
 
         //Append meta query
         if (!is_null($metaQuery) && is_array($metaQuery)) {
@@ -189,7 +189,7 @@ class Orders
      *
      * @param object $request Object containing request details
      *
-     * @return WP_REST_Response
+     * @return \WP_REST_Response|array
      */
     public function listMyOrders($request)
     {
@@ -327,7 +327,7 @@ class Orders
             );
         }
 
-        for ($int=0; $int < count($orderArticles); $int++) {
+        for ($int = 0; $int < count($orderArticles); $int++) {
             if (isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
                 $productIds = TimeSlots::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
 
@@ -377,7 +377,7 @@ class Orders
 
             //Add items for storage of each id
             foreach ($mediaItems as $mediaKey => $mediaItem) {
-                update_sub_field(array('media_items', $mediaKey+1, 'file'), $mediaItem, $insert);
+                update_sub_field(array('media_items', $mediaKey + 1, 'file'), $mediaItem, $insert);
             }
 
             //Add number of items avabile (hotfix!)
@@ -479,7 +479,7 @@ class Orders
      *
      * @return bool
      */
-    public function checkOrderOwnership($orderId) : bool
+    public function checkOrderOwnership($orderId): bool
     {
         //Bypass security, by constant
         if (RESOURCE_BOOKING_DISABLE_SECURITY) {
@@ -569,13 +569,13 @@ class Orders
 
                 //Create result array
                 $result[] = array(
-                    'id' => (int) $order->ID,
-                    'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
-                    'user_id' => (int) $order->post_author,
-                    'uname' => (string) $author['first_name'] . " " . $author['last_name'],
-                    'name' => (string) $order->post_title,
+                    'id' => (int)$order->ID,
+                    'order_id' => (string)get_post_meta($order->ID, 'order_id', true),
+                    'user_id' => (int)$order->post_author,
+                    'uname' => (string)$author['first_name'] . " " . $author['last_name'],
+                    'name' => (string)$order->post_title,
                     'date' => date('Y-m-d', strtotime($order->post_date)),
-                    'slug' => (string) $order->post_name,
+                    'slug' => (string)$order->post_name,
                     'status' => $orderStatus->name ?? null,
                     'articles' => is_array($articles) && !empty($articles) ? $this->filterArticlesOutput($articles) : array()
                 );
@@ -587,7 +587,7 @@ class Orders
             foreach ($result as $key => $item) {
                 if ($item['user_id'] == self::$userId) {
                     $result[$key] = $item + array(
-                            'media' => (array) get_field('media_items', $item['id'])
+                            'media' => (array)get_field('media_items', $item['id'])
                         );
                 }
             }
