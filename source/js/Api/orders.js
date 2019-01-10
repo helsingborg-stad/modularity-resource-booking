@@ -1,6 +1,7 @@
 const getCustomerOrders = () => {
-    const { restUrl } = modOrderHistory;
-    const url = restUrl + 'ModularityResourceBooking/v1/MyOrders';
+    const { restUrl, nonce } = modOrderHistory;
+    const url =
+        restUrl + 'ModularityResourceBooking/v1/MyOrders?nonce=' + nonce;
 
     return fetch(url)
         .then(response => {
