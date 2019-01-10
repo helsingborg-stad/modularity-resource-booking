@@ -82,7 +82,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                             'articles' => '',
                             'our_reference' => get_field('mod_rb_our_reference', 'options'),
                             'their_reference' => $data["acf"][get_field_object('customer_id')['key']],
-                            'price_exl_vat' => Helper\Price::get(54),
+                            'price_exl_vat' => Helper\Price::get(805, true),
                             'order_notations' => $data["acf"][get_field_object('order_notations')['key']]
                         );
 

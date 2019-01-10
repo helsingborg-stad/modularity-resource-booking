@@ -27,6 +27,11 @@ if (!defined('RESOURCE_BOOKING_DISABLE_SECURITY')) {
     define('RESOURCE_BOOKING_DISABLE_SECURITY', false);
 }
 
+//Disable security mode
+if (!defined('RESOURCE_BOOKING_CURRENCY_SYMBOL')) {
+    define('RESOURCE_BOOKING_CURRENCY_SYMBOL', "SEK");
+}
+
 load_plugin_textdomain('modularity-resource-booking', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
 // Require composer dependencies (autoloader)
@@ -75,6 +80,3 @@ register_deactivation_hook(plugin_basename(__FILE__), '\ModularityResourceBookin
 
 // Start application
 new ModularityResourceBooking\App();
-
-$x = new Helper\Price::getPrice(805);
-var_dump($x);

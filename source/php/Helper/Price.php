@@ -7,12 +7,13 @@ class Price
     /**
      * Get the price of a product (post) or package (taxonomy)
      *
-     * @param array|int $item Object representing a taxonomy or
-     *                        post that should be parsed for price data
+     * @param array|int|string $item           Object representing a taxonomy or
+     *                                         post that should be parsed for price data
+     * @param boolean          $currencySymbol Prepend currency symbol
      *
-     * @return int $result Integer representing the product price
+     * @return int|WP_Error $result Integer representing the product price
      */
-    public static function getPrice($item)
+    public static function get($item, $currencySymbol = false)
     {
 
         //Get object
@@ -53,6 +54,11 @@ class Price
         if (is_array($userGroupPrices) && !empty($userGroupPrices)) {
             foreach ($userGroupPrices as $userGroupPrice) {
                 if ($userGroupPrice['customer_group'] == $userGroup) {
+
+                    if ($currencySymbol) {
+                        return $userGroupPrice['product_price'] . " " . RESOURCE_BOOKING_CURRENCY_SYMBOL;
+                    }
+
                     return $userGroupPrice['product_price'];
                 }
             }
@@ -82,13 +88,19 @@ class Price
                 }
 
                 if (!empty($productSumPrice)) {
-                    return $productSumPrice;
+                    if ($currencySymbol) {
+                        return (string) $productSumPrice . " " . RESOURCE_BOOKING_CURRENCY_SYMBOL;
+                    }
+                    return (int) $productSumPrice;
                 }
             }
         }
 
         //No price found, return base price
-        return $basePrice;
+        if ($currencySymbol) {
+            return (string) $basePrice . " " . RESOURCE_BOOKING_CURRENCY_SYMBOL;
+        }
+        return (int) $basePrice;
     }
 }
 
