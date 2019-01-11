@@ -27,6 +27,11 @@ if (!defined('RESOURCE_BOOKING_DISABLE_SECURITY')) {
     define('RESOURCE_BOOKING_DISABLE_SECURITY', false);
 }
 
+//Disable security mode
+if (!defined('RESOURCE_BOOKING_CURRENCY_SYMBOL')) {
+    define('RESOURCE_BOOKING_CURRENCY_SYMBOL', "SEK");
+}
+
 load_plugin_textdomain('modularity-resource-booking', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
 // Require composer dependencies (autoloader)
@@ -65,6 +70,7 @@ add_action('plugins_loaded', function () {
         'mod-email-settings' => 'group_5c063df1cb24f',
         'mod-billing-info' => 'group_5c010376c78be',
         'mod-booking-form' => 'group_5c35f66a679df'
+        'mod-order-status-actions' => 'group_5c360bf77a6cf'
     ));
     $acfExportManager->import();
 });

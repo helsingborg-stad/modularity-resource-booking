@@ -27,6 +27,137 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         //Save author to post on change
         add_action('save_post', array($this, 'updateAuthor'));
+
+        //Do actions on taxonomy change
+        add_action('save_post', array($this, 'taxonomyChangeActions'), 1);
+    }
+
+    /**
+     * Do action on status change
+     *
+     * @param int $postId The id of post being saved
+     *
+     * @return void
+     */
+    public function taxonomyChangeActions($postId)
+    {
+
+        //Not order posttype
+        if (get_post_type($postId) != self::$postTypeSlug) {
+            return;
+        }
+
+        //Only in admin
+        if (!is_admin()) {
+            return;
+        }
+
+        //Get post data
+        $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+        //Not defined
+        if (!isset($data["acf"][get_field_object('order_status')['key']])) {
+            return;
+        }
+
+        //Get term setups
+        $newTermSetup = $data["acf"][get_field_object('order_status')['key']];
+        $oldTermSetup = get_the_terms($postId, self::$statusTaxonomySlug);
+
+        if (is_array($oldTermSetup) && !empty($oldTermSetup)) {
+            foreach ($oldTermSetup as $term) {
+                if ($term->term_id != $newTermSetup) {
+
+                    //Get actions
+                    $actionOnAcquisition = get_field('do_action_on_aqusition', self::$statusTaxonomySlug . "_" . $newTermSetup);
+
+                    //Send email to economy
+                    if (!is_null($actionOnAcquisition) && in_array('economy_mail', $actionOnAcquisition)) {
+
+                        new \ModularityResourceBooking\Helper\EconomyMail(
+                            __('Request of new invoice', 'modularity-resource-booking'),
+                            __('This is a request to create an invoice to the specifications below.', 'modularity-resource-booking'),
+                            array(
+                                array(
+                                    'heading' => __('Order number:', 'modularity-resource-booking'),
+                                    'content' => get_post_meta($postId, 'order_id', true)
+                                ),
+                                array(
+                                    'heading' => __('Ordered articles:', 'modularity-resource-booking'),
+                                    'content' => Helper\Product::name(
+                                        Helper\ArrayParser::getSubKey(
+                                            get_field('order_articles', $postId),
+                                            'article_id'
+                                        )
+                                    )
+                                ),
+                                array(
+                                    'heading' => __('Our reference: ', 'modularity-resource-booking'),
+                                    'content' => Helper\Customer::getName(get_current_user_id()),
+                                ),
+                                array(
+                                    'heading' => __('Their reference: ', 'modularity-resource-booking'),
+                                    'content' => Helper\Customer::getName($data["acf"][get_field_object('customer_id')['key']])
+                                ),
+                                array(
+                                    'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
+                                    'content' => Helper\Product::price(
+                                        Helper\ArrayParser::getSubKey(
+                                            get_field('order_articles', $postId),
+                                            'article_id'
+                                        ),
+                                        true
+                                    )
+                                ),
+                                array(
+                                    'heading' => __('Notes: ', 'modularity-resource-booking'),
+                                    'content' => $data["acf"][get_field_object('order_notations')['key']]
+                                )
+                            )
+                        );
+                    }
+
+                    //Send email to customer
+                    if (!is_null($actionOnAcquisition) && in_array('customer_approval_mail', $actionOnAcquisition)) {
+                        new \ModularityResourceBooking\Helper\CustomerMail(
+                            Helper\Customer::getEmail($data["acf"][get_field_object('customer_id')['key']]),
+                            __('Order approved', 'modularity-resource-booking'),
+                            __('Your order has been verified by us, and scheduled at your desired occasion.', 'modularity-resource-booking'),
+                            array(
+                                array(
+                                    'heading' => __('Order number:', 'modularity-resource-booking'),
+                                    'content' => get_post_meta($postId, 'order_id', true)
+                                ),
+                                array(
+                                    'heading' => __('Articles:', 'modularity-resource-booking'),
+                                    'content' => Helper\Product::name(
+                                        Helper\ArrayParser::getSubKey(
+                                            get_field('order_articles', $postId),
+                                            'article_id'
+                                        )
+                                    )
+                                ),
+                                array(
+                                    'heading' => __('Our reference: ', 'modularity-resource-booking'),
+                                    'content' => Helper\Customer::getName(get_current_user_id())
+                                ),
+                                array(
+                                    'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
+                                    'content' => Helper\Product::price(
+                                        Helper\ArrayParser::getSubKey(
+                                            get_field('order_articles', $postId),
+                                            'article_id'
+                                        ),
+                                        true
+                                    )
+                                )
+                            )
+                        );
+                    }
+                }
+            }
+        }
+
     }
 
     /**
@@ -118,10 +249,11 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                             $title = get_the_title($row['article_id']);
                             $url = get_edit_post_link($row['article_id']);
                     }
-                    $orders .= '                            
+
+                    $orders .= '
                                 <tr>
                                     <td class="row-title"><label for="tablecell"><a href="' . $url . '">' . $title . '</a></label></td>
-                                    <td>' . ucfirst($row['type']) . '</td>
+                                    <td>' . ucfirst(array_pop($row['type'])) . '</td>
                                     <td>' . $interval['start'] . ' - ' . $interval['stop'] . '</td>
                                 </tr>';
                 }
@@ -185,14 +317,8 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
                 $userId = get_post_meta($postId, 'customer_id', true);
 
-                if ($userId && $userData = get_user_by('id', $userId)) {
-
-                    if (empty($userData->first_name) && empty($userData->last_name)) {
-                        echo $userData->data->user_nicename;
-                    } else {
-                        echo $userData->first_name . " " . $userData->last_name;
-                    }
-
+                if ($userId) {
+                    echo Helper\Customer::getName($userId);
                 } else {
                     _e("Undefined", 'modularity-resource-booking');
                 }
