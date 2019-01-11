@@ -1,9 +1,8 @@
 const getCustomerOrders = () => {
-    const { restUrl, nonce } = modOrderHistory;
-    const url =
-        restUrl + 'ModularityResourceBooking/v1/MyOrders?nonce=' + nonce;
+    let { restUrl, nonce } = modOrderHistory;
+    restUrl += 'ModularityResourceBooking/v1/MyOrders?_wpnonce=' + nonce;
 
-    return fetch(url)
+    return fetch(restUrl)
         .then(response => {
             if (!response.ok) {
                 throw new Error('HTTP error, status = ' + response.status);
