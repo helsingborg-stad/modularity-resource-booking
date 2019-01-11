@@ -126,7 +126,7 @@ class Product
      *
      * @return string Containing the names
      */
-    public function name($items)
+    public static function name($items)
     {
         //Declarations
         $result = array();

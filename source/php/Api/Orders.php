@@ -582,7 +582,7 @@ class Orders
                     'id' => (int) $order->ID,
                     'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
                     'user_id' => (int) $order->post_author,
-                    'uname' => (string) Helper\Customer::getName($order->post_author),
+                    'uname' => (string) \ModularityResourceBooking\Helper\Customer::getName($order->post_author),
                     'name' => (string) $order->post_title,
                     'date' => date('Y-m-d', strtotime($order->post_date)),
                     'slug' => (string)$order->post_name,
@@ -633,8 +633,6 @@ class Orders
         $price = 0;
         foreach ($articles as $key => &$article) {
             $slot = TimeSlots::getSlotInterval($article['slot_id']);
-            $title = '';
-
             if ($article['type'] === 'package') {
                 $term = get_term($article['article_id'], 'product-package');
                 $products = TimeSlots::getProductsByPackage((int)$article['article_id']);
@@ -654,18 +652,14 @@ class Orders
                         $price = $groupVariations[$key]['product_price'];
                     }
                 }
-                // Get the title
-                $title = $term->name ?? '';
             } elseif ($article['type'] === 'product') {
                 // Get product price
                 $price = $this->getProductPrice($article['article_id'], $groupId);
-                // Get the title
-                $title = get_the_title($article['article_id']);
             }
 
             $article = array(
                 'id' => $article['article_id'],
-                'title' => Helper\Product::name($article['article_id']),
+                'title' => \ModularityResourceBooking\Helper\Product::name($article['article_id']),
                 'type' => $article['type'] == 'package' ? __('Package', 'modularity-resource-booking') :  __('Product', 'modularity-resource-booking'),
                 'start' => $slot['start'],
                 'stop' => $slot['stop'],
