@@ -84,7 +84,12 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                 ),
                                 array(
                                     'heading' => __('Ordered articles:', 'modularity-resource-booking'),
-                                    'content' => Helper\Product::name(get_field('order_articles', $postId))
+                                    'content' => Helper\Product::name(
+                                        Helper\ArrayParser::getSubKey(
+                                            get_field('order_articles', $postId),
+                                            'article_id'
+                                        )
+                                    )
                                 ),
                                 array(
                                     'heading' => __('Our reference: ', 'modularity-resource-booking'),
@@ -119,7 +124,12 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                 ),
                                 array(
                                     'heading' => __('Articles:', 'modularity-resource-booking'),
-                                    'content' => Helper\Product::name(get_field('order_articles', $postId))
+                                    'content' => Helper\Product::name(
+                                        Helper\ArrayParser::getSubKey(
+                                            get_field('order_articles', $postId),
+                                            'article_id'
+                                        )
+                                    )
                                 ),
                                 array(
                                     'heading' => __('Our reference: ', 'modularity-resource-booking'),
