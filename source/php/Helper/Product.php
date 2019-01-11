@@ -150,6 +150,80 @@ class Product
 
         return "";
     }
+
+    /**
+     * Returns a merged array of media requirements
+     * from all products within a package
+     *
+     * @param int|string $termId Package (term) ID
+     *
+     * @return array|boolean
+     */
+    public static function getPackageMediaRequirements($termId)
+    {
+        $term = get_term($termId, 'product-package');
+
+        if (!$term) {
+            return false;
+        }
+
+        $products = get_posts(
+            array(
+                'posts_per_page' => -1,
+                'post_type' => 'product',
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'product-package',
+                        'field' => 'term_id',
+                        'terms' => $term->term_id,
+                    )
+                )
+            )
+        );
+
+        $mediaRequirements = [];
+
+        if (empty($products)) {
+            return [];
+        }
+
+        foreach ($products as $product) {
+            if (empty(get_field('media_requirement', $product->ID))) {
+                continue;
+            }
+
+            foreach (get_field('media_requirement', $product->ID) as $media) {
+                $mediaName = $media['media_name'];
+                unset($media['media_name']);
+                $mediaKey = md5(json_encode($media));
+
+                if (empty($mediaRequirements) || !isset($mediaRequirements[$mediaKey])) {
+                    $mediaRequirements[$mediaKey] = array_merge(array('media_name' => [$mediaName]), $media);
+                    continue;
+                }
+
+                if (!in_array($mediaName, $mediaRequirements[$mediaKey]['media_name'])) {
+                    array_push($mediaRequirements[$mediaKey]['media_name'], $mediaName);
+                }
+            }
+        }
+
+        if (empty($mediaRequirements)) {
+            return [];
+        }
+
+        return array_values(
+            array_map(
+                function ($media) {
+                    if (isset($media['media_name']) && is_array($media['media_name'])) {
+                        $media['media_name'] = implode(', ', $media['media_name']);
+                    }
+                    return $media;
+                },
+                $mediaRequirements
+            )
+        );
+    }
 }
 
 
