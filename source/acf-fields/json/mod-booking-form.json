@@ -3,13 +3,47 @@
     "title": "Modularity Resource Booking - Booking Form",
     "fields": [
         {
-            "key": "field_5c35f67549fa5",
-            "label": "Select product package",
-            "name": "select_package",
-            "type": "taxonomy",
+            "key": "field_5c3731f33f75d",
+            "label": "Select article type",
+            "name": "article_type",
+            "type": "select",
             "instructions": "",
             "required": 1,
             "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "package": "Package"
+            },
+            "default_value": [
+                "package"
+            ],
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_5c35f67549fa5",
+            "label": "Select package",
+            "name": "package_id",
+            "type": "taxonomy",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5c3731f33f75d",
+                        "operator": "==",
+                        "value": "package"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
