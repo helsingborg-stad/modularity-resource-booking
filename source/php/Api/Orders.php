@@ -249,14 +249,22 @@ class Orders
             );
         }
 
-        $userId = self::$userId;
-
         // Get customer group data
-        $groupLimit = TimeSlots::customerGroupLimit($userId);
-        $groupMembers = TimeSlots::customerGroupMembers($userId);
+        $groupLimit = TimeSlots::customerGroupLimit(self::$userId);
+        $groupMembers = TimeSlots::customerGroupMembers(self::$userId);
 
         // Remap order items and check stock availability
         $orderArticles = $data['order_articles'];
+
+        if (!is_array($orderArticles) || empty($orderArticles)) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('You have to specify a article.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                403
+            );
+        }
 
         if (is_array($orderArticles) && !empty($orderArticles)) {
             foreach ($orderArticles as $key => &$item) {
@@ -269,7 +277,8 @@ class Orders
                         array(
                             'message' => __('No articles could be found with \'article_id\': ' . $itemData['article_id'], 'modularity-resource-booking'),
                             'state' => 'error'
-                        ), 400
+                        ),
+                        400
                     );
                 }
                 $articleStock = TimeSlots::getArticleSlotStock($products, $itemData['type'], $itemData['slot_id'], $groupMembers, $groupLimit);
@@ -278,7 +287,8 @@ class Orders
                         array(
                             'message' => __('Out of stock for \'article_id\': ' . $itemData['article_id'], 'modularity-resource-booking'),
                             'state' => 'error'
-                        ), 403
+                        ),
+                        403
                     );
                 }
 
@@ -297,7 +307,7 @@ class Orders
             'post_title' => $orderId,
             'post_type' => 'purchase',
             'post_status' => 'publish',
-            'post_author' => $userId
+            'post_author' => self::$userId
         );
 
         //Prepend id if proveided (converted to update)
@@ -319,11 +329,28 @@ class Orders
             );
         }
 
-        for ($int = 0; $int < count($orderArticles); $int++) {
-            if (isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
-                $productIds = TimeSlots::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
+        if (is_array($orderArticles) && !empty($orderArticles)) {
+            for ($int=0; $int < count($orderArticles); $int++) {
+                if (isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
+                    $productIds = TimeSlots::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
 
-                foreach ($productIds as $prodId) {
+                    foreach ($productIds as $prodId) {
+                        $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
+
+                        if (is_object($mediaItems) && $mediaItems->error != null) {
+                            return new \WP_REST_Response(
+                                array(
+                                    'message' => $mediaItems->error,
+                                    'state' => 'error'
+                                ),
+                                201
+                            );
+                        }
+                    }
+
+                } else {
+
+                    $prodId = $orderArticles[$int]['field_5bed43f2bf1f2'];
                     $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
 
                     if (is_object($mediaItems) && $mediaItems->error != null) {
@@ -336,21 +363,6 @@ class Orders
                         );
                     }
                 }
-
-            } else {
-
-                $prodId = $orderArticles[$int]['field_5bed43f2bf1f2'];
-                $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
-
-                if (is_object($mediaItems) && $mediaItems->error != null) {
-                    return new \WP_REST_Response(
-                        array(
-                            'message' => $mediaItems->error,
-                            'state' => 'error'
-                        ),
-                        201
-                    );
-                }
             }
         }
 
@@ -361,7 +373,7 @@ class Orders
         update_post_meta($insert, 'order_id', $orderId);
 
         //Update fields
-        update_field('customer_id', $userId, $insert);
+        update_field('customer_id', self::$userId, $insert);
         update_field('order_status', get_field('order_status', 'option'), $insert);
 
         //Append attachment data
@@ -376,6 +388,26 @@ class Orders
             update_post_meta($insert, 'media_items', count($mediaItems));
             update_post_meta($insert, '_media_items', 'field_5bffbfed18455');
         }
+
+        //Send manager email
+        new \ModularityResourceBooking\Helper\ManagerMail(
+            __('New order', 'modularity-resource-booking'),
+            __('A new order has been submitted, please review it and accept it as soon as possible.', 'modularity-resource-booking'),
+            array(
+                array(
+                    'heading' => __('Order number:', 'modularity-resource-booking'),
+                    'content' => $orderId
+                ),
+                array(
+                    'heading' => __('Order number:', 'modularity-resource-booking'),
+                    'content' => $this->getPackageName($data['order_articles'])
+                ),
+                array(
+                    'heading' => __('Customer: ', 'modularity-resource-booking'),
+                    'content' => Helper\Customer::getName(self::$userId)
+                )
+            )
+        );
 
         //Return success
         return new \WP_REST_Response(
@@ -545,26 +577,13 @@ class Orders
                 //Get ordered items
                 $articles = get_field('order_articles', $order->ID);
 
-                //Get author, check if exists
-                if (is_array($authorData = get_userdata($order->post_author))) {
-                    $author = array(
-                        'first_name' => $authorData->first_name,
-                        'last_name' => $authorData->last_name
-                    );
-                } else {
-                    $author = array(
-                        'first_name' => '',
-                        'last_name' => ''
-                    );
-                }
-
                 //Create result array
                 $result[] = array(
-                    'id' => (int)$order->ID,
-                    'order_id' => (string)get_post_meta($order->ID, 'order_id', true),
-                    'user_id' => (int)$order->post_author,
-                    'uname' => (string)$author['first_name'] . " " . $author['last_name'],
-                    'name' => (string)$order->post_title,
+                    'id' => (int) $order->ID,
+                    'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
+                    'user_id' => (int) $order->post_author,
+                    'uname' => (string) Helper\Customer::getName($order->post_author),
+                    'name' => (string) $order->post_title,
                     'date' => date('Y-m-d', strtotime($order->post_date)),
                     'slug' => (string)$order->post_name,
                     'status' => $orderStatus->name ?? null,
@@ -600,22 +619,6 @@ class Orders
         }
 
         return $result;
-    }
-
-    /**
-     * Get a name of the package
-     *
-     * @param int $packageId The id of the pagage
-     *
-     * @return mixed String on found, false on invalid
-     */
-    public function getPackageName($packageId)
-    {
-        if ($packageObject = get_term($packageId)) {
-            return $packageObject->name;
-        }
-
-        return false;
     }
 
     /**
@@ -662,8 +665,8 @@ class Orders
 
             $article = array(
                 'id' => $article['article_id'],
-                'title' => $title,
-                'type' => $article['type'] == 'package' ? __('Package', 'modularity-resource-booking') : __('Product', 'modularity-resource-booking'),
+                'title' => Helper\Product::name($article['article_id']),
+                'type' => $article['type'] == 'package' ? __('Package', 'modularity-resource-booking') :  __('Product', 'modularity-resource-booking'),
                 'start' => $slot['start'],
                 'stop' => $slot['stop'],
                 'price' => $price
