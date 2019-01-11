@@ -193,14 +193,6 @@ class Orders
      */
     public function listMyOrders($request)
     {
-        //Verify nonce
-        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
-            return array(
-                'message' => $nonce->get_error_message(),
-                'state' => 'error'
-            );
-        }
-
         return $this->listOrders(
             $request,
             array(
