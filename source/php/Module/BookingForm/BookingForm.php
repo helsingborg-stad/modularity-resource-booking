@@ -41,7 +41,11 @@ class BookingForm extends \Modularity\Module
             //Localize
             wp_localize_script('modularity-' . $this->slug, 'modResourceBookingForm', array(
                 'translation' => array(),
-                'restUrl' => get_rest_url()
+                'restUrl' => get_rest_url(),
+                'article_type' => get_field('article_type', $this->ID),
+                'article_id' => get_field('article_type', $this->ID) == 'package' ? get_field('package_id', $this->ID) : 0,
+                'user_id' => get_current_user_id(),
+                'order_nonce' => wp_create_nonce('wp_rest')
             ));
         }
     }
