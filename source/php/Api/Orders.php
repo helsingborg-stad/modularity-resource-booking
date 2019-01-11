@@ -412,7 +412,7 @@ class Orders
                 ),
                 array(
                     'heading' => __('Customer: ', 'modularity-resource-booking'),
-                    'content' => wp_get_current_user()->user_firstname . ' ' . wp_get_current_user()->user_lastname
+                    'content' => Helper\Customer::getName(self::$userId)
                 )
             )
         );
