@@ -119,13 +119,36 @@ class Product
         return (int) $basePrice;
     }
 
-    public static function name($item)
+    /**
+     * Get a name of package or product
+     *
+     * @param int|array $items The id of the packages(s) or products(s)
+     *
+     * @return string Containing the names
+     */
+    public function name($items)
     {
+        //Declarations
+        $result = array();
 
-        var_dump($name);
+        //Steamline data (takes both int and array)
+        if (!is_array($items)) {
+            $items = array($items);
+        }
 
+        //Get packages
+        if (is_array($items) && !empty($items)) {
+            foreach ($items as $itemId) {
+                if ($packageObject = get_term($itemId, 'product-package')) {
+                    $result[] = $packageObject->name;
+                } elseif ($productObject = get_post($itemId)) {
+                    $result[] = $productObject->post_title;
+                }
+            }
+            return implode(", ", $result);
+        }
 
-        return $item;
+        return "";
     }
 }
 

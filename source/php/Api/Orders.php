@@ -631,37 +631,6 @@ class Orders
     }
 
     /**
-     * Get a name of the package
-     *
-     * @param int|array $packages The id of the packages(s)
-     *
-     * @return mixed String on found, false on invalid
-     */
-    public function getPackageName($packages)
-    {
-        //Declarations
-        $result = array();
-
-        //Steamline data (takes both int and array)
-        if (!is_array($packages)) {
-            $packages = array($packages);
-        }
-
-        //Get packages
-        if (is_array($packages) && !empty($packages)) {
-            foreach ($packages as $packageId) {
-                if ($packageObject = get_term($packageId)) {
-                    $result[] = $packageObject->name;
-                }
-            }
-
-            return implode(", ", $result);
-        }
-
-        return false;
-    }
-
-    /**
      * Filter the article list output
      *
      * @param array $articles List of articles
@@ -672,16 +641,9 @@ class Orders
     {
         foreach ($articles as $key => &$article) {
             $slot = TimeSlots::getSlotInterval($article['slot_id']);
-            $title = '';
-            if ($article['type'] === 'package') {
-                $title = get_term($article['article_id'], 'product-package')->name ?? '';
-            } elseif ($article['type'] === 'product') {
-                $title = get_the_title($article['article_id']);
-            }
-
             $article = array(
                 'id' => $article['article_id'],
-                'title' => $title,
+                'title' => Helper\Product::name($article['article_id']),
                 'type' => $article['type'] == 'package' ? __('Package', 'modularity-resource-booking') :  __('Product', 'modularity-resource-booking'),
                 'start' => $slot['start'],
                 'stop' => $slot['stop']

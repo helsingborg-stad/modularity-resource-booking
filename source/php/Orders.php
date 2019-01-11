@@ -101,7 +101,13 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                 ),
                                 array(
                                     'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
-                                    'content' => Helper\Product::price(805, true)
+                                    'content' => Helper\Product::price(
+                                        Helper\ArrayParser::getSubKey(
+                                            get_field('order_articles', $postId),
+                                            'article_id'
+                                        ),
+                                        true
+                                    )
                                 ),
                                 array(
                                     'heading' => __('Notes: ', 'modularity-resource-booking'),
@@ -137,7 +143,13 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                 ),
                                 array(
                                     'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
-                                    'content' => Helper\Product::price(805, true)
+                                    'content' => Helper\Product::price(
+                                        Helper\ArrayParser::getSubKey(
+                                            get_field('order_articles', $postId),
+                                            'article_id'
+                                        ),
+                                        true
+                                    )
                                 )
                             )
                         );
