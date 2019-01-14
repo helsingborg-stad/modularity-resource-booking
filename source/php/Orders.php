@@ -225,36 +225,35 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
     {
         if (isset($field['message'])) {
             $orders = '';
-            $rows = get_field('order_articles');
-            if ($rows) {
+            $orderData = get_field('order_data');
+
+            if (is_array($orderData) && !empty($orderData)) {
+                $orderData = array_shift($orderData);
                 $orders .= '<table class="widefat">
                                 <thead>
                                     <tr>
                                         <th class="row-title"> ' . __('Article', 'modularity-resource-booking') . ' </th>
                                         <th>' . __('Type', 'modularity-resource-booking') . '</th>
+                                        <th>' . __('Price', 'modularity-resource-booking') . '</th>
                                         <th> ' . __('Time period', 'modularity-resource-booking') . ' </th>
                                     </tr>
                                 </thead>
 	                            <tbody>';
-                foreach ($rows as $row) {
-                    $interval = Api\TimeSlots::getSlotInterval($row['slot_id']);
-
-                    switch ($row['type']) {
+                foreach ($orderData['articles'] as $data) {
+                    switch ($data['type']) {
                         case 'package':
-                            $term = get_term($row['article_id'], 'product-package');
-                            $title = $term->name ?? '';
-                            $url = get_edit_term_link($row['article_id'], 'product-package');
+                            $url = get_edit_term_link($data['id'], 'product-package');
                             break;
                         default:
-                            $title = get_the_title($row['article_id']);
-                            $url = get_edit_post_link($row['article_id']);
+                            $url = get_edit_post_link($data['id']);
                     }
-
+                    $type = $data['type'] == 'package' ? __('Package', 'modularity-resource-booking') : __('Product', 'modularity-resource-booking');
                     $orders .= '
                                 <tr>
-                                    <td class="row-title"><label for="tablecell"><a href="' . $url . '">' . $title . '</a></label></td>
-                                    <td>' . ucfirst(array_pop($row['type'])) . '</td>
-                                    <td>' . $interval['start'] . ' - ' . $interval['stop'] . '</td>
+                                    <td class="row-title"><label for="tablecell"><a href="' . $url . '">' . $data['title'] . '</a></label></td>
+                                    <td>' . $type . '</td>
+                                    <td>' . $data['price'] . ' SEK</td>
+                                    <td>' . $data['start'] . ' - ' . $data['stop'] . '</td>
                                 </tr>';
                 }
                 $orders .= '</tbody></table>';
