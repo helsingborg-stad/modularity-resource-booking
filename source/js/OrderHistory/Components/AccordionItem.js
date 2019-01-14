@@ -1,6 +1,11 @@
 import ArticlesTable from './ArticlesTable';
 
-const AccordionItem = ({ headings, articles, articleHeadings }) => (
+const AccordionItem = ({
+    headings,
+    articles,
+    articleHeadings,
+    translation,
+}) => (
     <section className="accordion-section">
         <label
             tabIndex="0"
@@ -16,7 +21,11 @@ const AccordionItem = ({ headings, articles, articleHeadings }) => (
             </span>
         </label>
         <div className="accordion-content">
-            <ArticlesTable headings={articleHeadings} articles={articles} />
+            <ArticlesTable
+                headings={articleHeadings}
+                articles={articles}
+                translation={translation}
+            />
         </div>
     </section>
 );

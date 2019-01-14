@@ -141,8 +141,7 @@ class OrderHistory extends React.Component {
                     items={filteredItems}
                     headings={headings}
                     articleHeadings={articleHeadings}
-                    showSearch={false}
-                    langNoResults={translation.noOrdersFound}
+                    translation={translation}
                 />
                 {filteredItems.length > 0 && (
                     <div className="grid gutter">
