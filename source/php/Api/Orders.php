@@ -394,6 +394,9 @@ class Orders
             update_post_meta($insert, '_media_items', 'field_5bffbfed18455');
         }
 
+        // Save complete order data with current prices etc
+        update_post_meta($insert, 'order_data', $this->filterorderOutput(get_post($insert)));
+
         //Send manager email
         new \ModularityResourceBooking\Helper\ManagerMail(
             __('New order', 'modularity-resource-booking'),
