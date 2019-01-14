@@ -163,7 +163,6 @@ class Orders
      */
     public function listOrders($request, $metaQuery = null)
     {
-
         //Basic query
         $query = array(
             'post_type' => 'purchase',
@@ -177,15 +176,29 @@ class Orders
             $query['meta_query'] = $metaQuery;
         }
 
+        $orders = get_posts($query);
+
+        foreach ($orders as $key => &$order) {
+            $name = $order->post_title;
+            $orderData = get_field('order_data', $order->ID);
+            if (is_array($orderData) && !empty($orderData)) {
+                $order = array_shift($orderData);
+                $orderStatus = get_post_meta($order['id'], 'order_status', true);
+                $order['status'] = get_term((int)$orderStatus, 'order-status')->name ?? null;
+                $order['name'] = $name;
+            } else {
+                unset($orders[$key]);
+            }
+        }
+
         return new \WP_REST_Response(
-            $this->filterorderOutput(
-                get_posts($query)
-            ), 200
+            $orders,
+            200
         );
     }
 
     /**
-     * Get all orders for n amout of time that i own / are the customer on
+     * Get all orders for n amount of time that i own / are the customer on
      *
      * @param object $request Object containing request details
      *
