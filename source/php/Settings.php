@@ -11,6 +11,9 @@ class Settings
 
         //Add nonce message for su admins
         add_action('admin_notices', array($this, 'nonceKeyMessage'));
+
+        //Remove passed timeslots
+        add_filter('acf/load_value/key=field_5bed4e08b48ec', array($this, 'removeObsoleteTimeSlots'), 10, 3);
     }
 
     /**
@@ -42,5 +45,27 @@ class Settings
         if ((isset($_GET['page']) && $_GET['page'] == "resource-booking-options") && (is_super_admin() || current_user_can('administrator'))) {
             printf('<div class="updated notice"><p>%s: %s</p></div>', __('Current nonce key is: ', 'modularity-resource-booking'), wp_create_nonce('wp_rest'));
         }
+    }
+
+    /**
+     * Remove passed timestamps from render & get
+     *
+     * @param array $value The old value
+     * @param string $postId The identification
+     * @param array $field The field configuration
+     *
+     * @return array The new santitized value
+     */
+    public function removeObsoleteTimeSlots($value, $postId, $field)
+    {
+        if (is_array($value) && !empty($value)) {
+            foreach ($value as $rowKey => $row) {
+                //Check if start is passed
+                if (date("Ymd") > $row['field_5bed4e13b48ed']) {
+                    unset($value[$rowKey]);
+                }
+            }
+        }
+        return $value;
     }
 }
