@@ -412,7 +412,7 @@ class Orders
                 ),
                 array(
                     'heading' => __('Customer: ', 'modularity-resource-booking'),
-                    'content' => Helper\Customer::getName(self::$userId)
+                    'content' => \ModularityResourceBooking\Helper\Customer::getName(self::$userId)
                 )
             )
         );
