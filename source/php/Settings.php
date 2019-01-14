@@ -14,6 +14,9 @@ class Settings
 
         //Remove passed timeslots
         add_filter('acf/load_value/key=field_5bed4e08b48ec', array($this, 'removeObsoleteTimeSlots'), 10, 3);
+
+        //Remove duplicate timeslots
+        add_filter('acf/load_value/key=field_5bed4e08b48ec', array($this, 'removeDuplicateTimeSlots'), 15, 3);
     }
 
     /**
@@ -50,9 +53,9 @@ class Settings
     /**
      * Remove passed timestamps from render & get
      *
-     * @param array $value The old value
+     * @param array  $value  The old value
      * @param string $postId The identification
-     * @param array $field The field configuration
+     * @param array  $field  The field configuration
      *
      * @return array The new santitized value
      */
@@ -61,10 +64,27 @@ class Settings
         if (is_array($value) && !empty($value)) {
             foreach ($value as $rowKey => $row) {
                 //Check if start is passed
-                if (date("Ymd") > $row['field_5bed4e13b48ed']) {
+                if (date("Ymd") >= $row['field_5bed4e13b48ed']) {
                     unset($value[$rowKey]);
                 }
             }
+        }
+        return $value;
+    }
+
+    /**
+     * Remove identical slots
+     *
+     * @param array  $value  The old value
+     * @param string $postId The identification
+     * @param array  $field  The field configuration
+     *
+     * @return array The new santitized value
+     */
+    public function removeDuplicateTimeSlots($value, $postId, $field)
+    {
+        if (is_array($value) && !empty($value)) {
+            $value = array_unique($value, SORT_REGULAR);
         }
         return $value;
     }
