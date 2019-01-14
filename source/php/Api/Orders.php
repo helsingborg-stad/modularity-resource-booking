@@ -660,7 +660,7 @@ class Orders
             $article = array(
                 'id' => $article['article_id'],
                 'title' => \ModularityResourceBooking\Helper\Product::name($article['article_id']),
-                'type' => $article['type'] == 'package' ? __('Package', 'modularity-resource-booking') :  __('Product', 'modularity-resource-booking'),
+                'type' => $article['type'],
                 'start' => $slot['start'],
                 'stop' => $slot['stop'],
                 'price' => $price
