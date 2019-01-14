@@ -60,8 +60,6 @@ class App
         new Api\TimeSlots();
         new Api\Products();
         new Api\Customer();
-        new Api\Authentication();
-
     }
 
     /**
