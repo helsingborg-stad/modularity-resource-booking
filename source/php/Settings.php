@@ -15,8 +15,14 @@ class Settings
         //Remove passed timeslots
         add_filter('acf/load_value/key=field_5bed4e08b48ec', array($this, 'removeObsoleteTimeSlots'), 10, 3);
 
-        //Remove duplicate timeslots
-        add_filter('acf/load_value/key=field_5bed4e08b48ec', array($this, 'removeDuplicateTimeSlots'), 15, 3);
+        //Validate for duplicate timeslots
+        add_filter('acf/validate_value/key=field_5bed4e08b48ec', array($this, 'preventDuplicateTimeSlots'), 15, 4);
+
+        //Validate for overlapping timeslots
+        //add_filter('acf/validate_value/key=field_5bed4e08b48ec', array($this, 'preventOverlappingTimeSlots'), 20, 4);
+
+        //Validate for negative timeslots
+        add_filter('acf/validate_value/key=field_5bed4e08b48ec', array($this, 'preventNegativeTimeSlots'), 25, 4);
     }
 
     /**
@@ -73,19 +79,103 @@ class Settings
     }
 
     /**
-     * Remove identical slots
+     * Prevent identical slots
      *
-     * @param array  $value  The old value
-     * @param string $postId The identification
-     * @param array  $field  The field configuration
+     * @param boolean $valid Previous validation
+     * @param array   $value The old value
+     * @param array   $field The field configuration
+     * @param string  $input Dom element
      *
      * @return array The new santitized value
      */
-    public function removeDuplicateTimeSlots($value, $postId, $field)
+    public function preventDuplicateTimeSlots($valid, $value, $field, $input)
     {
-        if (is_array($value) && !empty($value)) {
-            $value = array_unique($value, SORT_REGULAR);
+
+        if (!$valid) {
+            return $valid;
         }
-        return $value;
+
+        if (is_array($value) && !empty($value)) {
+            if ($value != array_unique($value, SORT_REGULAR)) {
+                return __('You cannot have indentical time slots configured.', 'modularity-resource-booking');
+            }
+        }
+
+        return $valid;
+    }
+
+    /**
+     * Prevent overlapping slots
+     *
+     * @param boolean $valid Previous validation
+     * @param array   $value The old value
+     * @param array   $field The field configuration
+     * @param string  $input Dom element
+     *
+     * @return array The new santitized value
+     */
+    public function preventOverlappingTimeSlots($valid, $value, $field, $input)
+    {
+        if (!$valid) {
+            return $valid;
+        }
+
+        if (is_array($value) && !empty($value)) {
+
+            $oldValues = (array) get_field('mod_res_book_time_slots', 'options');
+
+            $newValues = array_udiff(
+                $value,
+                $oldValues,
+                function ($a, $b) {
+                    var_dump($a);
+                    return serialize($a) == serialize($b) ? false : true;
+                }
+            );
+
+            return json_encode($newValues);
+
+            if ($value != array_unique($value, SORT_REGULAR)) {
+                return __('You cannot have overlapping time slots configured.', 'modularity-resource-booking');
+            }
+        }
+
+        return $valid;
+    }
+
+
+    /**
+     * Prevent overlapping slots
+     *
+     * @param boolean $valid Previous validation
+     * @param array   $value The old value
+     * @param array   $field The field configuration
+     * @param string  $input Dom element
+     *
+     * @return array The new santitized value
+     */
+    public function preventNegativeTimeSlots($valid, $value, $field, $input)
+    {
+        if (!$valid) {
+            return $valid;
+        }
+
+        if (is_array($value) && !empty($value)) {
+            $filtered = array_filter(
+                $value,
+                function ($subArray) {
+                    if (reset($subArray) <= end($subArray)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            if ($value != $filtered) {
+                return __('You cannot have negative time slots configured.', 'modularity-resource-booking');
+            }
+        }
+
+        return $valid;
     }
 }
