@@ -30,6 +30,9 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         //Do actions on taxonomy change
         add_action('save_post', array($this, 'taxonomyChangeActions'), 1);
+
+        // Create default order statuses
+        add_action('init', array($this, 'createDefaultStatuses'));
     }
 
     /**
@@ -420,5 +423,22 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
     {
         $field['conditional_logic'] = 1;
         return $field;
+    }
+
+    /**
+     * Create default order statuses
+     */
+    public function createDefaultStatuses()
+    {
+        if (!term_exists('canceled', 'order-status')) {
+            wp_insert_term(
+                __('Canceled', 'modularity-resource-booking'),
+                'order-status',
+                array(
+                    'description' => 'The order is canceled.',
+                    'slug' => 'canceled',
+                )
+            );
+        }
     }
 }
