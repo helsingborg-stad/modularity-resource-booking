@@ -48,6 +48,9 @@ class OrderHistory extends \Modularity\Module
                     'period' => __('Period', 'modularity-resource-booking'),
                     'product' => __('Product', 'modularity-resource-booking'),
                     'package' => __('Package', 'modularity-resource-booking'),
+                    'canceled' => __('Canceled', 'modularity-resource-booking'),
+                    'cancelOrder' => __('Cancel order', 'modularity-resource-booking'),
+                    'cancelOrderConfirm' => __('Do you really want to cancel this order?', 'modularity-resource-booking'),
                 ),
                 'restUrl' => get_rest_url(),
                 'nonce' => wp_create_nonce('wp_rest')
