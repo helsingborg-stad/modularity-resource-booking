@@ -20,11 +20,11 @@ class OrderHistory extends React.Component {
     }
 
     getOrders = () => {
-        const { perPage } = this.props;
+        const { perPage, restUrl } = this.props;
 
-        getCustomerOrders().then(
-            ({ result }) => {
-                if (!result) {
+        getCustomerOrders([], restUrl)
+            .then(result => {
+                if (typeof result === 'undefined' || result.length === 0) {
                     this.setState({
                         error: Error('Could not fetch data from URL.'),
                         isLoaded: true,
@@ -43,11 +43,10 @@ class OrderHistory extends React.Component {
                         this.updateItemList();
                     }
                 );
-            },
-            ({ error }) => {
+            })
+            .catch(({ error }) => {
                 this.setState({ isLoaded: true, error });
-            }
-        );
+            });
     };
 
     mapData = jsonData =>
