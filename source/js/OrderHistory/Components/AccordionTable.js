@@ -1,6 +1,12 @@
 import AccordionItem from './AccordionItem';
 
-const AccordionTable = ({ headings, items, articleHeadings, translation }) => (
+const AccordionTable = ({
+    headings,
+    items,
+    articleHeadings,
+    translation,
+    cancelOrder,
+}) => (
     <div>
         <header className="accordion-table accordion-table-head">
             {headings.map((heading, i) => (
@@ -15,13 +21,16 @@ const AccordionTable = ({ headings, items, articleHeadings, translation }) => (
                     <p>{translation.noOrdersFound}</p>
                 </div>
             )}
-            {items.map(item => (
+            {items.map((item, i) => (
                 <AccordionItem
                     key={item.id}
+                    index={i}
                     headings={item.headings}
+                    cancelable={item.cancelable}
                     articleHeadings={articleHeadings}
                     articles={item.articles}
                     translation={translation}
+                    cancelOrder={cancelOrder}
                 />
             ))}
         </div>
