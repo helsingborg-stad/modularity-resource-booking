@@ -1,6 +1,7 @@
 import { Pagination, PreLoader } from 'hbg-react';
 import AccordionTable from '../Components/AccordionTable';
 import { getCustomerOrders } from '../../Api/orders';
+import update from 'immutability-helper';
 
 class OrderHistory extends React.Component {
     constructor() {
@@ -54,6 +55,7 @@ class OrderHistory extends React.Component {
             id: item.id,
             headings: [item.order_id, item.date, item.status],
             articles: item.articles,
+            cancelable: item.cancelable,
         }));
 
     updateItemList = () => {
@@ -94,6 +96,28 @@ class OrderHistory extends React.Component {
                 this.updateItemList();
             }
         });
+    };
+
+    cancelOrder = (e, index) => {
+        e.preventDefault();
+        const { translation } = this.props;
+
+        if (e.target.classList.contains('disabled')) {
+            return;
+        }
+
+        if (window.confirm(translation.cancelOrderConfirm)) {
+            this.setState(
+                update(this.state, {
+                    filteredItems: {
+                        [index]: {
+                            headings: { 2: { $set: translation.canceled } },
+                            cancelable: { $set: false },
+                        },
+                    },
+                })
+            );
+        }
     };
 
     render() {
@@ -141,6 +165,7 @@ class OrderHistory extends React.Component {
                     headings={headings}
                     articleHeadings={articleHeadings}
                     translation={translation}
+                    cancelOrder={this.cancelOrder}
                 />
                 {filteredItems.length > 0 && (
                     <div className="grid gutter">
