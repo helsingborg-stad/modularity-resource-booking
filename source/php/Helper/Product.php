@@ -140,9 +140,17 @@ class Product
         if (is_array($items) && !empty($items)) {
             foreach ($items as $itemId) {
                 if ($packageObject = get_term($itemId, 'product-package')) {
-                    $result[] = $packageObject->name;
+                    if (is_wp_error($packageObject)) {
+                        $result[] = __('Removed package', 'modularity-resource-booking');
+                    } else {
+                        $result[] = $packageObject->name;
+                    }
                 } elseif ($productObject = get_post($itemId)) {
-                    $result[] = $productObject->post_title;
+                    if (is_wp_error($productObject)) {
+                        $result[] = __('Removed product', 'modularity-resource-booking');
+                    } else {
+                        $result[] = $productObject->post_title;
+                    }
                 }
             }
             return implode(", ", $result);
