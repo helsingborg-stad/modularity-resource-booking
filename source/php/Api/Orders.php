@@ -76,6 +76,7 @@ class Orders
                 'methods' => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'listMyOrders'),
                 'permission_callback' => array($this, 'CheckUserAuthentication'),
+                'args' => $this->getCollectionParams(),
             )
         );
 
@@ -136,6 +137,22 @@ class Orders
     }
 
     /**
+     * Get the query params for collections
+     * @return array
+     */
+    public function getCollectionParams()
+    {
+        return array(
+            'page' => array(
+                'description' => 'Current page of the collection.',
+                'type' => 'integer',
+                'default' => 1,
+                'sanitize_callback' => 'absint',
+            )
+        );
+    }
+
+    /**
      * Get a single order
      *
      * @param object $request Object containing request details
@@ -154,14 +171,15 @@ class Orders
     }
 
     /**
-     * Get all orders for n amout of time
+     * Get all orders for n amount of time
      *
      * @param object $request   Object containing request details
+     * @param array  $args      Containing query information
      * @param array  $metaQuery Containing meta query information
      *
      * @return \WP_REST_Response
      */
-    public function listOrders($request, $metaQuery = null)
+    public function listOrders($request, $args = array(), $metaQuery = null)
     {
         //Basic query
         $query = array(
@@ -170,6 +188,8 @@ class Orders
             'orderby' => 'date',
             'order' => 'DESC'
         );
+
+        $query = array_merge($query, $args);
 
         //Append meta query
         if (!is_null($metaQuery) && is_array($metaQuery)) {
@@ -206,8 +226,12 @@ class Orders
      */
     public function listMyOrders($request)
     {
+        $parameters = $request->get_params();
         return $this->listOrders(
             $request,
+            array(
+                'paged' => $parameters['page']
+            ),
             array(
                 array(
                     'key' => 'customer_id',
