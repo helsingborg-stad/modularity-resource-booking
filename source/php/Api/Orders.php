@@ -204,7 +204,11 @@ class Orders
             if (is_array($orderData) && !empty($orderData)) {
                 $order = array_shift($orderData);
                 $orderStatus = get_post_meta($order['id'], 'order_status', true);
-                $order['status'] = get_term((int)$orderStatus, 'order-status')->name ?? null;
+                $status = get_term((int)$orderStatus, 'order-status');
+                $statusTitle = $status->name ?? null;
+                $cancelable = get_field('can_be_canceled', $status) ? true : false;
+                $order['status'] = $statusTitle;
+                $order['cancelable'] = $cancelable;
                 $order['name'] = $name;
             } else {
                 unset($orders[$key]);
