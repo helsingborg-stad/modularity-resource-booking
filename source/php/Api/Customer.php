@@ -214,19 +214,23 @@ class Customer
                 array(
                     array(
                         'heading' => __('Company:', 'modularity-resource-booking'),
-                        'content' => Helper\Customer::getCompany($userId)
+                        'content' => \ModularityResourceBooking\Helper\Customer::getCompany($userId)
+                    ),
+                    array(
+                        'heading' => __('Company number:', 'modularity-resource-booking'),
+                        'content' => \ModularityResourceBooking\Helper\Customer::getCompanyNumber($userId)
                     ),
                     array(
                         'heading' => __('Contact name:', 'modularity-resource-booking'),
-                        'content' => Helper\Customer::getName($userId)
+                        'content' => \ModularityResourceBooking\Helper\Customer::getName($userId)
                     ),
                     array(
                         'heading' => __('Email adress: ', 'modularity-resource-booking'),
-                        'content' => Helper\Customer::getEmail($userId)
+                        'content' => \ModularityResourceBooking\Helper\Customer::getEmail($userId)
                     ),
                     array(
                         'heading' => __('Phone number: ', 'modularity-resource-booking'),
-                        'content' => Helper\Customer::getPhone($userId)
+                        'content' => \ModularityResourceBooking\Helper\Customer::getPhone($userId)
                     )
                 )
             );

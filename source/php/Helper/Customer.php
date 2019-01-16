@@ -15,13 +15,13 @@ class Customer
     {
         $user = self::_transformToUserItem($user);
 
-        if (get_class($user) == "WP_User") {
+        if (is_a($user, "WP_User")) {
             return $user->first_name . " " . $user->last_name;
         }
 
         return new \WP_Error(
             'user_not_found',
-            __('The user you requested was not found.', 'modularity-resource-booking')
+            __('The user data you requested was not found.', 'modularity-resource-booking')
         );
     }
 
@@ -36,13 +36,13 @@ class Customer
     {
         $user = self::_transformToUserItem($user);
 
-        if (get_class($user) == "WP_User") {
+        if (is_a($user, "WP_User")) {
             return $user->user_email;
         }
 
         return new \WP_Error(
             'user_not_found',
-            __('The user you requested was not found.', 'modularity-resource-booking')
+            __('The user data you requested was not found.', 'modularity-resource-booking')
         );
     }
 
@@ -63,7 +63,7 @@ class Customer
 
         return new \WP_Error(
             'user_not_found',
-            __('The user you requested was not found.', 'modularity-resource-booking')
+            __('The user data you requested was not found.', 'modularity-resource-booking')
         );
     }
 
@@ -78,13 +78,34 @@ class Customer
     {
         $user = self::_transformToUserId($user);
 
-        if ($phone = get_user_meta($user, 'company', true)) {
-            return $phone;
+        if ($company = get_user_meta($user, 'billing_company', true)) {
+            return $company;
         }
 
         return new \WP_Error(
             'user_not_found',
-            __('The user you requested was not found.', 'modularity-resource-booking')
+            __('The user data you requested was not found.', 'modularity-resource-booking')
+        );
+    }
+
+    /**
+     * Get a customer company number
+     *
+     * @param int|WP_User $user The user object or user id
+     *
+     * @return string with the user company or WP_Error if not found.
+     */
+    public static function getCompanyNumber($user)
+    {
+        $user = self::_transformToUserId($user);
+
+        if ($companyNumber = get_user_meta($user, 'billing_company_number', true)) {
+            return $companyNumber;
+        }
+
+        return new \WP_Error(
+            'user_not_found',
+            __('The user data you requested was not found.', 'modularity-resource-booking')
         );
     }
 
@@ -112,7 +133,7 @@ class Customer
      */
     private static function _transformToUserId($user)
     {
-        if (get_class($user) == "WP_User") {
+        if (is_a($user, "WP_User")) {
             $user->ID;
         }
 
@@ -122,7 +143,7 @@ class Customer
 
         return new \WP_Error(
             'invalid_user_input',
-            __('The user you requested was not found.', 'modularity-resource-booking')
+            __('The user data you requested was not found.', 'modularity-resource-booking')
         );
     }
 }
