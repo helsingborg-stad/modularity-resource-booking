@@ -80,11 +80,24 @@ class Mail
     {
         if (!empty($table) && is_array($table)) {
             foreach ($table as $rowKey => $row) {
+
+                //Validate item object
                 if (!isset($row['heading']) ||!isset($row['content'])) {
-                    return new \WP_Error('malformed_table_content', __("Each table array item must contain 'content' and 'title' sub keys.", 'modularity-resource-booking'));
+                    return new \WP_Error('malformed_table_content', __("Each table array item must contain 'content' and 'heading' sub keys.", 'modularity-resource-booking'));
                 }
+
+                //Remove empty row
                 if ((boolean) $removeEmptyRows && empty($row['content'])) {
-                    unset($table[$rowKey]);
+                    if (isset($table[$rowKey])) {
+                        unset($table[$rowKey]);
+                    }
+                }
+
+                //Remove rows containing WP_Error objects
+                if (is_wp_error($row['content'])) {
+                    if (isset($table[$rowKey])) {
+                        unset($table[$rowKey]);
+                    }
                 }
             }
             $this->_table = $table;

@@ -207,13 +207,38 @@ class Customer
                 }
             }
 
+            //Send manager email
+            new \ModularityResourceBooking\Helper\ManagerMail(
+                __('New customer', 'modularity-resource-booking'),
+                __('A new customer been registered in your booking system. You have to review this customer and assign the customer account a user group.', 'modularity-resource-booking'),
+                array(
+                    array(
+                        'heading' => __('Company:', 'modularity-resource-booking'),
+                        'content' => Helper\Customer::getCompany($userId)
+                    ),
+                    array(
+                        'heading' => __('Contact name:', 'modularity-resource-booking'),
+                        'content' => Helper\Customer::getName($userId)
+                    ),
+                    array(
+                        'heading' => __('Email adress: ', 'modularity-resource-booking'),
+                        'content' => Helper\Customer::getEmail($userId)
+                    ),
+                    array(
+                        'heading' => __('Phone number: ', 'modularity-resource-booking'),
+                        'content' => Helper\Customer::getPhone($userId)
+                    )
+                )
+            );
+
             return array(
-                'message' => __('A new user account has been created.', 'modularity-resource-booking'),
+                'message' => __('Your user account has been created, you will be notified when its approved and ready to use.', 'modularity-resource-booking'),
                 'state' => 'success',
                 'customer' => $this->filterCustomerOutput(
                     get_user_by('ID', $userId)
                 )
             );
+
         } else {
             return array(
                 'message' => __('Something unexpected happened.', 'modularity-resource-booking'),
