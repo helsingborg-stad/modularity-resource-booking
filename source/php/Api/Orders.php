@@ -134,6 +134,42 @@ class Orders
                 ),
             )
         );
+
+        // Cancel order
+        register_rest_route(
+            "ModularityResourceBooking/v1",
+            "CancelOrder/(?P<id>[\d]+)",
+            array(
+                'methods' => \WP_REST_Server::EDITABLE,
+                'callback' => array($this, 'cancelOrder'),
+                'permission_callback' => array($this, 'checkOrderOwnership'),
+                'args' => array(
+                    'id' => array(
+                        'validate_callback' => function ($param, $request, $key) {
+                            return is_numeric($param);
+                        },
+                        'sanitize_callback' => 'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The order id.'
+                    ),
+                ),
+            )
+        );
+    }
+
+    public function cancelOrder($request)
+    {
+        $id = $request->get_param('id');
+
+
+        // Return success
+        return new \WP_REST_Response(
+            array(
+                'message' => __('The order has been canceled.', 'modularity-resource-booking'),
+            ),
+            400
+        );
     }
 
     /**
