@@ -212,13 +212,6 @@ class Orders
      */
     public function create($request)
     {
-        //Verify nonce
-        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
-            return array(
-                'message' => $nonce->get_error_message(),
-                'state' => 'error'
-            );
-        }
 
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
@@ -430,13 +423,6 @@ class Orders
      */
     public function remove($request)
     {
-        //Verify nonce
-        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
-            return array(
-                'message' => $nonce->get_error_message(),
-                'state' => 'error'
-            );
-        }
 
         if (get_post_type($request->get_param('id')) != "purchase") {
             return new \WP_REST_Response(

@@ -135,15 +135,6 @@ class Customer
      */
     public function create($request)
     {
-
-        //Verify nonce
-        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
-            return array(
-                'message' => $nonce->get_error_message(),
-                'state' => 'error'
-            );
-        }
-
         $requiredKeys = array("email", "password", "company");
 
         foreach ($requiredKeys as $requirement) {
@@ -260,14 +251,6 @@ class Customer
      */
     public function modify($request)
     {
-
-        //Verify nonce
-        if (is_wp_error($nonce = \ModularityResourceBooking\Helper\ApiNonce::verify())) {
-            return array(
-                'message' => $nonce->get_error_message(),
-                'state' => 'error'
-            );
-        }
 
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
