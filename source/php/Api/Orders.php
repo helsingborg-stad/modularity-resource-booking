@@ -248,11 +248,10 @@ class Orders
             $orderData = get_field('order_data', $order->ID);
             if (is_array($orderData) && !empty($orderData)) {
                 $order = array_shift($orderData);
-                $orderStatus = get_post_meta($order['id'], 'order_status', true);
-                $status = get_term((int)$orderStatus, 'order-status');
-                $statusTitle = $status->name ?? null;
+                $terms = wp_get_post_terms($order['id'], 'order-status', array('fields' => 'ids'));
+                $status = isset($terms[0]) ? get_term($terms[0], 'order-status') : null;
                 $cancelable = get_field('can_be_canceled', $status) ? true : false;
-                $order['status'] = $statusTitle;
+                $order['status'] = $status->name ?? '';
                 $order['cancelable'] = $cancelable;
                 $order['name'] = $name;
             } else {
@@ -646,19 +645,19 @@ class Orders
             foreach ($orders as $order) {
 
                 //Order status
-                $orderStatus = get_post_meta($order->ID, 'order_status', true);
-                $orderStatus = $orderStatus ? get_term((int)$orderStatus, 'order-status') : null;
+                $terms = wp_get_post_terms($order->ID, 'order-status', array('fields' => 'ids'));
+                $orderStatus = isset($terms[0]) ? get_term($terms[0], 'order-status') : null;
 
                 //Get ordered items
                 $articles = get_field('order_articles', $order->ID);
 
                 //Create result array
                 $result[] = array(
-                    'id' => (int) $order->ID,
-                    'order_id' => (string) get_post_meta($order->ID, 'order_id', true),
-                    'user_id' => (int) $order->post_author,
-                    'uname' => (string) \ModularityResourceBooking\Helper\Customer::getName($order->post_author),
-                    'name' => (string) $order->post_title,
+                    'id' => (int)$order->ID,
+                    'order_id' => (string)get_post_meta($order->ID, 'order_id', true),
+                    'user_id' => (int)$order->post_author,
+                    'uname' => (string)\ModularityResourceBooking\Helper\Customer::getName($order->post_author),
+                    'name' => (string)$order->post_title,
                     'date' => date('Y-m-d', strtotime($order->post_date)),
                     'slug' => (string)$order->post_name,
                     'status' => $orderStatus->name ?? null,
