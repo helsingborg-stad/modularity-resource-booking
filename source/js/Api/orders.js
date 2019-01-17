@@ -2,27 +2,27 @@ const getCustomerOrders = (restUrl, nonce, data = [], page = 1) => {
     const completeUrl = restUrl + 'ModularityResourceBooking/v1/MyOrders?_wpnonce=' + nonce;
 
     return fetch(page ? completeUrl + '&page=' + page : completeUrl, {
+        credentials: 'include',
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
     })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('HTTP error, status = ' + response.status);
+            if (response.ok) {
+                return response.json();
             }
-            return response.json();
+            throw Error(response.statusText);
         })
-        .then(result => {
-            const allData = data.concat(result);
+        .then(response => {
+            const allData = data.concat(response);
             const nextPage = page + 1;
 
-            if (result.length === 0) {
+            if (response.length === 0) {
                 return allData;
             }
             return getCustomerOrders(restUrl, nonce, allData, nextPage);
-        })
-        .catch(error => ({ error }));
+        });
 };
 
 const postRequest = (restUrl, nonce) =>

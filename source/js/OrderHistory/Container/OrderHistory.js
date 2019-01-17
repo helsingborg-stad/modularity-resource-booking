@@ -22,18 +22,11 @@ class OrderHistory extends React.Component {
     }
 
     getOrders = () => {
-        const { perPage, restUrl, nonce } = this.props;
+        const { perPage, restUrl, nonce, translation } = this.props;
 
         getCustomerOrders(restUrl, nonce)
-            .then(result => {
-                if (typeof result === 'undefined' || result.length === 0) {
-                    this.setState({
-                        error: Error(translation.somethingWentWrong),
-                        isLoaded: true,
-                    });
-                    return;
-                }
-                const data = this.mapData(result);
+            .then(response => {
+                const data = this.mapData(response);
                 this.setState(
                     {
                         isLoaded: true,
@@ -46,8 +39,9 @@ class OrderHistory extends React.Component {
                     }
                 );
             })
-            .catch(({ error }) => {
-                this.setState({ isLoaded: true, error });
+            .catch(error => {
+                console.error('Request failed:', error.message);
+                this.setState({ isLoaded: true, error: Error(translation.somethingWentWrong) });
             });
     };
 
