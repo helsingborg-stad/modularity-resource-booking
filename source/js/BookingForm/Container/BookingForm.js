@@ -10,6 +10,10 @@ class BookingForm extends React.Component {
         articlePrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
             .isRequired,
         articleName: PropTypes.string.isRequired,
+        articleType: PropTypes.string.isRequired,
+        restNonce: PropTypes.string.isRequired,
+        articleId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+            .isRequired,
         avalibleSlots: PropTypes.array.isRequired,
         mediaRequirements: PropTypes.array
     };
@@ -30,7 +34,26 @@ class BookingForm extends React.Component {
     }
 
     createOrder() {
-        console.log('ORDER MF');
+        const { articleType, articleId } = this.props;
+        const { selectedSlots } = this.state;
+
+        let orders = [];
+
+        selectedSlots.forEach(id => {
+            orders.push({
+                type: articleType,
+                article_id: articleId,
+                slot_id: id
+            });
+        });
+
+        createOrder(orders)
+            .then(result => {
+                console.log('Succesfully made order!');
+            })
+            .catch(result => {
+                console.log('Failed to make order');
+            });
     }
 
     /**

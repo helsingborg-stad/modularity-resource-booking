@@ -103,6 +103,9 @@ class App {
                     mediaRequirements={this.mediaRequirements}
                     articleName={this.articleName}
                     articlePrice={this.articlePrice}
+                    articleType={article_type}
+                    articleId={article_id}
+                    restNonce={order_nonce}
                 />,
                 element
             );
