@@ -1,6 +1,6 @@
 import { Pagination, PreLoader } from 'hbg-react';
 import AccordionTable from '../Components/AccordionTable';
-import { getCustomerOrders } from '../../Api/orders';
+import { getCustomerOrders, postRequest } from '../../Api/orders';
 import update from 'immutability-helper';
 
 class OrderHistory extends React.Component {
@@ -21,9 +21,9 @@ class OrderHistory extends React.Component {
     }
 
     getOrders = () => {
-        const { perPage, restUrl } = this.props;
+        const { perPage, restUrl, nonce } = this.props;
 
-        getCustomerOrders([], restUrl)
+        getCustomerOrders(restUrl, nonce)
             .then(result => {
                 if (typeof result === 'undefined' || result.length === 0) {
                     this.setState({
@@ -87,10 +87,7 @@ class OrderHistory extends React.Component {
 
     paginationInput = e => {
         let currentPage = e.target.value ? parseInt(e.target.value) : '';
-        currentPage =
-            currentPage > this.state.totalPages
-                ? this.state.totalPages
-                : currentPage;
+        currentPage = currentPage > this.state.totalPages ? this.state.totalPages : currentPage;
         this.setState({ currentPage: currentPage }, () => {
             if (currentPage) {
                 this.updateItemList();
@@ -98,9 +95,9 @@ class OrderHistory extends React.Component {
         });
     };
 
-    cancelOrder = (e, index) => {
+    cancelOrder = (e, index, id) => {
         e.preventDefault();
-        const { translation } = this.props;
+        const { restUrl, nonce, translation } = this.props;
 
         if (e.target.classList.contains('disabled')) {
             return;
@@ -111,29 +108,30 @@ class OrderHistory extends React.Component {
                 update(this.state, {
                     filteredItems: {
                         [index]: {
-                            headings: { 2: { $set: translation.canceled } },
+                            headings: {
+                                2: { $set: translation.canceled },
+                            },
                             cancelable: { $set: false },
                         },
                     },
                 })
             );
+
+            postRequest(restUrl + 'ModularityResourceBooking/v1/CancelOrder/' + id, nonce)
+                .then(response => {
+                    // do something
+                })
+                .catch(error => {
+                    console.error('Request failed:', error.message);
+                    // Undo state changes
+                });
         }
     };
 
     render() {
-        const {
-            filteredItems,
-            error,
-            isLoaded,
-            totalPages,
-            currentPage,
-        } = this.state;
+        const { filteredItems, error, isLoaded, totalPages, currentPage } = this.state;
         const { translation } = this.props;
-        const headings = [
-            translation.orderNumber,
-            translation.date,
-            translation.status,
-        ];
+        const headings = [translation.orderNumber, translation.date, translation.status];
         const articleHeadings = [
             translation.article,
             translation.type,

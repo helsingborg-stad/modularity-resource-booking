@@ -2,6 +2,7 @@ import ArticlesTable from './ArticlesTable';
 import { Button } from 'hbg-react';
 
 const AccordionItem = ({
+    id,
     index,
     headings,
     articles,
@@ -36,7 +37,7 @@ const AccordionItem = ({
                 <div className="grid-xs-12 u-mt-1">
                     <Button
                         title={translation.cancelOrder}
-                        onClick={e => cancelOrder(e, index)}
+                        onClick={e => cancelOrder(e, index, id)}
                         color="primary"
                         size="small"
                         outline={false}

@@ -1,5 +1,7 @@
-const getCustomerOrders = (data, restUrl, page = 1) =>
-    fetch(page ? restUrl + '&page=' + page : restUrl, {
+const getCustomerOrders = (restUrl, nonce, data = [], page = 1) => {
+    const completeUrl = restUrl + 'ModularityResourceBooking/v1/MyOrders?_wpnonce=' + nonce;
+
+    return fetch(page ? completeUrl + '&page=' + page : completeUrl, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -18,7 +20,24 @@ const getCustomerOrders = (data, restUrl, page = 1) =>
             if (result.length === 0) {
                 return allData;
             }
-            return getCustomerOrders(allData, restUrl, nextPage);
+            return getCustomerOrders(restUrl, nonce, allData, nextPage);
         })
         .catch(error => ({ error }));
-export { getCustomerOrders };
+};
+
+const postRequest = (restUrl, nonce) =>
+    fetch(restUrl, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-WP-NONCE': nonce,
+        },
+    }).then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw Error(response.statusText);
+    });
+
+export { getCustomerOrders, postRequest };

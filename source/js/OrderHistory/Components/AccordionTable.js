@@ -24,6 +24,7 @@ const AccordionTable = ({
             {items.map((item, i) => (
                 <AccordionItem
                     key={item.id}
+                    id={item.id}
                     index={i}
                     headings={item.headings}
                     cancelable={item.cancelable}
