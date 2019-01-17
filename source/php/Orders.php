@@ -32,7 +32,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
         add_action('save_post', array($this, 'taxonomyChangeActions'), 1);
 
         // Create default order statuses
-        add_action('init', array($this, 'createDefaultStatuses'));
+        add_action('init', array($this, 'createDefaultStatuses'), 9);
     }
 
     /**
@@ -75,7 +75,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                     $actionOnAcquisition = get_field('do_action_on_aqusition', self::$statusTaxonomySlug . "_" . $newTermSetup);
 
                     //Send email to economy
-                    if (!is_null($actionOnAcquisition) && in_array('economy_mail', $actionOnAcquisition)) {
+                    if (!is_null($actionOnAcquisition) && is_array($actionOnAcquisition) && in_array('economy_mail', $actionOnAcquisition)) {
 
                         new \ModularityResourceBooking\Helper\EconomyMail(
                             __('Request of new invoice', 'modularity-resource-booking'),
