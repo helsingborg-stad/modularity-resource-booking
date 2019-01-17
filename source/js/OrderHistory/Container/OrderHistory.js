@@ -1,6 +1,7 @@
 import { Pagination, PreLoader } from 'hbg-react';
 import AccordionTable from '../Components/AccordionTable';
-import { getCustomerOrders } from '../../Api/orders';
+import { getCustomerOrders, postRequest } from '../../Api/orders';
+import update from 'immutability-helper';
 
 class OrderHistory extends React.Component {
     constructor() {
@@ -20,11 +21,11 @@ class OrderHistory extends React.Component {
     }
 
     getOrders = () => {
-        const { perPage } = this.props;
+        const { perPage, restUrl, nonce } = this.props;
 
-        getCustomerOrders().then(
-            ({ result }) => {
-                if (!result) {
+        getCustomerOrders(restUrl, nonce)
+            .then(result => {
+                if (typeof result === 'undefined' || result.length === 0) {
                     this.setState({
                         error: Error('Could not fetch data from URL.'),
                         isLoaded: true,
@@ -43,11 +44,10 @@ class OrderHistory extends React.Component {
                         this.updateItemList();
                     }
                 );
-            },
-            ({ error }) => {
+            })
+            .catch(({ error }) => {
                 this.setState({ isLoaded: true, error });
-            }
-        );
+            });
     };
 
     mapData = jsonData =>
@@ -55,6 +55,7 @@ class OrderHistory extends React.Component {
             id: item.id,
             headings: [item.order_id, item.date, item.status],
             articles: item.articles,
+            cancelable: item.cancelable,
         }));
 
     updateItemList = () => {
@@ -86,10 +87,7 @@ class OrderHistory extends React.Component {
 
     paginationInput = e => {
         let currentPage = e.target.value ? parseInt(e.target.value) : '';
-        currentPage =
-            currentPage > this.state.totalPages
-                ? this.state.totalPages
-                : currentPage;
+        currentPage = currentPage > this.state.totalPages ? this.state.totalPages : currentPage;
         this.setState({ currentPage: currentPage }, () => {
             if (currentPage) {
                 this.updateItemList();
@@ -97,20 +95,43 @@ class OrderHistory extends React.Component {
         });
     };
 
+    cancelOrder = (e, index, id) => {
+        e.preventDefault();
+        const { restUrl, nonce, translation } = this.props;
+
+        if (e.target.classList.contains('disabled')) {
+            return;
+        }
+
+        if (window.confirm(translation.cancelOrderConfirm)) {
+            this.setState(
+                update(this.state, {
+                    filteredItems: {
+                        [index]: {
+                            headings: {
+                                2: { $set: translation.canceled },
+                            },
+                            cancelable: { $set: false },
+                        },
+                    },
+                })
+            );
+
+            postRequest(restUrl + 'ModularityResourceBooking/v1/CancelOrder/' + id, nonce)
+                .then(response => {
+                    // do something
+                })
+                .catch(error => {
+                    console.error('Request failed:', error.message);
+                    // Undo state changes
+                });
+        }
+    };
+
     render() {
-        const {
-            filteredItems,
-            error,
-            isLoaded,
-            totalPages,
-            currentPage,
-        } = this.state;
+        const { filteredItems, error, isLoaded, totalPages, currentPage } = this.state;
         const { translation } = this.props;
-        const headings = [
-            translation.orderNumber,
-            translation.date,
-            translation.status,
-        ];
+        const headings = [translation.orderNumber, translation.date, translation.status];
         const articleHeadings = [
             translation.article,
             translation.type,
@@ -141,8 +162,8 @@ class OrderHistory extends React.Component {
                     items={filteredItems}
                     headings={headings}
                     articleHeadings={articleHeadings}
-                    showSearch={false}
-                    langNoResults={translation.noOrdersFound}
+                    translation={translation}
+                    cancelOrder={this.cancelOrder}
                 />
                 {filteredItems.length > 0 && (
                     <div className="grid gutter">
