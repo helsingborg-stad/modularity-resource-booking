@@ -520,7 +520,7 @@ class Orders
             );
         }
 
-        if (!$this->checkOrderOwnership($request->get_param('id'))) {
+        if (!$this->checkOrderOwnership($request)) {
             return new \WP_REST_Response(
                 array(
                     'message' => __('You are not the owner of that order.', 'modularity-resource-booking'),
@@ -557,7 +557,7 @@ class Orders
     {
 
         //Check ownership
-        if (!$this->checkOrderOwnership($request->get_param('id'))) {
+        if (!$this->checkOrderOwnership($request)) {
             return new \WP_REST_Response(
                 array(
                     'message' => __('You are not the owner of that order.', 'modularity-resource-booking'),
@@ -572,18 +572,20 @@ class Orders
     /**
      * Check that the current user is the owner of order x
      *
-     * @param integer $orderId The order to remove
+     * @param object $request Request data
      *
      * @return bool
      */
-    public function checkOrderOwnership($orderId): bool
+    public function checkOrderOwnership($request): bool
     {
         //Bypass security, by constant
         if (RESOURCE_BOOKING_DISABLE_SECURITY) {
             return true;
         }
 
-        if ((get_post_meta($orderId, 'user_id', true) === self::$userId) || get_post($orderId)->post_author === self::$userId) {
+        $orderId = $request->get_param('id');
+
+        if (((int)get_post_meta($orderId, 'customer_id', true) === self::$userId) || (int)get_post($orderId)->post_author === self::$userId) {
             return true;
         }
 
