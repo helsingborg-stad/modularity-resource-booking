@@ -19,7 +19,9 @@ class Customer
             'billing_company_number' => __('Company number', 'modularity-resource-booking'),
             'billing_contact_person' => __('Contact person', 'modularity-resource-booking'),
             'billing_address' => __('Billing address', 'modularity-resource-booking'),
-            'phone' => __('Phone number', 'modularity-resource-booking')
+            'phone' => __('Phone number', 'modularity-resource-booking'),
+            'glnr_number' => __('Glnr (e-invoice number)', 'modularity-resource-booking'), 
+            'vat_number' => __('VAT-Number', 'modularity-resource-booking'), 
         );
 
         //Mapping table (api input to wp usert table names)
