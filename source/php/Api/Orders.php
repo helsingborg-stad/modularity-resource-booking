@@ -488,7 +488,12 @@ class Orders
                 ),
                 array(
                     'heading' => __('Order number:', 'modularity-resource-booking'),
-                    'content' => $this->getPackageName($data['order_articles'])
+                    'content' => \ModularityResourceBooking\Helper\Product::name(
+                        \ModularityResourceBooking\Helper\ArrayParser::getSubKey(
+                            $data['order_articles'],
+                            'article_id'
+                        )
+                    )
                 ),
                 array(
                     'heading' => __('Customer: ', 'modularity-resource-booking'),
