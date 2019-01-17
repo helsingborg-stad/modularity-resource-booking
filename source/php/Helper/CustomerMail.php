@@ -16,14 +16,18 @@ class CustomerMail extends Mail
     /**
      * Send customer email
      *
-     * @param string $reciver Defines a email
-     * @param string $subject Defines a email subject
-     * @param string $content Defines email content
+     * @param string|integer $reciver Defines a email (may also be a user id)
+     * @param string         $subject Defines a email subject
+     * @param string         $content Defines email content
      *
      * @return bool true if sent, false if undefined or malformed email
      */
     public function __construct($reciver, $subject, $content, $table = array())
     {
+        if(is_integer($reciver) && $email = \ModularityResourceBooking\Helper\Customer::getEmail($reciver)) {
+            $reciver = $email;
+        }
+
         if (!is_wp_error($this->setReciver($reciver))) {
             $this->setSubject($subject);
             $this->setContent($content);

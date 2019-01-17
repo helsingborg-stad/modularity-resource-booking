@@ -120,7 +120,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                     //Send email to customer
                     if (!is_null($actionOnAcquisition) && in_array('customer_approval_mail', $actionOnAcquisition)) {
                         new \ModularityResourceBooking\Helper\CustomerMail(
-                            Helper\Customer::getEmail($data["acf"][get_field_object('customer_id')['key']]),
+                            $data["acf"][get_field_object('customer_id')['key']],
                             __('Order approved', 'modularity-resource-booking'),
                             __('Your order has been verified by us, and scheduled at your desired occasion.', 'modularity-resource-booking'),
                             array(
