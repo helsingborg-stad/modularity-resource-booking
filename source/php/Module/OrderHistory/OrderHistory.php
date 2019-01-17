@@ -51,6 +51,7 @@ class OrderHistory extends \Modularity\Module
                     'canceled' => __('Canceled', 'modularity-resource-booking'),
                     'cancelOrder' => __('Cancel order', 'modularity-resource-booking'),
                     'cancelOrderConfirm' => __('Do you really want to cancel this order?', 'modularity-resource-booking'),
+                    'cancelFailed' => __('The order could not be canceled. Please try again later.', 'modularity-resource-booking'),
                 ),
                 'restUrl' => get_rest_url(),
                 'nonce' => wp_create_nonce('wp_rest')
