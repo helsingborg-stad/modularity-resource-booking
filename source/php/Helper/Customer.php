@@ -68,6 +68,48 @@ class Customer
     }
 
     /**
+     * Get a customer glnr
+     *
+     * @param int|WP_User $user The user object or user id
+     *
+     * @return string with the user phone or WP_Error if not found.
+     */
+    public static function getGlnr($user)
+    {
+        $user = self::_transformToUserId($user);
+
+        if ($glnr = get_user_meta($user, 'billing_glnr_number', true)) {
+            return $glnr;
+        }
+
+        return new \WP_Error(
+            'user_not_found',
+            __('The user data you requested was not found.', 'modularity-resource-booking')
+        );
+    }
+
+    /**
+     * Get a customer vat
+     *
+     * @param int|WP_User $user The user object or user id
+     *
+     * @return string with the user phone or WP_Error if not found.
+     */
+    public static function getVat($user)
+    {
+        $user = self::_transformToUserId($user);
+
+        if ($vat = get_user_meta($user, 'billing_vat_number', true)) {
+            return $vat;
+        }
+
+        return new \WP_Error(
+            'user_not_found',
+            __('The user data you requested was not found.', 'modularity-resource-booking')
+        );
+    }
+
+    /**
      * Get a customer company
      *
      * @param int|WP_User $user The user object or user id

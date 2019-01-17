@@ -19,9 +19,9 @@ class Customer
             'billing_company_number' => __('Company number', 'modularity-resource-booking'),
             'billing_contact_person' => __('Contact person', 'modularity-resource-booking'),
             'billing_address' => __('Billing address', 'modularity-resource-booking'),
-            'phone' => __('Phone number', 'modularity-resource-booking'),
-            'glnr_number' => __('Glnr (e-invoice number)', 'modularity-resource-booking'), 
-            'vat_number' => __('VAT-Number', 'modularity-resource-booking'), 
+            'billing_glnr_number' => __('Glnr (e-invoice number)', 'modularity-resource-booking'), 
+            'billing_vat_number' => __('VAT-Number', 'modularity-resource-booking'),
+            'phone' => __('Phone number', 'modularity-resource-booking')
         );
 
         //Mapping table (api input to wp usert table names)
@@ -212,6 +212,14 @@ class Customer
                     array(
                         'heading' => __('Company number:', 'modularity-resource-booking'),
                         'content' => \ModularityResourceBooking\Helper\Customer::getCompanyNumber($userId)
+                    ),
+                    array(
+                        'heading' => __('Glnr number: ', 'modularity-resource-booking'),
+                        'content' => \ModularityResourceBooking\Helper\Customer::getGlnr($userId)
+                    ),
+                    array(
+                        'heading' => __('Vat-number: ', 'modularity-resource-booking'),
+                        'content' => \ModularityResourceBooking\Helper\Customer::getVat($userId)
                     ),
                     array(
                         'heading' => __('Contact name:', 'modularity-resource-booking'),
