@@ -16,10 +16,9 @@ let avalibleSlots = [],
 class App {
     constructor() {
         this.articleName = '';
-        this.price = 0;
-        this.avalibleSlots = [];
-        this.disabledSlots = [];
+        this.articlePrice = 0;
         this.mediaRequirements = [];
+        this.slots = [];
 
         this.fetchData();
     }
@@ -31,23 +30,36 @@ class App {
     fetchData() {
         getArticle(article_id, article_type)
             .then(article => {
-                this.price = article[0].price;
-                this.mediaRequirements = article[0].media_requirements;
+                this.articlePrice = article[0].price;
+                this.mediaRequirements = article[0].media_requirements.map(
+                    mediaObject => {
+                        let media = mediaObject;
+                        media.file = null;
+
+                        return media;
+                    }
+                );
                 this.articleName = article[0].title;
 
                 getSlots(article_id, article_type, user_id)
                     .then(slots => {
-                        this.avalibleSlots = slots.filter(
-                            slot =>
-                                slot.available_stock > 0 &&
-                                !slot.unlimited_stock
-                        );
+                        this.slots = slots.map(slotData => {
+                            let slot = slotData;
+                            slot.start = dateFns.parse(slotData.start);
+                            slot.stop = dateFns.parse(slotData.stop);
+                            slot.articleName = this.articleName;
+                            slot.articlePrice = this.articlePrice;
 
-                        this.disabledSlots = slots.filter(
-                            slot =>
-                                slot.available_stock == 0 ||
-                                slot.unlimited_stock
-                        );
+                            slotData.title =
+                                this.articleName +
+                                ' (' +
+                                dateFns.format(slot.start, 'DD-MM-YYYY') +
+                                ' - ' +
+                                dateFns.format(slot.stop, 'DD-MM-YYYY') +
+                                ')';
+
+                            return slot;
+                        });
 
                         this.init();
                     })
@@ -87,10 +99,10 @@ class App {
             ReactDOM.render(
                 <BookingForm
                     translation={translation}
-                    price={this.price}
-                    avalibleSlots={this.convertSlotDates(this.avalibleSlots)}
-                    disabledSlots={this.convertSlotDates(this.disabledSlots)}
+                    avalibleSlots={this.convertSlotDates(this.slots)}
                     mediaRequirements={this.mediaRequirements}
+                    articleName={this.articleName}
+                    articlePrice={this.articlePrice}
                 />,
                 element
             );
