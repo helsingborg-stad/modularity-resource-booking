@@ -278,7 +278,15 @@ class Orders
         return $this->listOrders(
             $request,
             array(
-                'paged' => $parameters['page']
+                'paged' => $parameters['page'],
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'order-status',
+                        'terms' => array('canceled'),
+                        'field' => 'slug',
+                        'operator' => 'NOT IN',
+                    ),
+                )
             ),
             array(
                 array(
