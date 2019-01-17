@@ -3,7 +3,7 @@ const createUser = (user) => {
     let url = restUrl + 'ModularityResourceBooking/v1/CreateUser';
     let formData = new FormData();
 
-    const {email, firstName, lastName, company, companyNumber, password, phone, billingAdress, website, contactPerson} = user;
+    const {email, firstName, lastName, company, companyNumber, password, phone, billingAdress, website, contactPerson, glnrNumber, vatNumber} = user;
 
     formData.append('email', email);
     formData.append('password', password);
@@ -18,6 +18,8 @@ const createUser = (user) => {
     formData.append('billing_company_number', companyNumber);
     formData.append('billing_address', billingAdress);
     formData.append('billing_contact_person', contactPerson);
+    formData.append('billing_glnr_number', glnrNumber);
+    formData.append('billing_vat_number', vatNumber);
 
     let options = {
         method: 'POST',
@@ -39,7 +41,7 @@ const createUser = (user) => {
 
 
 const updateUser = (user) => {
-    const {id, email, firstName, lastName, company, companyNumber, password, phone, billingAddress, website, contactPerson} = user;
+    const {id, email, firstName, lastName, company, companyNumber, password, phone, billingAddress, website, contactPerson, glnrNumber, vatNumber} = user;
     const {translation, restUrl} = modUserAccount;
 
     let url = restUrl + 'ModularityResourceBooking/v1/ModifyUser/' + id;
@@ -61,6 +63,8 @@ const updateUser = (user) => {
     formData.append('billing_company_number', companyNumber);
     formData.append('billing_address', billingAddress);
     formData.append('billing_contact_person', contactPerson);
+    formData.append('billing_glnr_number', glnrNumber);
+    formData.append('billing_vat_number', vatNumber);
 
     let options = {
         method: 'POST',

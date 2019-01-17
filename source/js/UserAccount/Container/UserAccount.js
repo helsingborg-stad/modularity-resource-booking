@@ -6,7 +6,7 @@ class UserAccount extends React.Component {
     {
         super(props);
 
-        const {id, firstName, lastName, email, phone, website, company, companyNumber, billingAddress, contactPerson} = props.user;
+        const {id, firstName, lastName, email, phone, website, company, companyNumber, billingAddress, contactPerson, vatNumber, glnrNumber} = props.user;
 
         this.state = {
             //User data
@@ -22,7 +22,9 @@ class UserAccount extends React.Component {
                 website: website,
                 contactPerson: contactPerson,
                 password: '',
-                passwordConfirm: ''
+                passwordConfirm: '',
+                vatNumber: vatNumber,
+                glnrNumber: glnrNumber
             },
 
             //Notice
@@ -92,7 +94,9 @@ class UserAccount extends React.Component {
             billingAddress,
             website,
             contactPerson,
-            password, passwordConfirm } = this.state.user;
+            password, passwordConfirm,
+            vatNumber,
+            glnrNumber } = this.state.user;
 
         const {notice, noticeType, lockInput} = this.state;
 
@@ -206,6 +210,28 @@ class UserAccount extends React.Component {
                             value={billingAddress}
                             handleChange={this.handleInputChange}
                             label="Billing Address"
+                            {... commonProps}
+                        />
+                    </div>
+
+                    <div className="grid-xs-12 grid-md-6 u-mb-3">
+                        <Input
+                            type="text"
+                            name="glnrNumber"
+                            value={glnrNumber}
+                            handleChange={this.handleInputChange}
+                            placeholder="Glnr number"
+                            {... commonProps}
+                        />
+                    </div>
+
+                    <div className="grid-xs-12 grid-md-6 u-mb-3">
+                        <Input
+                            type="text"
+                            name="vatNumber"
+                            value={vatNumber}
+                            handleChange={this.handleInputChange}
+                            placeholder="VAT number"
                             {... commonProps}
                         />
                     </div>
