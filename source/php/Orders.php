@@ -110,6 +110,14 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                     )
                                 ),
                                 array(
+                                    'heading' => __('VAT-Number: ', 'modularity-resource-booking'),
+                                    'content' => Helper\Customer::getVat($data["acf"][get_field_object('customer_id')['key']])
+                                ),
+                                array(
+                                    'heading' => __('GLNR number: ', 'modularity-resource-booking'),
+                                    'content' => Helper\Customer::getGlnr($data["acf"][get_field_object('customer_id')['key']])
+                                ),
+                                array(
                                     'heading' => __('Notes: ', 'modularity-resource-booking'),
                                     'content' => $data["acf"][get_field_object('order_notations')['key']]
                                 )
