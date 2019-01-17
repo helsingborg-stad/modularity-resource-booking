@@ -1,6 +1,16 @@
 import ArticlesTable from './ArticlesTable';
+import { Button } from 'hbg-react';
 
-const AccordionItem = ({ headings, articles, articleHeadings }) => (
+const AccordionItem = ({
+    id,
+    index,
+    headings,
+    articles,
+    articleHeadings,
+    translation,
+    cancelOrder,
+    cancelable,
+}) => (
     <section className="accordion-section">
         <label
             tabIndex="0"
@@ -16,7 +26,25 @@ const AccordionItem = ({ headings, articles, articleHeadings }) => (
             </span>
         </label>
         <div className="accordion-content">
-            <ArticlesTable headings={articleHeadings} articles={articles} />
+            <div className="grid">
+                <div className="grid-xs-12">
+                    <ArticlesTable
+                        headings={articleHeadings}
+                        articles={articles}
+                        translation={translation}
+                    />
+                </div>
+                <div className="grid-xs-12 u-mt-1">
+                    <Button
+                        title={translation.cancelOrder}
+                        onClick={e => cancelOrder(e, index, id)}
+                        color="primary"
+                        size="small"
+                        outline={false}
+                        disabled={!cancelable}
+                    />
+                </div>
+            </div>
         </div>
     </section>
 );

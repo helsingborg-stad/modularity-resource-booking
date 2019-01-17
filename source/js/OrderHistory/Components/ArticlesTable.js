@@ -1,4 +1,4 @@
-const ArticlesTable = ({ headings, articles }) => (
+const ArticlesTable = ({ headings, articles, translation }) => (
     <table className="table">
         <thead>
             <tr>
@@ -11,7 +11,7 @@ const ArticlesTable = ({ headings, articles }) => (
             {articles.map((article, i) => (
                 <tr key={i}>
                     <td>{article.title}</td>
-                    <td>{article.type}</td>
+                    <td>{translation[article.type]}</td>
                     <td>
                         {article.start} - {article.stop}
                     </td>

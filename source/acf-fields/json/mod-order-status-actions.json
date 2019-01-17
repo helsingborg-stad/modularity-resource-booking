@@ -26,6 +26,25 @@
             "ajax": 0,
             "return_format": "value",
             "placeholder": ""
+        },
+        {
+            "key": "field_5c3db4d98eb4a",
+            "label": "Can be canceled",
+            "name": "can_be_canceled",
+            "type": "true_false",
+            "instructions": "Enable this setting if an order can be canceled with this status.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
         }
     ],
     "location": [
