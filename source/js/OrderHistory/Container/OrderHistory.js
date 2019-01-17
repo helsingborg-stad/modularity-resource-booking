@@ -1,4 +1,4 @@
-import { Pagination, PreLoader } from 'hbg-react';
+import { Pagination, PreLoader, Notice } from 'hbg-react';
 import AccordionTable from '../Components/AccordionTable';
 import { getCustomerOrders, postRequest } from '../../Api/orders';
 import update from 'immutability-helper';
@@ -13,6 +13,7 @@ class OrderHistory extends React.Component {
             filteredItems: [],
             totalPages: 0,
             currentPage: 1,
+            cancelError: null,
         };
     }
 
@@ -21,18 +22,11 @@ class OrderHistory extends React.Component {
     }
 
     getOrders = () => {
-        const { perPage, restUrl, nonce } = this.props;
+        const { perPage, restUrl, nonce, translation } = this.props;
 
         getCustomerOrders(restUrl, nonce)
-            .then(result => {
-                if (typeof result === 'undefined' || result.length === 0) {
-                    this.setState({
-                        error: Error('Could not fetch data from URL.'),
-                        isLoaded: true,
-                    });
-                    return;
-                }
-                const data = this.mapData(result);
+            .then(response => {
+                const data = this.mapData(response);
                 this.setState(
                     {
                         isLoaded: true,
@@ -45,8 +39,9 @@ class OrderHistory extends React.Component {
                     }
                 );
             })
-            .catch(({ error }) => {
-                this.setState({ isLoaded: true, error });
+            .catch(error => {
+                console.error('Request failed:', error.message);
+                this.setState({ isLoaded: true, error: Error(translation.somethingWentWrong) });
             });
     };
 
@@ -98,12 +93,15 @@ class OrderHistory extends React.Component {
     cancelOrder = (e, index, id) => {
         e.preventDefault();
         const { restUrl, nonce, translation } = this.props;
+        const { filteredItems } = this.state;
 
         if (e.target.classList.contains('disabled')) {
             return;
         }
 
         if (window.confirm(translation.cancelOrderConfirm)) {
+            const order = filteredItems[index];
+            // Set success state instantly, before db request
             this.setState(
                 update(this.state, {
                     filteredItems: {
@@ -119,17 +117,40 @@ class OrderHistory extends React.Component {
 
             postRequest(restUrl + 'ModularityResourceBooking/v1/CancelOrder/' + id, nonce)
                 .then(response => {
-                    // do something
+                    // Do something
                 })
                 .catch(error => {
                     console.error('Request failed:', error.message);
-                    // Undo state changes
+                    // Undo state changes if something goes wrong
+                    this.setState(
+                        update(this.state, {
+                            filteredItems: {
+                                [index]: {
+                                    headings: {
+                                        2: { $set: order.headings[2] },
+                                    },
+                                    cancelable: { $set: true },
+                                },
+                            },
+                        })
+                    );
+                    // Show error notice
+                    this.setState(
+                        {
+                            cancelError: Error(translation.cancelFailed),
+                        },
+                        () => {
+                            setTimeout(() => {
+                                this.setState({ cancelError: null });
+                            }, 4000);
+                        }
+                    );
                 });
         }
     };
 
     render() {
-        const { filteredItems, error, isLoaded, totalPages, currentPage } = this.state;
+        const { filteredItems, error, isLoaded, totalPages, currentPage, cancelError } = this.state;
         const { translation } = this.props;
         const headings = [translation.orderNumber, translation.date, translation.status];
         const articleHeadings = [
@@ -141,11 +162,10 @@ class OrderHistory extends React.Component {
 
         if (error) {
             return (
-                <div className="gutter">
-                    <div className="notice warning">
-                        <i className="pricon pricon-notice-warning" />{' '}
-                        {translation.somethingWentWrong}
-                    </div>
+                <div className="u-p-2">
+                    <Notice type="warning" icon>
+                        {error.message}
+                    </Notice>
                 </div>
             );
         }
@@ -157,29 +177,39 @@ class OrderHistory extends React.Component {
             );
         }
         return (
-            <div className="grid">
-                <AccordionTable
-                    items={filteredItems}
-                    headings={headings}
-                    articleHeadings={articleHeadings}
-                    translation={translation}
-                    cancelOrder={this.cancelOrder}
-                />
-                {filteredItems.length > 0 && (
-                    <div className="grid gutter">
-                        <div className="grid-fit-content u-ml-auto">
-                            <Pagination
-                                current={currentPage}
-                                total={totalPages}
-                                next={this.nextPage}
-                                prev={this.prevPage}
-                                input={this.paginationInput}
-                                langPrev={translation.prev}
-                                langNext={translation.next}
-                            />
-                        </div>
+            <div>
+                {cancelError && (
+                    <div className="u-p-2">
+                        <Notice type="danger" icon>
+                            {cancelError.message}
+                        </Notice>
                     </div>
                 )}
+
+                <div className="grid">
+                    <AccordionTable
+                        items={filteredItems}
+                        headings={headings}
+                        articleHeadings={articleHeadings}
+                        translation={translation}
+                        cancelOrder={this.cancelOrder}
+                    />
+                    {filteredItems.length > 0 && (
+                        <div className="grid gutter">
+                            <div className="grid-fit-content u-ml-auto">
+                                <Pagination
+                                    current={currentPage}
+                                    total={totalPages}
+                                    next={this.nextPage}
+                                    prev={this.prevPage}
+                                    input={this.paginationInput}
+                                    langPrev={translation.prev}
+                                    langNext={translation.next}
+                                />
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
         );
     }
