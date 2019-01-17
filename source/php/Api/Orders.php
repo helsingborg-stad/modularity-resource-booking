@@ -161,14 +161,23 @@ class Orders
     public function cancelOrder($request)
     {
         $id = $request->get_param('id');
+        $updateStatus = wp_set_post_terms($id, 'canceled', 'order-status', false);
 
+        if (is_wp_error($updateStatus)) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('The order could not be canceled.', 'modularity_resource_booking'),
+                ),
+                400
+            );
+        }
 
         // Return success
         return new \WP_REST_Response(
             array(
-                'message' => __('The order has been canceled.', 'modularity-resource-booking'),
+                'message' => __('The order has been canceled.', 'modularity_resource_booking'),
             ),
-            400
+            200
         );
     }
 
