@@ -125,12 +125,7 @@ class OrderHistory extends React.Component {
                     this.setState(
                         update(this.state, {
                             filteredItems: {
-                                [index]: {
-                                    headings: {
-                                        2: { $set: order.headings[2] },
-                                    },
-                                    cancelable: { $set: true },
-                                },
+                                [index]: { $set: order },
                             },
                         })
                     );
