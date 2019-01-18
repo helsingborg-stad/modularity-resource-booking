@@ -122,7 +122,7 @@ class TimeSlots
                 foreach ($data as $item) {
                     $start = $item['start_date'] . " 00:00";
                     $stop = $item['end_date'] . " 23:59";
-                    $slotId = self::getSlotId( $item['start_date'] . " 00:00", $stop);
+                    $slotId = self::getSlotId($item['start_date'] . " 00:00", $stop);
 
                     $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
                     if (is_wp_error($articleStock)) {
@@ -235,7 +235,15 @@ class TimeSlots
             $stock = (int)$stock;
             // Calculate every time the product have been purchased within the slot period
             $articleIds = array_merge(array($product->ID), $packages);
-            $orders = self::getOrders(array(), $articleType, $articleIds, $slotId);
+            // Exclude canceled orders from query
+            $getOrdersArgs = array('tax_query' => array(
+                array(
+                    'taxonomy' => 'order-status',
+                    'terms' => array('canceled'),
+                    'field' => 'slug',
+                    'operator' => 'NOT IN',
+                )));
+            $orders = self::getOrders($getOrdersArgs, $articleType, $articleIds, $slotId);
             $orderCount = count($orders);
             // Get number of times the customer(or other group members) have purchased this product
             $purchaseCount = 0;
