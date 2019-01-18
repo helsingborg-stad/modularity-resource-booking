@@ -14,7 +14,7 @@ class RegistrationForm extends \Modularity\Module
         $this->description = __('Outputs a registration form for customers.', 'modularity-resource-booking');
     }
 
-    public function data() : array
+    public function data(): array
     {
         $data = get_fields($this->ID);
         $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array('box', 'box-panel'), $this->post_type, $this->args));
@@ -33,7 +33,23 @@ class RegistrationForm extends \Modularity\Module
             // Enqueue module script
             wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/RegistrationForm/Index.js'), array('jquery', 'react', 'react-dom'));
             wp_localize_script('modularity-' . $this->slug, 'modRegistrationForm', array(
-                'translation' => array(),
+                'translation' => array(
+                    'email' => __('Email', 'modularity-resource-booking'),
+                    'confirmEmail' => __('Confirm email', 'modularity-resource-booking'),
+                    'password' => __('Password', 'modularity-resource-booking'),
+                    'confirmPassword' => __('Confirm password', 'modularity-resource-booking'),
+                    'firstName' => __('First name', 'modularity-resource-booking'),
+                    'lastName' => __('Last name', 'modularity-resource-booking'),
+                    'company' => __('Company', 'modularity-resource-booking'),
+                    'organizationNumber' => __('Organization number', 'modularity-resource-booking'),
+                    'glnrNumber' => __('Glnr number', 'modularity-resource-booking'),
+                    'vatNumber' => __('VAT number', 'modularity-resource-booking'),
+                    'contactPerson' => __('Contact person', 'modularity-resource-booking'),
+                    'phoneNumber' => __('Phone number', 'modularity-resource-booking'),
+                    'website' => __('Website', 'modularity-resource-booking'),
+                    'billingAddress' => __('Billing address', 'modularity-resource-booking'),
+                    'register' => __('Register', 'modularity-resource-booking'),
+                ),
                 'restUrl' => get_rest_url()
             ));
         }
