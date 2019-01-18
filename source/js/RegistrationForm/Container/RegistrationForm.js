@@ -1,12 +1,11 @@
-import {Button, Input, Textarea, Notice, Pagination} from 'hbg-react';
-import {createUser} from '../../Api/user.js';
+import { Button, Input, Textarea, Notice, Pagination } from 'hbg-react';
+import { createUser } from '../../Api/user.js';
 
 class RegistrationForm extends React.Component {
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
         this.state = {
-            //User input
+            // User input
             newUser: {
                 firstName: '',
                 lastName: '',
@@ -21,19 +20,19 @@ class RegistrationForm extends React.Component {
                 website: '',
                 contactPerson: '',
                 vatNumber: '',
-                glnrNumber: ''
+                glnrNumber: '',
             },
 
-            //Notice
+            // Notice
             notice: '',
             noticeType: '',
 
-            //Account created
+            // Account created
             accountCreated: false,
 
-            //Lock input
-            lockInput: false
-        }
+            // Lock input
+            lockInput: false,
+        };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -41,60 +40,59 @@ class RegistrationForm extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        const {newUser, lockInput} = this.state;
+        const { newUser, lockInput } = this.state;
 
         if (lockInput) {
             return;
         }
 
-        this.setState({lockInput: true, notice: ''});
+        this.setState({ lockInput: true, notice: '' });
 
         createUser(newUser)
-        .then((response) => {
-            //Succesfully created user
-            this.setState({
-                lockInput: true,
-                notice: response.message,
-                noticeType: 'success',
-                accountCreated: true,
-                newUser: {
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    emailConfirm: '',
-                    password: '',
-                    passwordConfirm: '',
-                    phone: '',
-                    company: '',
-                    companyNumber: '',
-                    billingAdress: '',
-                    website: '',
-                    contactPerson: '',
-                    vatNumber: '',
-                    glnrNumber: ''
-                }
+            .then(response => {
+                // Succesfully created user
+                this.setState({
+                    lockInput: true,
+                    notice: response.message,
+                    noticeType: 'success',
+                    accountCreated: true,
+                    newUser: {
+                        firstName: '',
+                        lastName: '',
+                        email: '',
+                        emailConfirm: '',
+                        password: '',
+                        passwordConfirm: '',
+                        phone: '',
+                        company: '',
+                        companyNumber: '',
+                        billingAdress: '',
+                        website: '',
+                        contactPerson: '',
+                        vatNumber: '',
+                        glnrNumber: '',
+                    },
+                });
+            })
+            .catch(error => {
+                // Failed to create user
+                this.setState({
+                    lockInput: false,
+                    notice: error.message,
+                    noticeType: 'warning',
+                });
             });
-        })
-        .catch((error) => {
-            //Failed to create user
-            this.setState({
-                lockInput: false,
-                notice: error.toString(),
-                noticeType: 'warning'
-            });
-        });
     }
 
-    handleInputChange(e)
-    {
-        let {name, value} = e.target;
+    handleInputChange(e) {
+        const { name, value } = e.target;
         this.setState((state, props) => {
-            let user = state.newUser;
-            if (typeof(user[name]) != 'undefined') {
+            const user = state.newUser;
+            if (typeof user[name] !== 'undefined') {
                 user[name] = value;
             }
 
-            return {newUser: user};
+            return { newUser: user };
         });
     }
 
@@ -102,8 +100,10 @@ class RegistrationForm extends React.Component {
         const {
             firstName,
             lastName,
-            email, emailConfirm,
-            password, passwordConfirm,
+            email,
+            emailConfirm,
+            password,
+            passwordConfirm,
             phone,
             company,
             companyNumber,
@@ -111,11 +111,15 @@ class RegistrationForm extends React.Component {
             website,
             contactPerson,
             vatNumber,
-            glnrNumber } = this.state.newUser;
+            glnrNumber,
+        } = this.state.newUser;
 
-        const {notice, noticeType, accountCreated, lockInput} = this.state;
+        const { translation } = this.props;
+        const labelPrefix = 'registration_form_';
 
-        let commonProps = {};
+        const { notice, noticeType, accountCreated, lockInput } = this.state;
+
+        const commonProps = {};
 
         if (lockInput) {
             commonProps.disabled = true;
@@ -123,185 +127,208 @@ class RegistrationForm extends React.Component {
 
         return (
             <div>
-                {!accountCreated &&
-                    <form onSubmit={this.handleFormSubmit} className="grid u-mt-2">
+                {!accountCreated && (
+                    <form onSubmit={this.handleFormSubmit} className="grid u-p-2">
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}email`}
                                 type="email"
                                 name="email"
                                 value={email}
                                 handleChange={this.handleInputChange}
-                                placeholder="Email"
+                                label={translation.email}
+                                placeholder={translation.email}
                                 required
-                                {... commonProps}
+                                {...commonProps}
                             />
                         </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}confirm_email`}
                                 type="email"
                                 name="emailConfirm"
                                 value={emailConfirm}
                                 handleChange={this.handleInputChange}
-                                placeholder="Confirm Email"
+                                placeholder={translation.confirmEmail}
+                                label={translation.confirmEmail}
                                 confirmField="email"
                                 confirmFieldMessage="The email does not match."
                                 required
-                                {... commonProps}
+                                {...commonProps}
                             />
                         </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}password`}
                                 type="password"
                                 name="password"
                                 value={password}
                                 handleChange={this.handleInputChange}
-                                placeholder="Password"
+                                placeholder={translation.password}
+                                label={translation.password}
                                 minLength="6"
                                 required
-                                {... commonProps}
+                                {...commonProps}
                             />
                         </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}confirm_password`}
                                 type="password"
                                 name="passwordConfirm"
                                 value={passwordConfirm}
                                 handleChange={this.handleInputChange}
-                                placeholder="Confirm password"
+                                placeholder={translation.confirmPassword}
+                                label={translation.confirmPassword}
                                 minLength="6"
                                 confirmField="password"
                                 confirmFieldMessage="The password does not match."
                                 required
-                                {... commonProps}
+                                {...commonProps}
                             />
                         </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}first_name`}
                                 type="text"
                                 name="firstName"
                                 value={firstName}
                                 handleChange={this.handleInputChange}
-                                placeholder="First name"
+                                placeholder={translation.firstName}
+                                label={translation.firstName}
                                 required
-                                {... commonProps}
+                                {...commonProps}
                             />
                         </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}last_name`}
                                 type="text"
                                 name="lastName"
                                 value={lastName}
                                 handleChange={this.handleInputChange}
-                                placeholder="Last name"
+                                placeholder={translation.lastName}
+                                label={translation.lastName}
                                 required
-                                {... commonProps}
+                                {...commonProps}
                             />
                         </div>
-
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}company`}
                                 type="text"
                                 name="company"
                                 value={company}
                                 handleChange={this.handleInputChange}
-                                placeholder="Company"
+                                placeholder={translation.company}
+                                label={translation.company}
                                 required
-                                {... commonProps}
+                                {...commonProps}
                             />
                         </div>
-
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}organization_number`}
                                 type="text"
                                 name="companyNumber"
                                 value={companyNumber}
                                 handleChange={this.handleInputChange}
-                                placeholder="Organization number"
+                                placeholder={translation.organizationNumber}
+                                label={translation.organizationNumber}
                                 required
-                                {... commonProps}
+                                {...commonProps}
                             />
                         </div>
-
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}glnr_number`}
                                 type="text"
                                 name="glnrNumber"
                                 value={glnrNumber}
                                 handleChange={this.handleInputChange}
-                                placeholder="Glnr number"
-                                {... commonProps}
+                                placeholder={translation.glnrNumber}
+                                label={translation.glnrNumber}
+                                {...commonProps}
                             />
                         </div>
-
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}vat_number`}
                                 type="text"
                                 name="vatNumber"
                                 value={vatNumber}
                                 handleChange={this.handleInputChange}
-                                placeholder="VAT number"
-                                {... commonProps}
+                                placeholder={translation.vatNumber}
+                                label={translation.vatNumber}
+                                {...commonProps}
                             />
                         </div>
-
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}contact_person`}
                                 type="text"
                                 name="contactPerson"
                                 value={contactPerson}
                                 handleChange={this.handleInputChange}
-                                placeholder="Contact Person"
-                                {... commonProps}
+                                placeholder={translation.contactPerson}
+                                label={translation.contactPerson}
+                                {...commonProps}
                             />
                         </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}phone`}
                                 type="tel"
                                 name="phone"
                                 value={phone}
                                 handleChange={this.handleInputChange}
-                                placeholder="Phone number"
-                                {... commonProps}
+                                placeholder={translation.phoneNumber}
+                                label={translation.phoneNumber}
+                                {...commonProps}
                             />
                         </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
+                                id={`${labelPrefix}website`}
                                 type="url"
                                 name="website"
                                 value={website}
                                 handleChange={this.handleInputChange}
-                                placeholder="Website"
-                                {... commonProps}
+                                placeholder={translation.website}
+                                label={translation.website}
+                                {...commonProps}
                             />
                         </div>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Textarea
+                                id={`${labelPrefix}billing_address`}
                                 type="text"
                                 name="billingAdress"
                                 value={billingAdress}
                                 handleChange={this.handleInputChange}
-                                placeholder="Billing Address"
-                                {... commonProps}
+                                placeholder={translation.billingAddress}
+                                label={translation.billingAddress}
+                                {...commonProps}
                             />
                         </div>
                         <div className="grid-xs-12">
                             <Button
                                 color="primary"
-                                title="Submit"
+                                title={translation.register}
                                 submit
-                                {... commonProps}
+                                {...commonProps}
                             />
                         </div>
                     </form>
-                }
+                )}
 
-                {notice.length > 0 &&
-                    <div className="u-mt-2">
+                {notice.length > 0 && (
+                    <div className="u-p-2">
                         <Notice type={noticeType} icon>
                             {notice}
                         </Notice>
                     </div>
-                }
+                )}
             </div>
         );
     }
