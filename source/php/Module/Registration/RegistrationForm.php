@@ -23,6 +23,10 @@ class RegistrationForm extends \Modularity\Module
 
     public function script()
     {
+        if (is_user_logged_in()) {
+            return;
+        }
+
         if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/RegistrationForm/Index.js'))) {
             // Enqueue react
             \Modularity\Helper\React::enqueue();
