@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-17 17:22+0100\n"
-"PO-Revision-Date: 2019-01-17 17:25+0100\n"
+"POT-Creation-Date: 2019-01-18 10:56+0100\n"
+"PO-Revision-Date: 2019-01-18 13:01+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -33,12 +33,14 @@ msgid "Company number"
 msgstr ""
 
 #: source/acf-fields/php/mod-billing-info.php:50 source/php/Api/Customer.php:20
+#: source/php/Module/Registration/RegistrationForm.php:47
 msgid "Contact person"
-msgstr ""
+msgstr "Kontaktperson"
 
 #: source/acf-fields/php/mod-billing-info.php:69 source/php/Api/Customer.php:21
+#: source/php/Module/Registration/RegistrationForm.php:50
 msgid "Billing address"
-msgstr ""
+msgstr "Faktureringsadress"
 
 #: source/acf-fields/php/mod-booking-form.php:6
 #, fuzzy
@@ -410,11 +412,12 @@ msgstr ""
 
 #: source/php/Api/Customer.php:23
 msgid "VAT-Number"
-msgstr ""
+msgstr "VAT-nummer"
 
 #: source/php/Api/Customer.php:24 source/php/Customer.php:69
+#: source/php/Module/Registration/RegistrationForm.php:48
 msgid "Phone number"
-msgstr ""
+msgstr "Telefonnummer"
 
 #: source/php/Api/Customer.php:146 source/php/Api/Orders.php:317
 msgid "A parameter is missing: "
@@ -475,6 +478,8 @@ msgid ""
 "Your user account has been created, you will be notified when its approved "
 "and ready to use."
 msgstr ""
+"Ditt användarkonto har skapats, du kommer att meddelas när det har godkänts "
+"och är klart att användas."
 
 #: source/php/Api/Customer.php:249 source/php/Api/Customer.php:335
 msgid "Something unexpected happened."
@@ -757,6 +762,8 @@ msgid ""
 "Your password should be at least 6 characters long, containing both letters "
 "and numbers."
 msgstr ""
+"Ditt lösenord ska vara minst 6 tecken långt, innehållande både bokstäver och "
+"siffror."
 
 #: source/php/Helper/Product.php:43
 msgid "The id sent for price calculation is not valid."
@@ -877,6 +884,58 @@ msgstr "Registreingsformulär"
 #: source/php/Module/Registration/RegistrationForm.php:14
 msgid "Outputs a registration form for customers."
 msgstr "Visar ett registreringsformulär för kunder"
+
+#: source/php/Module/Registration/RegistrationForm.php:37
+msgid "Email"
+msgstr "E-postadress"
+
+#: source/php/Module/Registration/RegistrationForm.php:38
+msgid "Confirm email"
+msgstr "Bekräfta e-postadress"
+
+#: source/php/Module/Registration/RegistrationForm.php:39
+msgid "Password"
+msgstr "Lösenord"
+
+#: source/php/Module/Registration/RegistrationForm.php:40
+msgid "Confirm password"
+msgstr "Bekräfta lösenord"
+
+#: source/php/Module/Registration/RegistrationForm.php:41
+msgid "First name"
+msgstr "Förnamn"
+
+#: source/php/Module/Registration/RegistrationForm.php:42
+msgid "Last name"
+msgstr "Efternamn"
+
+#: source/php/Module/Registration/RegistrationForm.php:43
+msgid "Company"
+msgstr "Företag"
+
+#: source/php/Module/Registration/RegistrationForm.php:44
+msgid "Organization number"
+msgstr "Organisationsnummer"
+
+#: source/php/Module/Registration/RegistrationForm.php:45
+msgid "Glnr number"
+msgstr "Glnr-nummer"
+
+#: source/php/Module/Registration/RegistrationForm.php:46
+msgid "VAT number"
+msgstr "VAT-nummer"
+
+#: source/php/Module/Registration/RegistrationForm.php:49
+msgid "Website"
+msgstr "Webbplats"
+
+#: source/php/Module/Registration/RegistrationForm.php:51
+msgid "Register"
+msgstr "Registrera"
+
+#: source/php/Module/Registration/views/registration-form.blade.php:9
+msgid "You are already logged in."
+msgstr "Du är redan inloggad."
 
 #: source/php/Module/UserAccount/UserAccount.php:12
 #: source/php/Module/UserAccount/UserAccount.php:13
