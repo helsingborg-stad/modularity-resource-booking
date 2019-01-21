@@ -94,7 +94,7 @@ class App {
                     articleName={this.articleName}
                     articlePrice={this.articlePrice}
                     articleType={article_type}
-                    articleId={article_id}
+                    articleId={parseInt(article_id)}
                     restNonce={order_nonce}
                 />,
                 element
