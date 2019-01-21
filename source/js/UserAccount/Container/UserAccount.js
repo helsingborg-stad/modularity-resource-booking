@@ -110,6 +110,7 @@ class UserAccount extends React.Component {
             <div>
                 <form onSubmit={this.handleFormSubmit} className="grid u-p-2">
                     <h4 className="u-mb-2">General</h4>
+                    
                     <div className="grid-xs-12 grid-md-6 u-mb-3">
                         <Input
                             type="text"

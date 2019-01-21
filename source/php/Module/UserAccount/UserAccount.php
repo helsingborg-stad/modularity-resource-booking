@@ -37,7 +37,9 @@ class UserAccount extends \Modularity\Module
             'company'        => get_user_meta(get_current_user_id(), 'billing_company', true),
             'companyNumber'  => get_user_meta(get_current_user_id(), 'billing_company_number', true),
             'billingAddress' => get_user_meta(get_current_user_id(), 'billing_address', true),
-            'contactPerson'  => get_user_meta(get_current_user_id(), 'billing_contact_person', true)
+            'contactPerson'  => get_user_meta(get_current_user_id(), 'billing_contact_person', true),
+            'glnrNumber'     => get_user_meta(get_current_user_id(), 'billing_glnr_number', true),
+            'vatNumber'      => get_user_meta(get_current_user_id(), 'billing_vat_number', true)
         );
 
         return $data;
