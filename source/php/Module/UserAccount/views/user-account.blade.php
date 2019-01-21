@@ -3,7 +3,16 @@
         <h4 class="box-title">{!! apply_filters('the_title', $post_title) !!}</h4>
     @endif
     @if (is_user_logged_in())
-        <div class="modularity-user-account"></div>
+        <div class="modularity-user-account">
+            <div class="gutter gutter-xl">
+                <div class="loading">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
     @else
         <div class="gutter">
             <div class="notice info">
