@@ -39,11 +39,14 @@ const createOrder = (orders, files) => {
         formData.append('files[]', media.file);
     });
 
-    formData.append('_wpnonce', order_nonce);
 
     let options = {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: {
+            'Content-Type': 'application/json',
+            'X-WP-NONCE': order_nonce
+        }
     };
 
     console.log(order_nonce);
