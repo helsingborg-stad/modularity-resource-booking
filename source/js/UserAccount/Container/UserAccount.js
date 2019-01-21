@@ -108,7 +108,7 @@ class UserAccount extends React.Component {
 
         return (
             <div>
-                <form onSubmit={this.handleFormSubmit} className="grid u-mt-2">
+                <form onSubmit={this.handleFormSubmit} className="grid u-p-2">
                     <h4 className="u-mb-2">General</h4>
                     <div className="grid-xs-12 grid-md-6 u-mb-3">
                         <Input
@@ -220,7 +220,8 @@ class UserAccount extends React.Component {
                             name="glnrNumber"
                             value={glnrNumber}
                             handleChange={this.handleInputChange}
-                            placeholder="Glnr number"
+                            placeholder="GLNR number"
+                            label="GLNR number"
                             {... commonProps}
                         />
                     </div>
@@ -232,6 +233,7 @@ class UserAccount extends React.Component {
                             value={vatNumber}
                             handleChange={this.handleInputChange}
                             placeholder="VAT number"
+                            label="VAT number"
                             {... commonProps}
                         />
                     </div>
