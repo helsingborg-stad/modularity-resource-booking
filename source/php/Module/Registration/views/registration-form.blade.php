@@ -6,7 +6,9 @@
         <div class="modularity-registration-form"></div>
     @else
         <div class="gutter">
-            <?php _e('You are already logged in.', 'modularity-resource-booking'); ?>
+            <div class="notice info">
+                <?php _e('You are already logged in.', 'modularity-resource-booking'); ?>
+            </div>
         </div>
     @endif
 </div>
