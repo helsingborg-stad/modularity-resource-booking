@@ -5,6 +5,10 @@
     @if (is_user_logged_in())
         <div class="modularity-order-history"></div>
     @else
-        <div class="gutter"><p><?php echo __('You are not logged in.', 'modularity-resource-booking') ?></p></div>
+        <div class="gutter">
+            <div class="notice info">
+                <?php _e('You are not logged in.', 'modularity-resource-booking'); ?>
+            </div>
+        </div>
     @endif
 </div>
