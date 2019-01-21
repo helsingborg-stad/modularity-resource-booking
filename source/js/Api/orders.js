@@ -35,10 +35,11 @@ const createOrder = (orders, files) => {
         formData.append('order_articles[' + index + ']', JSON.stringify(order));
     });
 
-    files.forEach((media, index) => {
-        formData.append('files[]', media.file);
-    });
-
+    if (typeof files !== 'undefined' && files.length > 0) {
+        files.forEach(media => {
+            formData.append('files[]', media.file);
+        });
+    }
 
     let options = {
         method: 'POST',
