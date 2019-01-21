@@ -5,8 +5,8 @@ const getCustomerOrders = (restUrl, nonce, data = [], page = 1) => {
         credentials: 'include',
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-        },
+            'Content-Type': 'application/json'
+        }
     })
         .then(response => {
             if (response.ok) {
@@ -24,7 +24,6 @@ const getCustomerOrders = (restUrl, nonce, data = [], page = 1) => {
             return getCustomerOrders(restUrl, nonce, allData, nextPage);
         });
 };
-
 
 const createOrder = (orders, files) => {
     const { restUrl, order_nonce } = modResourceBookingForm;
@@ -69,8 +68,8 @@ const postRequest = (restUrl, nonce) =>
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-WP-NONCE': nonce,
-        },
+            'X-WP-NONCE': nonce
+        }
     }).then(response => {
         if (response.ok) {
             return response.json();
