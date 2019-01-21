@@ -98,6 +98,8 @@ class UserAccount extends React.Component {
             vatNumber,
             glnrNumber } = this.state.user;
 
+        const { translation } = this.props;
+
         const {notice, noticeType, lockInput} = this.state;
 
         let commonProps = {};
@@ -116,7 +118,8 @@ class UserAccount extends React.Component {
                             name="firstName"
                             value={firstName}
                             handleChange={this.handleInputChange}
-                            label="First name"
+                            label={translation.firstName}
+                            placeholder={translation.firstName}
                             required
                             {... commonProps}
                         />
@@ -127,7 +130,8 @@ class UserAccount extends React.Component {
                             name="lastName"
                             value={lastName}
                             handleChange={this.handleInputChange}
-                            label="Last name"
+                            placeholder={translation.lastName}
+                            label={translation.lastName}
                             required
                             {... commonProps}
                         />
@@ -139,7 +143,8 @@ class UserAccount extends React.Component {
                             name="email"
                             value={email}
                             handleChange={this.handleInputChange}
-                            label="Email"
+                            label={translation.email}
+                            placeholder={translation.email}
                             required
                             {... commonProps}
                         />
@@ -151,7 +156,8 @@ class UserAccount extends React.Component {
                             name="phone"
                             value={phone}
                             handleChange={this.handleInputChange}
-                            label="Phone number"
+                            placeholder={translation.phoneNumber}
+                            label={translation.phoneNumber}
                             {... commonProps}
                         />
                     </div>
@@ -162,19 +168,21 @@ class UserAccount extends React.Component {
                             name="website"
                             value={website}
                             handleChange={this.handleInputChange}
-                            label="Website"
+                            placeholder={translation.website}
+                            label={translation.website}
                             {... commonProps}
                         />
                     </div>
 
-                    <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">Billing</h4>
+                    <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">{translation.headers.billing}</h4>
                     <div className="grid-xs-12 grid-md-6 u-mb-3">
                         <Input
                             type="text"
                             name="company"
                             value={company}
                             handleChange={this.handleInputChange}
-                            label="Company"
+                            placeholder={translation.company}
+                            label={translation.company}
                             required
                             {... commonProps}
                         />
@@ -186,7 +194,8 @@ class UserAccount extends React.Component {
                             name="companyNumber"
                             value={companyNumber}
                             handleChange={this.handleInputChange}
-                            label="Organization number"
+                            placeholder={translation.organizationNumber}
+                            label={translation.organizationNumber}
                             required
                             {... commonProps}
                         />
@@ -198,7 +207,8 @@ class UserAccount extends React.Component {
                             name="contactPerson"
                             value={contactPerson}
                             handleChange={this.handleInputChange}
-                            label="Contact Person"
+                            placeholder={translation.contactPerson}
+                            label={translation.contactPerson}
                             {... commonProps}
                         />
                     </div>
@@ -209,7 +219,8 @@ class UserAccount extends React.Component {
                             name="billingAddress"
                             value={billingAddress}
                             handleChange={this.handleInputChange}
-                            label="Billing Address"
+                            placeholder={translation.billingAddress}
+                            label={translation.billingAddress}
                             {... commonProps}
                         />
                     </div>
@@ -220,8 +231,9 @@ class UserAccount extends React.Component {
                             name="glnrNumber"
                             value={glnrNumber}
                             handleChange={this.handleInputChange}
-                            placeholder="GLNR number"
-                            label="GLNR number"
+                            placeholder={translation.glnrNumber}
+                            label={translation.glnrNumber}
+                            explainer={translation.explanation.glnr}
                             {... commonProps}
                         />
                     </div>
@@ -232,20 +244,22 @@ class UserAccount extends React.Component {
                             name="vatNumber"
                             value={vatNumber}
                             handleChange={this.handleInputChange}
-                            placeholder="VAT number"
-                            label="VAT number"
+                            placeholder={translation.vatNumber}
+                            label={translation.vatNumber}
+                            explainer={translation.explanation.vat}
                             {... commonProps}
                         />
                     </div>
 
-                    <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">Change Password <span className="label label-sm label-theme pull-right">Optional setting</span></h4>
+                    <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">{translation.headers.password} <span className="label label-sm label-theme pull-right">{translation.optional}</span></h4>
                     <div className="grid-xs-12 grid-md-6 u-mb-3">
                         <Input
                             type="password"
                             name="password"
                             value={password}
                             handleChange={this.handleInputChange}
-                            label="Password"
+                            placeholder={translation.password}
+                            label={translation.password}
                             minLength="6"
                             {... commonProps}
                         />
@@ -257,10 +271,11 @@ class UserAccount extends React.Component {
                             name="passwordConfirm"
                             value={passwordConfirm}
                             handleChange={this.handleInputChange}
-                            label="Confirm password"
+                            placeholder={translation.confirmPassword}
+                            label={translation.confirmPassword}
                             minLength="6"
                             confirmField="password"
-                            confirmFieldMessage="The password does not match."
+                            confirmFieldMessage={translation.passwordMisMatch}
                             {... commonProps}
                         />
                     </div>

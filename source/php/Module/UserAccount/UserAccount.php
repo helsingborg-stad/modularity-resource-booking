@@ -56,7 +56,32 @@ class UserAccount extends \Modularity\Module
 
             //Localize
             wp_localize_script('modularity-' . $this->slug, 'modUserAccount', array(
-                'translation' => array(),
+                'translation' => array(
+                    'email' => __('Email', 'modularity-resource-booking'),
+                    'password' => __('Password', 'modularity-resource-booking'),
+                    'confirmPassword' => __('Confirm password', 'modularity-resource-booking'),
+                    'passwordMisMatch' => __('The password does not match.', 'modularity-resource-booking'),
+                    'firstName' => __('First name', 'modularity-resource-booking'),
+                    'lastName' => __('Last name', 'modularity-resource-booking'),
+                    'company' => __('Company', 'modularity-resource-booking'),
+                    'organizationNumber' => __('Organization number', 'modularity-resource-booking'),
+                    'glnrNumber' => __('Glnr number', 'modularity-resource-booking'),
+                    'vatNumber' => __('VAT number', 'modularity-resource-booking'),
+                    'contactPerson' => __('Contact person', 'modularity-resource-booking'),
+                    'phoneNumber' => __('Phone number', 'modularity-resource-booking'),
+                    'website' => __('Website', 'modularity-resource-booking'),
+                    'billingAddress' => __('Billing address', 'modularity-resource-booking'),
+                    'register' => __('Register', 'modularity-resource-booking'),
+                    'optional' => __('Optional setting', 'modularity-resource-booking'),
+                    'explanation' => array(
+                        'vat' => __('Identifier for value added tax purposes.', 'modularity-resource-booking'),
+                        'glnr' => __('Electronic invoice number', 'modularity-resource-booking')
+                    ),
+                    'headers' => array(
+                        'billing' => __('Billing', 'modularity-resource-booking'),
+                        'password' => __('Change password', 'modularity-resource-booking')
+                    )
+                ),
                 'restUrl' => get_rest_url(),
                 'user' => $this->getUserData()
             ));

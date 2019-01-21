@@ -182,7 +182,7 @@ class RegistrationForm extends React.Component {
                                 placeholder={translation.confirmEmail}
                                 label={translation.confirmEmail}
                                 confirmField="email"
-                                confirmFieldMessage="The email does not match."
+                                confirmFieldMessage={translation.emailMisMatch}
                                 required
                                 {...commonProps}
                             />
@@ -214,7 +214,7 @@ class RegistrationForm extends React.Component {
                             />
                         </div>
 
-                        <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">Password</h4>
+                        <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">{translation.headers.password}</h4>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}password`}
@@ -241,13 +241,13 @@ class RegistrationForm extends React.Component {
                                 label={translation.confirmPassword}
                                 minLength="6"
                                 confirmField="password"
-                                confirmFieldMessage="The password does not match."
+                                confirmFieldMessage={translation.passwordMisMatch}
                                 required
                                 {...commonProps}
                             />
                         </div>
 
-                        <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">Billing</h4>
+                        <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">{translation.headers.billing}</h4>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}company`}
@@ -310,6 +310,7 @@ class RegistrationForm extends React.Component {
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.glnrNumber}
                                 label={translation.glnrNumber}
+                                explainer={translation.explanation.glnr}
                                 {...commonProps}
                             />
                         </div>
@@ -323,6 +324,7 @@ class RegistrationForm extends React.Component {
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.vatNumber}
                                 label={translation.vatNumber}
+                                explainer={translation.explanation.vat}
                                 {...commonProps}
                             />
                         </div>

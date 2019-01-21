@@ -36,8 +36,10 @@ class RegistrationForm extends \Modularity\Module
                 'translation' => array(
                     'email' => __('Email', 'modularity-resource-booking'),
                     'confirmEmail' => __('Confirm email', 'modularity-resource-booking'),
+                    'emailMisMatch' => __('The email does not match.', 'modularity-resource-booking'),
                     'password' => __('Password', 'modularity-resource-booking'),
                     'confirmPassword' => __('Confirm password', 'modularity-resource-booking'),
+                    'passwordMisMatch' => __('The password does not match.', 'modularity-resource-booking'),
                     'firstName' => __('First name', 'modularity-resource-booking'),
                     'lastName' => __('Last name', 'modularity-resource-booking'),
                     'company' => __('Company', 'modularity-resource-booking'),
@@ -49,6 +51,14 @@ class RegistrationForm extends \Modularity\Module
                     'website' => __('Website', 'modularity-resource-booking'),
                     'billingAddress' => __('Billing address', 'modularity-resource-booking'),
                     'register' => __('Register', 'modularity-resource-booking'),
+                    'explanation' => array(
+                        'vat' => __('Identifier for value added tax purposes.', 'modularity-resource-booking'),
+                        'glnr' => __('Electronic invoice number', 'modularity-resource-booking')
+                    ),
+                    'headers' => array(
+                        'billing' => __('Billing', 'modularity-resource-booking'),
+                        'password' => __('Password', 'modularity-resource-booking')
+                    )
                 ),
                 'restUrl' => get_rest_url()
             ));
