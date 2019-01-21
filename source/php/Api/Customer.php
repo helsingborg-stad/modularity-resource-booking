@@ -264,8 +264,6 @@ class Customer
 
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        var_dump($data); 
-
         //Check if user id exists
         if (!get_user_by('ID',  $request->get_param('id'))) {
             return array(
