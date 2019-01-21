@@ -94,6 +94,8 @@ class TimeSlots
                 $start = date('Y-m-d', strtotime($whatMonday, strtotime('+' . $n . ' week'))) . " 00:00";
                 $stop = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
                 $slotId = self::getSlotId($start, $stop);
+                // Get user groups orders
+                $orders = $this->getGroupOrdersBySlot($slotId, $params['user_id'], $params['type'], array((int)$params['article_id']));
 
                 $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
                 if (is_wp_error($articleStock)) {
@@ -112,6 +114,7 @@ class TimeSlots
                     'unlimited_stock' => $articleStock['unlimited_stock'],
                     'total_stock' => $articleStock['total_stock'],
                     'available_stock' => $articleStock['available_stock'],
+                    'group_orders' => $orders,
                 );
             }
         }
@@ -123,6 +126,8 @@ class TimeSlots
                     $start = $item['start_date'] . " 00:00";
                     $stop = $item['end_date'] . " 23:59";
                     $slotId = self::getSlotId($item['start_date'] . " 00:00", $stop);
+                    // Get user groups orders
+                    $orders = $this->getGroupOrdersBySlot($slotId, $params['user_id'], $params['type'], array((int)$params['article_id']));
 
                     $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
                     if (is_wp_error($articleStock)) {
@@ -141,6 +146,7 @@ class TimeSlots
                         'unlimited_stock' => $articleStock['unlimited_stock'],
                         'total_stock' => $articleStock['total_stock'],
                         'available_stock' => $articleStock['available_stock'],
+                        'group_orders' => $orders,
                     );
                 }
             }
@@ -156,6 +162,47 @@ class TimeSlots
                 ), 404
             );
         }
+    }
+
+    /**
+     * Get user groups orders by slot
+     * @param $slotId
+     * @param $userId
+     * @param $type
+     * @param $articleId
+     * @return array
+     */
+    public function getGroupOrdersBySlot($slotId, $userId, $type, $articleId)
+    {
+        // List of group members
+        $groupMembers = self::customerGroupMembers($userId);
+
+        // Exclude canceled orders from query
+        $getOrdersArgs = array('tax_query' => array(
+            array(
+                'taxonomy' => 'order-status',
+                'terms' => array('canceled'),
+                'field' => 'slug',
+                'operator' => 'NOT IN',
+            )));
+        // Get list of slot orders
+        $orders = self::getOrders($getOrdersArgs, $type, $articleId, $slotId);
+        $orders = array_values(array_map(function ($order) {
+            // Sanitize and return the required data
+            $firstName = get_the_author_meta('first_name', $order->post_author);
+            $lastName = get_the_author_meta('last_name', $order->post_author);
+            $order = array(
+                'id' => (int)$order->ID,
+                'date' => $order->post_date,
+                'customer_name' => trim("{$firstName} {$lastName}")
+            );
+            return $order;
+        }, array_filter($orders, function ($order) use ($groupMembers) {
+            // Only return group members orders
+            return in_array($order->post_author, $groupMembers);
+        })));
+
+        return $orders;
     }
 
     /**
