@@ -37,7 +37,7 @@ const createOrder = (orders, files) => {
     });
 
     files.forEach((media, index) => {
-        formData.append('file[' + index + ']', media.file);
+        formData.append('files[]', media.file);
     });
 
     formData.append('_wpnonce', order_nonce);
