@@ -66,6 +66,8 @@ const updateUser = (user) => {
     formData.append('billing_glnr_number', glnrNumber);
     formData.append('billing_vat_number', vatNumber);
 
+    console.log(formData); 
+
     let options = {
         method: 'POST',
         body: formData
