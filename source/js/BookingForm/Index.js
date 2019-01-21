@@ -2,13 +2,7 @@ import BookingForm from './Container/BookingForm';
 import { getArticle, getSlots } from '../Api/products';
 import dateFns from 'date-fns';
 
-const {
-    translation,
-    article_type,
-    article_id,
-    user_id,
-    order_nonce
-} = modResourceBookingForm;
+const { translation, article_type, article_id, user_id, order_nonce } = modResourceBookingForm;
 
 let avalibleSlots = [],
     disabledSlots = [];
@@ -31,14 +25,12 @@ class App {
         getArticle(article_id, article_type)
             .then(article => {
                 this.articlePrice = article[0].price;
-                this.mediaRequirements = article[0].media_requirements.map(
-                    mediaObject => {
-                        let media = mediaObject;
-                        media.file = null;
+                this.mediaRequirements = article[0].media_requirements.map(mediaObject => {
+                    let media = mediaObject;
+                    media.file = null;
 
-                        return media;
-                    }
-                );
+                    return media;
+                });
                 this.articleName = article[0].title;
 
                 getSlots(article_id, article_type, user_id)
@@ -91,9 +83,7 @@ class App {
      * @return {void}
      */
     init() {
-        const domElements = document.getElementsByClassName(
-            'modularity-resource-booking-form'
-        );
+        const domElements = document.getElementsByClassName('modularity-resource-booking-form');
         for (let i = 0; i < domElements.length; i++) {
             const element = domElements[i];
             ReactDOM.render(

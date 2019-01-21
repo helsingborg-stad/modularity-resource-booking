@@ -16,20 +16,25 @@ class Files extends React.Component {
                 {children.map((media, index) => {
                     media.index = index;
                     return (
-                        <input
-                            key={media['media_name'] + '-' + index}
-                            id={media['media_name'] + '-' + index}
-                            name={media['media_name'] + '-' + index}
-                            type="file"
-                            accept={media['media_type'] + '/*'}
-                            onChange={
-                                typeof onFileUpload === 'function'
-                                    ? e => {
-                                          onFileUpload(e.target.files, media);
-                                      }
-                                    : null
-                            }
-                        />
+                        <div className="form-group" key={media['media_name'] + '-' + index}>
+                            <label htmlFor={media['media_name'] + '-' + index}>
+                                {media['media_name']}
+                            </label>
+                            <input
+                                className="form-input"
+                                id={media['media_name'] + '-' + index}
+                                name={media['media_name'] + '-' + index}
+                                type="file"
+                                accept={media['media_type'] + '/*'}
+                                onChange={
+                                    typeof onFileUpload === 'function'
+                                        ? e => {
+                                              onFileUpload(e.target.files, media);
+                                          }
+                                        : null
+                                }
+                            />
+                        </div>
                     );
                 })}
             </span>

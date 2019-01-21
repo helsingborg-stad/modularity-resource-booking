@@ -15,10 +15,7 @@ class Summary extends React.Component {
 
         const totalPrice =
             children.length > 0
-                ? children.reduce(
-                      (accumulator, slot) => accumulator + slot.articlePrice,
-                      0
-                  )
+                ? children.reduce((accumulator, slot) => accumulator + slot.articlePrice, 0)
                 : 0;
 
         return (
@@ -35,23 +32,15 @@ class Summary extends React.Component {
                         {children.map(slot => (
                             <tr key={slot.id}>
                                 <td>{slot.articleName}</td>
-                                <td>
-                                    {dateFns.format(slot.start, 'DD-MM-YYYY')}
-                                </td>
-                                <td>
-                                    {dateFns.format(slot.stop, 'DD-MM-YYYY')}
-                                </td>
+                                <td>{dateFns.format(slot.start, 'DD-MM-YYYY')}</td>
+                                <td>{dateFns.format(slot.stop, 'DD-MM-YYYY')}</td>
                                 <td className="text-right">
                                     <Button
                                         color="plain"
                                         onClick={
-                                            typeof onClickRemoveItem ===
-                                            'function'
+                                            typeof onClickRemoveItem === 'function'
                                                 ? event => {
-                                                      onClickRemoveItem(
-                                                          slot,
-                                                          event
-                                                      );
+                                                      onClickRemoveItem(slot, event);
                                                   }
                                                 : null
                                         }

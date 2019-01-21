@@ -4,16 +4,15 @@ import PropTypes from 'prop-types';
 import dateFns from 'date-fns';
 import Summary from '../Component/Summary';
 import Files from '../Component/Files';
+import { createOrder } from '../../Api/orders';
 
 class BookingForm extends React.Component {
     static propTypes = {
-        articlePrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-            .isRequired,
+        articlePrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         articleName: PropTypes.string.isRequired,
         articleType: PropTypes.string.isRequired,
         restNonce: PropTypes.string.isRequired,
-        articleId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-            .isRequired,
+        articleId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         avalibleSlots: PropTypes.array.isRequired,
         mediaRequirements: PropTypes.array
     };
@@ -35,7 +34,7 @@ class BookingForm extends React.Component {
 
     createOrder() {
         const { articleType, articleId } = this.props;
-        const { selectedSlots } = this.state;
+        const { selectedSlots, files } = this.state;
 
         let orders = [];
 
@@ -47,12 +46,12 @@ class BookingForm extends React.Component {
             });
         });
 
-        createOrder(orders)
+        createOrder(orders, files)
             .then(result => {
-                console.log('Succesfully made order!');
+                console.log(result);
             })
             .catch(result => {
-                console.log('Failed to make order');
+                console.log('createOrder() request failed');
             });
     }
 
@@ -116,9 +115,7 @@ class BookingForm extends React.Component {
     handleRemoveItem(slot) {
         this.setState((state, props) => {
             const calendarView =
-                state.selectedSlots.length === 1 && !state.calendarView
-                    ? true
-                    : state.calendarView;
+                state.selectedSlots.length === 1 && !state.calendarView ? true : state.calendarView;
             const slots = state.selectedSlots.filter(id => id !== slot.id);
             return {
                 selectedSlots: slots,
@@ -127,6 +124,12 @@ class BookingForm extends React.Component {
         });
     }
 
+    /**
+     * [handleFileUpload description]
+     * @param  {[type]} files [description]
+     * @param  {[type]} media [description]
+     * @return {[type]}       [description]
+     */
     handleFileUpload(files, media) {
         this.setState((state, props) => {
             let mediaRequirements = state.files;
@@ -151,9 +154,7 @@ class BookingForm extends React.Component {
 
                 {selectedSlots.length > 0 ? (
                     <Summary onClickRemoveItem={this.handleRemoveItem}>
-                        {avalibleSlots.filter(slot =>
-                            selectedSlots.includes(slot.id)
-                        )}
+                        {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
                     </Summary>
                 ) : null}
 
@@ -180,15 +181,12 @@ class BookingForm extends React.Component {
                 )}
                 {files.length > 0 ? (
                     <div>
-                        <Files onFileUpload={this.handleFileUpload}>
-                            {files}
-                        </Files>
+                        <Files onFileUpload={this.handleFileUpload}>{files}</Files>
                     </div>
                 ) : null}
 
                 {selectedSlots.length > 0 &&
-                files.filter(media => media.file !== null).length ===
-                    files.length ? (
+                files.filter(media => media.file !== null).length === files.length ? (
                     <Button color="primary" onClick={this.createOrder}>
                         Order
                     </Button>
