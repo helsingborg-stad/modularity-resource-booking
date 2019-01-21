@@ -166,7 +166,7 @@ class OrderHistory extends React.Component {
         }
         if (!isLoaded) {
             return (
-                <div className="gutter">
+                <div className="gutter gutter-xl">
                     <PreLoader />
                 </div>
             );
