@@ -14,7 +14,7 @@ class Customer
         add_action('parent_file', array($this, 'highlightTaxonomyParentMenu'));
         add_action('profile_update', array($this, 'sendActivationEmail'),5, 2); 
         add_filter('user_contactmethods', array($this, 'addUserContactFields'));
-        
+        add_filter('authenticate', array($this, 'checkCustomerGroup'), 99, 3);
     }
     
     /**
@@ -146,5 +146,25 @@ class Customer
         );
 
         return $groups->slug;
+    }
+
+    /**
+     * Check if customer have a group
+     * @param object $user User object or error
+     * @param string $username
+     * @param string $password
+     * @return object|null
+     */
+    public function checkCustomerGroup($user, $username, $password)
+    {
+        if (isset($user->roles) && in_array('customer', (array)$user->roles)) {
+            if (empty(get_field('customer_group', 'user_' . $user->ID))) {
+                return new \WP_Error(
+                    'not-verified', __('Your account is not verified yet.', 'modularity-resource-booking')
+                );
+            }
+        }
+
+        return $user;
     }
 }
