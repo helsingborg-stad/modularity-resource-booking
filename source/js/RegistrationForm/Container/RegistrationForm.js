@@ -128,7 +128,36 @@ class RegistrationForm extends React.Component {
         return (
             <div>
                 {!accountCreated && (
-                    <form onSubmit={this.handleFormSubmit} className="grid u-p-2">
+                    <form onSubmit={this.handleFormSubmit} className="grid u-p-2 u-pt-5">
+                        
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                id={`${labelPrefix}first_name`}
+                                type="text"
+                                name="firstName"
+                                value={firstName}
+                                handleChange={this.handleInputChange}
+                                placeholder={translation.firstName}
+                                label={translation.firstName}
+                                required
+                                {...commonProps}
+                            />
+                        </div>
+
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                id={`${labelPrefix}last_name`}
+                                type="text"
+                                name="lastName"
+                                value={lastName}
+                                handleChange={this.handleInputChange}
+                                placeholder={translation.lastName}
+                                label={translation.lastName}
+                                required
+                                {...commonProps}
+                            />
+                        </div>
+                        
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}email`}
@@ -142,6 +171,7 @@ class RegistrationForm extends React.Component {
                                 {...commonProps}
                             />
                         </div>
+
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}confirm_email`}
@@ -157,6 +187,34 @@ class RegistrationForm extends React.Component {
                                 {...commonProps}
                             />
                         </div>
+
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                id={`${labelPrefix}phone`}
+                                type="tel"
+                                name="phone"
+                                value={phone}
+                                handleChange={this.handleInputChange}
+                                placeholder={translation.phoneNumber}
+                                label={translation.phoneNumber}
+                                {...commonProps}
+                            />
+                        </div>
+
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                id={`${labelPrefix}website`}
+                                type="url"
+                                name="website"
+                                value={website}
+                                handleChange={this.handleInputChange}
+                                placeholder={translation.website}
+                                label={translation.website}
+                                {...commonProps}
+                            />
+                        </div>
+
+                        <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">Password</h4>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}password`}
@@ -171,6 +229,7 @@ class RegistrationForm extends React.Component {
                                 {...commonProps}
                             />
                         </div>
+
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}confirm_password`}
@@ -187,32 +246,8 @@ class RegistrationForm extends React.Component {
                                 {...commonProps}
                             />
                         </div>
-                        <div className="grid-xs-12 grid-md-6 u-mb-3">
-                            <Input
-                                id={`${labelPrefix}first_name`}
-                                type="text"
-                                name="firstName"
-                                value={firstName}
-                                handleChange={this.handleInputChange}
-                                placeholder={translation.firstName}
-                                label={translation.firstName}
-                                required
-                                {...commonProps}
-                            />
-                        </div>
-                        <div className="grid-xs-12 grid-md-6 u-mb-3">
-                            <Input
-                                id={`${labelPrefix}last_name`}
-                                type="text"
-                                name="lastName"
-                                value={lastName}
-                                handleChange={this.handleInputChange}
-                                placeholder={translation.lastName}
-                                label={translation.lastName}
-                                required
-                                {...commonProps}
-                            />
-                        </div>
+
+                        <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">Billing</h4>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}company`}
@@ -226,6 +261,7 @@ class RegistrationForm extends React.Component {
                                 {...commonProps}
                             />
                         </div>
+
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}organization_number`}
@@ -239,30 +275,7 @@ class RegistrationForm extends React.Component {
                                 {...commonProps}
                             />
                         </div>
-                        <div className="grid-xs-12 grid-md-6 u-mb-3">
-                            <Input
-                                id={`${labelPrefix}glnr_number`}
-                                type="text"
-                                name="glnrNumber"
-                                value={glnrNumber}
-                                handleChange={this.handleInputChange}
-                                placeholder={translation.glnrNumber}
-                                label={translation.glnrNumber}
-                                {...commonProps}
-                            />
-                        </div>
-                        <div className="grid-xs-12 grid-md-6 u-mb-3">
-                            <Input
-                                id={`${labelPrefix}vat_number`}
-                                type="text"
-                                name="vatNumber"
-                                value={vatNumber}
-                                handleChange={this.handleInputChange}
-                                placeholder={translation.vatNumber}
-                                label={translation.vatNumber}
-                                {...commonProps}
-                            />
-                        </div>
+
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}contact_person`}
@@ -272,30 +285,6 @@ class RegistrationForm extends React.Component {
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.contactPerson}
                                 label={translation.contactPerson}
-                                {...commonProps}
-                            />
-                        </div>
-                        <div className="grid-xs-12 grid-md-6 u-mb-3">
-                            <Input
-                                id={`${labelPrefix}phone`}
-                                type="tel"
-                                name="phone"
-                                value={phone}
-                                handleChange={this.handleInputChange}
-                                placeholder={translation.phoneNumber}
-                                label={translation.phoneNumber}
-                                {...commonProps}
-                            />
-                        </div>
-                        <div className="grid-xs-12 grid-md-6 u-mb-3">
-                            <Input
-                                id={`${labelPrefix}website`}
-                                type="url"
-                                name="website"
-                                value={website}
-                                handleChange={this.handleInputChange}
-                                placeholder={translation.website}
-                                label={translation.website}
                                 {...commonProps}
                             />
                         </div>
@@ -311,7 +300,34 @@ class RegistrationForm extends React.Component {
                                 {...commonProps}
                             />
                         </div>
-                        <div className="grid-xs-12">
+
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                id={`${labelPrefix}glnr_number`}
+                                type="text"
+                                name="glnrNumber"
+                                value={glnrNumber}
+                                handleChange={this.handleInputChange}
+                                placeholder={translation.glnrNumber}
+                                label={translation.glnrNumber}
+                                {...commonProps}
+                            />
+                        </div>
+
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                id={`${labelPrefix}vat_number`}
+                                type="text"
+                                name="vatNumber"
+                                value={vatNumber}
+                                handleChange={this.handleInputChange}
+                                placeholder={translation.vatNumber}
+                                label={translation.vatNumber}
+                                {...commonProps}
+                            />
+                        </div>
+
+                        <div className="grid-xs-12 u-mt-4">
                             <Button
                                 color="primary"
                                 title={translation.register}

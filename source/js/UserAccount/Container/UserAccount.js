@@ -108,9 +108,8 @@ class UserAccount extends React.Component {
 
         return (
             <div>
-                <form onSubmit={this.handleFormSubmit} className="grid u-p-2">
-                    <h4 className="u-mb-2">General</h4>
-                    
+                <form onSubmit={this.handleFormSubmit} className="grid u-p-2 u-pt-5">
+                  
                     <div className="grid-xs-12 grid-md-6 u-mb-3">
                         <Input
                             type="text"
@@ -168,7 +167,7 @@ class UserAccount extends React.Component {
                         />
                     </div>
 
-                    <h4 className="u-mb-2">Billing</h4>
+                    <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">Billing</h4>
                     <div className="grid-xs-12 grid-md-6 u-mb-3">
                         <Input
                             type="text"
@@ -239,7 +238,7 @@ class UserAccount extends React.Component {
                         />
                     </div>
 
-                    <h4 className="u-mb-2">Change Password (optional)</h4>
+                    <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">Change Password <span className="label label-sm label-theme pull-right">Optional setting</span></h4>
                     <div className="grid-xs-12 grid-md-6 u-mb-3">
                         <Input
                             type="password"
@@ -266,7 +265,7 @@ class UserAccount extends React.Component {
                         />
                     </div>
 
-                    <div className="grid-xs-12">
+                    <div className="grid-xs-12 u-mt-4">
                         <Button
                             color="primary"
                             title="Save"
@@ -279,7 +278,7 @@ class UserAccount extends React.Component {
                 {notice.length > 0 &&
                     <div className="u-mt-2">
                         <Notice type={noticeType} icon>
-                            {notice}
+                            {notice} 
                         </Notice>
                     </div>
                 }
