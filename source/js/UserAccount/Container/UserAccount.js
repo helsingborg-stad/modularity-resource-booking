@@ -283,7 +283,7 @@ class UserAccount extends React.Component {
                     <div className="grid-xs-12 u-mt-4">
                         <Button
                             color="primary"
-                            title="Save"
+                            title={translation.save}
                             submit
                             {... commonProps}
                         />

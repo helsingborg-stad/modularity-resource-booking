@@ -80,7 +80,8 @@ class UserAccount extends \Modularity\Module
                     'headers' => array(
                         'billing' => __('Billing', 'modularity-resource-booking'),
                         'password' => __('Change password', 'modularity-resource-booking')
-                    )
+                    ),
+                    'save' => __('Save', 'modularity-resource-booking')
                 ),
                 'restUrl' => get_rest_url(),
                 'user' => $this->getUserData()
