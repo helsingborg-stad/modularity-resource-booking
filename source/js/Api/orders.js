@@ -50,9 +50,6 @@ const createOrder = (orders, files) => {
         }
     };
 
-    console.log(order_nonce);
-    console.log(formData);
-
     return fetch(url, options)
         .then(response => {
             return response.json();
