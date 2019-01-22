@@ -46,7 +46,6 @@ class App
     {
         //Product database
         new Products(); //Main product library
-        new Packages(); //Packages of prodcts
         new Settings(); // Time slots that packages can be reserved for
 
         //Ordering
