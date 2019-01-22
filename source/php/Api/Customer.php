@@ -180,7 +180,8 @@ class Customer
         //Define update array
         $insertArray = array(
             'user_login' => $data['email'],
-            'user_pass' => $data['password']
+            'user_pass' => $data['password'],
+            'role' => 'customer',
         );
 
         //Update array creation of to be updated fields
