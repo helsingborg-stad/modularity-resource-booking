@@ -31,7 +31,7 @@ class Customer
     public function prohibitGrouplessLogins($message, $user) {
 
         //Not a valid user
-        if(is_a($user) != "WP_User") {
+        if(!is_a($user, "WP_User")) {
             return $message; 
         }
 
