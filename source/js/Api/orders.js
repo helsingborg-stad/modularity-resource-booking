@@ -36,8 +36,8 @@ const createOrder = (orders, files) => {
     });
 
     if (typeof files !== 'undefined' && files.length > 0) {
-        files.forEach(media => {
-            formData.append('files[]', media.file);
+        files.forEach((media, index) => {
+            formData.append('files_' + index, media.file);
         });
     }
 
