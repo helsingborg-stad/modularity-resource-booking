@@ -15,6 +15,21 @@ class App
 
         // Register Modularity modules
         add_action('plugins_loaded', array($this, 'registerModules'));
+
+        //Register currency symbol
+        add_action('init', array($this, 'registerCurrencySymbol'), 1); 
+    }
+
+    /**
+     * Enqueue required style
+     *
+     * @return void
+     */
+    public function enqueueStyles()
+    {
+        if (!defined('RESOURCE_BOOKING_CURRENCY_SYMBOL')) {
+            define('RESOURCE_BOOKING_CURRENCY_SYMBOL', __('USD', 'modularity-resource-booking'));
+        }
     }
 
     /**
