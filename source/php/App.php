@@ -25,7 +25,7 @@ class App
      *
      * @return void
      */
-    public function enqueueStyles()
+    public function registerCurrencySymbol()
     {
         if (!defined('RESOURCE_BOOKING_CURRENCY_SYMBOL')) {
             define('RESOURCE_BOOKING_CURRENCY_SYMBOL', __('USD', 'modularity-resource-booking'));
