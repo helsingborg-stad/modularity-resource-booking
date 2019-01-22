@@ -14,7 +14,24 @@ class Customer
         add_action('parent_file', array($this, 'highlightTaxonomyParentMenu'));
         add_action('profile_update', array($this, 'sendActivationEmail'),5, 2); 
         add_filter('user_contactmethods', array($this, 'addUserContactFields'));
-        
+        add_filter('modularityLoginForm/AbortLogin', array($this, 'prohibitGrouplessLogins'), 10, 2); 
+    }
+
+    /**
+     * Prohibit logins when there's no user group.
+     *
+     * @param bool|string $message  A string witrh a previous message or false if not set
+     * @param WP_User     $user     The user object
+     * 
+     * @return false|string
+     */
+    public function prohibitGrouplessLogins($message, \WP_User $user) {
+        if($message === false) {
+            if(!is_numeric(get_user_meta($user->ID, 'customer_group', true))) {
+                $message = __("Your account has not been enabled yet, please allow for a few days before trying to use the account.", 'modularity-resource-booking');
+            }
+        }
+        return $message;
     }
     
     /**
