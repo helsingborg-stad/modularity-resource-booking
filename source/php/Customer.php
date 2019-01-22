@@ -16,6 +16,7 @@ class Customer
         add_filter('user_contactmethods', array($this, 'addUserContactFields'));
         add_filter('authenticate', array($this, 'checkCustomerGroup'), 99, 3);
         add_action('after_setup_theme', array($this, 'hideAdminBar'));
+        add_action('init', array($this, 'restrictAdminPanel'));
     }
     
     /**
@@ -172,10 +173,22 @@ class Customer
     /**
      * Hide admin bar for customers
      */
-    public function hideAdminBar() {
-        $user = wp_get_current_user();
-        if (isset($user->roles) &&  in_array('customer', (array)$user->roles)) {
+    public function hideAdminBar()
+    {
+        if (current_user_can('customer')) {
             show_admin_bar(false);
+        }
+    }
+
+    /**
+     * Redirects customers from admin panel
+     */
+    public function restrictAdminPanel()
+    {
+        if (is_admin() && current_user_can('customer') &&
+            !(defined('DOING_AJAX') && DOING_AJAX)) {
+            wp_safe_redirect(home_url());
+            exit;
         }
     }
 }
