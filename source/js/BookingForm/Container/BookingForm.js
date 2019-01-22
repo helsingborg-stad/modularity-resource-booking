@@ -97,11 +97,18 @@ class BookingForm extends React.Component {
      */
     handleEventClassName(event) {
         const { selectedSlots } = this.state;
+        let classes = [];
 
-        let classes = ['calendar__event--action'];
+        if (event['available_stock'] > 0) {
+            classes.push('calendar__event--action');
+        }
 
         if (selectedSlots.includes(event.id)) {
             classes.push('is-active');
+        }
+
+        if (event['available_stock'] <= 0) {
+            classes.push('is-disabled');
         }
 
         return classes;
