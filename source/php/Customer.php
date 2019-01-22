@@ -15,6 +15,7 @@ class Customer
         add_action('profile_update', array($this, 'sendActivationEmail'),5, 2); 
         add_filter('user_contactmethods', array($this, 'addUserContactFields'));
         add_filter('authenticate', array($this, 'checkCustomerGroup'), 99, 3);
+        add_action('after_setup_theme', array($this, 'hideAdminBar'));
     }
     
     /**
@@ -166,5 +167,15 @@ class Customer
         }
 
         return $user;
+    }
+
+    /**
+     * Hide admin bar for customers
+     */
+    public function hideAdminBar() {
+        $user = wp_get_current_user();
+        if (isset($user->roles) &&  in_array('customer', (array)$user->roles)) {
+            show_admin_bar(false);
+        }
     }
 }
