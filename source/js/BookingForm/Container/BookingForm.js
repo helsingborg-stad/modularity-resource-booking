@@ -64,7 +64,7 @@ class BookingForm extends React.Component {
         const { selectedSlots } = this.state;
 
         //Add slot
-        if (!selectedSlots.includes(event.id) && event['total_stock'] > 0) {
+        if (!selectedSlots.includes(event.id) && event['available_stock'] > 0) {
             this.setState((state, props) => {
                 let slots = state.selectedSlots;
                 slots.push(event.id);
