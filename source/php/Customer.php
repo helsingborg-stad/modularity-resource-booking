@@ -28,7 +28,13 @@ class Customer
      * 
      * @return false|string
      */
-    public function prohibitGrouplessLogins($message, \WP_User $user) {
+    public function prohibitGrouplessLogins($message, $user) {
+
+        //Not a valid user
+        if(is_a($user) != "WP_User") {
+            return $message; 
+        }
+
         if($message === false) {
             if(!is_numeric(get_user_meta($user->ID, 'customer_group', true))) {
                 $message = __("Your account has not been enabled yet, please wait for a activation notice in your email inbox.", 'modularity-resource-booking');
