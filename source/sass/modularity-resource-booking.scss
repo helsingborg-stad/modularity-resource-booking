@@ -220,6 +220,10 @@ $eventBorderRadius: 4px;
     background-color: #2ecc71;
 }
 
+.calendar__event.is-disabled {
+    background-color: gray;
+}
+
 .calendar__row--event:last-child {
     margin-bottom: 16px;
 }
