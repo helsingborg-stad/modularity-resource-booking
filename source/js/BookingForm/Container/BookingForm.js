@@ -51,7 +51,8 @@ class BookingForm extends React.Component {
                 console.log(result);
             })
             .catch(result => {
-                console.log('createOrder() request failed');
+                console.log(result);
+                console.log('createOrder() in BookingForm.js failed');
             });
     }
 
