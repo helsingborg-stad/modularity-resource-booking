@@ -45,7 +45,6 @@ const createOrder = (orders, files) => {
         method: 'POST',
         body: formData,
         headers: {
-            'Content-Type': 'application/json',
             'X-WP-NONCE': order_nonce
         }
     };
