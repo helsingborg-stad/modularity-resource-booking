@@ -17,7 +17,6 @@ class Customer
         add_filter('authenticate', array($this, 'checkCustomerGroup'), 99, 3);
         add_action('after_setup_theme', array($this, 'hideAdminBar'));
         add_action('init', array($this, 'restrictAdminPanel'));
-        
         add_filter('modularityLoginForm/AbortLogin', array($this, 'prohibitGrouplessLogins'), 10, 2); 
     }
 
