@@ -275,13 +275,17 @@ class TimeSlots
             // List of packages where the product is included
             $packages = wp_get_post_terms($product->ID, 'product-package', array('fields' => 'ids'));
             $packages = is_array($packages) && !empty($packages) ? $packages : array();
+            
             // Product stock
             $stock = get_field('items_in_stock', $product->ID);
+
             // Check if product if unlimited
             $unlimited = $stock === '' ? true : false;
             $stock = (int)$stock;
+
             // Calculate every time the product have been purchased within the slot period
             $articleIds = array_merge(array($product->ID), $packages);
+
             // Exclude canceled orders from query
             $getOrdersArgs = array('tax_query' => array(
                 array(
@@ -292,6 +296,7 @@ class TimeSlots
                 )));
             $orders = self::getOrders($getOrdersArgs, $articleType, $articleIds, $slotId);
             $orderCount = count($orders);
+
             // Get number of times the customer(or other group members) have purchased this product
             $purchaseCount = 0;
             foreach ($orders as $order) {
@@ -301,13 +306,15 @@ class TimeSlots
             }
             // Calculate available stock
             $availableStock = $stock - $orderCount;
+
             // Calculate stock if limit is set
-            if ($groupLimit !== null) {
+            if ($groupLimit !== null && $groupLimit != 0) {
                 $groupStock = $groupLimit - $purchaseCount;
                 $availableStock = (!$unlimited && $availableStock < $groupStock) ? $availableStock : $groupStock;
             } elseif ($groupLimit === null && $unlimited) {
                 $availableStock = null; // Set to null if no limit is set and stock is unlimited
             }
+
             // Product with complete stock data
             $product = array(
                 'id' => $product->ID,
@@ -315,6 +322,7 @@ class TimeSlots
                 'total_stock' => $unlimited ? null : $stock,
                 'available_stock' => $availableStock
             );
+
             return $product;
         }, $products);
 
