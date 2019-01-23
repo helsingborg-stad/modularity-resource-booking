@@ -65,7 +65,10 @@ class BookingForm extends React.Component {
         const { selectedSlots } = this.state;
 
         //Add slot
-        if (!selectedSlots.includes(event.id) && event['available_stock'] > 0) {
+        if (
+            (!selectedSlots.includes(event.id) && event['available_stock'] > 0) ||
+            (!selectedSlots.includes(event.id) && event['available_stock'] === null)
+        ) {
             this.setState((state, props) => {
                 let slots = state.selectedSlots;
                 slots.push(event.id);
@@ -100,7 +103,10 @@ class BookingForm extends React.Component {
         const { selectedSlots } = this.state;
         let classes = [];
 
-        if (event['available_stock'] > 0) {
+        if (
+            (event['unlimited_stock'] && event['available_stock'] === null) ||
+            event['available_stock'] > 0
+        ) {
             classes.push('calendar__event--action');
         }
 
@@ -108,7 +114,7 @@ class BookingForm extends React.Component {
             classes.push('is-active');
         }
 
-        if (event['available_stock'] <= 0) {
+        if (!event['unlimited_stock'] && event['available_stock'] <= 0) {
             classes.push('is-disabled');
         }
 
