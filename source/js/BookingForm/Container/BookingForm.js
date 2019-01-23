@@ -65,7 +65,10 @@ class BookingForm extends React.Component {
         const { selectedSlots } = this.state;
 
         //Add slot
-        if (!selectedSlots.includes(event.id) && event['available_stock'] > 0) {
+        if (
+            (!selectedSlots.includes(event.id) && event['available_stock'] > 0) ||
+            (!selectedSlots.includes(event.id) && event['available_stock'] === null)
+        ) {
             this.setState((state, props) => {
                 let slots = state.selectedSlots;
                 slots.push(event.id);
@@ -100,7 +103,10 @@ class BookingForm extends React.Component {
         const { selectedSlots } = this.state;
         let classes = [];
 
-        if (event['available_stock'] > 0) {
+        if (
+            (event['unlimited_stock'] && event['available_stock'] === null) ||
+            event['available_stock'] > 0
+        ) {
             classes.push('calendar__event--action');
         }
 
@@ -108,7 +114,7 @@ class BookingForm extends React.Component {
             classes.push('is-active');
         }
 
-        if (event['available_stock'] <= 0) {
+        if (!event['unlimited_stock'] && event['available_stock'] <= 0) {
             classes.push('is-disabled');
         }
 
@@ -148,7 +154,7 @@ class BookingForm extends React.Component {
     }
 
     render() {
-        const { avalibleSlots, price } = this.props;
+        const { avalibleSlots, price, translation } = this.props;
         const { selectedSlots, calendarView, files } = this.state;
         return (
             <div>
@@ -161,7 +167,7 @@ class BookingForm extends React.Component {
                 ) : null}
 
                 {selectedSlots.length > 0 ? (
-                    <Summary onClickRemoveItem={this.handleRemoveItem}>
+                    <Summary onClickRemoveItem={this.handleRemoveItem} translation={translation}>
                         {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
                     </Summary>
                 ) : null}
@@ -184,7 +190,7 @@ class BookingForm extends React.Component {
                             }));
                         }}
                     >
-                        Gå tillbaka
+                        {translation.goback}
                     </Button>
                 )}
                 {files.length > 0 ? (
@@ -196,7 +202,7 @@ class BookingForm extends React.Component {
                 {selectedSlots.length > 0 &&
                 files.filter(media => media.file !== null).length === files.length ? (
                     <Button color="primary" onClick={this.createOrder}>
-                        Order
+                        {translation.order}
                     </Button>
                 ) : null}
             </div>
