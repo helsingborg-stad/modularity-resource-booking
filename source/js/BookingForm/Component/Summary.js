@@ -56,7 +56,7 @@ class Summary extends React.Component {
                             <td colSpan="3" className="text-right">
                                 Total:
                             </td>
-                            <td className="text-right">{totalPrice} {translation.currency}</td>
+                            <td className="text-right">{totalPrice} {translation.currency} <small>{translation.vat}</small></td>
                         </tr>
                     </tfoot>
                 </table>

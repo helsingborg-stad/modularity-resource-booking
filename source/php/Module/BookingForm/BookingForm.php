@@ -41,7 +41,8 @@ class BookingForm extends \Modularity\Module
             //Localize
             wp_localize_script('modularity-' . $this->slug, 'modResourceBookingForm', array(
                 'translation' => array(
-                    'currency' => RESOURCE_BOOKING_CURRENCY_SYMBOL
+                    'currency' => RESOURCE_BOOKING_CURRENCY_SYMBOL,
+                    'vat' => __('excl. vat', 'modularity-resource-booking')
                 ),
                 'restUrl' => get_rest_url(),
                 'article_type' => get_field('article_type', $this->ID),
