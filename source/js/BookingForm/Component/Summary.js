@@ -23,9 +23,9 @@ class Summary extends React.Component {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>Produkt</th>
-                            <th>Startar</th>
-                            <th colSpan="2">Slutar</th>
+                            <th>{translation.product}</th>
+                            <th>{translation.start}</th>
+                            <th colSpan="2">{translation.end}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,7 +54,7 @@ class Summary extends React.Component {
                     <tfoot>
                         <tr>
                             <td colSpan="3" className="text-right">
-                                Total:
+                            {translation.total}:
                             </td>
                             <td className="text-right">{totalPrice} {translation.currency} <small>{translation.vat}</small></td>
                         </tr>
