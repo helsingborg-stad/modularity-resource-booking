@@ -148,7 +148,7 @@ class BookingForm extends React.Component {
     }
 
     render() {
-        const { avalibleSlots, price } = this.props;
+        const { avalibleSlots, price, translation } = this.props;
         const { selectedSlots, calendarView, files } = this.state;
         return (
             <div>
@@ -161,7 +161,7 @@ class BookingForm extends React.Component {
                 ) : null}
 
                 {selectedSlots.length > 0 ? (
-                    <Summary onClickRemoveItem={this.handleRemoveItem}>
+                    <Summary onClickRemoveItem={this.handleRemoveItem} translation={translation}>
                         {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
                     </Summary>
                 ) : null}

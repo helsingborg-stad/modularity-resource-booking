@@ -11,7 +11,7 @@ class Summary extends React.Component {
     }
 
     render() {
-        const { children, onClickRemoveItem } = this.props;
+        const { children, onClickRemoveItem, translation } = this.props;
 
         const totalPrice =
             children.length > 0
