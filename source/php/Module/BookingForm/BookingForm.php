@@ -47,6 +47,8 @@ class BookingForm extends \Modularity\Module
                     'end' => __('End date', 'modularity-resource-booking'),
                     'product' => __('Product', 'modularity-resource-booking'),
                     'total' => __('Total', 'modularity-resource-booking'),
+                    'goback' => __('Go back', 'modularity-resource-booking'),
+                    'order' => __('Order', 'modularity-resource-booking'),
                 ),
                 'restUrl' => get_rest_url(),
                 'article_type' => get_field('article_type', $this->ID),

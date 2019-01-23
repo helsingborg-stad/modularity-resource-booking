@@ -184,7 +184,7 @@ class BookingForm extends React.Component {
                             }));
                         }}
                     >
-                        Gå tillbaka
+                        {translation.goback}
                     </Button>
                 )}
                 {files.length > 0 ? (
@@ -196,7 +196,7 @@ class BookingForm extends React.Component {
                 {selectedSlots.length > 0 &&
                 files.filter(media => media.file !== null).length === files.length ? (
                     <Button color="primary" onClick={this.createOrder}>
-                        Order
+                        {translation.order}
                     </Button>
                 ) : null}
             </div>
