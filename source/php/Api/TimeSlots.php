@@ -272,6 +272,7 @@ class TimeSlots
     public static function getArticleSlotStock($products, $articleType, $slotId, $groupMembers, $groupLimit)
     {
         $products = array_map(function ($product) use ($articleType, $slotId, $groupMembers, $groupLimit) {
+
             // List of packages where the product is included
             $packages = wp_get_post_terms($product->ID, 'product-package', array('fields' => 'ids'));
             $packages = is_array($packages) && !empty($packages) ? $packages : array();
@@ -281,21 +282,22 @@ class TimeSlots
 
             // Check if product if unlimited
             $unlimited = $stock === '' ? true : false;
-            $stock = (int)$stock;
 
             // Calculate every time the product have been purchased within the slot period
             $articleIds = array_merge(array($product->ID), $packages);
 
             // Exclude canceled orders from query
-            $getOrdersArgs = array('tax_query' => array(
+            $orders = self::getOrders(
                 array(
-                    'taxonomy' => 'order-status',
-                    'terms' => array('canceled'),
-                    'field' => 'slug',
-                    'operator' => 'NOT IN',
-                )));
-            $orders = self::getOrders($getOrdersArgs, $articleType, $articleIds, $slotId);
-            $orderCount = count($orders);
+                    'tax_query' => array(
+                    array(
+                        'taxonomy' => 'order-status',
+                        'terms' => array('canceled'),
+                        'field' => 'slug',
+                        'operator' => 'NOT IN',
+                    )
+                )
+            ), $articleType, $articleIds, $slotId);
 
             // Get number of times the customer(or other group members) have purchased this product
             $purchaseCount = 0;
@@ -304,8 +306,9 @@ class TimeSlots
                     $purchaseCount++;
                 }
             }
+
             // Calculate available stock
-            $availableStock = $stock - $orderCount;
+            $availableStock = $stock - count($orders);
 
             // Calculate stock if limit is set
             if ($groupLimit !== null && $groupLimit != 0) {
@@ -319,11 +322,12 @@ class TimeSlots
             $product = array(
                 'id' => $product->ID,
                 'unlimited_stock' => $unlimited,
-                'total_stock' => $unlimited ? null : $stock,
+                'total_stock' => $unlimited ? null : (int) $stock,
                 'available_stock' => $availableStock
             );
 
             return $product;
+            
         }, $products);
 
         // Remove NULL(Unlimited stock) values, to get list of products with a stock value
