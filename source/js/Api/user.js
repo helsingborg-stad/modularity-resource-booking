@@ -1,9 +1,22 @@
-const createUser = (user) => {
-    const {translation, restUrl} = modRegistrationForm;
+const createUser = user => {
+    const { translation, restUrl } = modRegistrationForm;
     let url = restUrl + 'ModularityResourceBooking/v1/CreateUser';
     let formData = new FormData();
 
-    const {email, firstName, lastName, company, companyNumber, password, phone, billingAdress, website, contactPerson, glnrNumber, vatNumber} = user;
+    const {
+        email,
+        firstName,
+        lastName,
+        company,
+        companyNumber,
+        password,
+        phone,
+        billingAdress,
+        website,
+        contactPerson,
+        glnrNumber,
+        vatNumber,
+    } = user;
 
     formData.append('email', email);
     formData.append('password', password);
@@ -23,33 +36,46 @@ const createUser = (user) => {
 
     let options = {
         method: 'POST',
-        body: formData
+        body: formData,
     };
 
     return fetch(url, options)
-    .then((response) => {
-        return response.json();
-    })
-    .then((response) => {
-        if (response.state == 'error') {
-            throw new Error(response.message);
-        }
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            if (response.state == 'error') {
+                throw new Error(response.message);
+            }
 
-        return response;
-    });
+            return response;
+        });
 };
 
-
-const updateUser = (user) => {
-    const {id, email, firstName, lastName, company, companyNumber, password, phone, billingAddress, website, contactPerson, glnrNumber, vatNumber} = user;
-    const {translation, restUrl} = modUserAccount;
+const updateUser = user => {
+    const {
+        id,
+        email,
+        firstName,
+        lastName,
+        company,
+        companyNumber,
+        password,
+        phone,
+        billingAddress,
+        website,
+        contactPerson,
+        glnrNumber,
+        vatNumber,
+    } = user;
+    const { translation, restUrl } = modUserAccount;
 
     let url = restUrl + 'ModularityResourceBooking/v1/ModifyUser/' + id;
     let formData = new FormData();
 
     formData.append('email', email);
 
-    if (typeof(password) != 'undefined' && password.length > 0) {
+    if (typeof password != 'undefined' && password.length > 0) {
         formData.append('password', password);
     }
 
@@ -68,23 +94,23 @@ const updateUser = (user) => {
 
     let options = {
         method: 'POST',
-        body: formData
+        body: formData,
     };
 
     return fetch(url, options)
-    .then((response) => {
-        return response.json();
-    })
-    .then((response) => {
-        if (response.state == 'error') {
-            throw new Error(response.message);
-        }
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            if (response.state == 'error') {
+                throw new Error(response.message);
+            }
 
-        return response;
-    });
+            return response;
+        });
 };
 
 module.exports = {
     createUser: createUser,
-    updateUser: updateUser
+    updateUser: updateUser,
 };

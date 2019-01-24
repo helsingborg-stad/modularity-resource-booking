@@ -129,7 +129,6 @@ class RegistrationForm extends React.Component {
             <div>
                 {!accountCreated && (
                     <form onSubmit={this.handleFormSubmit} className="grid u-p-2 u-pt-5">
-                        
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}first_name`}
@@ -157,7 +156,7 @@ class RegistrationForm extends React.Component {
                                 {...commonProps}
                             />
                         </div>
-                        
+
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}email`}
@@ -214,7 +213,9 @@ class RegistrationForm extends React.Component {
                             />
                         </div>
 
-                        <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">{translation.headers.password}</h4>
+                        <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">
+                            {translation.headers.password}
+                        </h4>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}password`}
@@ -247,7 +248,9 @@ class RegistrationForm extends React.Component {
                             />
                         </div>
 
-                        <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">{translation.headers.billing}</h4>
+                        <h4 className="u-m-2 u-mb-3 u-mt-4 u-p-0 u-pb-1 text-lg text-highlight u-border-bottom-2">
+                            {translation.headers.billing}
+                        </h4>
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}company`}
