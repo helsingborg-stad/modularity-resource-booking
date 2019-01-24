@@ -36,9 +36,11 @@ class PackageMap extends \Modularity\Module
         if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/PackageMap/Index.js'))) {
 
             // Enqueue react
-            \Modularity\Helper\React::enqueue();
+            //\Modularity\Helper\React::enqueue();
 
             // Enqueue module script
+            wp_enqueue_script('google-' . $this->slug . '-maps-api', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDTzuHi0a-nqoXymo79QfQewSRhXf2EPik&callback=initMap', array('jquery', 'react', 'react-dom'));
+            wp_enqueue_script('google-' . $this->slug . '-maps', 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js', array('jquery', 'react', 'react-dom'));
             wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/PackageMap/Index.js'), array('jquery', 'react', 'react-dom'));
 
             //Localize
