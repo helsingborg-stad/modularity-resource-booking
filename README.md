@@ -31,6 +31,7 @@ All requests interacting with user bound data this api requires a nonce field to
 
 * ``` ModularityResourceBooking/v1/Package/ ``` - List all avabile package. 
 * ``` ModularityResourceBooking/v1/Package/ID ``` - Get a single package. 
+* ``` ModularityResourceBooking/v1/PackagePins/ID ``` - Get a single package pins for map purposes. 
 
 ### Order / Purchase
 
