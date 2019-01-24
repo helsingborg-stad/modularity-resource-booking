@@ -1,6 +1,5 @@
-<<<<<<< Updated upstream
 <div class="modularity-package-map">
-    alsdjfäölasdäkflkalösdföklasdölasdlöadfsä
+
     <div id="map"></div>
     <script>
 
@@ -131,4 +130,3 @@
         </div>
     @endif
 </div>
->>>>>>> Stashed changes
