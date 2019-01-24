@@ -16,8 +16,8 @@
                 "id": ""
             },
             "collapsed": "field_5bffb838f14ac",
-            "min": 0,
-            "max": 10,
+            "min": 1,
+            "max": 1,
             "layout": "table",
             "button_label": "L\u00e4gg till materialkrav",
             "sub_fields": [
@@ -41,31 +41,30 @@
                     "maxlength": 50
                 },
                 {
-                    "key": "field_5bffb857f14ad",
-                    "label": "Media type",
-                    "name": "media_type",
-                    "type": "select",
-                    "instructions": "",
-                    "required": 0,
+                    "key": "field_5c49ac9c5e242",
+                    "label": "File types",
+                    "name": "file_types",
+                    "type": "checkbox",
+                    "instructions": "Accepted file types.",
+                    "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "15",
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
                     "choices": {
-                        "image": "Image",
-                        "video": "Video"
+                        "image\/jpeg": "JPG",
+                        "image\/png": "PNG",
+                        "video\/mp4": "MP4",
+                        "application\/pdf": "PDF"
                     },
-                    "default_value": [
-                        "image"
-                    ],
-                    "allow_null": 0,
-                    "multiple": 0,
-                    "ui": 0,
+                    "allow_custom": 0,
+                    "default_value": [],
+                    "layout": "vertical",
+                    "toggle": 0,
                     "return_format": "value",
-                    "ajax": 0,
-                    "placeholder": ""
+                    "save_custom": 0
                 },
                 {
                     "key": "field_5bffb89ff14ae",
@@ -90,7 +89,7 @@
                 },
                 {
                     "key": "field_5bffbac04a89f",
-                    "label": "Image width",
+                    "label": "Width",
                     "name": "image_width",
                     "type": "number",
                     "instructions": "",
@@ -98,9 +97,8 @@
                     "conditional_logic": [
                         [
                             {
-                                "field": "field_5bffb857f14ad",
-                                "operator": "==",
-                                "value": "image"
+                                "field": "field_5bffb829f14ab",
+                                "operator": "!=empty"
                             }
                         ]
                     ],
@@ -119,7 +117,7 @@
                 },
                 {
                     "key": "field_5bffbb1a4a8a0",
-                    "label": "Image height",
+                    "label": "Height",
                     "name": "image_height",
                     "type": "number",
                     "instructions": "",
@@ -127,9 +125,8 @@
                     "conditional_logic": [
                         [
                             {
-                                "field": "field_5bffb857f14ad",
-                                "operator": "==",
-                                "value": "image"
+                                "field": "field_5bffb829f14ab",
+                                "operator": "!=empty"
                             }
                         ]
                     ],
