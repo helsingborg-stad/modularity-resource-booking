@@ -9,65 +9,77 @@ namespace ModularityResourceBooking\Helper;
 class MediaUpload
 {
     /**
-     * @param $ProdId
+     * Upload media
+     * The current version of this plugin only handles orders with a single package/product.
+     * The method below needs to be updated to support multiple packages/products.
+     * @param $articleId
+     * @param $articleType
      * @param $uploads
-     * @param array $mediaIds
-     * @return array|object|void|null
-     * @throws \ImagickException
+     * @return \WP_ERROR|array
      */
-    public static function upload($ProdId, $uploads, $mediaIds = array())
+    public static function upload($articleId, $articleType, $uploads)
     {
-
-        //Require resources
+        // Require resources
         require_once(ABSPATH . 'wp-admin/includes/image.php');
         require_once(ABSPATH . 'wp-admin/includes/file.php');
         require_once(ABSPATH . 'wp-admin/includes/media.php');
 
-        //Check if have file uploads
-        if (!is_array($uploads) || empty($uploads)) {
-            return;
-        }
-
-        if (is_array($uploads) && !empty($uploads)) {
-
-            foreach ($uploads as $upload) {
-
-                //Not a valid upload for some reason, move to next
-                if (self::checkUploadErrors($upload) === false) {
-                    continue;
-                }
-
-                //Check if a valid mime type
-                if (self::checkMimeType($upload) !== true) {
-                    continue;
-                }
-
-                //Move to correct location
-                $fileData = \wp_handle_upload($upload, array('test_form' => false));
-
-                // check dimension of file upload ( Unlink the image if it contains size errors)
-                $dimensionErrors = self::checkDimensions($ProdId, $fileData);
-
-                if ($dimensionErrors->error != null) {
-                    unlink($fileData['file']);
-                    return $dimensionErrors;
-                }
-
-                //Enter to WordPress media library
-                if (is_array($fileData) && !empty($fileData) && isset($fileData['file'])) {
-                    $mediaIds[] = \wp_insert_attachment(
-                        array(
-                            'post_title' => "",
-                            'post_content' => ""
-                        ),
-                        $fileData['file']
-                    );
-                }
+        // Check for errors
+        foreach ($uploads as $key => $upload) {
+            // Not a valid upload for some reason, move to next
+            if (self::checkUploadErrors($upload) === false) {
+                return new \WP_ERROR(
+                    'error',
+                    sprintf(__('The file: "%s" could not be uploaded.', 'modularity-resource-booking'), $upload['name'])
+                );
+            }
+            // Check if a valid mime type
+            if (self::checkMimeType($upload) !== true) {
+                return new \WP_ERROR(
+                    'error',
+                    sprintf(__('Invalid file type: "%s".', 'modularity-resource-booking'), $upload['name'])
+                );
             }
         }
 
-        //Return id's of uploaded media files
-        return array_filter($mediaIds);
+        // Get list of media requirements
+        $requiredDimensions = array();
+        if ($articleType === 'package') {
+            $requiredDimensions = Product::getPackageMediaRequirements($articleId);
+        } else {
+            $productRequirements = get_field('media_requirement', $articleId);
+            if (is_array($productRequirements) && !empty($productRequirements)) {
+                $requiredDimensions = $productRequirements;
+            }
+        }
+
+        // Validate dimensions if requirements is set
+        if (count($requiredDimensions) > 0) {
+            $checkDimensions = self::checkDimensions($requiredDimensions, $uploads);
+            if (is_wp_error($checkDimensions)) {
+                return $checkDimensions;
+            }
+        }
+
+        // Do the upload
+        $mediaIds = array();
+        foreach ($uploads as $upload) {
+            // Move to correct location
+            $fileData = \wp_handle_upload($upload, array('test_form' => false));
+
+            // Add to WordPress media library
+            if (is_array($fileData) && !empty($fileData) && isset($fileData['file'])) {
+                $mediaIds[] = \wp_insert_attachment(
+                    array(
+                        'post_title' => "",
+                        'post_content' => ""
+                    ),
+                    $fileData['file']
+                );
+            }
+        }
+
+        return $mediaIds;
     }
 
 
