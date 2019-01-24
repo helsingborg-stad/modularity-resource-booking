@@ -147,7 +147,7 @@ class MediaUpload
         }
 
         // Compare lists diff to validate dimensions
-        $diff = array_diff($requiredDimensions, $uploadedDimensions);
+        $diff = array_diff_assoc($requiredDimensions, $uploadedDimensions);
 
         if (!empty($diff)) {
             foreach ($diff as $key => &$item) {
