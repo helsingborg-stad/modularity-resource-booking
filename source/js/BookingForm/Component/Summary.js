@@ -20,7 +20,7 @@ class Summary extends React.Component {
 
         return (
             <div>
-                <table className="table">
+                <table className="table table--plain">
                     <thead>
                         <tr>
                             <th>{translation.product}</th>
