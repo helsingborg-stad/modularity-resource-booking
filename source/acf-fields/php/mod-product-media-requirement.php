@@ -19,7 +19,7 @@
                 'id' => '',
             ),
             'collapsed' => 'field_5bffb838f14ac',
-            'min' => 1,
+            'min' => 0,
             'max' => 1,
             'layout' => 'table',
             'button_label' => __('Lägg till materialkrav', 'modularity-resource-booking'),
