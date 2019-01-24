@@ -18,7 +18,12 @@ class Files extends React.Component {
                     return (
                         <div className="form-group" key={media['media_name'] + '-' + index}>
                             <label htmlFor={media['media_name'] + '-' + index}>
-                                {media['media_name']}
+                                {media['media_name'] +
+                                    ' (' +
+                                    media['image_width'] +
+                                    'x' +
+                                    media['image_height'] +
+                                    ')'}
                             </label>
                             <input
                                 className="form-input"
