@@ -4,7 +4,11 @@ namespace ModularityResourceBooking\Module;
 
 class PackageMap extends \Modularity\Module
 {
+<<<<<<< Updated upstream
     public $slug = 'rb-package-map';
+=======
+    public $slug = 'resource-booking-package-map';
+>>>>>>> Stashed changes
     public $supports = array();
 
     public function init()
@@ -31,7 +35,11 @@ class PackageMap extends \Modularity\Module
 
     public function script()
     {
+<<<<<<< Updated upstream
         if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/PackageMap/Index.js'))) {
+=======
+        if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/BookingForm/Index.js'))) {
+>>>>>>> Stashed changes
             // Enqueue react
             \Modularity\Helper\React::enqueue();
 
@@ -52,7 +60,10 @@ class PackageMap extends \Modularity\Module
 
     public function template()
     {
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         return 'package-map.blade.php';
     }
     /**
