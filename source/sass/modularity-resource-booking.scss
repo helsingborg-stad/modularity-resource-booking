@@ -9,20 +9,21 @@
  * Variables
  */
 $calendarMaxWidth: 900px;
-$calendarBackground: #ecf0f1;
+$calendarBackground: white;
 $calendarColor: black;
 $calendarGutter: 4px;
 
-$calendarBorderColor: white;
+$calendarBorderColor: #f4f4f4;
 
-$calendarHeaderBackground: #2c3e50;
+$calendarHeaderBackground: #ae0b05;
 $calendarHeaderColor: white;
 
-$cellBackground: #e5e1e1;
+$cellBackground: white;
 $cellColor: black;
 $cellOffRangeBackground: $calendarBackground;
 $cellOffRangeColor: darkgray;
-$cellEventBackground: #2980b9;
+
+$cellEventBackground: #cb0050;
 $cellEventColor: white;
 
 $eventBorderRadius: 4px;
@@ -50,7 +51,7 @@ $eventBorderRadius: 4px;
 
 .calendar__body {
     flex-direction: column;
-    height: 500px;
+    // height: 500px;
 }
 
 .calendar__week {
@@ -199,6 +200,7 @@ $eventBorderRadius: 4px;
     text-align: left;
     padding: 16px 8px;
     height: 100%;
+    font-size: 13px;
 }
 
 /**
@@ -217,7 +219,7 @@ $eventBorderRadius: 4px;
 }
 
 .calendar__event.is-active {
-    background-color: #2ecc71;
+    background-color: #11a636;
 }
 
 .calendar__event.is-disabled {
