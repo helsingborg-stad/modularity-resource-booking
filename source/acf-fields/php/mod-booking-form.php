@@ -67,7 +67,7 @@
             0 => array(
                 'param' => 'post_type',
                 'operator' => '==',
-                'value' => 'mod-resource-booking',
+                'value' => 'mod-rb-booking-form',
             ),
         ),
     ),

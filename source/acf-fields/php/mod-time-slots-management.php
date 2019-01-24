@@ -1,11 +1,9 @@
 <?php 
 
-
-if (function_exists('acf_add_local_field_group')) {
-
-    acf_add_local_field_group(array(
+if (function_exists('acf_add_local_field_group')) {
+    acf_add_local_field_group(array(
     'key' => 'group_5bed4d621923e',
-    'title' => __('Time Slots Management', 'modularity-resource-booking'),
+    'title' => 'Time Slots Management',
     'fields' => array(
         0 => array(
             'key' => 'field_5bed94b619d84',
@@ -26,14 +24,14 @@ if (function_exists('acf_add_local_field_group')) {
             ),
             'allow_null' => 0,
             'other_choice' => 0,
-            'default_value' => 'automatic',
+            'default_value' => __('automatic', 'modularity-resource-booking'),
             'layout' => 'horizontal',
             'return_format' => 'value',
             'save_other_choice' => 0,
         ),
         1 => array(
             'key' => 'field_5bed4e08b48ec',
-            'label' => __('Time slots', 'modularity-resource-booking'),
+            'label' => __('Schemaläggning', 'modularity-resource-booking'),
             'name' => 'mod_res_book_time_slots',
             'type' => 'repeater',
             'instructions' => '',
@@ -138,5 +136,4 @@ if (function_exists('acf_add_local_field_group')) {
     'active' => 1,
     'description' => '',
 ));
-
-}
+}

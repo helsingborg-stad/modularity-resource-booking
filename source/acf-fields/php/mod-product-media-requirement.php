@@ -7,7 +7,7 @@
     'fields' => array(
         0 => array(
             'key' => 'field_5bffb829f14ab',
-            'label' => __('Media requirement', 'modularity-resource-booking'),
+            'label' => __('Materialkrav', 'modularity-resource-booking'),
             'name' => 'media_requirement',
             'type' => 'repeater',
             'instructions' => '',
@@ -22,7 +22,7 @@
             'min' => 0,
             'max' => 10,
             'layout' => 'table',
-            'button_label' => __('Add media requirement', 'modularity-resource-booking'),
+            'button_label' => __('Lägg till materialkrav', 'modularity-resource-booking'),
             'sub_fields' => array(
                 0 => array(
                     'key' => 'field_5bffb838f14ac',

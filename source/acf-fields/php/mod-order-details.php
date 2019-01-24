@@ -3,7 +3,7 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5bed425d9abc2',
-    'title' => __('Order details', 'modularity-resource-booking'),
+    'title' => 'Order details',
     'fields' => array(
         0 => array(
             'key' => 'field_5bed431057e88',
@@ -47,7 +47,7 @@
             'type' => 'repeater',
             'instructions' => __('List of ordered articles.', 'modularity-resource-booking'),
             'required' => 0,
-            'conditional_logic' => 0,
+            'conditional_logic' => 1,
             'wrapper' => array(
                 'width' => '',
                 'class' => '',
@@ -77,7 +77,7 @@
                         'package' => __('Package', 'modularity-resource-booking'),
                     ),
                     'default_value' => array(
-                        0 => 'product',
+                        0 => __('product', 'modularity-resource-booking'),
                     ),
                     'allow_null' => 0,
                     'multiple' => 0,

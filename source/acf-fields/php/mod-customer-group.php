@@ -3,7 +3,7 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5bfe8d5fdeedd',
-    'title' => __('User Group', 'modularity-resource-booking'),
+    'title' => 'User Group',
     'fields' => array(
         0 => array(
             'key' => 'field_5bfe8eb5174c1',

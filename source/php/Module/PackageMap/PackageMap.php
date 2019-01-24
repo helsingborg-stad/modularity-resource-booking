@@ -4,7 +4,7 @@ namespace ModularityResourceBooking\Module;
 
 class PackageMap extends \Modularity\Module
 {
-    public $slug = 'resource-booking-package-map';
+    public $slug = 'rb-package-map';
     public $supports = array();
 
     public function init()
@@ -31,7 +31,7 @@ class PackageMap extends \Modularity\Module
 
     public function script()
     {
-        if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/BookingForm/Index.js'))) {
+        if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/PackageMap/Index.js'))) {
             // Enqueue react
             \Modularity\Helper\React::enqueue();
 
@@ -52,6 +52,7 @@ class PackageMap extends \Modularity\Module
 
     public function template()
     {
+
         return 'package-map.blade.php';
     }
     /**

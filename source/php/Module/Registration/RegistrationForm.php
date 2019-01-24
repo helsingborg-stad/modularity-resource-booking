@@ -4,7 +4,7 @@ namespace ModularityResourceBooking\Module;
 
 class RegistrationForm extends \Modularity\Module
 {
-    public $slug = 'registration-form';
+    public $slug = 'rb-reg-form';
     public $supports = array();
 
     public function init()

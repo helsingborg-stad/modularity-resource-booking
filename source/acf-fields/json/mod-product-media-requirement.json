@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_5bffb829f14ab",
-            "label": "Media requirement",
+            "label": "Materialkrav",
             "name": "media_requirement",
             "type": "repeater",
             "instructions": "",
@@ -19,7 +19,7 @@
             "min": 0,
             "max": 10,
             "layout": "table",
-            "button_label": "Add media requirement",
+            "button_label": "L\u00e4gg till materialkrav",
             "sub_fields": [
                 {
                     "key": "field_5bffb838f14ac",

@@ -4,7 +4,7 @@ namespace ModularityResourceBooking\Module;
 
 class OrderHistory extends \Modularity\Module
 {
-    public $slug = 'order-history';
+    public $slug = 'rb-order-history';
     public $supports = array();
 
     public function init()

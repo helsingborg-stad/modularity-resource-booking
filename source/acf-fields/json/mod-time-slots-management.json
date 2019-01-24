@@ -28,7 +28,7 @@
         },
         {
             "key": "field_5bed4e08b48ec",
-            "label": "Time slots",
+            "label": "Schemal\u00e4ggning",
             "name": "mod_res_book_time_slots",
             "type": "repeater",
             "instructions": "",
@@ -133,4 +133,4 @@
     "active": 1,
     "description": ""
 }]
-
+

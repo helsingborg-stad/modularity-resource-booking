@@ -4,7 +4,7 @@ namespace ModularityResourceBooking\Module;
 
 class BookingForm extends \Modularity\Module
 {
-    public $slug = 'resource-booking-form';
+    public $slug = 'rb-booking-form';
     public $supports = array();
 
     public function init()

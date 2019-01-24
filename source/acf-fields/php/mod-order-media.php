@@ -3,7 +3,7 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5bffbfe266f20',
-    'title' => __('Attached order media', 'modularity-resource-booking'),
+    'title' => 'Attached order media',
     'fields' => array(
         0 => array(
             'key' => 'field_5bffbfed18455',

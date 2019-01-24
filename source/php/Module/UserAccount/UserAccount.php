@@ -4,7 +4,7 @@ namespace ModularityResourceBooking\Module;
 
 class UserAccount extends \Modularity\Module
 {
-    public $slug = 'user-account';
+    public $slug = 'rb-user-account';
     public $supports = array();
 
     public function init()

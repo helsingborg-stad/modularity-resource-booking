@@ -3,7 +3,7 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5c360bf77a6cf',
-    'title' => __('Status Change Actions', 'modularity-resource-booking'),
+    'title' => 'Status Change Actions',
     'fields' => array(
         0 => array(
             'key' => 'field_5c360bffe82b6',

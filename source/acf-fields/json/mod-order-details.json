@@ -44,7 +44,7 @@
             "type": "repeater",
             "instructions": "List of ordered articles.",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": 1,
             "wrapper": {
                 "width": "",
                 "class": "",
