@@ -351,38 +351,36 @@ class Orders
             );
         }
 
-        if (is_array($orderArticles) && !empty($orderArticles)) {
-            foreach ($orderArticles as $key => &$item) {
-                $itemData = (array)json_decode(stripslashes(html_entity_decode($item)));
+        foreach ($orderArticles as $key => &$item) {
+            $itemData = (array)json_decode(stripslashes(html_entity_decode($item)));
 
-                // Get list of product objects
-                $products = TimeSlots::getProductsByArticle($itemData['article_id'], $itemData['type']);
-                if (empty($products)) {
-                    return new \WP_REST_Response(
-                        array(
-                            'message' => __('No articles could be found with \'article_id\': ' . $itemData['article_id'], 'modularity-resource-booking'),
-                            'state' => 'error'
-                        ),
-                        400
-                    );
-                }
-                $articleStock = TimeSlots::getArticleSlotStock($products, $itemData['type'], $itemData['slot_id'], $groupMembers, $groupLimit);
-                if ($articleStock['available_stock'] !== null && $articleStock['available_stock'] <= 0) {
-                    return new \WP_REST_Response(
-                        array(
-                            'message' => __('Out of stock for \'article_id\': ' . $itemData['article_id'], 'modularity-resource-booking'),
-                            'state' => 'error'
-                        ),
-                        403
-                    );
-                }
-
-                $item = array(
-                    'field_5c122674bc676' => $itemData['type'] ?? null,
-                    'field_5bed43f2bf1f2' => $itemData['article_id'] ?? null,
-                    'field_5c0fc17caefa5' => $itemData['slot_id'] ?? null,
+            // Get list of product objects
+            $products = TimeSlots::getProductsByArticle($itemData['article_id'], $itemData['type']);
+            if (empty($products)) {
+                return new \WP_REST_Response(
+                    array(
+                        'message' => __('No articles could be found with \'article_id\': ' . $itemData['article_id'], 'modularity-resource-booking'),
+                        'state' => 'error'
+                    ),
+                    400
                 );
             }
+            $articleStock = TimeSlots::getArticleSlotStock($products, $itemData['type'], $itemData['slot_id'], $groupMembers, $groupLimit);
+            if ($articleStock['available_stock'] !== null && $articleStock['available_stock'] <= 0) {
+                return new \WP_REST_Response(
+                    array(
+                        'message' => __('Out of stock for \'article_id\': ' . $itemData['article_id'], 'modularity-resource-booking'),
+                        'state' => 'error'
+                    ),
+                    403
+                );
+            }
+
+            $item = array(
+                'field_5c122674bc676' => $itemData['type'] ?? null,
+                'field_5bed43f2bf1f2' => $itemData['article_id'] ?? null,
+                'field_5c0fc17caefa5' => $itemData['slot_id'] ?? null,
+            );
         }
 
         $orderId = strtoupper(substr(md5(microtime()), rand(0, 26), 8));
@@ -395,9 +393,26 @@ class Orders
             'post_author' => self::$userId
         );
 
-        //Prepend id if proveided (converted to update)
+        // Prepend id if provided (converted to update)
         if (is_numeric($request->get_param('id')) && get_post_type($request->get_param('id')) == "purchase") {
             $postItem = array('ID' => $request->get_param('id')) + $postItem;
+        }
+
+        // Upload media files
+        $mediaItems = array();
+        if (is_array($_FILES) && !empty($_FILES)) {
+            $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($orderArticles[0]['field_5bed43f2bf1f2'], $orderArticles[0]['field_5c122674bc676'], $_FILES);
+
+            if (is_wp_error($mediaItems)) {
+                return new \WP_REST_Response(
+                    array(
+                        'message' => $mediaItems->get_error_message(),
+                        'state' => $mediaItems->get_error_code(),
+                        'data' => $mediaItems->get_error_data(),
+                    ),
+                    400
+                );
+            }
         }
 
         //Make insert
@@ -410,45 +425,8 @@ class Orders
                     'message' => __('Bummer, something went wrong.', 'modularity-resource-booking'),
                     'state' => 'error'
                 ),
-                201
+                400
             );
-        }
-
-        if (is_array($orderArticles) && !empty($orderArticles)) {
-            for ($int=0; $int < count($orderArticles); $int++) {
-                if (isset($orderArticles[$int]['field_5c122674bc676']) && !empty($orderArticles[$int]['field_5c122674bc676']) && $orderArticles[$int]['field_5c122674bc676'] === 'package') {
-                    $productIds = TimeSlots::getProductsByPackage($orderArticles[$int]['field_5bed43f2bf1f2']);
-
-                    foreach ($productIds as $prodId) {
-                        $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
-
-                        if (is_object($mediaItems) && $mediaItems->error != null) {
-                            return new \WP_REST_Response(
-                                array(
-                                    'message' => $mediaItems->error,
-                                    'state' => 'error'
-                                ),
-                                201
-                            );
-                        }
-                    }
-
-                } else {
-
-                    $prodId = $orderArticles[$int]['field_5bed43f2bf1f2'];
-                    $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($prodId, $_FILES);
-
-                    if (is_object($mediaItems) && $mediaItems->error != null) {
-                        return new \WP_REST_Response(
-                            array(
-                                'message' => $mediaItems->error,
-                                'state' => 'error'
-                            ),
-                            201
-                        );
-                    }
-                }
-            }
         }
 
         // Save order items to repeater field
