@@ -308,7 +308,7 @@ class TimeSlots
             }
 
             // Calculate available stock
-            $availableStock = $stock - count($orders);
+            $availableStock = (int)$stock - count($orders);
 
             // Calculate stock if limit is set
             if ($groupLimit !== null && $groupLimit != 0) {
