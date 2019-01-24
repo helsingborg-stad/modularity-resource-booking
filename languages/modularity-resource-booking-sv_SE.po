@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-22 16:04+0100\n"
-"PO-Revision-Date: 2019-01-22 16:05+0100\n"
+"POT-Creation-Date: 2019-01-24 09:15+0100\n"
+"PO-Revision-Date: 2019-01-24 09:16+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -112,6 +112,22 @@ msgstr "Ekonomi E-post"
 msgid "Where to send automatically generated invoices."
 msgstr "Var automatiskt genererade fakturor skall skickas."
 
+#: source/acf-fields/php/mod-group-settings.php:6
+#: source/acf-fields/php/mod-package-details.php:71
+#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:160
+msgid "Customer group"
+msgstr "Kundgrupp"
+
+#: source/acf-fields/php/mod-group-settings.php:10
+msgid "Slot limit"
+msgstr "Bokningsgräns per tidsperiod"
+
+#: source/acf-fields/php/mod-group-settings.php:13
+msgid "Enter a slot limit for the group. Leave empty if limit is unlimited."
+msgstr ""
+"Ange en bokningsgräns för gruppen under en tidsperiod. Lämna tom för att "
+"inte lägga en begränsning. "
+
 #: source/acf-fields/php/mod-order-details.php:6
 msgid "Order details"
 msgstr "Detaljer för order"
@@ -124,7 +140,7 @@ msgstr "Order ID"
 msgid "{{ORDER_ID}}"
 msgstr ""
 
-#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:128
+#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:134
 #: source/php/Orders.php:324
 msgid "Customer"
 msgstr "Kund"
@@ -148,6 +164,7 @@ msgid "The article type."
 msgstr "Artikeltyp"
 
 #: source/acf-fields/php/mod-order-details.php:76
+#: source/php/Module/BookingForm/BookingForm.php:48
 #: source/php/Module/OrderHistory/OrderHistory.php:49 source/php/Orders.php:261
 msgid "Product"
 msgstr "Produkt"
@@ -272,11 +289,6 @@ msgstr "Lägg till prisvariant"
 msgid "Product price"
 msgstr "Produktens pris"
 
-#: source/acf-fields/php/mod-package-details.php:71
-#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:154
-msgid "Customer group"
-msgstr "Kundgrupp"
-
 #: source/acf-fields/php/mod-product-details.php:6
 msgid "Product details"
 msgstr "Produktdetaljer"
@@ -387,10 +399,12 @@ msgid "Time slots"
 msgstr "Schemaläggning"
 
 #: source/acf-fields/php/mod-time-slots-management.php:63
+#: source/php/Module/BookingForm/BookingForm.php:46
 msgid "Start date"
 msgstr "Startdatum"
 
 #: source/acf-fields/php/mod-time-slots-management.php:80
+#: source/php/Module/BookingForm/BookingForm.php:47
 msgid "End date"
 msgstr "Slutdatum"
 
@@ -414,7 +428,7 @@ msgstr "Glnr (e-fakturanummer)"
 msgid "VAT-Number"
 msgstr "Momsreg Nr"
 
-#: source/php/Api/Customer.php:24 source/php/Customer.php:89
+#: source/php/Api/Customer.php:24 source/php/Customer.php:95
 #: source/php/Module/Registration/RegistrationForm.php:50
 #: source/php/Module/UserAccount/UserAccount.php:71
 msgid "Phone number"
@@ -580,7 +594,7 @@ msgstr "Din beställning har tagits bort."
 msgid "Could not remove that order due to an unknown error."
 msgstr "Kunde inte ta bort din beställning på grund av ett okänt fel."
 
-#: source/php/Api/Products.php:149
+#: source/php/Api/Products.php:170 source/php/Api/Products.php:223
 msgid "Could not find any package with that id."
 msgstr "Kunde inte hitta något paket på det indetifikationsnumret som angavs."
 
@@ -592,7 +606,7 @@ msgstr "Hittade inget resultat"
 msgid "USD"
 msgstr "SEK"
 
-#: source/php/Customer.php:34
+#: source/php/Customer.php:40
 msgid ""
 "Your account has not been enabled yet, please wait for a activation notice "
 "in your email inbox."
@@ -600,11 +614,11 @@ msgstr ""
 "Ditt konto har inte aktiverats än, vänta vänta på ett aktiveringsmeddelande "
 "i din e-postbrevlåda."
 
-#: source/php/Customer.php:53
+#: source/php/Customer.php:59
 msgid "Activated account"
 msgstr "Aktiverat konto"
 
-#: source/php/Customer.php:54
+#: source/php/Customer.php:60
 msgid ""
 "Your account has now been verified by one of our managers. You can now "
 "proceed to make a new reservation for a spot."
@@ -612,31 +626,31 @@ msgstr ""
 "Ditt konto har nu verifierats av en av våra administratörer. Du kan nu "
 "fortsätta göra en ny bokning för en plats."
 
-#: source/php/Customer.php:57
+#: source/php/Customer.php:63
 msgid "Account owner:"
 msgstr "kontoinnehavare"
 
-#: source/php/Customer.php:61
+#: source/php/Customer.php:67
 msgid "Registered email:"
 msgstr "Registrerad e-post:"
 
-#: source/php/Customer.php:65
+#: source/php/Customer.php:71
 msgid "Registered phone:"
 msgstr "Registrerad telefon:"
 
-#: source/php/Customer.php:69
+#: source/php/Customer.php:75
 msgid "Registered company:"
 msgstr "Registrerat företag:"
 
-#: source/php/Customer.php:73
+#: source/php/Customer.php:79
 msgid "Registered company number:"
 msgstr "Registrerat org.nr"
 
-#: source/php/Customer.php:153
+#: source/php/Customer.php:159
 msgid "Customer groups"
 msgstr "Kundgrupper"
 
-#: source/php/Customer.php:183
+#: source/php/Customer.php:189
 msgid "Your account is not verified yet."
 msgstr "Ditt konto har inte verifierats ännu."
 
@@ -801,6 +815,22 @@ msgstr "Resursbokningsformulär"
 #: source/php/Module/BookingForm/BookingForm.php:14
 msgid "Outputs a form for booking resources."
 msgstr "Visar ett formulär för bokning av resurser."
+
+#: source/php/Module/BookingForm/BookingForm.php:45
+msgid "excl. vat"
+msgstr "exkl. moms"
+
+#: source/php/Module/BookingForm/BookingForm.php:49
+msgid "Total"
+msgstr "Totalt"
+
+#: source/php/Module/BookingForm/BookingForm.php:50
+msgid "Go back"
+msgstr "Gå tillbaka"
+
+#: source/php/Module/BookingForm/BookingForm.php:51
+msgid "Order"
+msgstr "Order"
 
 #: source/php/Module/BookingForm/views/booking-form.blade.php:19
 #: source/php/Module/OrderHistory/views/order-history.blade.php:19
