@@ -22,7 +22,14 @@ class BookingForm extends React.Component {
         this.state = {
             selectedSlots: [],
             calendarView: true,
-            files: props.mediaRequirements
+            files: props.mediaRequirements,
+
+            //Notice
+            notice: '',
+            noticeType: '',
+
+            //Lock input
+            lockInput: false
         };
 
         this.handleClickEvent = this.handleClickEvent.bind(this);
