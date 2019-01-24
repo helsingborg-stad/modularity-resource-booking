@@ -14,7 +14,9 @@ class App {
         this.mediaRequirements = [];
         this.slots = [];
 
-        this.fetchData();
+        this.fetchData().then(() => {
+            this.init();
+        });
     }
 
     /**
@@ -22,8 +24,9 @@ class App {
      * @return {void}
      */
     fetchData() {
-        getArticle(article_id, article_type)
+        return getArticle(article_id, article_type)
             .then(article => {
+                //Article data
                 this.articlePrice = article[0].price;
                 this.mediaRequirements = article[0].media_requirements.map(mediaObject => {
                     let media = mediaObject;
@@ -33,33 +36,30 @@ class App {
                 });
                 this.articleName = article[0].title;
 
-                getSlots(article_id, article_type, user_id)
+                return getSlots(article_id, article_type, user_id)
                     .then(slots => {
+                        //Map slots
                         this.slots = slots.map(slotData => {
                             let slot = slotData;
-                            slot.start = dateFns.parse(slotData.start);
-                            slot.stop = dateFns.parse(slotData.stop);
-                            slot.articleName = this.articleName;
-                            slot.articlePrice = this.articlePrice;
+                            slot['start'] = dateFns.parse(slotData.start);
+                            slot['stop'] = dateFns.parse(slotData.stop);
+                            slot['articleName'] = this.articleName;
+                            slot['articlePrice'] = this.articlePrice;
 
-                            slotData.title =
-                                this.articleName +
-                                ' (' +
-                                dateFns.format(slot.start, 'DD-MM-YYYY') +
-                                ' - ' +
-                                dateFns.format(slot.stop, 'DD-MM-YYYY') +
-                                ')';
+                            slotData.title = 'Vecka ' + dateFns.getISOWeek(slot.start);
 
                             return slot;
                         });
 
-                        this.init();
+                        return slots;
                     })
                     .catch(result => {
+                        console.log(result);
                         console.log('Failed to fetch slots');
                     });
             })
             .catch(result => {
+                console.log(result);
                 console.log('Failed to fetch article');
             });
     }
