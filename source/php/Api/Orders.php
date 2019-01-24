@@ -301,7 +301,6 @@ class Orders
      * Create a new order
      * @param object $request Object containing request details
      * @return \WP_REST_Response|bool
-     * @throws \ImagickException
      */
     public function create($request)
     {

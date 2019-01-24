@@ -103,7 +103,7 @@ class MediaUpload
                     if (!extension_loaded('imagick')) {
                         return new \WP_ERROR(
                             'error',
-                            __('Imagick not installed".', 'modularity-resource-booking')
+                            __('Imagick not installed.', 'modularity-resource-booking')
                         );
                     }
                     try {
@@ -114,7 +114,7 @@ class MediaUpload
                     } catch (\ImagickException $e) {
                         return new \WP_ERROR(
                             'error',
-                            __('Imagick error".', 'modularity-resource-booking')
+                            __('Imagick failed to get file dimensions.', 'modularity-resource-booking')
                         );
                     }
                     break;
@@ -151,7 +151,7 @@ class MediaUpload
 
         if (!empty($diff)) {
             foreach ($diff as $key => &$item) {
-                $item = sprintf(__('Your file has wrong dimensions, (%s). Please upload a file with following dimensions: %s', 'modularity-resource-booking'), $uploadedDimensions[$key], $requiredDimensions[$key]);
+                $item = sprintf(__('Your file has wrong dimensions: %spx. Please upload a file with following dimensions: %spx.', 'modularity-resource-booking'), $uploadedDimensions[$key], $requiredDimensions[$key]);
             }
             // Return list of all files that failed validation
             return new \WP_ERROR(
