@@ -36,10 +36,10 @@ class BookingForm extends React.Component {
         this.handleEventClassName = this.handleEventClassName.bind(this);
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
-        this.createOrder = this.createOrder.bind(this);
+        this.submitOrder = this.submitOrder.bind(this);
     }
 
-    createOrder() {
+    submitOrder() {
         const { articleType, articleId } = this.props;
         const { selectedSlots, files } = this.state;
 
@@ -59,7 +59,7 @@ class BookingForm extends React.Component {
             })
             .catch(result => {
                 console.log(result);
-                console.log('createOrder() in BookingForm.js failed');
+                console.log('submitOrder() in BookingForm.js failed');
             });
     }
 
@@ -208,7 +208,7 @@ class BookingForm extends React.Component {
 
                 {selectedSlots.length > 0 &&
                 files.filter(media => media.file !== null).length === files.length ? (
-                    <Button color="primary" onClick={this.createOrder}>
+                    <Button color="primary" onClick={this.submitOrder}>
                         {translation.order}
                     </Button>
                 ) : null}
