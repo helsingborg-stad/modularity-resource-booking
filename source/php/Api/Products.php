@@ -54,6 +54,27 @@ class Products
             )
         );
 
+        //Get single package pins
+        register_rest_route(
+            "ModularityResourceBooking/v1",
+            "PackagePins/(?P<id>[\d]+)",
+            array(
+                'methods' => \WP_REST_Server::READABLE,
+                'callback' => array($this, 'getPackagePins'),
+                'args' => array(
+                    'id' => array(
+                        'validate_callback' => function ($param, $request, $key) {
+                            return is_numeric($param);
+                        },
+                        'sanitize_callback' =>'absint',
+                        'required' => true,
+                        'type' => 'integer',
+                        'description' => 'The package id.'
+                    ),
+                ),
+            )
+        );
+
         //Get single package
         register_rest_route(
             "ModularityResourceBooking/v1",
@@ -140,6 +161,59 @@ class Products
         if ($term = get_term($request->get_param('id'), 'product-package')) {
             return new \WP_REST_Response(
                 $this->filterTaxonomyOutput($term),
+                200
+            );
+        }
+
+        return new \WP_REST_Response(
+            array(
+                'message' => __('Could not find any package with that id.', 'modularity-resource-booking'),
+                'state' => 'error'
+            ), 404
+        );
+    }
+
+    /**
+     * Get package pins
+     *
+     * @param object $request Object containing request details
+     *
+     * @return WP_REST_Response
+     */
+    public function getPackagePins($request)
+    {
+        if ($term = get_term($request->get_param('id'), 'product-package')) {
+
+            $postData = get_posts(
+                array(
+                    'posts_per_page' => -1,
+                    'post_type' => 'product',
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'product-package',
+                            'field' => 'term_id',
+                            'terms' => $term->term_id,
+                        )
+                    )
+                )
+            ); 
+
+            if (is_object($postData) && !is_array($postData)) {
+                $postData = array($postData);
+            }
+    
+            if (is_array($postData) && !empty($postData)) {
+                foreach ($postData as $postitem) {
+                    $result[] = array(
+                        'id' => (int) $postitem->ID,
+                        'title' => (string) $postitem->post_title,
+                        'location' => get_field('product_location', $postitem->ID),
+                    );
+                }
+            }
+
+            return new \WP_REST_Response(
+                $result,
                 200
             );
         }
