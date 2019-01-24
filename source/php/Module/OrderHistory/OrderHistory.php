@@ -59,6 +59,11 @@ class OrderHistory extends \Modularity\Module
         }
     }
 
+    public function template() 
+    {
+        return 'order-history.blade.php'; 
+    }
+
     /**
      * Available "magic" methods for modules:
      * init()            What to do on initialization (if you must, use __construct with care, this will probably break stuff!!)

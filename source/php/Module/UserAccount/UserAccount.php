@@ -89,6 +89,11 @@ class UserAccount extends \Modularity\Module
         }
     }
 
+    public function template() 
+    {
+        return 'user-account.blade.php'; 
+    }
+
     /**
      * Available "magic" methods for modules:
      * init()            What to do on initialization (if you must, use __construct with care, this will probably break stuff!!)

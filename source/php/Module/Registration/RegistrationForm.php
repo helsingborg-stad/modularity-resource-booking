@@ -65,6 +65,11 @@ class RegistrationForm extends \Modularity\Module
         }
     }
 
+    public function template() 
+    {
+        return 'registration-form.blade.php'; 
+    }
+
     /**
      * Available "magic" methods for modules:
      * init()            What to do on initialization (if you must, use __construct with care, this will probably break stuff!!)
