@@ -82,6 +82,89 @@ class MediaUpload
         return $mediaIds;
     }
 
+    /**
+     * Check if uploaded files has correct dimensions
+     * @param array  $requiredDimensions List with required file dimensions
+     * @param object $files              Object with uploaded files
+     * @return bool|\WP_ERROR
+     */
+    public static function checkDimensions($requiredDimensions, $files)
+    {
+        // Remap requirements array with single value string of dimensions
+        $requiredDimensions = array_map(function ($requirement) {
+            return "{$requirement['image_width']}x{$requirement['image_height']}";
+        }, $requiredDimensions);
+
+        // Get list of the uploaded files dimensions
+        $uploadedDimensions = array();
+        foreach ($files as $key => $file) {
+            switch ($file['type']) {
+                case "application/pdf":
+                    if (!extension_loaded('imagick')) {
+                        return new \WP_ERROR(
+                            'error',
+                            __('Imagick not installed".', 'modularity-resource-booking')
+                        );
+                    }
+                    try {
+                        $imageMagick = new \Imagick($file['tmp_name']);
+                        $size = $imageMagick->getImageGeometry();
+                        $width = $size['width'] ?? '';
+                        $height = $size['height'] ?? '';
+                    } catch (\ImagickException $e) {
+                        return new \WP_ERROR(
+                            'error',
+                            __('Imagick error".', 'modularity-resource-booking')
+                        );
+                    }
+                    break;
+                case "video/mp4":
+                    $dimensions = \wp_read_video_metadata($file['tmp_name']);
+                    $width = $dimensions['width'] ?? '';
+                    $height = $dimensions['height'] ?? '';
+                    break;
+                case "image/png":
+                case "image/jpeg":
+                    $fileInfo = getimagesize($file['tmp_name']);
+                    $width = $fileInfo[0] ?? '';
+                    $height = $fileInfo[1] ?? '';
+                    break;
+                default:
+                    $width = '';
+                    $height = '';
+                    break;
+            }
+
+            $uploadedDimensions[] = "{$width}x{$height}";
+        }
+
+        // Check if correct amount of required files is uploaded
+        if (count($uploadedDimensions) !== count($requiredDimensions)) {
+            return new \WP_ERROR(
+                'error',
+                __('One or many required files is missing.', 'modularity-resource-booking')
+            );
+        }
+
+        // Compare lists diff to validate dimensions
+        $diff = array_diff($requiredDimensions, $uploadedDimensions);
+
+        if (!empty($diff)) {
+            foreach ($diff as $key => &$item) {
+                $item = sprintf(__('Your file has wrong dimensions, (%s). Please upload a file with following dimensions: %s', 'modularity-resource-booking'), $uploadedDimensions[$key], $requiredDimensions[$key]);
+            }
+            // Return list of all files that failed validation
+            return new \WP_ERROR(
+                'dimension-error',
+                __('Wrong file dimensions.', 'modularity-resource-booking'),
+                array(
+                    'invalid_dimensions' => $diff
+                )
+            );
+        }
+
+        return true;
+    }
 
     /**
      * @param $file
@@ -121,67 +204,5 @@ class MediaUpload
             return false;
         }
         return true;
-    }
-
-
-    /**
-     * @param $prodId int
-     * @param $fileData array
-     * @return object|null
-     * @throws \ImagickException
-     */
-    public static function checkDimensions($prodId, $fileData)
-    {
-        $rows = get_field('media_requirement', $prodId);
-        $error = (object) array('error' => null);
-
-        if ($rows) {
-            foreach ($rows as $row) {
-
-                $widthFromProduct = $row['image_width'];
-                $heightFromProduct = $row['image_height'];
-
-                $format = pathinfo($fileData['file']);
-
-                $dimensions = $widthFromProduct . 'px x ' . $widthFromProduct . 'px';
-                $errorStr = sprintf(__('Your image: %s, size: ({width}px x {height}px), has wrong dimensions.', 'modularity-resource-booking'), basename($fileData['url']));
-                $errorStr .= sprintf(__(' Please upload image with following dimensions: %s' , 'modularity-resource-booking'), $dimensions);
-
-                switch ($format['extension']) {
-
-                    case "pdf":
-
-                        if (!extension_loaded('imagick')) {
-                            $error->error = 'imagick not installed';
-                            return $error;
-                        }
-
-                        $imageMagick = new \Imagick($fileData['file']);
-                        $size = $imageMagick->getImageGeometry();
-                        $error->size = ($size['width'] == $widthFromProduct && $size['height'] == $heightFromProduct) ? false : true;
-                        $message = str_replace('{width}', $size['width'], str_replace('{height}', $size['height'], $errorStr));
-                        $error->error = ($error->size) ? sprintf(__('Error! %s', 'modularity-resource-booking'), $message) : null;
-
-                        return $error;
-                        break;
-
-                    case "mp4":
-                        return null;
-                        break;
-
-                    default:
-
-                        $size = getimagesize($fileData['file']);
-                        $error->size = ($size[0] == $widthFromProduct && $size[1] == $heightFromProduct) ? false : true;
-                        $message = str_replace('{width}', $size[0], str_replace('{height}', $size[1], $errorStr));
-                        $error->error = ($error->size) ? sprintf(__('Error! %s', 'modularity-resource-booking'), $message) : null;
-
-                        return $error;
-                        break;
-                }
-            }
-        } else {
-            return $error;
-        }
     }
 }
