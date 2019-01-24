@@ -253,4 +253,47 @@ $eventBorderRadius: 4px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative;
 }
+
+
+.calendar__event.calendar__event--action {
+    .calendar__event_content,
+    .calendar__event_hidden,
+    .calendar__event_hidden_right {
+        transition: transform 150ms ease;
+    }
+
+    .calendar__event_content {
+        display: inline-block;
+    }
+
+    .calendar__event_hidden {
+        position: absolute;
+        left: 8px;
+    }
+
+    //Initial states
+    .calendar__event_content {
+        transform: translateY(0);
+    }
+
+    .calendar__event_hidden {
+        transform: translateY(-120%);
+    }
+
+    //Hover states
+    &:hover .calendar__event_hidden {
+        transform: translateY(0);
+    }
+
+    &:hover .calendar__event_content {
+        transform: translateY(120%);
+    }
+}
+
+
+.calendar__event--slot.is-disabled {
+    cursor: not-allowed;
+}
+

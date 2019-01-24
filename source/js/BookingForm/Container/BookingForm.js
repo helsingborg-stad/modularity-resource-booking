@@ -5,6 +5,7 @@ import dateFns from 'date-fns';
 import Summary from '../Component/Summary';
 import Files from '../Component/Files';
 import { createOrder } from '../../Api/orders';
+import classNames from 'classnames';
 
 class BookingForm extends React.Component {
     static propTypes = {
@@ -37,6 +38,7 @@ class BookingForm extends React.Component {
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
         this.submitOrder = this.submitOrder.bind(this);
+        this.handleEventContent = this.handleEventContent.bind(this);
     }
 
     submitOrder() {
@@ -61,6 +63,37 @@ class BookingForm extends React.Component {
                 console.log(result);
                 console.log('submitOrder() in BookingForm.js failed');
             });
+    }
+
+    /**
+     * Callback for customizing event content, fires once for each event
+     * @param  {object} event Event object data
+     * @return {jsx} React Component object
+     */
+    handleEventContent(event) {
+        const {selectedSlots} = this.state;
+        let disabled = !event['unlimited_stock'] && event['available_stock'] <= 0 ? true : false;
+        let exists = selectedSlots.includes(event.id) ? true : false;
+
+        if (disabled) {
+            return event.title;
+        }
+
+        return (
+            <div>
+                <span className="calendar__event_content">{event.title}</span>
+                <span className="calendar__event_hidden">
+                    <i className={classNames(
+                        'pricon',
+                        {
+                            'pricon-minus-o': exists,
+                            'pricon-plus-o': !exists
+                        }
+                    )}></i>
+                    {!exists ? ' Lägg till ' : ' Ta bort '}
+                </span>
+            </div>
+        );
     }
 
     /**
@@ -109,6 +142,8 @@ class BookingForm extends React.Component {
     handleEventClassName(event) {
         const { selectedSlots } = this.state;
         let classes = [];
+
+        classes.push('calendar__event--slot');
 
         if (
             (event['unlimited_stock'] && event['available_stock'] === null) ||
@@ -170,6 +205,7 @@ class BookingForm extends React.Component {
                         events={avalibleSlots}
                         onClickEvent={this.handleClickEvent}
                         eventClassName={this.handleEventClassName}
+                        eventContent={this.handleEventContent}
                     />
                 ) : null}
 
