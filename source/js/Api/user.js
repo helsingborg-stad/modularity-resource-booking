@@ -52,7 +52,7 @@ const createUser = user => {
         });
 };
 
-const updateUser = user => {
+const updateUser = (user, restUrl, nonce = '') => {
     const {
         id,
         email,
@@ -68,7 +68,6 @@ const updateUser = user => {
         glnrNumber,
         vatNumber,
     } = user;
-    const { translation, restUrl } = modUserAccount;
 
     let url = restUrl + 'ModularityResourceBooking/v1/ModifyUser/' + id;
     let formData = new FormData();
@@ -95,6 +94,9 @@ const updateUser = user => {
     let options = {
         method: 'POST',
         body: formData,
+        headers: {
+            'X-WP-NONCE': nonce,
+        },
     };
 
     return fetch(url, options)

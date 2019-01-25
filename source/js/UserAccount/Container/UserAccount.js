@@ -54,6 +54,7 @@ class UserAccount extends React.Component {
     handleFormSubmit(e) {
         e.preventDefault();
         const { user, lockInput } = this.state;
+        const { restUrl, nonce } = this.props;
 
         if (lockInput) {
             return;
@@ -64,7 +65,7 @@ class UserAccount extends React.Component {
             lockInput: true,
         });
 
-        updateUser(user)
+        updateUser(user, restUrl, nonce)
             .then(response => {
                 //Succesfully created user
                 this.setState({

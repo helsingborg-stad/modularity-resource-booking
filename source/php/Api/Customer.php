@@ -420,22 +420,24 @@ class Customer
     /**
      * Check that the current user is the ower of the current account
      *
-     * @param integer $userId The order to remove
+     * @param object $request Request object
      *
      * @return bool
      */
-    public function canUpdateUser($userId) : bool
+    public function canUpdateUser($request) : bool
     {
+        $userId = (int)$request->get_param('id');
+
         //Bypass security, by constant
         if (RESOURCE_BOOKING_DISABLE_SECURITY) {
             return true;
         }
 
-        if (is_super_admin()) {
+        if (is_user_logged_in() && is_super_admin()) {
             return true;
         }
 
-        if (self::$userId === $userId) {
+        if (is_user_logged_in() && self::$userId === $userId) {
             return true;
         }
 
