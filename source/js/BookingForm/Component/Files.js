@@ -33,6 +33,7 @@ class Files extends React.Component {
                                           }
                                         : null
                                 }
+                                data-max-filesize={media['maxiumum_filesize']}
                                 required
                             />
                             <ul className="unlist">
