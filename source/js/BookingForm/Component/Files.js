@@ -20,12 +20,17 @@ class Files extends React.Component {
                             <label htmlFor={media['media_name'] + '-' + index}>
                                 {media['media_name']}
                             </label>
+
                             <input
                                 className="form-input"
                                 id={media['media_name'] + '-' + index}
                                 name={media['media_name'] + '-' + index}
                                 type="file"
-                                accept={media['file_types'].length > 0 ? media['file_types'].join(', ') : null}
+                                accept={
+                                    media['file_types'].length > 0
+                                        ? media['file_types'].join(', ')
+                                        : null
+                                }
                                 onChange={
                                     typeof onFileUpload === 'function'
                                         ? e => {
