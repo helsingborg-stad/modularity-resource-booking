@@ -301,18 +301,18 @@ class UserAccount extends React.Component {
                         />
                     </div>
 
+                    {notice.length > 0 && (
+                        <div className="grid-xs-12">
+                            <Notice type={noticeType} icon>
+                                {notice}
+                            </Notice>
+                        </div>
+                    )}
+
                     <div className="grid-xs-12 u-mt-4">
                         <Button color="primary" title={translation.save} submit {...commonProps} />
                     </div>
                 </form>
-
-                {notice.length > 0 && (
-                    <div className="u-mt-2">
-                        <Notice type={noticeType} icon>
-                            {notice}
-                        </Notice>
-                    </div>
-                )}
             </div>
         );
     }
