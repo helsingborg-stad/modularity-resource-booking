@@ -100,11 +100,9 @@ const updateUser = (user, restUrl, nonce = '') => {
     };
 
     return fetch(url, options)
+        .then(response => response.json())
         .then(response => {
-            return response.json();
-        })
-        .then(response => {
-            if (response.state == 'error') {
+            if (typeof response.state === 'undefined' || response.state === 'error') {
                 throw new Error(response.message);
             }
 

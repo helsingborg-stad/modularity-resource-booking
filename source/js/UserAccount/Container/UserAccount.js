@@ -21,7 +21,7 @@ class UserAccount extends React.Component {
         } = props.user;
 
         this.state = {
-            //User data
+            // User data
             user: {
                 id: id,
                 firstName: firstName,
@@ -39,11 +39,11 @@ class UserAccount extends React.Component {
                 glnrNumber: glnrNumber,
             },
 
-            //Notice
+            // Notice
             notice: '',
             noticeType: '',
 
-            //Lock input
+            // Lock input
             lockInput: false,
         };
 
@@ -60,14 +60,14 @@ class UserAccount extends React.Component {
             return;
         }
 
-        //Lock fields
+        // Lock fields
         this.setState({
             lockInput: true,
         });
 
         updateUser(user, restUrl, nonce)
             .then(response => {
-                //Succesfully created user
+                // Succesfully created user
                 this.setState({
                     lockInput: false,
                     notice: response.message,
@@ -75,10 +75,10 @@ class UserAccount extends React.Component {
                 });
             })
             .catch(error => {
-                //Failed to create user
+                // Failed to create user
                 this.setState({
                     lockInput: false,
-                    notice: error.toString(),
+                    notice: error.message,
                     noticeType: 'warning',
                 });
             });
