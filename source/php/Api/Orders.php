@@ -485,7 +485,8 @@ class Orders
                 'message' => sprintf(
                     __('Your order has been registered.', 'modularity-resource-booking')
                 ),
-                'order' => $this->filterorderOutput(get_post($insert))
+                'order' => $this->filterorderOutput(get_post($insert)),
+                'state' => 'success'
             ),
             201
         );
