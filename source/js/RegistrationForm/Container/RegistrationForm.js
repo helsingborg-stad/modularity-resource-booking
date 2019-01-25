@@ -41,6 +41,7 @@ class RegistrationForm extends React.Component {
     handleFormSubmit(e) {
         e.preventDefault();
         const { newUser, lockInput } = this.state;
+        const { restUrl } = this.props;
 
         if (lockInput) {
             return;
@@ -48,7 +49,7 @@ class RegistrationForm extends React.Component {
 
         this.setState({ lockInput: true, notice: '' });
 
-        createUser(newUser)
+        createUser(newUser, restUrl)
             .then(response => {
                 // Succesfully created user
                 this.setState({

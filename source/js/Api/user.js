@@ -1,7 +1,6 @@
-const createUser = user => {
-    const { translation, restUrl } = modRegistrationForm;
-    let url = restUrl + 'ModularityResourceBooking/v1/CreateUser';
-    let formData = new FormData();
+const createUser = (user, restUrl) => {
+    const url = `${restUrl}ModularityResourceBooking/v1/CreateUser`;
+    const formData = new FormData();
 
     const {
         email,
@@ -34,17 +33,15 @@ const createUser = user => {
     formData.append('billing_glnr_number', glnrNumber);
     formData.append('billing_vat_number', vatNumber);
 
-    let options = {
+    const options = {
         method: 'POST',
         body: formData,
     };
 
     return fetch(url, options)
+        .then(response => response.json())
         .then(response => {
-            return response.json();
-        })
-        .then(response => {
-            if (response.state == 'error') {
+            if (typeof response.state === 'undefined' || response.state == 'error') {
                 throw new Error(response.message);
             }
 
@@ -69,12 +66,12 @@ const updateUser = (user, restUrl, nonce = '') => {
         vatNumber,
     } = user;
 
-    let url = restUrl + 'ModularityResourceBooking/v1/ModifyUser/' + id;
-    let formData = new FormData();
+    const url = `${restUrl}ModularityResourceBooking/v1/ModifyUser/${id}`;
+    const formData = new FormData();
 
     formData.append('email', email);
 
-    if (typeof password != 'undefined' && password.length > 0) {
+    if (typeof password !== 'undefined' && password.length > 0) {
         formData.append('password', password);
     }
 
@@ -91,7 +88,7 @@ const updateUser = (user, restUrl, nonce = '') => {
     formData.append('billing_glnr_number', glnrNumber);
     formData.append('billing_vat_number', vatNumber);
 
-    let options = {
+    const options = {
         method: 'POST',
         body: formData,
         headers: {
@@ -111,6 +108,6 @@ const updateUser = (user, restUrl, nonce = '') => {
 };
 
 module.exports = {
-    createUser: createUser,
-    updateUser: updateUser,
+    createUser,
+    updateUser,
 };
