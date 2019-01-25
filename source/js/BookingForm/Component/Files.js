@@ -38,6 +38,7 @@ class Files extends React.Component {
                                           }
                                         : null
                                 }
+                                required
                             />
                         </div>
                     );
