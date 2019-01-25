@@ -14,10 +14,12 @@ class OrderHistory extends \Modularity\Module
         $this->description = __('Outputs a list of previous orders.', 'modularity-resource-booking');
     }
 
-    public function data() : array
+    public function data(): array
     {
         $data = get_fields($this->ID);
         $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array('box', 'box-panel'), $this->post_type, $this->args));
+        $data['nonce'] = wp_create_nonce('wp_rest');
+        $data['rest_url'] = get_rest_url();
 
         return $data;
     }
@@ -34,34 +36,30 @@ class OrderHistory extends \Modularity\Module
             // Enqueue module script
             wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/OrderHistory/Index.js'), array('jquery', 'react', 'react-dom'));
             wp_localize_script('modularity-' . $this->slug, 'modOrderHistory', array(
-                'translation' => array(
-                    'next' => __('Next', 'modularity-resource-booking'),
-                    'prev' => __('Previous', 'modularity-resource-booking'),
-                    'somethingWentWrong' => __('Something went wrong.', 'modularity-resource-booking'),
-                    'noOrdersFound' => __('No orders found.', 'modularity-resource-booking'),
-                    'orderNumber' => __('Order #', 'modularity-resource-booking'),
-                    'date' => __('Date', 'modularity-resource-booking'),
-                    'status' => __('Status', 'modularity-resource-booking'),
-                    'article' => __('Article', 'modularity-resource-booking'),
-                    'type' => __('Type', 'modularity-resource-booking'),
-                    'price' => __('Price', 'modularity-resource-booking'),
-                    'period' => __('Period', 'modularity-resource-booking'),
-                    'product' => __('Product', 'modularity-resource-booking'),
-                    'package' => __('Package', 'modularity-resource-booking'),
-                    'canceled' => __('Canceled', 'modularity-resource-booking'),
-                    'cancelOrder' => __('Cancel order', 'modularity-resource-booking'),
-                    'cancelOrderConfirm' => __('Do you really want to cancel this order?', 'modularity-resource-booking'),
-                    'cancelFailed' => __('The order could not be canceled. Please try again later.', 'modularity-resource-booking'),
-                ),
-                'restUrl' => get_rest_url(),
-                'nonce' => wp_create_nonce('wp_rest')
+                'next' => __('Next', 'modularity-resource-booking'),
+                'prev' => __('Previous', 'modularity-resource-booking'),
+                'somethingWentWrong' => __('Something went wrong.', 'modularity-resource-booking'),
+                'noOrdersFound' => __('No orders found.', 'modularity-resource-booking'),
+                'orderNumber' => __('Order #', 'modularity-resource-booking'),
+                'date' => __('Date', 'modularity-resource-booking'),
+                'status' => __('Status', 'modularity-resource-booking'),
+                'article' => __('Article', 'modularity-resource-booking'),
+                'type' => __('Type', 'modularity-resource-booking'),
+                'price' => __('Price', 'modularity-resource-booking'),
+                'period' => __('Period', 'modularity-resource-booking'),
+                'product' => __('Product', 'modularity-resource-booking'),
+                'package' => __('Package', 'modularity-resource-booking'),
+                'canceled' => __('Canceled', 'modularity-resource-booking'),
+                'cancelOrder' => __('Cancel order', 'modularity-resource-booking'),
+                'cancelOrderConfirm' => __('Do you really want to cancel this order?', 'modularity-resource-booking'),
+                'cancelFailed' => __('The order could not be canceled. Please try again later.', 'modularity-resource-booking'),
             ));
         }
     }
 
-    public function template() 
+    public function template()
     {
-        return 'order-history.blade.php'; 
+        return 'order-history.blade.php';
     }
 
     /**
