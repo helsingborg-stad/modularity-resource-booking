@@ -18,19 +18,19 @@ class Files extends React.Component {
                     return (
                         <div className="form-group" key={media['media_name'] + '-' + index}>
                             <label htmlFor={media['media_name'] + '-' + index}>
-                                {media['media_name'] +
-                                    ' (' +
-                                    media['image_width'] +
-                                    'x' +
-                                    media['image_height'] +
-                                    ')'}
+                                {media['media_name']}
                             </label>
+
                             <input
                                 className="form-input"
                                 id={media['media_name'] + '-' + index}
                                 name={media['media_name'] + '-' + index}
                                 type="file"
-                                accept={media['file_types'].length > 0 ? media['file_types'].join(', ') : null}
+                                accept={
+                                    media['file_types'].length > 0
+                                        ? media['file_types'].join(', ')
+                                        : null
+                                }
                                 onChange={
                                     typeof onFileUpload === 'function'
                                         ? e => {
@@ -38,7 +38,27 @@ class Files extends React.Component {
                                           }
                                         : null
                                 }
+                                data-max-filesize={media['maxiumum_filesize']}
+                                required
                             />
+                            <ul className="unlist">
+                                <li>
+                                    <small>
+                                        <b>Dimensions:</b>{' '}
+                                        {media['image_width'] + 'x' + media['image_height']}
+                                    </small>
+                                </li>
+                                <li>
+                                    <small>
+                                        <b>Max Filesize:</b> {media['maxiumum_filesize'] + 'MB'}
+                                    </small>
+                                </li>
+                                <li>
+                                    <small>
+                                        <b>Allowed Filetypes:</b> {media['file_types'].join(', ')}
+                                    </small>
+                                </li>
+                            </ul>
                         </div>
                     );
                 })}
