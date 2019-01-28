@@ -255,24 +255,6 @@ $eventBorderRadius: 4px;
     text-overflow: ellipsis;
     position: relative;
 }
-<<<<<<< HEAD
-/* Always set the map height explicitly to define the size of the div
- * element that contains the map. */
-#map {
-    height: 500px;
-    img {
-        width:32px;
-        height:32px;
-    }
-    span {
-        font-weight: bold;
-    }
-    .grid {
-        padding:0px;
-    }
-}
-=======
-
 
 .calendar__event.calendar__event--action {
     .calendar__event_content,
@@ -309,15 +291,25 @@ $eventBorderRadius: 4px;
     }
 }
 
-
 .calendar__event--slot.is-disabled {
     cursor: not-allowed;
 }
-
 
 .table.table--plain {
     border: none;
     box-shadow: none !important;
 }
 
->>>>>>> 4858aa95b1356a1c22538fa48eb87418b74047db
+#map {
+    height: 500px;
+    img {
+        width: 32px;
+        height: 32px;
+    }
+    span {
+        font-weight: bold;
+    }
+    .grid {
+        padding: 0px;
+    }
+}
