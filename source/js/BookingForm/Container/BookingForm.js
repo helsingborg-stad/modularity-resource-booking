@@ -368,21 +368,22 @@ class BookingForm extends React.Component {
                                 currentMonth={avalibleSlots[0].start}
                             />
                         </div>
-                        {selectedSlots.length > 0 ? (
+
+                        {files.length > 0 ? (
                             <div className="grid-xs-12">
+                                <h3>Ladda upp annons material</h3>
+                                <Files onFileUpload={this.handleFileUpload}>{files}</Files>
+                            </div>
+                        ) : null}
+
+                        {selectedSlots.length > 0 ? (
+                            <div className="grid-xs-12 u-mb-0">
                                 <Summary
                                     onClickRemoveItem={this.handleRemoveItem}
                                     translation={translation}
                                 >
                                     {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
                                 </Summary>
-                            </div>
-                        ) : null}
-
-                        {files.length > 0 ? (
-                            <div className="grid-xs-12">
-                                <h3>Ladda upp annons material</h3>
-                                <Files onFileUpload={this.handleFileUpload}>{files}</Files>
                             </div>
                         ) : null}
 
