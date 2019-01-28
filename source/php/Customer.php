@@ -54,6 +54,14 @@ class Customer
     public function sendActivationEmail($userId, $oldUserData) {
         if (empty(get_field('customer_group', 'user_' . $userId))) {
             if (isset($_POST['acf']['field_5bfe8eb5174c1']) && is_numeric($_POST['acf']['field_5bfe8eb5174c1'])) {
+                $links = array();
+                if ($pageId = get_field('sign_in_page', 'option')) {
+                    $links[] = array(
+                        'text' => __('Sign in', 'modularity-resource-booking'),
+                        'url' => get_permalink((int)$pageId)
+                    );
+                }
+
                 new Helper\CustomerMail(
                     $userId,
                     __('Activated account', 'modularity-resource-booking'),
@@ -79,7 +87,8 @@ class Customer
                             'heading' => __('Registered company number:', 'modularity-resource-booking'),
                             'content' => Helper\Customer::getCompanyNumber($userId)
                         )
-                    )
+                    ),
+                    $links
                 );
             }
         }

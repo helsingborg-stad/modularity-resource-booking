@@ -68,6 +68,7 @@ add_action('plugins_loaded', function () {
             'mod-booking-form' => 'group_5c35f66a679df',
             'mod-order-status-actions' => 'group_5c360bf77a6cf',
             'mod-group-settings' => 'group_5c0a43038051e',
+            'mod-sign-in-settings' => 'group_5c4ef6a792434',
         )
     );
     $acfExportManager->import();
