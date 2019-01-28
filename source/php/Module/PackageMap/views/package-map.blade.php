@@ -30,7 +30,6 @@
                     for (let prodItem in jsonData.getPackageData[item].productSpec.value) {
                         info[item] += '<div class="grid-md-6">';
                         info[item] += '<br />';
-
                         info[item] += (isUndefined(jsonData.getPackageData[item].productSpec.value[prodItem].media_name) &&
                             jsonData.getPackageData[item].productSpec.value[prodItem].media_name !== '') ?
                             '<p><span>' + jsonData.translation.medianame + ': </span>' +
@@ -41,20 +40,17 @@
                             + jsonData.translation.mediatype + ' : </span>' +
                             jsonData.getPackageData[item].productSpec.value[prodItem].media_type + '<p/>'
                             : '';
-
                         info[item] += (isUndefined(jsonData.getPackageData[item].productSpec.value[prodItem].maxiumum_filesize) &&
                             jsonData.getPackageData[item].productSpec.value[prodItem].maxiumum_filesize !== '') ?
                             '<p><span>' + jsonData.translation.maxfilesize + ' : </span>' +
                             jsonData.getPackageData[item].productSpec.value[prodItem].maxiumum_filesize + 'MB<p/>'
                             : '';
-
                         info[item] += (isUndefined(jsonData.getPackageData[item].productSpec.value[prodItem].image_width) &&
                             jsonData.getPackageData[item].productSpec.value[prodItem].image_width !== '') ?
                             '<p><span>' + jsonData.translation.size + ' : </span>' +
                             jsonData.getPackageData[item].productSpec.value[prodItem].image_width + 'px x ' +
                             jsonData.getPackageData[item].productSpec.value[prodItem].image_height + 'px<p/>'
                             : '';
-
                         info[item] += '</div>';
                     }
 
@@ -92,11 +88,8 @@
                                 infoWindow.setContent(info[item]);
                                 infoWindow.open(map, marker);
                             }
-
-
                         })(marker, item));
                     }
-
                 }
             }
 
