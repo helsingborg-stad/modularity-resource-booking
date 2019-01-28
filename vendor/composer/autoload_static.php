@@ -27,6 +27,10 @@ class ComposerStaticInit6a4456ee7f4d3a75e735eeea4a11ae16
             'Psr\\Container\\' => 14,
             'Philo\\Blade\\' => 12,
         ),
+        'O' => 
+        array (
+            'Olssonm\\IdentityNumber\\' => 23,
+        ),
         'I' => 
         array (
             'Illuminate\\View\\' => 16,
@@ -86,6 +90,10 @@ class ComposerStaticInit6a4456ee7f4d3a75e735eeea4a11ae16
         'Philo\\Blade\\' => 
         array (
             0 => __DIR__ . '/..' . '/philo/laravel-blade/src',
+        ),
+        'Olssonm\\IdentityNumber\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/olssonm/identity-number/src',
         ),
         'Illuminate\\View\\' => 
         array (

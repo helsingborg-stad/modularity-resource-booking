@@ -170,12 +170,23 @@ class Customer
         }
 
         //Check password strength
-        if (is_wp_error($strength = \ModularityResourceBooking\Helper\PasswordStrength::check($data['password']))) {
+        if (is_wp_error($strength = \ModularityResourceBooking\Helper\Validation::passwordStrenght($data['password']))) {
             return array(
                 'message' => $strength->get_error_message(),
                 'state' => 'error'
             );
         }
+
+        //Check coordination number
+        if (is_wp_error($coordination = \ModularityResourceBooking\Helper\Validation::coordinationNumber($data['billing_company_number']))) {
+            return array(
+                'message' => $coordination->get_error_message(),
+                'state' => 'error'
+            );
+        } else {
+            $cleaner = new \Olssonm\IdentityNumber\IdentityNumberFormatter($data['billing_company_number'], 10, true); 
+            $data['billing_company_number'] = $cleaner->getFormatted(); 
+        }        
 
         //Define update array
         $insertArray = array(
@@ -298,7 +309,7 @@ class Customer
         //Set new password
         if (isset($data['password']) && !empty($data['password'])) {
 
-            if (is_wp_error($strength = \ModularityResourceBooking\Helper\PasswordStrength::check($data['password']))) {
+            if (is_wp_error($strength = \ModularityResourceBooking\Helper\Validation::passwordStrenght($data['password']))) {
                 return array(
                     'message' => $strength->get_error_message(),
                     'state' => 'error'
@@ -306,6 +317,17 @@ class Customer
             }
 
             wp_set_password($data['password'], $request->get_param('id'));
+        }
+
+        //Check coordination number
+        if (is_wp_error($coordination = \ModularityResourceBooking\Helper\Validation::coordinationNumber($data['billing_company_number']))) {
+            return array(
+                'message' => $coordination->get_error_message(),
+                'state' => 'error'
+            );
+        } else {
+            $cleaner = new \Olssonm\IdentityNumber\IdentityNumberFormatter($data['billing_company_number'], 10, true); 
+            $data['billing_company_number'] = $cleaner->getFormatted(); 
         }
 
         //Update array creation of to be updated fields
