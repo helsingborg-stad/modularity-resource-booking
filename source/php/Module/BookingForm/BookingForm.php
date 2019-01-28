@@ -18,6 +18,14 @@ class BookingForm extends \Modularity\Module
     {
         $data = get_fields($this->ID);
         $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array(), $this->post_type, $this->args));
+        $data['dataAttributes'] = array(
+            'restUrl' => get_rest_url(),
+            'restNonce' => wp_create_nonce('wp_rest'),
+            'articleType' => get_field('article_type', $this->ID),
+            'articleId' => get_field('article_type', $this->ID) == 'package' ? get_field('package_id', $this->ID) : 0,
+            'userId' => get_current_user_id()
+
+        );
         return $data;
     }
 

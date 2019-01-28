@@ -4,11 +4,11 @@
  * @param  {string} articleType Defines the article type, can be either "package" or "product"
  * @return {array}  Article data
  */
-const getArticle = (articleId, articleType) => {
+const getArticle = (articleId, articleType, restUrl) => {
     const capitalizeFirstLetter = string => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
-    const { restUrl } = modResourceBookingForm;
+
     const url =
         restUrl +
         'ModularityResourceBooking/v1/' +
@@ -36,8 +36,7 @@ const getArticle = (articleId, articleType) => {
  * @param  {[type]} userId      Wordpress user ID
  * @return {array}             Array containing slots
  */
-const getSlots = (articleId, articleType, userId) => {
-    const { restUrl } = modResourceBookingForm;
+const getSlots = (articleId, articleType, userId, restUrl) => {
     let url = restUrl + 'ModularityResourceBooking/v1/Slots?';
 
     let params = {
