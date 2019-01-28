@@ -61,10 +61,14 @@ class Settings
      */
     public function removeObsoleteTimeSlots($value, $postId, $field)
     {
+        //Get offset 
+        $offset = get_field('mod_res_offset_bookable_weeks_by', 'option'); 
+
+        //Remove obsolete slots 
         if (is_array($value) && !empty($value)) {
             foreach ($value as $rowKey => $row) {
-                //Check if start is passed
-                if (date("Ymd") >= $row['field_5bed4e13b48ed']) {
+                //Check if start is passed (incl. offset parameter)
+                if (date("Ymd", strtotime('+' . $offset . ' week')) >= $row['field_5bed4e13b48ed']) {
                     unset($value[$rowKey]);
                 }
             }

@@ -28,7 +28,7 @@
         },
         {
             "key": "field_5bed4e08b48ec",
-            "label": "Schemal\u00e4ggning",
+            "label": "Time slots",
             "name": "mod_res_book_time_slots",
             "type": "repeater",
             "instructions": "",
@@ -113,6 +113,42 @@
             "message": "You have selected a weekly pattern, the system will automatically create slots a year ahead.",
             "new_lines": "wpautop",
             "esc_html": 0
+        },
+        {
+            "key": "field_5c4ece8324e31",
+            "label": "Time slots offset",
+            "name": "mod_res_offset_bookable_weeks_by",
+            "type": "number",
+            "instructions": "You can offset the bookable time slots by 'n' number of weeks. This will prevent users from booking the upcoming weeks in set period of time.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5bed94b619d84",
+                        "operator": "==",
+                        "value": "weekly"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_5bed94b619d84",
+                        "operator": "==",
+                        "value": "manual"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 0,
+            "placeholder": "",
+            "prepend": "Offset bookable weeks by",
+            "append": "weeks",
+            "min": 0,
+            "max": 52,
+            "step": 1
         }
     ],
     "location": [

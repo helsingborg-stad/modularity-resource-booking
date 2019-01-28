@@ -3,7 +3,7 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5bed4d621923e',
-    'title' => 'Time Slots Management',
+    'title' => __('Time Slots Management', 'modularity-resource-booking'),
     'fields' => array(
         0 => array(
             'key' => 'field_5bed94b619d84',
@@ -24,14 +24,14 @@
             ),
             'allow_null' => 0,
             'other_choice' => 0,
-            'default_value' => __('automatic', 'modularity-resource-booking'),
+            'default_value' => 'automatic',
             'layout' => 'horizontal',
             'return_format' => 'value',
             'save_other_choice' => 0,
         ),
         1 => array(
             'key' => 'field_5bed4e08b48ec',
-            'label' => __('Schemaläggning', 'modularity-resource-booking'),
+            'label' => __('Time slots', 'modularity-resource-booking'),
             'name' => 'mod_res_book_time_slots',
             'type' => 'repeater',
             'instructions' => '',
@@ -116,6 +116,42 @@
             'message' => __('You have selected a weekly pattern, the system will automatically create slots a year ahead.', 'modularity-resource-booking'),
             'new_lines' => 'wpautop',
             'esc_html' => 0,
+        ),
+        3 => array(
+            'key' => 'field_5c4ece8324e31',
+            'label' => __('Time slots offset', 'modularity-resource-booking'),
+            'name' => 'mod_res_offset_bookable_weeks_by',
+            'type' => 'number',
+            'instructions' => __('You can offset the bookable time slots by \'n\' number of weeks. This will prevent users from booking the upcoming weeks in set period of time.', 'modularity-resource-booking'),
+            'required' => 0,
+            'conditional_logic' => array(
+                0 => array(
+                    0 => array(
+                        'field' => 'field_5bed94b619d84',
+                        'operator' => '==',
+                        'value' => 'weekly',
+                    ),
+                ),
+                1 => array(
+                    0 => array(
+                        'field' => 'field_5bed94b619d84',
+                        'operator' => '==',
+                        'value' => 'manual',
+                    ),
+                ),
+            ),
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'default_value' => 0,
+            'placeholder' => '',
+            'prepend' => __('Offset bookable weeks by', 'modularity-resource-booking'),
+            'append' => __('weeks', 'modularity-resource-booking'),
+            'min' => 0,
+            'max' => 52,
+            'step' => 1,
         ),
     ),
     'location' => array(

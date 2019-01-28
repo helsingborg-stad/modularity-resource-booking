@@ -182,7 +182,7 @@ class Products
      */
     public function getPackagePins($request)
     {
-        if ($term = get_term($request->get_param('id'), 'product-package')) {
+        if ($term = get_term($request->get_param('id'), 'product-package') || $term = get_term($request->get_param('id'), 'product-package') ) {
 
             $postData = get_posts(
                 array(
