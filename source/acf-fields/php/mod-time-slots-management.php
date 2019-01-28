@@ -132,6 +132,13 @@
                         'value' => 'weekly',
                     ),
                 ),
+                1 => array(
+                    0 => array(
+                        'field' => 'field_5bed94b619d84',
+                        'operator' => '==',
+                        'value' => 'manual',
+                    ),
+                ),
             ),
             'wrapper' => array(
                 'width' => '',
