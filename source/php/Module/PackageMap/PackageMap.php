@@ -15,9 +15,10 @@ class PackageMap extends \Modularity\Module
         $this->description = __('Outputs a google map over products booked in package.', 'modularity-resource-booking');
     }
 
-    public function getPackageData($id){
+    public function getPackageData($id)
+    {
 
-        if ($term = get_term($id, 'product-package') ) {
+        if ($term = get_term($id, 'product-package')) {
 
             $postData = get_posts(
                 array(
@@ -53,24 +54,26 @@ class PackageMap extends \Modularity\Module
         }
     }
 
-    public function data() : array
+    public function data(): array
     {
         $data = get_fields($this->ID);
 
         $package = get_field_object('resource_booking_map_package', $this->data['ID']);
         $location = get_field_object('resource_booking_map_location', $this->data['ID']);
+
         $data['data']['lat'] = $location['value']['lat'];
         $data['data']['lng'] = $location['value']['lng'];
         $data['data']['title'] = $location['value']['address'];
-
         $data['data']['url'] = MODULARITYRESOURCEBOOKING_URL;
-        $data['data']['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array(), $this->post_type, $this->args));
+        $data['data']['classes'] = implode(' ',
+            apply_filters('Modularity/Module/Classes', array(), $this->post_type, $this->args));
+        
         $data['data']['getPackageData'] = $this->getPackageData($package['value']);
         $data['data']['translation'] = array(
-                'medianame' => __('Media name', 'modularity-resource-booking'),
-                'mediatype' => __('Media type', 'modularity-resource-booking'),
-                'maxfilesize' => __('Maxiumum filesize', 'modularity-resource-booking'),
-                'size' => __('Image width', 'modularity-resource-booking'),
+            'medianame' => __('Media name', 'modularity-resource-booking'),
+            'mediatype' => __('Media type', 'modularity-resource-booking'),
+            'maxfilesize' => __('Maxiumum filesize', 'modularity-resource-booking'),
+            'size' => __('Image width', 'modularity-resource-booking'),
         );
         return $data;
     }
@@ -78,14 +81,24 @@ class PackageMap extends \Modularity\Module
     public function style()
     {
         if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'))) {
-            wp_enqueue_style('modularity-resource-booking-css', MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'));
+            wp_enqueue_style('modularity-resource-booking-css',
+                MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'));
         }
     }
 
 
     public function script()
     {
-        wp_enqueue_script('google-maps-api', 'https://maps.googleapis.com/maps/api/js?key='.GOOGLE_API_KEY.'&callback=initMap', false, NULL, true);
+        $apiKey['value'] = get_field_object('resource_booking_google_api_key', $this->data['ID']);
+        if ($apiKey['value'] || GOOGLE_API_KEY) {
+            $apiKey['value'] = (GOOGLE_API_KEY) ? GOOGLE_API_KEY : $apiKey['value'];
+            wp_register_script('google-maps-api',
+                'https://maps.googleapis.com/maps/api/js?key=' . $apiKey['value'] . '&callback=initMap', false, null,
+                true);
+            wp_enqueue_script('google-maps-api',
+                'https://maps.googleapis.com/maps/api/js?key=' . $apiKey['value'] . '&callback=initMap', false, null,
+                true);
+        }
     }
 
 
