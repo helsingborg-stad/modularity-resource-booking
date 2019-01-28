@@ -1,6 +1,7 @@
 @if($data['apiKey'])
 
 <div id="mod-rb-google-map"></div>
+
 <script>
 
     let jsonData = {!!json_encode($data)!!}
