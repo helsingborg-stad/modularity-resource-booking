@@ -1,5 +1,5 @@
 import { Button, Calendar, Notice } from 'hbg-react';
-import { getArticle } from '../../Api/products';
+import { getArticle, getSlots } from '../../Api/products';
 import PropTypes from 'prop-types';
 import dateFns from 'date-fns';
 import Summary from '../Component/Summary';
@@ -10,28 +10,33 @@ import { ValidateFileSize } from '../Helper/hyperForm';
 
 class BookingForm extends React.Component {
     static propTypes = {
-        articlePrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        articleName: PropTypes.string.isRequired,
+        translation: PropTypes.object.isRequired,
+        userId: PropTypes.number.isRequired,
         articleType: PropTypes.string.isRequired,
+        articleId: PropTypes.number.isRequired,
         restNonce: PropTypes.string.isRequired,
-        articleId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        avalibleSlots: PropTypes.array.isRequired,
-        mediaRequirements: PropTypes.array
+        restUrl: PropTypes.string.isRequired
     };
 
     constructor(props) {
         super(props);
         this.state = {
+            //Article
+            articleName: '',
+            articlePrice: 0,
+
+            //Slots
+            avalibleSlots: [],
             selectedSlots: [],
-            calendarView: true,
-            files: props.mediaRequirements,
+
+            //Files
+            files: [],
 
             //Notice
             notice: '',
             noticeType: '',
 
-            //Lock input
-            lockInput: false
+            isLoading: true
         };
 
         this.handleClickEvent = this.handleClickEvent.bind(this);
@@ -40,18 +45,128 @@ class BookingForm extends React.Component {
         this.handleFileUpload = this.handleFileUpload.bind(this);
         this.submitOrder = this.submitOrder.bind(this);
         this.handleEventContent = this.handleEventContent.bind(this);
+        this.fetchData = this.fetchData.bind(this);
+        this.fetchArticle = this.fetchArticle.bind(this);
+        this.fetchSlots = this.fetchSlots.bind(this);
+        this.resetForm = this.resetForm.bind(this);
     }
 
     componentDidMount() {
-        new ValidateFileSize();
+        this.fetchData();
     }
 
+    /**
+     * [fetchData description]
+     * @return {void} [description]
+     */
+    fetchData() {
+        this.fetchArticle()
+            .then(() => {
+                this.fetchSlots()
+                    .then(() => {
+                        this.setState({ isLoading: false });
+                        //Validate filesizes
+                        new ValidateFileSize();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    /**
+     * [fetchArticle description]
+     * @return {Promise}
+     */
+    fetchArticle() {
+        const { userId, articleType, articleId, restNonce, restUrl } = this.props;
+
+        return getArticle(articleId, articleType, restUrl)
+            .then(article => {
+                this.setState((state, props) => ({
+                    articleName: article[0]['title'],
+                    articlePrice: article[0]['price'],
+                    files: article[0].media_requirements.map(mediaObject => {
+                        let media = mediaObject;
+                        media.file = null;
+
+                        return media;
+                    })
+                }));
+            })
+            .catch(result => {
+                console.log(result);
+            });
+    }
+
+    /**
+     * [fetchSlots description]
+     * @return {Promise}
+     */
+    fetchSlots() {
+        const { userId, articleType, articleId, restNonce, restUrl } = this.props;
+
+        return getSlots(articleId, articleType, userId, restUrl)
+            .then(slots => {
+                this.setState((state, props) => ({
+                    avalibleSlots: slots.map(slotData => {
+                        let slot = slotData;
+                        slot['start'] = dateFns.parse(slotData.start);
+                        slot['stop'] = dateFns.parse(slotData.stop);
+                        slot['articleName'] = state.articleName;
+                        slot['articlePrice'] = state.articlePrice;
+
+                        slot['title'] = 'Vecka ' + dateFns.getISOWeek(slot.start);
+
+                        return slot;
+                    })
+                }));
+            })
+            .catch(result => {
+                console.log(result);
+            });
+    }
+
+    /**
+     * [resetForm description]
+     * @return {void}
+     */
+    resetForm() {
+        if (!this.state.isLoading) {
+            this.setState({ isLoading: true });
+        }
+
+        if (this.state.selectedSlots.length > 0) {
+            this.setState({ selectedSlots: [] });
+        }
+
+        this.setState({ notice: '', noticeType: '' });
+
+        this.fetchData();
+    }
+
+    /**
+     * [submitOrder description]
+     * @param  {[type]} e Click event
+     * @return {void}
+     */
     submitOrder(e) {
         e.preventDefault();
-        const { articleType, articleId } = this.props;
+        const { articleType, articleId, restUrl, restNonce } = this.props;
         const { selectedSlots, files, notice } = this.state;
 
         let orders = [];
+
+        if (selectedSlots.length <= 0) {
+            this.setState({
+                notice: 'Please select atleast one date in the calendar.',
+                noticeType: 'warning'
+            });
+            return;
+        }
 
         if (notice.length > 0) {
             this.setState({ notice: '' });
@@ -65,7 +180,7 @@ class BookingForm extends React.Component {
             });
         });
 
-        createOrder(orders, files)
+        createOrder(orders, files, restUrl, restNonce)
             .then(result => {
                 if (
                     result.state === 'dimension-error' &&
@@ -224,74 +339,65 @@ class BookingForm extends React.Component {
     }
 
     render() {
-        const { avalibleSlots, price, translation } = this.props;
-        const { selectedSlots, calendarView, files, notice, noticeType } = this.state;
-        return (
-            <form onSubmit={this.submitOrder}>
-                {calendarView ? (
-                    <Calendar
-                        events={avalibleSlots}
-                        onClickEvent={this.handleClickEvent}
-                        eventClassName={this.handleEventClassName}
-                        eventContent={this.handleEventContent}
-                    />
-                ) : null}
+        const { translation } = this.props;
+        const { avalibleSlots, selectedSlots, files, notice, noticeType, isLoading } = this.state;
 
-                {selectedSlots.length > 0 ? (
-                    <Summary onClickRemoveItem={this.handleRemoveItem} translation={translation}>
-                        {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
-                    </Summary>
-                ) : null}
-
-                {/*                {calendarView ? (
-                    <Button
-                        onClick={() => {
-                            this.setState((state, props) => ({
-                                calendarView: false
-                            }));
-                        }}
-                    >
-                        Gå vidare
-                    </Button>
-                ) : (
-                    <Button
-                        onClick={() => {
-                            this.setState((state, props) => ({
-                                calendarView: true
-                            }));
-                        }}
-                    >
-                        {translation.goback}
-                    </Button>
-                )}*/}
-                {files.length > 0 ? (
-                    <div>
-                        <h3>Ladda upp annons material</h3>
-                        <Files onFileUpload={this.handleFileUpload}>{files}</Files>
+        if (isLoading) {
+            return (
+                <div className="gutter gutter-xl">
+                    <div className="loading">
+                        <div>{}</div>
+                        <div>{}</div>
+                        <div>{}</div>
+                        <div>{}</div>
                     </div>
-                ) : null}
-
-                <div className="u-my-2">
-                    <Button
-                        color="primary"
-                        submit
-                        disabled={
-                            selectedSlots.length > 0 &&
-                            files.filter(media => media.file !== null).length === files.length
-                                ? false
-                                : true
-                        }
-                        title={translation.order}
-                    />
                 </div>
+            );
+        } else {
+            return (
+                <form onSubmit={this.submitOrder}>
+                    <div className="grid grid--columns">
+                        <div className="grid-xs-12">
+                            <Calendar
+                                events={avalibleSlots}
+                                onClickEvent={this.handleClickEvent}
+                                eventClassName={this.handleEventClassName}
+                                eventContent={this.handleEventContent}
+                            />
+                        </div>
+                        {selectedSlots.length > 0 ? (
+                            <div className="grid-xs-12">
+                                <Summary
+                                    onClickRemoveItem={this.handleRemoveItem}
+                                    translation={translation}
+                                >
+                                    {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
+                                </Summary>
+                            </div>
+                        ) : null}
 
-                {notice.length > 0 && (
-                    <Notice type={noticeType} icon>
-                        {notice}
-                    </Notice>
-                )}
-            </form>
-        );
+                        {files.length > 0 ? (
+                            <div className="grid-xs-12">
+                                <h3>Ladda upp annons material</h3>
+                                <Files onFileUpload={this.handleFileUpload}>{files}</Files>
+                            </div>
+                        ) : null}
+
+                        <div className="grid-xs-12">
+                            <Button color="primary" submit title={translation.order} />
+                        </div>
+
+                        {notice.length > 0 && (
+                            <div className="grid-xs-12">
+                                <Notice type={noticeType} icon>
+                                    {notice}
+                                </Notice>
+                            </div>
+                        )}
+                    </div>
+                </form>
+            );
+        }
     }
 }
 

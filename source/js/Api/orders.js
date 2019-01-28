@@ -25,9 +25,7 @@ const getCustomerOrders = (restUrl, nonce, data = [], page = 1) => {
         });
 };
 
-const createOrder = (orders, files) => {
-    const { restUrl, order_nonce } = modResourceBookingForm;
-
+const createOrder = (orders, files, restUrl, restNonce) => {
     let url = restUrl + 'ModularityResourceBooking/v1/CreateOrder';
     let formData = new FormData();
 
@@ -45,7 +43,7 @@ const createOrder = (orders, files) => {
         method: 'POST',
         body: formData,
         headers: {
-            'X-WP-NONCE': order_nonce
+            'X-WP-NONCE': restNonce
         }
     };
 
