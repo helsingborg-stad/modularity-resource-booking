@@ -16,9 +16,13 @@ class PackageMap extends \Modularity\Module
     }
 
     public function getPackageData($id)
-    {
+    { 
 
         if ($term = get_term($id, 'product-package')) {
+
+            if(!is_a($term, 'WP_Term')) {
+                return false; 
+            }
 
             $postData = get_posts(
                 array(
