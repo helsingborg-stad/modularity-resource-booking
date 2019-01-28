@@ -100,7 +100,7 @@
         return (typeof param !== 'undefined') ? true : false;
     }
 </script>
-slut karta
+
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $data['apiKey']; ?>&callback=initGoogleMap"></script>
 @endif
 
