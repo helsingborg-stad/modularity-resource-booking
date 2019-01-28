@@ -17,6 +17,9 @@ class Settings
 
         //Validate for negative timeslots
         add_filter('acf/validate_value/key=field_5bed4e08b48ec', array($this, 'preventNegativeTimeSlots'), 25, 4);
+
+        //Remove duplicate timeslots
+        add_filter('acf/load_value/key=field_5bed4e08b48ec', array($this, 'removeDuplicateTimeSlots'), 15, 3);
     }
 
     /**
@@ -77,7 +80,7 @@ class Settings
     }
 
     /**
-     * Prevent overlapping slots
+     * Prevent negative slots
      *
      * @param boolean $valid Previous validation
      * @param array   $value The old value
@@ -109,5 +112,21 @@ class Settings
         }
 
         return $valid;
+    }
+
+    /* Remove duplicate slots
+     *
+     * @param array  $value  The old value
+     * @param string $postId The identification
+     * @param array  $field  The field configuration
+     *
+     * @return array The new santitized value
+     */
+    public function removeDuplicateTimeSlots($value, $postId, $field)
+    {
+        if (is_array($value) && !empty($value)) {
+            $value = array_unique($value, SORT_REGULAR);
+        }
+        return $value;
     }
 }
