@@ -57,12 +57,7 @@ class BookingForm extends \Modularity\Module
                     'total' => __('Total', 'modularity-resource-booking'),
                     'goback' => __('Go back', 'modularity-resource-booking'),
                     'order' => __('Order', 'modularity-resource-booking'),
-                ),
-                'restUrl' => get_rest_url(),
-                'article_type' => get_field('article_type', $this->ID),
-                'article_id' => get_field('article_type', $this->ID) == 'package' ? get_field('package_id', $this->ID) : 0,
-                'user_id' => get_current_user_id(),
-                'order_nonce' => wp_create_nonce('wp_rest')
+                )
             ));
         }
     }
