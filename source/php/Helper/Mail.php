@@ -18,6 +18,7 @@ class Mail
     private $_subject = null;
     private $_content = null;
     private $_table = array();
+    private $_links = array();
     private $_headers = array('Content-Type: text/html; charset=UTF-8');
 
     /**
@@ -120,10 +121,11 @@ class Mail
             'title' => $this->_subject,
             'preheader' => wp_trim_words($content, 10, "..."),
             'content' => apply_filters('the_content', $content),
-            'table' => $this->_table
+            'table' => $this->_table,
+            'links' => $this->_links,
         );
 
-        //Enshure that cache folder exits
+        //Ensure that cache folder exits
         wp_mkdir_p(trailingslashit(wp_upload_dir()['basedir']) . 'cache/modularity-resource-booking/');
 
         //Run blade template
@@ -159,6 +161,26 @@ class Mail
             $this->html($this->_content),
             $this->_headers
         );
+    }
+
+    /**
+     * Set links
+     *
+     * @param array $buttons List with button text and link url
+     *
+     * @return void
+     */
+    public function setLinks($links)
+    {
+        if (is_array($links) && !empty($links)) {
+            foreach ($links as $key => &$link) {
+                if (empty($link['url']) || empty($link['text'])) {
+                    unset($links[$key]);
+                }
+            }
+        }
+
+        $this->_links = empty($links) ? array() : $links;
     }
 
     /**

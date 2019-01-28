@@ -124,6 +124,34 @@
                                 </table>
                                 <!-- /// Paragraph -->
 
+                                <!-- / Links -->
+                                @if(is_array($links) && !empty($links))
+                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+                                    <tr>
+                                        <td align="center">
+                                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="width: 620px;">
+                                                <tr>
+                                                    <td style="color: #d5d5d5; text-align: left; font-size: 15px; padding: 15px 0 15px 0; line-height: 22px;">
+                                                        <table class="table">
+                                                            @foreach ($links as $link)
+                                                                <tr>
+                                                                    <td>
+                                                                        <a href="{{ $link['url'] }}" target="_blank" style="color: #fff; font-size:15px; text-decoration: none; border-radius: 3px;  background-color: #555; border: 7px solid #555; display: inline-block;">
+                                                                            <span style="color:#fff">{{ $link['text'] }}</span>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                @endif
+                                <!-- /// Links -->
+
                                 <!-- / Divider -->
                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 0;" align="center">
                                     <tr>

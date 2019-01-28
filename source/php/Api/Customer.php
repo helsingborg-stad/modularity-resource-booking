@@ -19,7 +19,7 @@ class Customer
             'billing_company_number' => __('Company number', 'modularity-resource-booking'),
             'billing_contact_person' => __('Contact person', 'modularity-resource-booking'),
             'billing_address' => __('Billing address', 'modularity-resource-booking'),
-            'billing_glnr_number' => __('Glnr (e-invoice number)', 'modularity-resource-booking'), 
+            'billing_glnr_number' => __('Glnr (e-invoice number)', 'modularity-resource-booking'),
             'billing_vat_number' => __('VAT-Number', 'modularity-resource-booking'),
             'phone' => __('Phone number', 'modularity-resource-booking')
         );
@@ -227,12 +227,18 @@ class Customer
                         'content' => \ModularityResourceBooking\Helper\Customer::getName($userId)
                     ),
                     array(
-                        'heading' => __('Email adress: ', 'modularity-resource-booking'),
+                        'heading' => __('Email address: ', 'modularity-resource-booking'),
                         'content' => \ModularityResourceBooking\Helper\Customer::getEmail($userId)
                     ),
                     array(
                         'heading' => __('Phone number: ', 'modularity-resource-booking'),
                         'content' => \ModularityResourceBooking\Helper\Customer::getPhone($userId)
+                    )
+                ),
+                array(
+                    array(
+                        'text' => __('Show profile', 'modularity-resource-booking'),
+                        'url' => add_query_arg('user_id', $userId, self_admin_url('user-edit.php'))
                     )
                 )
             );
@@ -266,7 +272,7 @@ class Customer
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         //Check if user id exists
-        if (!get_user_by('ID',  $request->get_param('id'))) {
+        if (!get_user_by('ID', $request->get_param('id'))) {
             return array(
                 'message' => __('That is not a valid user identification.', 'modularity-resource-booking'),
                 'state' => 'error'
@@ -291,7 +297,7 @@ class Customer
 
         //Define update array
         $updateArray = array(
-            'ID' =>  $request->get_param('id'),
+            'ID' => $request->get_param('id'),
             'user_login' => get_userdata($request->get_param('id'))->user_login
         );
 
@@ -404,13 +410,13 @@ class Customer
 
                 //Create response object
                 $result[] = array(
-                    'id' => (int) $user->data->ID,
-                    'username' => (string) $user->data->user_login,
-                    'email' => (string) $user->data->user_email,
-                    'first_name' => (string) get_user_meta($user->data->ID, 'first_name', true),
-                    'last_name' => (string) get_user_meta($user->data->ID, 'last_name', true),
-                    'company_name' => (string) $user->data->display_name
-                ) + (array) $userMeta;
+                        'id' => (int)$user->data->ID,
+                        'username' => (string)$user->data->user_login,
+                        'email' => (string)$user->data->user_email,
+                        'first_name' => (string)get_user_meta($user->data->ID, 'first_name', true),
+                        'last_name' => (string)get_user_meta($user->data->ID, 'last_name', true),
+                        'company_name' => (string)$user->data->display_name
+                    ) + (array)$userMeta;
             }
         }
 
@@ -424,7 +430,7 @@ class Customer
      *
      * @return bool
      */
-    public function canUpdateUser($request) : bool
+    public function canUpdateUser($request): bool
     {
         $userId = (int)$request->get_param('id');
 

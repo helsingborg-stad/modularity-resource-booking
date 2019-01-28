@@ -21,12 +21,13 @@ class ManagerMail extends Mail
      *
      * @return bool true if sent, false if undefined or malformed email
      */
-    public function __construct($subject, $content, $table = array())
+    public function __construct($subject, $content, $table = array(), $links = array())
     {
         if (!is_wp_error($this->setReciver(get_field('mod_rb_manager_email', 'option')))) {
             $this->setSubject($subject);
             $this->setContent($content);
             $this->setTable($table);
+            $this->setLinks($links);
             $this->dispatch();
             return true;
         }
