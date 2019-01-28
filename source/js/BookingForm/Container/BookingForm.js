@@ -67,7 +67,19 @@ class BookingForm extends React.Component {
 
         createOrder(orders, files)
             .then(result => {
-                console.log(result);
+                if (
+                    result.state === 'dimension-error' &&
+                    result.data.invalid_dimensions.length > 0
+                ) {
+                    result.data.invalid_dimensions.forEach((value, index) => {
+                        this.setState((state, props) => {
+                            let files = state.files;
+
+                            files[index].error = value;
+                        });
+                    });
+                }
+
                 this.setState((state, props) => {
                     return {
                         notice: result.message,
@@ -207,7 +219,7 @@ class BookingForm extends React.Component {
         this.setState((state, props) => {
             let mediaRequirements = state.files;
             mediaRequirements[media.index].file = files.length > 0 ? files[0] : null;
-
+            mediaRequirements[media.index].error = '';
             return { files: mediaRequirements };
         });
     }
