@@ -183,10 +183,12 @@ $eventBorderRadius: 4px;
  */
 .calendar__nav--prev {
     text-align: left;
+    padding-left: 16px;
 }
 
 .calendar__nav--next {
     text-align: right;
+    padding-right: 16px;
 }
 
 .calendar__title {
