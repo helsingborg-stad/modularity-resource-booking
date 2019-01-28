@@ -22,7 +22,7 @@ class CustomerMail extends Mail
      *
      * @return bool true if sent, false if undefined or malformed email
      */
-    public function __construct($reciver, $subject, $content, $table = array())
+    public function __construct($reciver, $subject, $content, $table = array(), $links = array())
     {
         if(is_integer($reciver) && $email = \ModularityResourceBooking\Helper\Customer::getEmail($reciver)) {
             $reciver = $email;
@@ -32,6 +32,7 @@ class CustomerMail extends Mail
             $this->setSubject($subject);
             $this->setContent($content);
             $this->setTable($table);
+            $this->setLinks($links);
             $this->dispatch();
             return true;
         }

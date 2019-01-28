@@ -1,0 +1,46 @@
+[{
+    "key": "group_5c4ef6a792434",
+    "title": "Sign in",
+    "fields": [
+        {
+            "key": "field_5c4ef6c47c961",
+            "label": "Sign in form",
+            "name": "sign_in_page",
+            "type": "post_object",
+            "instructions": "Select the page where the sign in form is placed.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "page"
+            ],
+            "taxonomy": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "return_format": "id",
+            "ui": 1
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "resource-booking-options"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+

@@ -17,7 +17,8 @@ class App
         add_action('plugins_loaded', array($this, 'registerModules'));
 
         //Register currency symbol
-        add_action('init', array($this, 'registerCurrencySymbol'), 1); 
+        add_action('init', array($this, 'registerCurrencySymbol'), 1);
+
     }
 
     /**
@@ -105,4 +106,6 @@ class App
             );
         }
     }
+
+
 }

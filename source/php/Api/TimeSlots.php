@@ -82,7 +82,9 @@ class TimeSlots
             );
         }
 
+        // Automatic schedule 
         if (get_field('mod_res_book_automatic_or_manual', 'option') == "weekly") {
+            
             //Decide what monday to refer to
             if (date("N") == 1) {
                 $whatMonday = "monday";
@@ -90,14 +92,28 @@ class TimeSlots
                 $whatMonday = "last monday";
             }
 
-            for ($n = 0; $n <= 52; $n++) {
-                $start = date('Y-m-d', strtotime($whatMonday, strtotime('+' . $n . ' week'))) . " 00:00";
-                $stop = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
+            //Get offset
+            if($offset = get_field('mod_res_offset_bookable_weeks_by', 'option')) {
+                $start = $offset; 
+                $stop  = 52 + $offset; 
+            } else {
+                $start = 0;
+                $stop  = 52;
+            }
+            
+            for ($n = $start; $n <= $stop; $n++) {
+
+                $start  = date('Y-m-d', strtotime($whatMonday, strtotime('+' . $n . ' week'))) . " 00:00";
+                $stop   = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
                 $slotId = self::getSlotId($start, $stop);
-                // Get user groups orders
+
+                // Get user groups available orders
                 $orders = $this->getGroupOrdersBySlot($slotId, $params['user_id'], $params['type'], array((int)$params['article_id']));
 
+                //Get the articles avabile stock
                 $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
+
+                //Nothing in stock
                 if (is_wp_error($articleStock)) {
                     return new \WP_REST_Response(
                         array(
@@ -107,6 +123,7 @@ class TimeSlots
                     );
                 }
 
+                //Render avabile slots
                 $result[] = array(
                     'id' => $slotId,
                     'start' => $start,
@@ -119,17 +136,25 @@ class TimeSlots
             }
         }
 
+        //Manual schedule 
         if (get_field('mod_res_book_automatic_or_manual', 'option') == "manual") {
+            
             $data = get_field('mod_res_book_time_slots', 'option');
+           
             if (is_array($data) && !empty($data)) {
                 foreach ($data as $item) {
-                    $start = $item['start_date'] . " 00:00";
-                    $stop = $item['end_date'] . " 23:59";
+
+                    $start  = $item['start_date'] . " 00:00";
+                    $stop   = $item['end_date'] . " 23:59";
                     $slotId = self::getSlotId($item['start_date'] . " 00:00", $stop);
-                    // Get user groups orders
+
+                    // Get user groups available orders
                     $orders = $this->getGroupOrdersBySlot($slotId, $params['user_id'], $params['type'], array((int)$params['article_id']));
 
+                    //Get the articles avabile stock
                     $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
+
+                    //Nothing in stock
                     if (is_wp_error($articleStock)) {
                         return new \WP_REST_Response(
                             array(
@@ -139,6 +164,7 @@ class TimeSlots
                         );
                     }
 
+                    //Render avabile slots
                     $result[] = array(
                         'id' => $slotId,
                         'start' => $start,

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f3218a937ecfeb248e01ecd195a2b1d8",
+    "content-hash": "34835aeaae503f4c274e3f234a189114",
     "packages": [
         {
             "name": "composer/installers",
@@ -576,6 +576,69 @@
                 "time"
             ],
             "time": "2018-11-22T18:23:02+00:00"
+        },
+        {
+            "name": "olssonm/identity-number",
+            "version": "v5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/olssonm/identity-number.git",
+                "reference": "bb6a80c67fce056b6255863126aa41bd17aa225f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/olssonm/identity-number/zipball/bb6a80c67fce056b6255863126aa41bd17aa225f",
+                "reference": "bb6a80c67fce056b6255863126aa41bd17aa225f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=5.3",
+                "php": ">=5.6.0|>=7.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": ">=3.3.0",
+                "phpunit/phpunit": "5.7.*|~6.0|~7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Olssonm\\IdentityNumber\\IdentityNumberServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Olssonm\\IdentityNumber\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcus Olsson",
+                    "email": "contact@marcusolsson.me",
+                    "homepage": "https://marcusolsson.me"
+                }
+            ],
+            "description": "Laravel 5 validator for Swedish personal identity numbers / social security numbers (personnummer)",
+            "homepage": "https://github.com/olssonm/identity-number",
+            "keywords": [
+                "Personnummer",
+                "Social security number",
+                "Swedish",
+                "laravel",
+                "laravel 5",
+                "olssonm",
+                "package",
+                "personal identity number"
+            ],
+            "time": "2018-12-10T10:23:46+00:00"
         },
         {
             "name": "philo/laravel-blade",
