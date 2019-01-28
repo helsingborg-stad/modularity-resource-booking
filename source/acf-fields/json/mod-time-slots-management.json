@@ -116,9 +116,9 @@
         },
         {
             "key": "field_5c4ece8324e31",
-            "label": "Offset bookable weeks by",
+            "label": "Time slots offset",
             "name": "mod_res_offset_bookable_weeks_by",
-            "type": "select",
+            "type": "number",
             "instructions": "You can offset the bookable time slots by 'n' number of weeks. This will prevent users from booking the upcoming weeks in set period of time.",
             "required": 0,
             "conditional_logic": [
@@ -135,28 +135,13 @@
                 "class": "",
                 "id": ""
             },
-            "choices": [
-                "Zero weeks",
-                "One week",
-                "Two weeks",
-                "Three weeks",
-                "Four weeks",
-                "Five weeks",
-                "Six weeks",
-                "Seven weeks",
-                "Eight weeks",
-                "Nine weeks",
-                "Ten weeks"
-            ],
-            "default_value": [
-                0
-            ],
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "return_format": "value",
-            "ajax": 0,
-            "placeholder": ""
+            "default_value": 0,
+            "placeholder": "",
+            "prepend": "Offset bookable weeks by",
+            "append": "weeks",
+            "min": 0,
+            "max": 52,
+            "step": 1
         }
     ],
     "location": [
