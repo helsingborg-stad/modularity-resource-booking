@@ -252,3 +252,18 @@ $eventBorderRadius: 4px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+    height: 500px;
+    img {
+        width:32px;
+        height:32px;
+    }
+    span {
+        font-weight: bold;
+    }
+    .grid {
+        padding:0px;
+    }
+}

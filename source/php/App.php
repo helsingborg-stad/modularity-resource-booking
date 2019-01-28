@@ -17,7 +17,8 @@ class App
         add_action('plugins_loaded', array($this, 'registerModules'));
 
         //Register currency symbol
-        add_action('init', array($this, 'registerCurrencySymbol'), 1); 
+        add_action('init', array($this, 'registerCurrencySymbol'), 1);
+
     }
 
     /**
@@ -50,6 +51,8 @@ class App
     public function enqueueScripts()
     {
         wp_register_script('modularity-resource-booking-js', MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/modularity-resource-booking.js'));
+        wp_register_script('google-maps-api', 'https://maps.googleapis.com/maps/api/js?key='.GOOGLE_API_KEY.'&callback=initMap', false, NULL, true);
+
     }
 
     /**
@@ -105,4 +108,6 @@ class App
             );
         }
     }
+
+
 }
