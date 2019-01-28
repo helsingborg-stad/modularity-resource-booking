@@ -363,6 +363,8 @@ class BookingForm extends React.Component {
                                 onClickEvent={this.handleClickEvent}
                                 eventClassName={this.handleEventClassName}
                                 eventContent={this.handleEventContent}
+                                maxDate={avalibleSlots[avalibleSlots.length - 1].stop}
+                                minDate={avalibleSlots[0].start}
                             />
                         </div>
                         {selectedSlots.length > 0 ? (
