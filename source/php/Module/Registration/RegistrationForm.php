@@ -18,6 +18,8 @@ class RegistrationForm extends \Modularity\Module
     {
         $data = get_fields($this->ID);
         $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array('box', 'box-panel'), $this->post_type, $this->args));
+        $data['rest_url'] = get_rest_url();
+
         return $data;
     }
 
@@ -33,7 +35,6 @@ class RegistrationForm extends \Modularity\Module
             // Enqueue module script
             wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/RegistrationForm/Index.js'), array('jquery', 'react', 'react-dom'));
             wp_localize_script('modularity-' . $this->slug, 'modRegistrationForm', array(
-                'translation' => array(
                     'email' => __('Email', 'modularity-resource-booking'),
                     'confirmEmail' => __('Confirm email', 'modularity-resource-booking'),
                     'emailMisMatch' => __('The email does not match.', 'modularity-resource-booking'),
@@ -59,15 +60,14 @@ class RegistrationForm extends \Modularity\Module
                         'billing' => __('Billing', 'modularity-resource-booking'),
                         'password' => __('Password', 'modularity-resource-booking')
                     )
-                ),
-                'restUrl' => get_rest_url()
-            ));
+                )
+            );
         }
     }
 
-    public function template() 
+    public function template()
     {
-        return 'registration-form.blade.php'; 
+        return 'registration-form.blade.php';
     }
 
     /**

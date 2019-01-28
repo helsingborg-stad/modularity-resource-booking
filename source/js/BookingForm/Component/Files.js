@@ -20,7 +20,6 @@ class Files extends React.Component {
                             <label htmlFor={media['media_name'] + '-' + index}>
                                 {media['media_name']}
                             </label>
-
                             <input
                                 className="form-input"
                                 id={media['media_name'] + '-' + index}
@@ -41,6 +40,8 @@ class Files extends React.Component {
                                 data-max-filesize={media['maxiumum_filesize']}
                                 required
                             />
+                            {typeof media.error !== 'undefined' && media.error.length > 0}{' '}
+                            {<div className="form-notice text-danger text-sm">{media.error}</div>}
                             <ul className="unlist">
                                 <li>
                                     <small>
