@@ -3,7 +3,7 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5bed4d621923e',
-    'title' => 'Time Slots Management',
+    'title' => __('Time Slots Management', 'modularity-resource-booking'),
     'fields' => array(
         0 => array(
             'key' => 'field_5bed94b619d84',
@@ -24,14 +24,14 @@
             ),
             'allow_null' => 0,
             'other_choice' => 0,
-            'default_value' => __('automatic', 'modularity-resource-booking'),
+            'default_value' => 'automatic',
             'layout' => 'horizontal',
             'return_format' => 'value',
             'save_other_choice' => 0,
         ),
         1 => array(
             'key' => 'field_5bed4e08b48ec',
-            'label' => __('Schemaläggning', 'modularity-resource-booking'),
+            'label' => __('Time slots', 'modularity-resource-booking'),
             'name' => 'mod_res_book_time_slots',
             'type' => 'repeater',
             'instructions' => '',
@@ -116,6 +116,50 @@
             'message' => __('You have selected a weekly pattern, the system will automatically create slots a year ahead.', 'modularity-resource-booking'),
             'new_lines' => 'wpautop',
             'esc_html' => 0,
+        ),
+        3 => array(
+            'key' => 'field_5c4ece8324e31',
+            'label' => __('Offset bookable weeks by', 'modularity-resource-booking'),
+            'name' => 'mod_res_offset_bookable_weeks_by',
+            'type' => 'select',
+            'instructions' => __('You can offset the bookable time slots by \'n\' number of weeks. This will prevent users from booking the upcoming weeks in set period of time.', 'modularity-resource-booking'),
+            'required' => 0,
+            'conditional_logic' => array(
+                0 => array(
+                    0 => array(
+                        'field' => 'field_5bed94b619d84',
+                        'operator' => '==',
+                        'value' => 'weekly',
+                    ),
+                ),
+            ),
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'choices' => array(
+                0 => __('Zero weeks', 'modularity-resource-booking'),
+                1 => __('One week', 'modularity-resource-booking'),
+                2 => __('Two weeks', 'modularity-resource-booking'),
+                3 => __('Three weeks', 'modularity-resource-booking'),
+                4 => __('Four weeks', 'modularity-resource-booking'),
+                5 => __('Five weeks', 'modularity-resource-booking'),
+                6 => __('Six weeks', 'modularity-resource-booking'),
+                7 => __('Seven weeks', 'modularity-resource-booking'),
+                8 => __('Eight weeks', 'modularity-resource-booking'),
+                9 => __('Nine weeks', 'modularity-resource-booking'),
+                10 => __('Ten weeks', 'modularity-resource-booking'),
+            ),
+            'default_value' => array(
+                0 => 0,
+            ),
+            'allow_null' => 0,
+            'multiple' => 0,
+            'ui' => 0,
+            'return_format' => 'value',
+            'ajax' => 0,
+            'placeholder' => '',
         ),
     ),
     'location' => array(
