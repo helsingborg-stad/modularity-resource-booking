@@ -94,15 +94,14 @@ class TimeSlots
 
             //Get offset
             if($offset = get_field('mod_res_offset_bookable_weeks_by', 'option')) {
-                $start = $offset; 
-                $stop  = 52 + $offset; 
+                $weekStart = (int)$offset;
+                $weekStop  = 52 + (int)$offset;
             } else {
-                $start = 0;
-                $stop  = 52;
+                $weekStart = 0;
+                $weekStop  = 52;
             }
-            
-            for ($n = $start; $n <= $stop; $n++) {
 
+            for ($n = $weekStart; $n <= $weekStop; $n++) {
                 $start  = date('Y-m-d', strtotime($whatMonday, strtotime('+' . $n . ' week'))) . " 00:00";
                 $stop   = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
                 $slotId = self::getSlotId($start, $stop);

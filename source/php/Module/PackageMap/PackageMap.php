@@ -16,9 +16,13 @@ class PackageMap extends \Modularity\Module
     }
 
     public function getPackageData($id)
-    {
+    { 
 
         if ($term = get_term($id, 'product-package')) {
+
+            if(!is_a($term, 'WP_Term')) {
+                return false; 
+            }
 
             $postData = get_posts(
                 array(
@@ -60,7 +64,9 @@ class PackageMap extends \Modularity\Module
 
         $package = get_field_object('resource_booking_map_package', $this->data['ID']);
         $location = get_field_object('resource_booking_map_location', $this->data['ID']);
+        $apiKey = get_field_object('resource_booking_map_apikey', $this->data['ID']);
 
+        $data['data']['apiKey'] = $apiKey['value'];
         $data['data']['lat'] = $location['value']['lat'];
         $data['data']['lng'] = $location['value']['lng'];
         $data['data']['title'] = $location['value']['address'];
@@ -75,7 +81,9 @@ class PackageMap extends \Modularity\Module
             'maxfilesize' => __('Maxiumum filesize', 'modularity-resource-booking'),
             'size' => __('Image width', 'modularity-resource-booking'),
         );
-        return $data;
+
+
+         return $data;
     }
 
     public function style()
@@ -85,22 +93,6 @@ class PackageMap extends \Modularity\Module
                 MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'));
         }
     }
-
-
-    public function script()
-    {
-        $apiKey['value'] = get_field_object('resource_booking_google_api_key', $this->data['ID']);
-        if ($apiKey['value'] || GOOGLE_API_KEY) {
-            $apiKey['value'] = (GOOGLE_API_KEY) ? GOOGLE_API_KEY : $apiKey['value'];
-            wp_register_script('google-maps-api',
-                'https://maps.googleapis.com/maps/api/js?key=' . $apiKey['value'] . '&callback=initMap', false, null,
-                true);
-            wp_enqueue_script('google-maps-api',
-                'https://maps.googleapis.com/maps/api/js?key=' . $apiKey['value'] . '&callback=initMap', false, null,
-                true);
-        }
-    }
-
 
     public function template()
     {

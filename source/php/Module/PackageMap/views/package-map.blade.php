@@ -1,14 +1,17 @@
-<div id="map"></div>
+@if($data['apiKey'])
+
+<div id="mod-rb-google-map"></div>
 <script>
 
     let jsonData = {!!json_encode($data)!!}
-    function initMap() {
+
+    function initGoogleMap() {
 
         let bounds = new google.maps.LatLngBounds();
         let map, marker, image, info = [];
 
         if (isUndefined(parseFloat(jsonData.lat)) && isUndefined(parseFloat(jsonData.lng))) {
-            map = new google.maps.Map(document.getElementById('map'), {
+            map = new google.maps.Map(document.getElementById('mod-rb-google-map'), {
                 zoom: 12,
                 center: {lat: parseFloat(jsonData.lat), lng: parseFloat(jsonData.lng)}
             });
@@ -97,4 +100,7 @@
         return (typeof param !== 'undefined') ? true : false;
     }
 </script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $data['apiKey']; ?>&callback=initGoogleMap"></script>
+@endif
 
