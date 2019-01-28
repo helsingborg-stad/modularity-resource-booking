@@ -8,7 +8,6 @@
 /**
  * Variables
  */
-$calendarMaxWidth: 900px;
 $calendarBackground: white;
 $calendarColor: black;
 $calendarGutter: 4px;
@@ -33,7 +32,6 @@ $eventBorderRadius: 4px;
  */
 .calendar {
     width: 100%;
-    max-width: $calendarMaxWidth;
     background: $calendarBackground;
     color: $calendarColor;
 }
