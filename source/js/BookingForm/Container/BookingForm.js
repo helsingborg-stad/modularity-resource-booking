@@ -69,13 +69,12 @@ class BookingForm extends React.Component {
             .then(result => {
                 if (
                     result.state === 'dimension-error' &&
-                    result.data.invalid_dimensions.length > 0
+                    Object.keys(result.data.invalid_dimensions).length > 0
                 ) {
-                    result.data.invalid_dimensions.forEach((value, index) => {
-                        this.setState((state, props) => {
-                            let files = state.files;
-
-                            files[index].error = value;
+                    this.setState((state, props) => {
+                        let files = state.files;
+                        Object.keys(result.data.invalid_dimensions).forEach(fileIndex => {
+                            files[fileIndex].error = result.data.invalid_dimensions[fileIndex];
                         });
                     });
                 }
