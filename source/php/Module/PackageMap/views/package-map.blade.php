@@ -1,6 +1,17 @@
 @if($data['apiKey'])
+    <div class="grid">
+        <div class="grid-md-12" id="login-box">
+            <div class="box box-panel box-panel-primary">
+                @if (!$hideTitle && !empty($post_title))
+                    <h4 class="box-title">{!! apply_filters('the_title', $post_title) !!}</h4>
+                @endif
+                <div class="box-content">
+                    <div id="mod-rb-google-map"></div>
+                </div>
 
-    <div id="mod-rb-google-map"></div>
+            </div>
+        </div>
+    </div>
 
     <script>
 
@@ -28,6 +39,7 @@
                         '<p>' + jsonData.getPackageData[item].content + '</p>' : '';
 
                     for (let prodItem in jsonData.getPackageData[item].productSpec.value) {
+
                         info[item] += '<div class="grid-md-6">';
                         info[item] += '<br />';
                         info[item] += (isUndefined(jsonData.getPackageData[item].productSpec.value[prodItem].media_name) &&
@@ -56,11 +68,14 @@
 
                     info[item] += '</div>';
 
-                    info[item] += (isUndefined(jsonData.getPackageData[item].location.value.address)) ? '<br /> <p><i class="pricon pricon-helsingborg"></i> ' +
+                    info[item] += (isUndefined(jsonData.getPackageData[item].location.value.address
+                        && jsonData.getPackageData[item].location.value.address !== ''))
+                        ? '<br /> <p><i class="pricon pricon-helsingborg"></i> ' +
                         jsonData.getPackageData[item].location.value.address + ' </span></p>' : '';
                     info[item] += '<br />';
 
-                    if (isUndefined(jsonData.getPackageData[item].location.value.lat) && isUndefined(jsonData.getPackageData[item].location.value.lng)) {
+                    if (isUndefined(jsonData.getPackageData[item].location.value.lat) &&
+                        isUndefined(jsonData.getPackageData[item].location.value.lng)) {
 
                         image = {
                             url: jsonData.url + '/dist/img/recource-marker.png',
@@ -82,7 +97,6 @@
 
                     if (isUndefined(item) && isUndefined(marker)) {
                         google.maps.event.addListener(marker, 'click', (function (marker, item) {
-
                             return function () {
                                 const infoWindow = new google.maps.InfoWindow();
                                 infoWindow.setContent(info[item]);
