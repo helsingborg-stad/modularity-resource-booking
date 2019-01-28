@@ -1,10 +1,12 @@
-import { Button, Calendar } from 'hbg-react';
+import { Button, Calendar, Notice } from 'hbg-react';
 import { getArticle } from '../../Api/products';
 import PropTypes from 'prop-types';
 import dateFns from 'date-fns';
 import Summary from '../Component/Summary';
 import Files from '../Component/Files';
 import { createOrder } from '../../Api/orders';
+import classNames from 'classnames';
+import { ValidateFileSize } from '../Helper/hyperForm';
 
 class BookingForm extends React.Component {
     static propTypes = {
@@ -22,21 +24,38 @@ class BookingForm extends React.Component {
         this.state = {
             selectedSlots: [],
             calendarView: true,
-            files: props.mediaRequirements
+            files: props.mediaRequirements,
+
+            //Notice
+            notice: '',
+            noticeType: '',
+
+            //Lock input
+            lockInput: false
         };
 
         this.handleClickEvent = this.handleClickEvent.bind(this);
         this.handleEventClassName = this.handleEventClassName.bind(this);
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
-        this.createOrder = this.createOrder.bind(this);
+        this.submitOrder = this.submitOrder.bind(this);
+        this.handleEventContent = this.handleEventContent.bind(this);
     }
 
-    createOrder() {
+    componentDidMount() {
+        new ValidateFileSize();
+    }
+
+    submitOrder(e) {
+        e.preventDefault();
         const { articleType, articleId } = this.props;
-        const { selectedSlots, files } = this.state;
+        const { selectedSlots, files, notice } = this.state;
 
         let orders = [];
+
+        if (notice.length > 0) {
+            this.setState({ notice: '' });
+        }
 
         selectedSlots.forEach(id => {
             orders.push({
@@ -48,12 +67,61 @@ class BookingForm extends React.Component {
 
         createOrder(orders, files)
             .then(result => {
-                console.log(result);
+                if (
+                    result.state === 'dimension-error' &&
+                    Object.keys(result.data.invalid_dimensions).length > 0
+                ) {
+                    this.setState((state, props) => {
+                        let files = state.files;
+                        Object.keys(result.data.invalid_dimensions).forEach(fileIndex => {
+                            files[fileIndex].error = result.data.invalid_dimensions[fileIndex];
+                        });
+                    });
+                }
+
+                this.setState((state, props) => {
+                    return {
+                        notice: result.message,
+                        noticeType: result.state === 'success' ? 'success' : 'warning'
+                    };
+                });
             })
             .catch(result => {
                 console.log(result);
-                console.log('createOrder() in BookingForm.js failed');
+                this.setState((state, props) => {
+                    return { notice: result, noticeType: 'warning' };
+                });
             });
+    }
+
+    /**
+     * Callback for customizing event content, fires once for each event
+     * @param  {object} event Event object data
+     * @return {jsx} React Component object
+     */
+    handleEventContent(event) {
+        const { selectedSlots } = this.state;
+        let disabled = !event['unlimited_stock'] && event['available_stock'] <= 0 ? true : false;
+        let exists = selectedSlots.includes(event.id) ? true : false;
+
+        if (disabled) {
+            return event.title;
+        }
+
+        return (
+            <div>
+                <span className="calendar__event_content">{event.title}</span>
+                <span className="calendar__event_hidden">
+                    <i
+                        className={classNames('pricon', {
+                            'pricon-minus-o': exists,
+                            'pricon-plus-o': !exists
+                        })}
+                    />
+                    {!exists ? ' Lägg till ' : ' Ta bort '}
+                </span>
+            </div>
+        );
     }
 
     /**
@@ -103,6 +171,8 @@ class BookingForm extends React.Component {
         const { selectedSlots } = this.state;
         let classes = [];
 
+        classes.push('calendar__event--slot');
+
         if (
             (event['unlimited_stock'] && event['available_stock'] === null) ||
             event['available_stock'] > 0
@@ -147,22 +217,23 @@ class BookingForm extends React.Component {
     handleFileUpload(files, media) {
         this.setState((state, props) => {
             let mediaRequirements = state.files;
-            mediaRequirements[media.index].file = files[0];
-
+            mediaRequirements[media.index].file = files.length > 0 ? files[0] : null;
+            mediaRequirements[media.index].error = '';
             return { files: mediaRequirements };
         });
     }
 
     render() {
         const { avalibleSlots, price, translation } = this.props;
-        const { selectedSlots, calendarView, files } = this.state;
+        const { selectedSlots, calendarView, files, notice, noticeType } = this.state;
         return (
-            <div>
+            <form onSubmit={this.submitOrder}>
                 {calendarView ? (
                     <Calendar
                         events={avalibleSlots}
                         onClickEvent={this.handleClickEvent}
                         eventClassName={this.handleEventClassName}
+                        eventContent={this.handleEventContent}
                     />
                 ) : null}
 
@@ -172,7 +243,7 @@ class BookingForm extends React.Component {
                     </Summary>
                 ) : null}
 
-                {calendarView ? (
+                {/*                {calendarView ? (
                     <Button
                         onClick={() => {
                             this.setState((state, props) => ({
@@ -192,20 +263,34 @@ class BookingForm extends React.Component {
                     >
                         {translation.goback}
                     </Button>
-                )}
+                )}*/}
                 {files.length > 0 ? (
                     <div>
+                        <h3>Ladda upp annons material</h3>
                         <Files onFileUpload={this.handleFileUpload}>{files}</Files>
                     </div>
                 ) : null}
 
-                {selectedSlots.length > 0 &&
-                files.filter(media => media.file !== null).length === files.length ? (
-                    <Button color="primary" onClick={this.createOrder}>
-                        {translation.order}
-                    </Button>
-                ) : null}
-            </div>
+                <div className="u-my-2">
+                    <Button
+                        color="primary"
+                        submit
+                        disabled={
+                            selectedSlots.length > 0 &&
+                            files.filter(media => media.file !== null).length === files.length
+                                ? false
+                                : true
+                        }
+                        title={translation.order}
+                    />
+                </div>
+
+                {notice.length > 0 && (
+                    <Notice type={noticeType} icon>
+                        {notice}
+                    </Notice>
+                )}
+            </form>
         );
     }
 }

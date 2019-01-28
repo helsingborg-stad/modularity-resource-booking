@@ -3,7 +3,11 @@
         <h4 class="box-title">{!! apply_filters('the_title', $post_title) !!}</h4>
     @endif
     @if (is_user_logged_in())
-        <div class="modularity-user-account">
+        <div class="modularity-user-account"
+             data-user="{{ $user }}"
+             data-rest-url="{{$rest_url}}"
+             data-nonce="{{ $nonce }}"
+        >
             <div class="gutter gutter-xl">
                 <div class="loading">
                     <div></div>

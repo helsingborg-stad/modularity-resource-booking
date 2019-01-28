@@ -3,7 +3,7 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5bffb822b9213',
-    'title' => 'Product media requirements',
+    'title' => __('Product media requirements', 'modularity-resource-booking'),
     'fields' => array(
         0 => array(
             'key' => 'field_5bffb829f14ab',
@@ -20,7 +20,7 @@
             ),
             'collapsed' => 'field_5bffb838f14ac',
             'min' => 0,
-            'max' => 10,
+            'max' => 1,
             'layout' => 'table',
             'button_label' => __('Lägg till materialkrav', 'modularity-resource-booking'),
             'sub_fields' => array(
@@ -44,31 +44,31 @@
                     'maxlength' => 50,
                 ),
                 1 => array(
-                    'key' => 'field_5bffb857f14ad',
-                    'label' => __('Media type', 'modularity-resource-booking'),
-                    'name' => 'media_type',
-                    'type' => 'select',
-                    'instructions' => '',
-                    'required' => 0,
+                    'key' => 'field_5c49ac9c5e242',
+                    'label' => __('File types', 'modularity-resource-booking'),
+                    'name' => 'file_types',
+                    'type' => 'checkbox',
+                    'instructions' => __('Accepted file types.', 'modularity-resource-booking'),
+                    'required' => 1,
                     'conditional_logic' => 0,
                     'wrapper' => array(
-                        'width' => '15',
+                        'width' => '',
                         'class' => '',
                         'id' => '',
                     ),
                     'choices' => array(
-                        'image' => __('Image', 'modularity-resource-booking'),
-                        'video' => __('Video', 'modularity-resource-booking'),
+                        'image/jpeg' => __('JPG', 'modularity-resource-booking'),
+                        'image/png' => __('PNG', 'modularity-resource-booking'),
+                        'video/mp4' => __('MP4', 'modularity-resource-booking'),
+                        'application/pdf' => __('PDF', 'modularity-resource-booking'),
                     ),
+                    'allow_custom' => 0,
                     'default_value' => array(
-                        0 => __('image', 'modularity-resource-booking'),
                     ),
-                    'allow_null' => 0,
-                    'multiple' => 0,
-                    'ui' => 0,
+                    'layout' => 'vertical',
+                    'toggle' => 0,
                     'return_format' => 'value',
-                    'ajax' => 0,
-                    'placeholder' => '',
+                    'save_custom' => 0,
                 ),
                 2 => array(
                     'key' => 'field_5bffb89ff14ae',
@@ -93,7 +93,7 @@
                 ),
                 3 => array(
                     'key' => 'field_5bffbac04a89f',
-                    'label' => __('Image width', 'modularity-resource-booking'),
+                    'label' => __('Width', 'modularity-resource-booking'),
                     'name' => 'image_width',
                     'type' => 'number',
                     'instructions' => '',
@@ -101,9 +101,8 @@
                     'conditional_logic' => array(
                         0 => array(
                             0 => array(
-                                'field' => 'field_5bffb857f14ad',
-                                'operator' => '==',
-                                'value' => 'image',
+                                'field' => 'field_5bffb829f14ab',
+                                'operator' => '!=empty',
                             ),
                         ),
                     ),
@@ -122,7 +121,7 @@
                 ),
                 4 => array(
                     'key' => 'field_5bffbb1a4a8a0',
-                    'label' => __('Image height', 'modularity-resource-booking'),
+                    'label' => __('Height', 'modularity-resource-booking'),
                     'name' => 'image_height',
                     'type' => 'number',
                     'instructions' => '',
@@ -130,9 +129,8 @@
                     'conditional_logic' => array(
                         0 => array(
                             0 => array(
-                                'field' => 'field_5bffb857f14ad',
-                                'operator' => '==',
-                                'value' => 'image',
+                                'field' => 'field_5bffb829f14ab',
+                                'operator' => '!=empty',
                             ),
                         ),
                     ),

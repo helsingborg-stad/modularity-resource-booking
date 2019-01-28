@@ -9,20 +9,21 @@
  * Variables
  */
 $calendarMaxWidth: 900px;
-$calendarBackground: #ecf0f1;
+$calendarBackground: white;
 $calendarColor: black;
 $calendarGutter: 4px;
 
-$calendarBorderColor: white;
+$calendarBorderColor: #f4f4f4;
 
-$calendarHeaderBackground: #2c3e50;
+$calendarHeaderBackground: #ae0b05;
 $calendarHeaderColor: white;
 
-$cellBackground: #e5e1e1;
+$cellBackground: white;
 $cellColor: black;
 $cellOffRangeBackground: $calendarBackground;
 $cellOffRangeColor: darkgray;
-$cellEventBackground: #2980b9;
+
+$cellEventBackground: #cb0050;
 $cellEventColor: white;
 
 $eventBorderRadius: 4px;
@@ -50,7 +51,7 @@ $eventBorderRadius: 4px;
 
 .calendar__body {
     flex-direction: column;
-    height: 500px;
+    // height: 500px;
 }
 
 .calendar__week {
@@ -199,6 +200,7 @@ $eventBorderRadius: 4px;
     text-align: left;
     padding: 16px 8px;
     height: 100%;
+    font-size: 13px;
 }
 
 /**
@@ -217,7 +219,7 @@ $eventBorderRadius: 4px;
 }
 
 .calendar__event.is-active {
-    background-color: #2ecc71;
+    background-color: #11a636;
 }
 
 .calendar__event.is-disabled {
@@ -251,7 +253,9 @@ $eventBorderRadius: 4px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative;
 }
+<<<<<<< HEAD
 /* Always set the map height explicitly to define the size of the div
  * element that contains the map. */
 #map {
@@ -267,3 +271,53 @@ $eventBorderRadius: 4px;
         padding:0px;
     }
 }
+=======
+
+
+.calendar__event.calendar__event--action {
+    .calendar__event_content,
+    .calendar__event_hidden,
+    .calendar__event_hidden_right {
+        transition: transform 150ms ease;
+    }
+
+    .calendar__event_content {
+        display: inline-block;
+    }
+
+    .calendar__event_hidden {
+        position: absolute;
+        left: 8px;
+    }
+
+    //Initial states
+    .calendar__event_content {
+        transform: translateY(0);
+    }
+
+    .calendar__event_hidden {
+        transform: translateY(-120%);
+    }
+
+    //Hover states
+    &:hover .calendar__event_hidden {
+        transform: translateY(0);
+    }
+
+    &:hover .calendar__event_content {
+        transform: translateY(120%);
+    }
+}
+
+
+.calendar__event--slot.is-disabled {
+    cursor: not-allowed;
+}
+
+
+.table.table--plain {
+    border: none;
+    box-shadow: none !important;
+}
+
+>>>>>>> 4858aa95b1356a1c22538fa48eb87418b74047db

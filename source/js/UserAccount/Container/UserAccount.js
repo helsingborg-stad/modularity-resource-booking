@@ -21,7 +21,7 @@ class UserAccount extends React.Component {
         } = props.user;
 
         this.state = {
-            //User data
+            // User data
             user: {
                 id: id,
                 firstName: firstName,
@@ -39,11 +39,11 @@ class UserAccount extends React.Component {
                 glnrNumber: glnrNumber,
             },
 
-            //Notice
+            // Notice
             notice: '',
             noticeType: '',
 
-            //Lock input
+            // Lock input
             lockInput: false,
         };
 
@@ -54,19 +54,20 @@ class UserAccount extends React.Component {
     handleFormSubmit(e) {
         e.preventDefault();
         const { user, lockInput } = this.state;
+        const { restUrl, nonce } = this.props;
 
         if (lockInput) {
             return;
         }
 
-        //Lock fields
+        // Lock fields
         this.setState({
             lockInput: true,
         });
 
-        updateUser(user)
+        updateUser(user, restUrl, nonce)
             .then(response => {
-                //Succesfully created user
+                // Succesfully created user
                 this.setState({
                     lockInput: false,
                     notice: response.message,
@@ -74,10 +75,10 @@ class UserAccount extends React.Component {
                 });
             })
             .catch(error => {
-                //Failed to create user
+                // Failed to create user
                 this.setState({
                     lockInput: false,
-                    notice: error.toString(),
+                    notice: error.message,
                     noticeType: 'warning',
                 });
             });
@@ -300,18 +301,18 @@ class UserAccount extends React.Component {
                         />
                     </div>
 
+                    {notice.length > 0 && (
+                        <div className="grid-xs-12">
+                            <Notice type={noticeType} icon>
+                                {notice}
+                            </Notice>
+                        </div>
+                    )}
+
                     <div className="grid-xs-12 u-mt-4">
                         <Button color="primary" title={translation.save} submit {...commonProps} />
                     </div>
                 </form>
-
-                {notice.length > 0 && (
-                    <div className="u-mt-2">
-                        <Notice type={noticeType} icon>
-                            {notice}
-                        </Notice>
-                    </div>
-                )}
             </div>
         );
     }

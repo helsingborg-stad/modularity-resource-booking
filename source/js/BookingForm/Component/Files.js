@@ -25,7 +25,11 @@ class Files extends React.Component {
                                 id={media['media_name'] + '-' + index}
                                 name={media['media_name'] + '-' + index}
                                 type="file"
-                                accept={media['media_type'] + '/*'}
+                                accept={
+                                    media['file_types'].length > 0
+                                        ? media['file_types'].join(', ')
+                                        : null
+                                }
                                 onChange={
                                     typeof onFileUpload === 'function'
                                         ? e => {
@@ -33,7 +37,29 @@ class Files extends React.Component {
                                           }
                                         : null
                                 }
+                                data-max-filesize={media['maxiumum_filesize']}
+                                required
                             />
+                            {typeof media.error !== 'undefined' && media.error.length > 0}{' '}
+                            {<div className="form-notice text-danger text-sm">{media.error}</div>}
+                            <ul className="unlist">
+                                <li>
+                                    <small>
+                                        <b>Dimensions:</b>{' '}
+                                        {media['image_width'] + 'x' + media['image_height']}
+                                    </small>
+                                </li>
+                                <li>
+                                    <small>
+                                        <b>Max Filesize:</b> {media['maxiumum_filesize'] + 'MB'}
+                                    </small>
+                                </li>
+                                <li>
+                                    <small>
+                                        <b>Allowed Filetypes:</b> {media['file_types'].join(', ')}
+                                    </small>
+                                </li>
+                            </ul>
                         </div>
                     );
                 })}
