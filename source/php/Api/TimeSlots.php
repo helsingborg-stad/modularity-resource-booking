@@ -83,6 +83,7 @@ class TimeSlots
         }
 
         if (get_field('mod_res_book_automatic_or_manual', 'option') == "weekly") {
+            
             //Decide what monday to refer to
             if (date("N") == 1) {
                 $whatMonday = "monday";
@@ -90,7 +91,16 @@ class TimeSlots
                 $whatMonday = "last monday";
             }
 
-            for ($n = 0; $n <= 52; $n++) {
+            //Get offset
+            if($offset = get_field('mod_res_offset_bookable_weeks_by', 'option')) {
+                $start = $offset; 
+                $stop  = 52 + $offset; 
+            } else {
+                $start = 0;
+                $stop  = 52;
+            }
+            
+            for ($n = $start; $n <= $stop; $n++) {
                 $start = date('Y-m-d', strtotime($whatMonday, strtotime('+' . $n . ' week'))) . " 00:00";
                 $stop = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
                 $slotId = self::getSlotId($start, $stop);
