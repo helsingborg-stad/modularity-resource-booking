@@ -3,7 +3,7 @@
         <h4 class="box-title">{!! apply_filters('the_title', $post_title) !!}</h4>
     @endif
     @if (is_user_logged_in())
-        <div class="modularity-resource-booking-form">
+        <div class="modularity-resource-booking-form" data-booking-form='<?php echo json_encode($dataAttributes) ?>'>
             <div class="gutter gutter-xl">
                 <div class="loading">
                     <div></div>
