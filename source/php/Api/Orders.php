@@ -37,37 +37,6 @@ class Orders
         //Get user id
         self::$userId = get_current_user_id();
 
-        //Get single order
-        register_rest_route(
-            "ModularityResourceBooking/v1",
-            "Order/(?P<id>[\d]+)",
-            array(
-                'methods' => \WP_REST_Server::READABLE,
-                'callback' => array($this, 'getOrder'),
-                'args' => array(
-                    'id' => array(
-                        'validate_callback' => function ($param, $request, $key) {
-                            return is_numeric($param);
-                        },
-                        'sanitize_callback' => 'absint',
-                        'required' => true,
-                        'type' => 'integer',
-                        'description' => 'The order id.'
-                    ),
-                ),
-            )
-        );
-
-        //Get all orders (for a limited period of time)
-        register_rest_route(
-            "ModularityResourceBooking/v1",
-            "Order",
-            array(
-                'methods' => \WP_REST_Server::READABLE,
-                'callback' => array($this, 'listOrders')
-            )
-        );
-
         //Get my orders (for a limited period of time)
         register_rest_route(
             "ModularityResourceBooking/v1",
@@ -88,50 +57,6 @@ class Orders
                 'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'create'),
                 'permission_callback' => array($this, 'checkInsertCapability')
-            )
-        );
-
-        //Modify order
-        register_rest_route(
-            "ModularityResourceBooking/v1",
-            "ModifyOrder/(?P<id>[\d]+)",
-            array(
-                'methods' => \WP_REST_Server::EDITABLE,
-                'callback' => array($this, 'modify'),
-                'permission_callback' => array($this, 'checkOrderOwnership'),
-                'args' => array(
-                    'id' => array(
-                        'validate_callback' => function ($param, $request, $key) {
-                            return is_numeric($param);
-                        },
-                        'sanitize_callback' => 'absint',
-                        'required' => true,
-                        'type' => 'integer',
-                        'description' => 'The order id.'
-                    ),
-                ),
-            )
-        );
-
-        //Remove order
-        register_rest_route(
-            "ModularityResourceBooking/v1",
-            "RemoveOrder/(?P<id>[\d]+)",
-            array(
-                'methods' => \WP_REST_Server::DELETABLE,
-                'callback' => array($this, 'remove'),
-                'permission_callback' => array($this, 'checkOrderOwnership'),
-                'args' => array(
-                    'id' => array(
-                        'validate_callback' => function ($param, $request, $key) {
-                            return is_numeric($param);
-                        },
-                        'sanitize_callback' => 'absint',
-                        'required' => true,
-                        'type' => 'integer',
-                        'description' => 'The order id.'
-                    ),
-                ),
             )
         );
 
@@ -194,24 +119,6 @@ class Orders
                 'default' => 1,
                 'sanitize_callback' => 'absint',
             )
-        );
-    }
-
-    /**
-     * Get a single order
-     *
-     * @param object $request Object containing request details
-     *
-     * @return WP_REST_Response
-     */
-    public function getOrder($request)
-    {
-        return new \WP_REST_Response(
-            array_pop(
-                $this->filterorderOutput(
-                    get_post($request->get_param('id'))
-                )
-            ), 200
         );
     }
 
@@ -493,73 +400,6 @@ class Orders
     }
 
     /**
-     * Remove order with id x
-     *
-     * @param integer $request The request of order to remove
-     *
-     * @return \WP_REST_Response
-     */
-    public function remove($request)
-    {
-        if (get_post_type($request->get_param('id')) != "purchase") {
-            return new \WP_REST_Response(
-                array(
-                    'message' => __('That is not av valid order id.', 'modularity-resource-booking'),
-                    'state' => 'error'
-                ), 404
-            );
-        }
-
-        if (!$this->checkOrderOwnership($request)) {
-            return new \WP_REST_Response(
-                array(
-                    'message' => __('You are not the owner of that order.', 'modularity-resource-booking'),
-                    'state' => 'error'
-                ), 401
-            );
-        }
-
-        if (wp_delete_post($request->get_param('id'))) {
-            return new \WP_REST_Response(
-                array(
-                    'message' => __('Your order has been removed.', 'modularity-resource-booking'),
-                    'state' => 'success'
-                ), 200
-            );
-        }
-
-        return new \WP_REST_Response(
-            array(
-                'message' => __('Could not remove that order due to an unknown error.', 'modularity-resource-booking'),
-                'state' => 'error'
-            ), 409
-        );
-    }
-
-    /**
-     * Modify order with id x
-     *
-     * @param integer $request The order to modify
-     *
-     * @return WP_REST_Response
-     */
-    public function modify($request)
-    {
-
-        //Check ownership
-        if (!$this->checkOrderOwnership($request)) {
-            return new \WP_REST_Response(
-                array(
-                    'message' => __('You are not the owner of that order.', 'modularity-resource-booking'),
-                    'state' => 'error'
-                ), 401
-            );
-        }
-
-        return $this->create($request);
-    }
-
-    /**
      * Check that the current user is the owner of order x
      *
      * @param object $request Request data
@@ -675,8 +515,6 @@ class Orders
                 if ($item['user_id'] == self::$userId) {
                     $result[$key] = $item + array(
                             'actions' => array(
-                                'modify' => rest_url('ModularityResourceBooking/v1/ModifyOrder/' . $item['id']),
-                                'delete' => rest_url('ModularityResourceBooking/v1/RemoveOrder/' . $item['id'])
                             )
                         );
                 }
