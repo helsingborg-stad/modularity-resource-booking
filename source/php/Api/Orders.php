@@ -383,6 +383,12 @@ class Orders
                     'heading' => __('Customer: ', 'modularity-resource-booking'),
                     'content' => \ModularityResourceBooking\Helper\Customer::getName(self::$userId)
                 )
+            ),
+            array(
+                array(
+                    'text' => __('Show order', 'modularity-resource-booking'),
+                    'url' => add_query_arg(array('post' => $insert, 'action' => 'edit'), self_admin_url('post.php'))
+                )
             )
         );
 
