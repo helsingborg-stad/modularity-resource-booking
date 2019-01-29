@@ -15,7 +15,9 @@ const ArticlesTable = ({ headings, articles, translation }) => (
                     <td>
                         {article.start} - {article.stop}
                     </td>
-                    <td>{article.price} SEK</td>
+                    <td>
+                        {article.price} {translation.currency}
+                    </td>
                 </tr>
             ))}
         </tbody>
