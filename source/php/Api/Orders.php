@@ -441,7 +441,7 @@ class Orders
             return true;
         }
 
-        if (is_user_logged_in() && current_user_can('order')) {
+        if (is_user_logged_in() && (current_user_can('order') || current_user_can('administrator'))) {
             return true;
         }
 
