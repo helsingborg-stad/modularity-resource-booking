@@ -238,11 +238,11 @@ class BookingForm extends React.Component {
             let avalibleStock = event['total_stock'] - event['available_stock'];
             avalibleStock = exists ? avalibleStock + 1 : avalibleStock;
 
-            stockCount = ' - ' + avalibleStock + '/' + event['available_stock'];
+            stockCount = ' - ' + avalibleStock + '/' + event['total_stock'];
         }
 
         if (disabled) {
-            return event.title;
+            return event.title + stockCount;
         }
 
         return (
