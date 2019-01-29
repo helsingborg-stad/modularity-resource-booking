@@ -1,12 +1,6 @@
 import AccordionItem from './AccordionItem';
 
-const AccordionTable = ({
-    headings,
-    items,
-    articleHeadings,
-    translation,
-    cancelOrder,
-}) => (
+const AccordionTable = ({ headings, items, articleHeadings, translation, cancelOrder }) => (
     <div>
         <header className="accordion-table accordion-table-head">
             {headings.map((heading, i) => (

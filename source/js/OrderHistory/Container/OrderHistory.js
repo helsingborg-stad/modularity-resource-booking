@@ -95,10 +95,6 @@ class OrderHistory extends React.Component {
         const { restUrl, nonce, translation } = this.props;
         const { filteredItems } = this.state;
 
-        if (e.target.classList.contains('disabled')) {
-            return;
-        }
-
         if (window.confirm(translation.cancelOrderConfirm)) {
             const order = filteredItems[index];
             // Set success state instantly, before db request
