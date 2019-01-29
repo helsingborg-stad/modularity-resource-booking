@@ -44,16 +44,6 @@ class Customer
         //Get user id
         self::$userId = get_current_user_id();
 
-        //Check if email exists
-        register_rest_route(
-            "ModularityResourceBooking/v1",
-            "UserEmailExists",
-            array(
-                'methods' => \WP_REST_Server::EDITABLE,
-                'callback' => array($this, 'emailExists')
-            )
-        );
-
         //Create user account
         register_rest_route(
             "ModularityResourceBooking/v1",
@@ -85,47 +75,6 @@ class Customer
                 ),
             )
         );
-
-        //Get user account
-        register_rest_route(
-            "ModularityResourceBooking/v1",
-            "GetUser/(?P<id>[\d]+)",
-            array(
-                'methods' => \WP_REST_Server::READABLE,
-                'callback' => array($this, 'get'),
-                'args' => array(
-                    'id' => array(
-                        'validate_callback' => function ($param, $request, $key) {
-                            return is_numeric($param);
-                        },
-                        'sanitize_callback' => 'absint',
-                        'required' => true,
-                        'type' => 'integer',
-                        'description' => 'The user id.'
-                    ),
-                )
-            )
-        );
-
-    }
-
-    /**
-     * Get a user by id
-     *
-     * @param object $request Object containing request details
-     *
-     * @return WP_REST_Response
-     */
-    public function get($request)
-    {
-        //Update user
-        if ($userId = wp_update_user($updateArray)) {
-            return array_pop(
-                $this->filterCustomerOutput(
-                    get_user_by('ID', $request->get_param('id'))
-                )
-            );
-        }
     }
 
     /**
@@ -365,44 +314,6 @@ class Customer
                 'state' => 'error'
             );
         }
-    }
-
-    /**
-     * Check if a email exists in user table
-     *
-     * @param object $request Object containing request details
-     *
-     * @return WP_REST_Response
-     */
-    public function emailExists($request)
-    {
-        $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-        if (!isset($data[self::$fieldMap['user_email']]) || empty($data[self::$fieldMap['user_email']])) {
-            return new \WP_REST_Response(
-                array(
-                    'message' => __('Email cannot be empty.', 'modularity-resource-booking'),
-                    'state' => 'error'
-                ), 406
-            );
-        }
-
-        if (email_exists($data[self::$fieldMap['user_email']])) {
-            return new \WP_REST_Response(
-                array(
-                    'message' => __('The email provided does already exist in our account system. It you think this is a error, please contact a administrator.', 'modularity-resource-booking'),
-                    'state' => 'error'
-                ), 406
-            );
-        }
-
-        return new \WP_REST_Response(
-            array(
-                'message' => __('No account found with that email.', 'modularity-resource-booking'),
-                'state' => 'success'
-            ), 200
-        );
-
     }
 
     /**

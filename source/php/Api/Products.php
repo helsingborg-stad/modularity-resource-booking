@@ -4,8 +4,6 @@ namespace ModularityResourceBooking\Api;
 
 class Products
 {
-    public static $userId;
-
     public function __construct()
     {
         //Run register rest routes
@@ -19,10 +17,6 @@ class Products
      */
     public function registerRestRoutes()
     {
-
-        //Get user id
-        self::$userId = get_current_user_id();
-
         //Get single product
         register_rest_route(
             "ModularityResourceBooking/v1",
@@ -39,37 +33,6 @@ class Products
                         'required' => true,
                         'type' => 'integer',
                         'description' => 'The product id.'
-                    ),
-                ),
-            )
-        );
-
-        //Get all products
-        register_rest_route(
-            "ModularityResourceBooking/v1",
-            "Product",
-            array(
-                'methods' => \WP_REST_Server::READABLE,
-                'callback' => array($this, 'getProducts')
-            )
-        );
-
-        //Get single package pins
-        register_rest_route(
-            "ModularityResourceBooking/v1",
-            "PackagePins/(?P<id>[\d]+)",
-            array(
-                'methods' => \WP_REST_Server::READABLE,
-                'callback' => array($this, 'getPackagePins'),
-                'args' => array(
-                    'id' => array(
-                        'validate_callback' => function ($param, $request, $key) {
-                            return is_numeric($param);
-                        },
-                        'sanitize_callback' =>'absint',
-                        'required' => true,
-                        'type' => 'integer',
-                        'description' => 'The package id.'
                     ),
                 ),
             )
@@ -95,17 +58,6 @@ class Products
                 ),
             )
         );
-
-        //Get all packages (limited)
-        register_rest_route(
-            "ModularityResourceBooking/v1",
-            "Package",
-            array(
-                'methods' => \WP_REST_Server::READABLE,
-                'callback' => array($this, 'getPackages')
-            )
-        );
-
     }
 
     /**
@@ -121,29 +73,6 @@ class Products
             array_pop(
                 $this->filterPostOutput(
                     get_post($request->get_param('id'))
-                )
-            ), 200
-        );
-    }
-
-    /**
-     * Get all products
-     *
-     * @param object $request Object containing request details
-     *
-     * @return WP_REST_Response
-     */
-    public function getProducts($request)
-    {
-        return new \WP_REST_Response(
-            $this->filterPostOutput(
-                get_posts(
-                    array(
-                        'post_type' => 'product',
-                        'posts_per_page' => -1,
-                        'orderby' => 'date',
-                        'order' => 'DESC'
-                    )
                 )
             ), 200
         );
@@ -170,80 +99,6 @@ class Products
                 'message' => __('Could not find any package with that id.', 'modularity-resource-booking'),
                 'state' => 'error'
             ), 404
-        );
-    }
-
-    /**
-     * Get package pins
-     *
-     * @param object $request Object containing request details
-     *
-     * @return WP_REST_Response
-     */
-    public function getPackagePins($request)
-    {
-        if ($term = get_term($request->get_param('id'), 'product-package') || $term = get_term($request->get_param('id'), 'product-package') ) {
-
-            $postData = get_posts(
-                array(
-                    'posts_per_page' => -1,
-                    'post_type' => 'product',
-                    'tax_query' => array(
-                        array(
-                            'taxonomy' => 'product-package',
-                            'field' => 'term_id',
-                            'terms' => $term->term_id,
-                        )
-                    )
-                )
-            ); 
-
-            if (is_object($postData) && !is_array($postData)) {
-                $postData = array($postData);
-            }
-    
-            if (is_array($postData) && !empty($postData)) {
-                foreach ($postData as $postitem) {
-                    $result[] = array(
-                        'id' => (int) $postitem->ID,
-                        'title' => (string) $postitem->post_title,
-                        'location' => get_field('product_location', $postitem->ID),
-                    );
-                }
-            }
-
-            return new \WP_REST_Response(
-                $result,
-                200
-            );
-        }
-
-        return new \WP_REST_Response(
-            array(
-                'message' => __('Could not find any package with that id.', 'modularity-resource-booking'),
-                'state' => 'error'
-            ), 404
-        );
-    }
-
-    /**
-     * Get all packages
-     *
-     * @param object $request Object containing request details
-     *
-     * @return WP_REST_Response
-     */
-    public function getPackages($request)
-    {
-        return new \WP_REST_Response(
-            $this->filterTaxonomyOutput(
-                get_terms(
-                    array(
-                        'taxonomy' => 'product-package',
-                        'hide_empty' => true,
-                    )
-                )
-            ), 200
         );
     }
 
