@@ -208,6 +208,10 @@ class BookingForm extends React.Component {
                     });
                 }
 
+                if (result.state === 'success') {
+                    this.resetForm();
+                }
+
                 this.setState((state, props) => {
                     return {
                         notice: result.message,
