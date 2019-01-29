@@ -23,7 +23,9 @@ class BookingForm extends \Modularity\Module
             'restNonce' => wp_create_nonce('wp_rest'),
             'articleType' => get_field('article_type', $this->ID),
             'articleId' => get_field('article_type', $this->ID) == 'package' ? get_field('package_id', $this->ID) : 0,
-            'userId' => get_current_user_id()
+            'userId' => get_current_user_id(),
+            'fileUploadTitle' => get_field('fileupload_title', $this->ID) ? get_field('fileupload_title', $this->ID) : __('Upload files', 'modularity-resource-booking'),
+            'orderHistoryPage' => get_field('order_history_page', 'options') ? get_permalink(get_field('order_history_page', 'options')) : ''
 
         );
         return $data;
