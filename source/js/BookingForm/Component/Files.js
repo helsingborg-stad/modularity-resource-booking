@@ -16,12 +16,16 @@ class Files extends React.Component {
                 {children.map((media, index) => {
                     media.index = index;
                     return (
-                        <div className="form-group" key={media['media_name'] + '-' + index}>
+                        <div
+                            className="form-group u-p-3"
+                            style={{ backgroundColor: '#f4f4f4' }}
+                            key={media['media_name'] + '-' + index}
+                        >
                             <label htmlFor={media['media_name'] + '-' + index}>
                                 {media['media_name']}
                             </label>
                             <input
-                                className="form-input"
+                                className="form-input u-py-1"
                                 id={media['media_name'] + '-' + index}
                                 name={media['media_name'] + '-' + index}
                                 type="file"

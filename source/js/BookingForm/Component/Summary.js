@@ -32,8 +32,8 @@ class Summary extends React.Component {
                         {children.map(slot => (
                             <tr key={slot.id}>
                                 <td>{slot.articleName}</td>
-                                <td>{dateFns.format(slot.start, 'DD-MM-YYYY')}</td>
-                                <td>{dateFns.format(slot.stop, 'DD-MM-YYYY')}</td>
+                                <td>{dateFns.format(slot.start, 'DD-MM-YYYY HH:mm')}</td>
+                                <td>{dateFns.format(slot.stop, 'DD-MM-YYYY HH:mm')}</td>
                                 <td className="text-right">
                                     <Button
                                         color="plain"
@@ -53,10 +53,13 @@ class Summary extends React.Component {
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colSpan="3" className="text-right">
-                            {translation.total}:
+                            <td colSpan="3" className="text-right" />
+                            <td className="text-right">
+                                <b>
+                                    {translation.total}: {totalPrice} {translation.currency}{' '}
+                                    <small>{translation.vat}</small>
+                                </b>
                             </td>
-                            <td className="text-right">{totalPrice} {translation.currency} <small>{translation.vat}</small></td>
                         </tr>
                     </tfoot>
                 </table>

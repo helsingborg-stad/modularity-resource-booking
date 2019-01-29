@@ -24,7 +24,15 @@ class App {
 
             const moduleData = JSON.parse(element.getAttribute('data-booking-form'));
 
-            const requiredKeys = ['restUrl', 'restNonce', 'articleType', 'articleId', 'userId'];
+            const requiredKeys = [
+                'restUrl',
+                'restNonce',
+                'articleType',
+                'articleId',
+                'userId',
+                'orderHistoryPage',
+                'fileUploadTitle'
+            ];
             const requiedKeysExists = requiredKeys.reduce((accumulator, key) => {
                 if (typeof moduleData[key] === 'undefined') {
                     return false;
@@ -45,6 +53,8 @@ class App {
                     articleId={moduleData['articleId']}
                     restNonce={moduleData['restNonce']}
                     restUrl={moduleData['restUrl']}
+                    orderHistoryPage={moduleData['orderHistoryPage']}
+                    fileUploadTitle={moduleData['fileUploadTitle']}
                 />,
                 element
             );

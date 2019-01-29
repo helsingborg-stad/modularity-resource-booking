@@ -61,6 +61,25 @@
             'return_format' => 'id',
             'multiple' => 0,
         ),
+        2 => array(
+            'key' => 'field_5c50181473158',
+            'label' => __('Fileupload Title', 'modularity-resource-booking'),
+            'name' => 'fileupload_title',
+            'type' => 'text',
+            'instructions' => '',
+            'required' => 0,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'default_value' => '',
+            'placeholder' => '',
+            'prepend' => '',
+            'append' => '',
+            'maxlength' => '',
+        ),
     ),
     'location' => array(
         0 => array(

@@ -119,7 +119,21 @@ class BookingForm extends React.Component {
                         slot['articleName'] = state.articleName;
                         slot['articlePrice'] = state.articlePrice;
 
-                        slot['title'] = 'Vecka ' + dateFns.getISOWeek(slot.start);
+                        let startOfWeek = dateFns.startOfWeek(slot['start'], { weekStartsOn: 1 });
+                        let endOfWeek = dateFns.endOfWeek(slot['start'], { weekStartsOn: 1 });
+
+                        if (
+                            dateFns.isSameDay(startOfWeek, slot['start']) &&
+                            dateFns.isSameDay(endOfWeek, slot['stop'])
+                        ) {
+                            slot['title'] =
+                                state.articleName +
+                                ' (Vecka ' +
+                                dateFns.getISOWeek(slot.start) +
+                                ')';
+                        } else {
+                            slot['title'] = state.articleName;
+                        }
 
                         return slot;
                     })
@@ -194,6 +208,10 @@ class BookingForm extends React.Component {
                     });
                 }
 
+                if (result.state === 'success') {
+                    this.resetForm();
+                }
+
                 this.setState((state, props) => {
                     return {
                         notice: result.message,
@@ -218,14 +236,22 @@ class BookingForm extends React.Component {
         const { selectedSlots } = this.state;
         let disabled = !event['unlimited_stock'] && event['available_stock'] <= 0 ? true : false;
         let exists = selectedSlots.includes(event.id) ? true : false;
+        let stockCount = '';
+
+        if (!event['unlimited_stock']) {
+            let avalibleStock = event['total_stock'] - event['available_stock'];
+            avalibleStock = exists ? avalibleStock + 1 : avalibleStock;
+
+            stockCount = ' - ' + avalibleStock + '/' + event['total_stock'];
+        }
 
         if (disabled) {
-            return event.title;
+            return event.title + stockCount;
         }
 
         return (
             <div>
-                <span className="calendar__event_content">{event.title}</span>
+                <span className="calendar__event_content">{event.title + stockCount}</span>
                 <span className="calendar__event_hidden">
                     <i
                         className={classNames('pricon', {
@@ -339,7 +365,7 @@ class BookingForm extends React.Component {
     }
 
     render() {
-        const { translation } = this.props;
+        const { translation, fileUploadTitle, orderHistoryPage } = this.props;
         const { avalibleSlots, selectedSlots, files, notice, noticeType, isLoading } = this.state;
 
         if (isLoading) {
@@ -363,25 +389,33 @@ class BookingForm extends React.Component {
                                 onClickEvent={this.handleClickEvent}
                                 eventClassName={this.handleEventClassName}
                                 eventContent={this.handleEventContent}
-                                maxDate={avalibleSlots[avalibleSlots.length - 1].stop}
-                                minDate={avalibleSlots[0].start}
+                                maxDate={
+                                    avalibleSlots.length > 0
+                                        ? avalibleSlots[avalibleSlots.length - 1].stop
+                                        : null
+                                }
+                                minDate={avalibleSlots.length > 0 ? avalibleSlots[0].start : null}
+                                currentMonth={
+                                    avalibleSlots.length > 0 ? avalibleSlots[0].start : null
+                                }
                             />
                         </div>
-                        {selectedSlots.length > 0 ? (
+
+                        {files.length > 0 ? (
                             <div className="grid-xs-12">
+                                <h4 className="u-mb-2">{fileUploadTitle}</h4>
+                                <Files onFileUpload={this.handleFileUpload}>{files}</Files>
+                            </div>
+                        ) : null}
+
+                        {selectedSlots.length > 0 ? (
+                            <div className="grid-xs-12 u-mb-0">
                                 <Summary
                                     onClickRemoveItem={this.handleRemoveItem}
                                     translation={translation}
                                 >
                                     {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
                                 </Summary>
-                            </div>
-                        ) : null}
-
-                        {files.length > 0 ? (
-                            <div className="grid-xs-12">
-                                <h3>Ladda upp annons material</h3>
-                                <Files onFileUpload={this.handleFileUpload}>{files}</Files>
                             </div>
                         ) : null}
 
