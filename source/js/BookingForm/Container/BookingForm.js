@@ -399,8 +399,8 @@ class BookingForm extends React.Component {
         } else {
             return (
                 <form onSubmit={this.submitOrder}>
-                    <div className="grid grid--columns">
-                        <div className="grid-xs-12">
+                    <div className="grid">
+                        <div className="grid-xs-12 u-mb-3">
                             <Calendar
                                 events={avalibleSlots}
                                 onClickEvent={this.handleClickEvent}
@@ -419,14 +419,14 @@ class BookingForm extends React.Component {
                         </div>
 
                         {files.length > 0 ? (
-                            <div className="grid-xs-12">
+                            <div className="grid-xs-12 u-mb-3">
                                 <h4 className="u-mb-2">{fileUploadTitle}</h4>
                                 <Files onFileUpload={this.handleFileUpload}>{files}</Files>
                             </div>
                         ) : null}
 
                         {selectedSlots.length > 0 ? (
-                            <div className="grid-xs-12 u-mb-0">
+                            <div className="grid-xs-12 u-mb-3">
                                 <Summary
                                     onClickRemoveItem={this.handleRemoveItem}
                                     translation={translation}
@@ -447,7 +447,7 @@ class BookingForm extends React.Component {
                                     />
                                 </div>
                                 {formIsLoading ? (
-                                    <div className="grid-auto u-pl-0">
+                                    <div className="grid-fit-content u-pl-0">
                                         {' '}
                                         <div className="spinner spinner-dark" />
                                     </div>
@@ -456,7 +456,7 @@ class BookingForm extends React.Component {
                         </div>
 
                         {notice.length > 0 && (
-                            <div className="grid-xs-12">
+                            <div className="grid-xs-12 u-mt-2">
                                 <Notice type={noticeType} icon>
                                     <span dangerouslySetInnerHTML={{ __html: notice }} />
                                 </Notice>
