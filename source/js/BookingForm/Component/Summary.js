@@ -53,12 +53,12 @@ class Summary extends React.Component {
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colSpan="3" className="text-right">
-                                <b>{translation.total}:</b>
-                            </td>
+                            <td colSpan="3" className="text-right" />
                             <td className="text-right">
-                                {totalPrice} <b>{translation.currency}</b>{' '}
-                                <small>{translation.vat}</small>
+                                <b>
+                                    {translation.total}: {totalPrice} {translation.currency}{' '}
+                                    <small>{translation.vat}</small>
+                                </b>
                             </td>
                         </tr>
                     </tfoot>
