@@ -19,7 +19,7 @@
         {
             "name": "Johan Silvergrund",
             "email": "johan.silvergrund@hiq.se"
-        },
+        }
     ],
     "require": {
         "composer/installers": "~1.0",
