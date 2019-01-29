@@ -17,7 +17,7 @@ class Customer
         add_filter('authenticate', array($this, 'checkCustomerGroup'), 99, 3);
         add_action('after_setup_theme', array($this, 'hideAdminBar'));
         add_action('init', array($this, 'restrictAdminPanel'));
-        add_filter('modularityLoginForm/AbortLogin', array($this, 'prohibitGrouplessLogins'), 10, 2); 
+        add_filter('modularityLoginForm/AbortLogin', array($this, 'prohibitGrouplessLogins'), 10, 2);
     }
 
     /**
@@ -145,6 +145,8 @@ class Customer
             'level_0' => true,
             'upload_files' => true
         ));
+        $role = get_role( 'customer' );
+        $role->add_cap( 'order' );
     }
 
     /**
@@ -157,6 +159,8 @@ class Customer
             remove_role('customer');
         }
     }
+
+
 
     /**
      * Create customer group taxonomy
@@ -224,4 +228,5 @@ class Customer
             exit;
         }
     }
+
 }
