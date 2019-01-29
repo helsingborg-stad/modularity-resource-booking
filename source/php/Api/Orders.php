@@ -390,8 +390,8 @@ class Orders
         return new \WP_REST_Response(
             array(
                 'message' => sprintf(
-                    __('Your order has been registered.', 'modularity-resource-booking')
-                ),
+                    __('Your order has been registered. A comfirmation has been sent to your email.', 'modularity-resource-booking')
+                ) . ' Visit <a href="' . get_permalink(get_field('order_history_page', 'options')) . '">' . 'Order History' . '</a> to view your order.',
                 'order' => $this->filterorderOutput(get_post($insert)),
                 'state' => 'success'
             ),
