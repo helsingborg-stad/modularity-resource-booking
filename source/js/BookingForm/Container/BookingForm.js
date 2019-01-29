@@ -184,6 +184,7 @@ class BookingForm extends React.Component {
 
         if (selectedSlots.length <= 0) {
             this.setState({
+                formIsLoading: false,
                 lockForm: false,
                 notice: 'Please select atleast one date in the calendar.',
                 noticeType: 'warning'
