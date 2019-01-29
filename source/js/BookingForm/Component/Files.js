@@ -21,7 +21,7 @@ class Files extends React.Component {
                                 {media['media_name']}
                             </label>
                             <input
-                                className="form-input"
+                                className="form-input u-py-1"
                                 id={media['media_name'] + '-' + index}
                                 name={media['media_name'] + '-' + index}
                                 type="file"
