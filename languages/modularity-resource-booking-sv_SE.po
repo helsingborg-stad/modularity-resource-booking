@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-29 09:02+0100\n"
-"PO-Revision-Date: 2019-01-29 09:02+0100\n"
+"POT-Creation-Date: 2019-01-29 09:41+0100\n"
+"PO-Revision-Date: 2019-01-29 09:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -407,21 +407,47 @@ msgstr "Manuell inmatning"
 msgid "Time slots"
 msgstr "Schemaläggning"
 
-#: source/acf-fields/php/mod-time-slots-management.php:61
+#: source/acf-fields/php/mod-time-slots-management.php:37
+msgid ""
+"This list will automatically be filtered for invalid slots, the following "
+"rules will apply: <br/>\r\n"
+"<br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Negative timeslots "
+"cannot be stored.</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Passed time slots "
+"will be removed (taking account the offset time).</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Duplicate "
+"timeslots will be removed.</span><br/>\r\n"
+"<br/>\r\n"
+"If your value won't save, it's possible it dosen't meet the requirements."
+msgstr ""
+"Den här listan filtreras automatiskt. Ogilitga tidsperioder kommer att tas "
+"bort. Följande regler appliceras: <br/>\r\n"
+"<br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Negativa perioder "
+"kan inte lagras.</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Passerade perioder "
+"filtreras bort (inklusive tidsförskjutning).</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Identiska/"
+"dubbletter av tidsperioder tas bort.</span><br/>\r\n"
+"<br/>\r\n"
+"Om ditt värde inte sparas, är det troligt att kraven inte uppfylls."
+
+#: source/acf-fields/php/mod-time-slots-management.php:67
 #: source/php/Module/BookingForm/BookingForm.php:54
 msgid "Start date"
 msgstr "Startdatum"
 
-#: source/acf-fields/php/mod-time-slots-management.php:78
+#: source/acf-fields/php/mod-time-slots-management.php:84
 #: source/php/Module/BookingForm/BookingForm.php:55
 msgid "End date"
 msgstr "Slutdatum"
 
-#: source/acf-fields/php/mod-time-slots-management.php:97
+#: source/acf-fields/php/mod-time-slots-management.php:103
 msgid "Pattern mode"
 msgstr "Mönsterläge"
 
-#: source/acf-fields/php/mod-time-slots-management.php:116
+#: source/acf-fields/php/mod-time-slots-management.php:122
 msgid ""
 "You have selected a weekly pattern, the system will automatically create "
 "slots a year ahead."
@@ -429,11 +455,11 @@ msgstr ""
 "Du har angett ett automatiskt mönster baserat på veckor. Systemet skapar "
 "automatiskt upp mönster för ett år framöver."
 
-#: source/acf-fields/php/mod-time-slots-management.php:122
+#: source/acf-fields/php/mod-time-slots-management.php:128
 msgid "Time slots offset"
 msgstr "Förskjutning av bokningsbara tider"
 
-#: source/acf-fields/php/mod-time-slots-management.php:125
+#: source/acf-fields/php/mod-time-slots-management.php:131
 msgid ""
 "You can offset the bookable time slots by 'n' number of weeks. This will "
 "prevent users from booking the upcoming weeks in set period of time."
@@ -441,11 +467,11 @@ msgstr ""
 "Du kan förskjuta första bokbara datum med x-antal veckor. Den här "
 "inställningen förhindrar bokning av tider i omedelbar framtid. "
 
-#: source/acf-fields/php/mod-time-slots-management.php:150
+#: source/acf-fields/php/mod-time-slots-management.php:156
 msgid "Offset bookable weeks by"
 msgstr "Förskjut första lediga tid med"
 
-#: source/acf-fields/php/mod-time-slots-management.php:151
+#: source/acf-fields/php/mod-time-slots-management.php:157
 msgid "weeks"
 msgstr "veckor"
 
@@ -792,6 +818,10 @@ msgstr "Odefinierad ämnesrad."
 #: source/php/Helper/Mail.php:155
 msgid "Undefined content data."
 msgstr "Odefinierad innehållsinformation."
+
+#: source/php/Helper/Mail.php:180
+msgid "Each button array item must contain 'url' and 'text' sub keys."
+msgstr "Varje knappelement måste innehålla nycklar för 'url' och 'text'."
 
 #: source/php/Helper/MediaUpload.php:33
 #, php-format
@@ -1254,6 +1284,9 @@ msgstr "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
 #. Author URI of the plugin/theme
 msgid "https://github.com/helsingborg-stad"
 msgstr ""
+
+#~ msgid "Each table array item must contain 'url' and 'text' sub keys."
+#~ msgstr "Varje "
 
 #~ msgid "Sebastian Thulin, Nikolas Ramstedt"
 #~ msgstr ""
