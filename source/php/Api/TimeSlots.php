@@ -4,6 +4,8 @@ namespace ModularityResourceBooking\Api;
 
 class TimeSlots
 {
+    public static $userId;
+
     public function __construct()
     {
         //Run register rest routes
@@ -18,6 +20,9 @@ class TimeSlots
      */
     public function registerRestRoutes()
     {
+        //Get user id
+        self::$userId = get_current_user_id();
+
         register_rest_route(
             "ModularityResourceBooking/v1",
             "Slots",
@@ -25,8 +30,31 @@ class TimeSlots
                 'methods' => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'getSlots'),
                 'args' => $this->getCollectionParams(),
+                'permission_callback' => array($this, 'checkOrderOwnership'),
             )
         );
+    }
+
+    /**
+     * Check that the current user is the same as requested user
+     *
+     * @param object $request Request data
+     *
+     * @return bool
+     */
+    public function checkOrderOwnership($request): bool
+    {
+        //Bypass security, by constant
+        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
+            return true;
+        }
+
+        $userId = $request->get_param('user_id');
+        if ((int)self::$userId === $userId) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
