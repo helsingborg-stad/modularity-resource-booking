@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-29 14:05+0100\n"
-"PO-Revision-Date: 2019-01-29 14:06+0100\n"
+"POT-Creation-Date: 2019-01-29 15:10+0100\n"
+"PO-Revision-Date: 2019-01-29 15:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 1.8.12\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: modularity-resource-booking.php\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -67,7 +67,7 @@ msgstr "Välj paket"
 
 #: source/acf-fields/php/mod-booking-form.php:66
 msgid "Fileupload Title"
-msgstr ""
+msgstr "Rubrik ovanför filuppladdning"
 
 #: source/acf-fields/php/mod-customer-group.php:10
 msgid "Select the customer group of this profile"
@@ -81,6 +81,22 @@ msgstr "Orderstatus"
 #: source/acf-fields/php/mod-default-order-status.php:13
 msgid "Defines a default order status on new orders."
 msgstr "Definierar en orderstatus på nya ordrar"
+
+#: source/acf-fields/php/mod-email-color-settings.php:6
+msgid "Brand color"
+msgstr "Varumäresfärg"
+
+#: source/acf-fields/php/mod-email-color-settings.php:10
+msgid "Email brand color"
+msgstr "Varumärkesfärg i epostmeddelande"
+
+#: source/acf-fields/php/mod-email-color-settings.php:13
+msgid ""
+"Select a dark brand color to be used in the automatic email from resource "
+"booking."
+msgstr ""
+"Välj en mörk färg från ditt varumärkestema. Färgen används i automatiska "
+"utskick från resursbokningsystemet."
 
 #: source/acf-fields/php/mod-email-settings.php:10
 msgid "Manager email"
@@ -258,7 +274,7 @@ msgid "Product price"
 msgstr "Produktens pris"
 
 #: source/acf-fields/php/mod-package-details.php:71
-#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:169
+#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:173
 msgid "Customer group"
 msgstr "Kundgrupp"
 
@@ -703,11 +719,11 @@ msgstr "Registrerat företag:"
 msgid "Registered company number:"
 msgstr "Registrerat org.nr"
 
-#: source/php/Customer.php:168
+#: source/php/Customer.php:172
 msgid "Customer groups"
 msgstr "Kundgrupper"
 
-#: source/php/Customer.php:198
+#: source/php/Customer.php:202
 msgid "Your account is not verified yet."
 msgstr "Ditt konto har inte verifierats ännu."
 
@@ -805,19 +821,19 @@ msgstr ""
 "Varje tabelluppsättningspost måste innehålla \"innehåll\" och \"rubrik\" "
 "undernycklar."
 
-#: source/php/Helper/Mail.php:147
+#: source/php/Helper/Mail.php:148
 msgid "Undefined reciver(s)."
 msgstr "Odefinierad mottagare"
 
-#: source/php/Helper/Mail.php:151
+#: source/php/Helper/Mail.php:152
 msgid "Undefined subject line."
 msgstr "Odefinierad ämnesrad."
 
-#: source/php/Helper/Mail.php:155
+#: source/php/Helper/Mail.php:156
 msgid "Undefined content data."
 msgstr "Odefinierad innehållsinformation."
 
-#: source/php/Helper/Mail.php:180
+#: source/php/Helper/Mail.php:181
 msgid "Each button array item must contain 'url' and 'text' sub keys."
 msgstr "Varje knappelement måste innehålla nycklar för 'url' och 'text'."
 
@@ -915,7 +931,7 @@ msgstr "Visar ett formulär för bokning av resurser."
 
 #: source/php/Module/BookingForm/BookingForm.php:27
 msgid "Upload files"
-msgstr ""
+msgstr "Ladda upp filer"
 
 #: source/php/Module/BookingForm/BookingForm.php:55
 msgid "excl. vat"
