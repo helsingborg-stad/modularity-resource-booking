@@ -36,7 +36,10 @@ class BookingForm extends React.Component {
             notice: '',
             noticeType: '',
 
-            isLoading: true
+            isLoading: true,
+
+            lockForm: false,
+            formIsLoading: false
         };
 
         this.handleClickEvent = this.handleClickEvent.bind(this);
@@ -65,7 +68,6 @@ class BookingForm extends React.Component {
                 this.fetchSlots()
                     .then(() => {
                         this.setState({ isLoading: false });
-                        //Validate filesizes
                         new ValidateFileSize();
                     })
                     .catch(error => {
@@ -170,12 +172,19 @@ class BookingForm extends React.Component {
     submitOrder(e) {
         e.preventDefault();
         const { articleType, articleId, restUrl, restNonce } = this.props;
-        const { selectedSlots, files, notice } = this.state;
+        const { selectedSlots, files, notice, lockForm } = this.state;
 
         let orders = [];
 
+        if (lockForm) {
+            return;
+        }
+
+        this.setState({ lockForm: true, formIsLoading: true });
+
         if (selectedSlots.length <= 0) {
             this.setState({
+                lockForm: false,
                 notice: 'Please select atleast one date in the calendar.',
                 noticeType: 'warning'
             });
@@ -196,6 +205,8 @@ class BookingForm extends React.Component {
 
         createOrder(orders, files, restUrl, restNonce)
             .then(result => {
+                this.setState({ formIsLoading: false });
+
                 if (
                     result.state === 'dimension-error' &&
                     Object.keys(result.data.invalid_dimensions).length > 0
@@ -208,8 +219,8 @@ class BookingForm extends React.Component {
                     });
                 }
 
-                if (result.state === 'success') {
-                    this.resetForm();
+                if (result.state !== 'success') {
+                    this.setState({ lockForm: false });
                 }
 
                 this.setState((state, props) => {
@@ -339,12 +350,9 @@ class BookingForm extends React.Component {
      */
     handleRemoveItem(slot) {
         this.setState((state, props) => {
-            const calendarView =
-                state.selectedSlots.length === 1 && !state.calendarView ? true : state.calendarView;
             const slots = state.selectedSlots.filter(id => id !== slot.id);
             return {
-                selectedSlots: slots,
-                calendarView: calendarView
+                selectedSlots: slots
             };
         });
     }
@@ -366,7 +374,16 @@ class BookingForm extends React.Component {
 
     render() {
         const { translation, fileUploadTitle, orderHistoryPage } = this.props;
-        const { avalibleSlots, selectedSlots, files, notice, noticeType, isLoading } = this.state;
+        const {
+            avalibleSlots,
+            selectedSlots,
+            files,
+            notice,
+            noticeType,
+            isLoading,
+            lockForm,
+            formIsLoading
+        } = this.state;
 
         if (isLoading) {
             return (
@@ -420,13 +437,28 @@ class BookingForm extends React.Component {
                         ) : null}
 
                         <div className="grid-xs-12">
-                            <Button color="primary" submit title={translation.order} />
+                            <div className="grid grid-va-middle">
+                                <div className="grid-fit-content">
+                                    <Button
+                                        color="primary"
+                                        submit
+                                        disabled={lockForm ? true : false}
+                                        title={translation.order}
+                                    />
+                                </div>
+                                {formIsLoading ? (
+                                    <div className="grid-auto u-pl-0">
+                                        {' '}
+                                        <div className="spinner spinner-dark" />
+                                    </div>
+                                ) : null}
+                            </div>
                         </div>
 
                         {notice.length > 0 && (
                             <div className="grid-xs-12">
                                 <Notice type={noticeType} icon>
-                                    {notice}
+                                    <span dangerouslySetInnerHTML={{ __html: notice }} />
                                 </Notice>
                             </div>
                         )}
