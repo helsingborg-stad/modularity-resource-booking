@@ -426,7 +426,7 @@ class BookingForm extends React.Component {
                         {notice.length > 0 && (
                             <div className="grid-xs-12">
                                 <Notice type={noticeType} icon>
-                                    {notice}
+                                    <span dangerouslySetInnerHTML={{ __html: notice }} />
                                 </Notice>
                             </div>
                         )}
