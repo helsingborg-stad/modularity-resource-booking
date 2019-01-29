@@ -34,7 +34,13 @@
             'label' => __('Time slots', 'modularity-resource-booking'),
             'name' => 'mod_res_book_time_slots',
             'type' => 'repeater',
-            'instructions' => '',
+            'instructions' => __('This list will automatically be filtered for invalid slots, the following rules will apply: <br/>
+<br/>
+<span style="background-color: #ff0000; color: #fff;">- Negative timeslots cannot be stored.</span> <br/>
+<span style="background-color: #ff0000; color: #fff;">- Passed time slots will be removed (taking account the offset time).</span> <br/>
+<span style="background-color: #ff0000; color: #fff;">- Duplicate timeslots will be removed.</span><br/>
+<br/>
+If your value won\'t save, it\'s possible it dosen\'t meet the requirements.', 'modularity-resource-booking'),
             'required' => 1,
             'conditional_logic' => array(
                 0 => array(

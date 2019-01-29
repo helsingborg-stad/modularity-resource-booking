@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-28 13:47+0100\n"
-"PO-Revision-Date: 2019-01-28 13:50+0100\n"
+"POT-Creation-Date: 2019-01-29 09:41+0100\n"
+"PO-Revision-Date: 2019-01-29 09:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -50,6 +50,7 @@ msgstr "Välj artikeltyp"
 
 #: source/acf-fields/php/mod-booking-form.php:22
 #: source/acf-fields/php/mod-order-details.php:77
+#: source/acf-fields/php/mod-resource_booking_map.php:10
 #: source/php/Module/OrderHistory/OrderHistory.php:51 source/php/Orders.php:261
 #: source/php/Products.php:64 source/php/Products.php:111
 msgid "Package"
@@ -60,6 +61,7 @@ msgid "package"
 msgstr "paket"
 
 #: source/acf-fields/php/mod-booking-form.php:36
+#: source/acf-fields/php/mod-resource_booking_map.php:13
 msgid "Select package"
 msgstr "Välj paket"
 
@@ -114,7 +116,7 @@ msgstr "Order ID"
 msgid "{{ORDER_ID}}"
 msgstr ""
 
-#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:134
+#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:143
 #: source/php/Orders.php:324
 msgid "Customer"
 msgstr "Kund"
@@ -138,7 +140,7 @@ msgid "The article type."
 msgstr "Artikeltyp"
 
 #: source/acf-fields/php/mod-order-details.php:76
-#: source/php/Module/BookingForm/BookingForm.php:48
+#: source/php/Module/BookingForm/BookingForm.php:56
 #: source/php/Module/OrderHistory/OrderHistory.php:50 source/php/Orders.php:261
 msgid "Product"
 msgstr "Produkt"
@@ -252,7 +254,7 @@ msgid "Product price"
 msgstr "Produktens pris"
 
 #: source/acf-fields/php/mod-package-details.php:71
-#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:160
+#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:169
 msgid "Customer group"
 msgstr "Kundgrupp"
 
@@ -288,74 +290,102 @@ msgstr "Produktens plats"
 msgid "Where the resource is located"
 msgstr "Var produkten finns geografiskt belägen (t.ex. upphämtningsplats)"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:6
+#: source/acf-fields/php/mod-product-media-requirement.php:8
 msgid "Product media requirements"
 msgstr "Produktens materialkrav"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:10
-msgid "Materialkrav"
-msgstr ""
+#: source/acf-fields/php/mod-product-media-requirement.php:12
+msgid "Media requirements"
+msgstr "Materialkrav"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:25
-msgid "Lägg till materialkrav"
-msgstr ""
+#: source/acf-fields/php/mod-product-media-requirement.php:27
+msgid "Add media requirement"
+msgstr "Lägg till materialkrav"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:29
-#: source/php/Module/PackageMap/PackageMap.php:73
+#: source/acf-fields/php/mod-product-media-requirement.php:31
+#: source/php/Module/PackageMap/PackageMap.php:79
 msgid "Media name"
 msgstr "Namn på material"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:41
+#: source/acf-fields/php/mod-product-media-requirement.php:43
 msgid "Enter the media name"
 msgstr "Ange materialets namn"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:48
-#, fuzzy
-#| msgid "Media type"
+#: source/acf-fields/php/mod-product-media-requirement.php:50
 msgid "File types"
-msgstr "Typ av media"
+msgstr "Accepterade filtyper."
 
-#: source/acf-fields/php/mod-product-media-requirement.php:51
+#: source/acf-fields/php/mod-product-media-requirement.php:53
 msgid "Accepted file types."
 msgstr "Accepterade filtyper."
 
-#: source/acf-fields/php/mod-product-media-requirement.php:60
-msgid "JPG"
-msgstr ""
-
-#: source/acf-fields/php/mod-product-media-requirement.php:61
-msgid "PNG"
-msgstr ""
-
 #: source/acf-fields/php/mod-product-media-requirement.php:62
-msgid "MP4"
-msgstr ""
+msgid "JPG"
+msgstr "JPG"
 
 #: source/acf-fields/php/mod-product-media-requirement.php:63
+msgid "PNG"
+msgstr "PNG"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:64
+msgid "MP4"
+msgstr "MP4"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:65
 msgid "PDF"
 msgstr "PDF"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:75
-#: source/php/Module/PackageMap/PackageMap.php:75
+#: source/acf-fields/php/mod-product-media-requirement.php:77
+#: source/php/Module/PackageMap/PackageMap.php:81
 msgid "Maxiumum filesize"
 msgstr "Maximal filstorlek"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:89
+#: source/acf-fields/php/mod-product-media-requirement.php:91
 msgid "MB"
 msgstr "MB"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:96
+#: source/acf-fields/php/mod-product-media-requirement.php:98
 msgid "Width"
 msgstr "Bredd"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:117
-#: source/acf-fields/php/mod-product-media-requirement.php:145
+#: source/acf-fields/php/mod-product-media-requirement.php:119
+#: source/acf-fields/php/mod-product-media-requirement.php:147
 msgid "px"
 msgstr "px"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:124
+#: source/acf-fields/php/mod-product-media-requirement.php:126
 msgid "Height"
 msgstr "Höjd"
+
+#: source/acf-fields/php/mod-resource_booking_map.php:32
+msgid "Google API Key"
+msgstr "Google API nyckel"
+
+#: source/acf-fields/php/mod-resource_booking_map.php:35
+msgid "Add your google API key"
+msgstr "Ange en google api-nyckel"
+
+#: source/acf-fields/php/mod-resource_booking_map.php:51
+msgid "Map Location"
+msgstr "Kartans position"
+
+#: source/acf-fields/php/mod-resource_booking_map.php:54
+msgid "Add area name of you resources (Helsingborg)"
+msgstr "Ange i vilken stad dina resurser finns"
+
+#: source/acf-fields/php/mod-sign-in-settings.php:6 source/php/Customer.php:60
+msgid "Sign in"
+msgstr "Logga in"
+
+#: source/acf-fields/php/mod-sign-in-settings.php:10
+msgid "Sign in form"
+msgstr "Inloggningsformulär"
+
+#: source/acf-fields/php/mod-sign-in-settings.php:13
+msgid "Select the page where the sign in form is placed."
+msgstr ""
+"Välj vilken sida som användaren ska landa på för att kunna logga in (där "
+"inloggningsformuläret visas)"
 
 #: source/acf-fields/php/mod-time-slots-management.php:6
 msgid "Time Slots Management"
@@ -377,21 +407,47 @@ msgstr "Manuell inmatning"
 msgid "Time slots"
 msgstr "Schemaläggning"
 
-#: source/acf-fields/php/mod-time-slots-management.php:61
-#: source/php/Module/BookingForm/BookingForm.php:46
+#: source/acf-fields/php/mod-time-slots-management.php:37
+msgid ""
+"This list will automatically be filtered for invalid slots, the following "
+"rules will apply: <br/>\r\n"
+"<br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Negative timeslots "
+"cannot be stored.</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Passed time slots "
+"will be removed (taking account the offset time).</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Duplicate "
+"timeslots will be removed.</span><br/>\r\n"
+"<br/>\r\n"
+"If your value won't save, it's possible it dosen't meet the requirements."
+msgstr ""
+"Den här listan filtreras automatiskt. Ogilitga tidsperioder kommer att tas "
+"bort. Följande regler appliceras: <br/>\r\n"
+"<br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Negativa perioder "
+"kan inte lagras.</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Passerade perioder "
+"filtreras bort (inklusive tidsförskjutning).</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Identiska/"
+"dubbletter av tidsperioder tas bort.</span><br/>\r\n"
+"<br/>\r\n"
+"Om ditt värde inte sparas, är det troligt att kraven inte uppfylls."
+
+#: source/acf-fields/php/mod-time-slots-management.php:67
+#: source/php/Module/BookingForm/BookingForm.php:54
 msgid "Start date"
 msgstr "Startdatum"
 
-#: source/acf-fields/php/mod-time-slots-management.php:78
-#: source/php/Module/BookingForm/BookingForm.php:47
+#: source/acf-fields/php/mod-time-slots-management.php:84
+#: source/php/Module/BookingForm/BookingForm.php:55
 msgid "End date"
 msgstr "Slutdatum"
 
-#: source/acf-fields/php/mod-time-slots-management.php:97
+#: source/acf-fields/php/mod-time-slots-management.php:103
 msgid "Pattern mode"
 msgstr "Mönsterläge"
 
-#: source/acf-fields/php/mod-time-slots-management.php:116
+#: source/acf-fields/php/mod-time-slots-management.php:122
 msgid ""
 "You have selected a weekly pattern, the system will automatically create "
 "slots a year ahead."
@@ -399,59 +455,25 @@ msgstr ""
 "Du har angett ett automatiskt mönster baserat på veckor. Systemet skapar "
 "automatiskt upp mönster för ett år framöver."
 
-#: source/acf-fields/php/mod-time-slots-management.php:122
-msgid "Offset bookable weeks by"
-msgstr ""
+#: source/acf-fields/php/mod-time-slots-management.php:128
+msgid "Time slots offset"
+msgstr "Förskjutning av bokningsbara tider"
 
-#: source/acf-fields/php/mod-time-slots-management.php:125
+#: source/acf-fields/php/mod-time-slots-management.php:131
 msgid ""
 "You can offset the bookable time slots by 'n' number of weeks. This will "
 "prevent users from booking the upcoming weeks in set period of time."
 msgstr ""
+"Du kan förskjuta första bokbara datum med x-antal veckor. Den här "
+"inställningen förhindrar bokning av tider i omedelbar framtid. "
 
-#: source/acf-fields/php/mod-time-slots-management.php:142
-msgid "Zero weeks"
-msgstr "Noll veckor"
+#: source/acf-fields/php/mod-time-slots-management.php:156
+msgid "Offset bookable weeks by"
+msgstr "Förskjut första lediga tid med"
 
-#: source/acf-fields/php/mod-time-slots-management.php:143
-msgid "One week"
-msgstr "1 vecka"
-
-#: source/acf-fields/php/mod-time-slots-management.php:144
-msgid "Two weeks"
-msgstr "Två veckor"
-
-#: source/acf-fields/php/mod-time-slots-management.php:145
-msgid "Three weeks"
-msgstr "Tre veckor"
-
-#: source/acf-fields/php/mod-time-slots-management.php:146
-msgid "Four weeks"
-msgstr "Fyra veckor"
-
-#: source/acf-fields/php/mod-time-slots-management.php:147
-msgid "Five weeks"
-msgstr "Fem veckor"
-
-#: source/acf-fields/php/mod-time-slots-management.php:148
-msgid "Six weeks"
-msgstr "Sex veckor"
-
-#: source/acf-fields/php/mod-time-slots-management.php:149
-msgid "Seven weeks"
-msgstr "Sju veckor"
-
-#: source/acf-fields/php/mod-time-slots-management.php:150
-msgid "Eight weeks"
-msgstr "Åtta veckor"
-
-#: source/acf-fields/php/mod-time-slots-management.php:151
-msgid "Nine weeks"
-msgstr "Nio veckor"
-
-#: source/acf-fields/php/mod-time-slots-management.php:152
-msgid "Ten weeks"
-msgstr "10 veckor."
+#: source/acf-fields/php/mod-time-slots-management.php:157
+msgid "weeks"
+msgstr "veckor"
 
 #: source/php/Api/Customer.php:22
 msgid "Glnr (e-invoice number)"
@@ -461,7 +483,7 @@ msgstr "Glnr (e-fakturanummer)"
 msgid "VAT-Number"
 msgstr "Momsreg Nr"
 
-#: source/php/Api/Customer.php:24 source/php/Customer.php:95
+#: source/php/Api/Customer.php:24 source/php/Customer.php:104
 #: source/php/Module/Registration/RegistrationForm.php:51
 #: source/php/Module/UserAccount/UserAccount.php:74
 msgid "Phone number"
@@ -475,15 +497,15 @@ msgstr "Ett inmatningsvärde saknas: "
 msgid "A user account is already registered with this email."
 msgstr "Ett konto finns redan registrerat på denna epostadress."
 
-#: source/php/Api/Customer.php:167 source/php/Api/Customer.php:287
+#: source/php/Api/Customer.php:167 source/php/Api/Customer.php:304
 msgid "Malformed email adress provided."
 msgstr "Epostadressen är inte av ett giltigt format."
 
-#: source/php/Api/Customer.php:206
+#: source/php/Api/Customer.php:217
 msgid "New customer"
 msgstr "Ny kund"
 
-#: source/php/Api/Customer.php:207
+#: source/php/Api/Customer.php:218
 msgid ""
 "A new customer been registered in your booking system. You have to review "
 "this customer and assign the customer account a user group."
@@ -491,35 +513,39 @@ msgstr ""
 "En ny kund har registrerats i ditt boknings-system. Du måste granska den här "
 "kunden och tilldela kundkontot en användargrupp."
 
-#: source/php/Api/Customer.php:210
+#: source/php/Api/Customer.php:221
 msgid "Company:"
 msgstr "Företag:"
 
-#: source/php/Api/Customer.php:214
+#: source/php/Api/Customer.php:225
 msgid "Company number:"
 msgstr "Org.nr"
 
-#: source/php/Api/Customer.php:218
+#: source/php/Api/Customer.php:229
 msgid "Glnr number: "
 msgstr "Glnr-nummer:"
 
-#: source/php/Api/Customer.php:222
+#: source/php/Api/Customer.php:233
 msgid "Vat-number: "
 msgstr "Moms-nummer"
 
-#: source/php/Api/Customer.php:226
+#: source/php/Api/Customer.php:237
 msgid "Contact name:"
 msgstr "Kontaktperson:"
 
-#: source/php/Api/Customer.php:230
-msgid "Email adress: "
-msgstr "E-post adress"
+#: source/php/Api/Customer.php:241
+msgid "Email address: "
+msgstr "Epostadress:"
 
-#: source/php/Api/Customer.php:234
+#: source/php/Api/Customer.php:245
 msgid "Phone number: "
 msgstr "Telefonnummer: "
 
-#: source/php/Api/Customer.php:241
+#: source/php/Api/Customer.php:251
+msgid "Show profile"
+msgstr "Visa profil"
+
+#: source/php/Api/Customer.php:258
 msgid ""
 "Your user account has been created, you will be notified when its approved "
 "and ready to use."
@@ -527,27 +553,27 @@ msgstr ""
 "Ditt användarkonto har skapats, du kommer att meddelas när det har godkänts "
 "och är klart att användas."
 
-#: source/php/Api/Customer.php:250 source/php/Api/Customer.php:336
+#: source/php/Api/Customer.php:267 source/php/Api/Customer.php:364
 msgid "Something unexpected happened."
 msgstr "Hoppsan, något gick fel."
 
-#: source/php/Api/Customer.php:271
+#: source/php/Api/Customer.php:288
 msgid "That is not a valid user identification."
 msgstr "Det här är inget giltigt användar-id."
 
-#: source/php/Api/Customer.php:279
+#: source/php/Api/Customer.php:296
 msgid "That email adress is already taken, sorry."
 msgstr "Den här e-postadressen är redan registrerad, "
 
-#: source/php/Api/Customer.php:328
+#: source/php/Api/Customer.php:356
 msgid "Your account details has been updated."
 msgstr "Dina kontouppgifter har uppdaterats."
 
-#: source/php/Api/Customer.php:356
+#: source/php/Api/Customer.php:384
 msgid "Email cannot be empty."
 msgstr "E-postadressen kan inte vara tom."
 
-#: source/php/Api/Customer.php:365
+#: source/php/Api/Customer.php:393
 msgid ""
 "The email provided does already exist in our account system. It you think "
 "this is a error, please contact a administrator."
@@ -555,7 +581,7 @@ msgstr ""
 "Epostadressen som du har angivit finns redan registrerad i vårt system. Om "
 "du tror att det här inte stämmer, vänligen kontakta vår support. "
 
-#: source/php/Api/Customer.php:373
+#: source/php/Api/Customer.php:401
 msgid "No account found with that email."
 msgstr "Inget konto kunde hittas med den angivna e-postadressen."
 
@@ -631,7 +657,7 @@ msgstr "Kunde inte ta bort din beställning på grund av ett okänt fel."
 msgid "Could not find any package with that id."
 msgstr "Kunde inte hitta något paket på det indetifikationsnumret som angavs."
 
-#: source/php/Api/TimeSlots.php:160
+#: source/php/Api/TimeSlots.php:185
 msgid "No result found."
 msgstr "Hittade inget resultat"
 
@@ -647,11 +673,11 @@ msgstr ""
 "Ditt konto har inte aktiverats än, vänta vänta på ett aktiveringsmeddelande "
 "i din e-postbrevlåda."
 
-#: source/php/Customer.php:59
+#: source/php/Customer.php:67
 msgid "Activated account"
 msgstr "Aktiverat konto"
 
-#: source/php/Customer.php:60
+#: source/php/Customer.php:68
 msgid ""
 "Your account has now been verified by one of our managers. You can now "
 "proceed to make a new reservation for a spot."
@@ -659,31 +685,31 @@ msgstr ""
 "Ditt konto har nu verifierats av en av våra administratörer. Du kan nu "
 "fortsätta göra en ny bokning för en plats."
 
-#: source/php/Customer.php:63
+#: source/php/Customer.php:71
 msgid "Account owner:"
 msgstr "kontoinnehavare"
 
-#: source/php/Customer.php:67
+#: source/php/Customer.php:75
 msgid "Registered email:"
 msgstr "Registrerad e-post:"
 
-#: source/php/Customer.php:71
+#: source/php/Customer.php:79
 msgid "Registered phone:"
 msgstr "Registrerad telefon:"
 
-#: source/php/Customer.php:75
+#: source/php/Customer.php:83
 msgid "Registered company:"
 msgstr "Registrerat företag:"
 
-#: source/php/Customer.php:79
+#: source/php/Customer.php:87
 msgid "Registered company number:"
 msgstr "Registrerat org.nr"
 
-#: source/php/Customer.php:159
+#: source/php/Customer.php:168
 msgid "Customer groups"
 msgstr "Kundgrupper"
 
-#: source/php/Customer.php:189
+#: source/php/Customer.php:198
 msgid "Your account is not verified yet."
 msgstr "Ditt konto har inte verifierats ännu."
 
@@ -763,35 +789,39 @@ msgstr "Ny %s namn"
 msgid "The user data you requested was not found."
 msgstr "De användardata du begärde hittades inte."
 
-#: source/php/Helper/Mail.php:36
+#: source/php/Helper/Mail.php:37
 msgid "The email provided was not in a valid format."
 msgstr "E-postmeddelandet var inte i ett giltigt format."
 
-#: source/php/Helper/Mail.php:52
+#: source/php/Helper/Mail.php:53
 msgid "The subject cannot be empty."
 msgstr "Ämnet kan inte vara tomt."
 
-#: source/php/Helper/Mail.php:68 source/php/Helper/Mail.php:108
+#: source/php/Helper/Mail.php:69 source/php/Helper/Mail.php:109
 msgid "The content cannot be empty."
 msgstr "Innehållet kan inte vara tomt."
 
-#: source/php/Helper/Mail.php:86
+#: source/php/Helper/Mail.php:87
 msgid "Each table array item must contain 'content' and 'heading' sub keys."
 msgstr ""
 "Varje tabelluppsättningspost måste innehålla \"innehåll\" och \"rubrik\" "
 "undernycklar."
 
-#: source/php/Helper/Mail.php:145
+#: source/php/Helper/Mail.php:147
 msgid "Undefined reciver(s)."
 msgstr "Odefinierad mottagare"
 
-#: source/php/Helper/Mail.php:149
+#: source/php/Helper/Mail.php:151
 msgid "Undefined subject line."
 msgstr "Odefinierad ämnesrad."
 
-#: source/php/Helper/Mail.php:153
+#: source/php/Helper/Mail.php:155
 msgid "Undefined content data."
 msgstr "Odefinierad innehållsinformation."
+
+#: source/php/Helper/Mail.php:180
+msgid "Each button array item must contain 'url' and 'text' sub keys."
+msgstr "Varje knappelement måste innehålla nycklar för 'url' och 'text'."
 
 #: source/php/Helper/MediaUpload.php:33
 #, php-format
@@ -827,16 +857,6 @@ msgstr ""
 msgid "Wrong file dimensions."
 msgstr "Felaktiga mått."
 
-#: source/php/Helper/PasswordStrength.php:26
-#: source/php/Helper/PasswordStrength.php:31
-#: source/php/Helper/PasswordStrength.php:36
-msgid ""
-"Your password should be at least 6 characters long, containing both letters "
-"and numbers."
-msgstr ""
-"Ditt lösenord ska vara minst 6 tecken långt, innehållande både bokstäver och "
-"siffror."
-
 #: source/php/Helper/Product.php:43
 msgid "The id sent for price calculation is not valid."
 msgstr "ID-sänt för prisberäkning är inte giltigt."
@@ -856,6 +876,33 @@ msgstr "Ta bort paketet"
 msgid "Removed product"
 msgstr "Borttagen produkt"
 
+#: source/php/Helper/Validation.php:26 source/php/Helper/Validation.php:31
+#: source/php/Helper/Validation.php:36
+msgid ""
+"Your password should be at least 6 characters long, containing both letters "
+"and numbers."
+msgstr ""
+"Ditt lösenord ska vara minst 6 tecken långt, innehållande både bokstäver och "
+"siffror."
+
+#: source/php/Helper/Validation.php:49
+msgid "Invalid format on provided organization number."
+msgstr ""
+"Du har inget ett felaktigt organisationsnummer. Ett organisationsnummer "
+"består av 10 siffror. "
+
+#: source/php/Helper/Validation.php:61
+msgid "Invalid format on provided personal number."
+msgstr ""
+"Du har angivit ett felaktigt personnummer. Ett personnummer ska bestå av 10 "
+"eller 12 siffror. "
+
+#: source/php/Helper/Validation.php:73
+msgid "Invalid format on provided personal or organization number."
+msgstr ""
+"Du har angivit ett felaktigt person eller organisations -nummer. Ett  person "
+"eller organisations -nummer ska bestå av 10 eller 12 siffror."
+
 #: source/php/Module/BookingForm/BookingForm.php:12
 msgid "Resource Booking Form"
 msgstr "Resursbokningsformulär"
@@ -868,19 +915,19 @@ msgstr "Resursbokningsformulär"
 msgid "Outputs a form for booking resources."
 msgstr "Visar ett formulär för bokning av resurser."
 
-#: source/php/Module/BookingForm/BookingForm.php:45
+#: source/php/Module/BookingForm/BookingForm.php:53
 msgid "excl. vat"
 msgstr "exkl. moms"
 
-#: source/php/Module/BookingForm/BookingForm.php:49
+#: source/php/Module/BookingForm/BookingForm.php:57
 msgid "Total"
 msgstr "Totalt"
 
-#: source/php/Module/BookingForm/BookingForm.php:50
+#: source/php/Module/BookingForm/BookingForm.php:58
 msgid "Go back"
 msgstr "Gå tillbaka"
 
-#: source/php/Module/BookingForm/BookingForm.php:51
+#: source/php/Module/BookingForm/BookingForm.php:59
 msgid "Order"
 msgstr "Order"
 
@@ -964,11 +1011,11 @@ msgstr "Resursbokning paketkarta"
 msgid "Outputs a google map over products booked in package."
 msgstr "Visar en Google karta med alla produkter i ett paket."
 
-#: source/php/Module/PackageMap/PackageMap.php:74
+#: source/php/Module/PackageMap/PackageMap.php:80
 msgid "Media type"
 msgstr "Mediatyp"
 
-#: source/php/Module/PackageMap/PackageMap.php:76
+#: source/php/Module/PackageMap/PackageMap.php:82
 msgid "Image width"
 msgstr "Bildens bredd"
 
@@ -1197,15 +1244,15 @@ msgstr "Produktregister"
 msgid "Packages"
 msgstr "Paket"
 
-#: source/php/Settings.php:33
+#: source/php/Settings.php:36
 msgid "Resource Booking"
 msgstr "Resursbokning"
 
-#: source/php/Settings.php:49
+#: source/php/Settings.php:52
 msgid "Current nonce key is: "
 msgstr "Nuvarande nonce-nyckel är:"
 
-#: source/php/Settings.php:103
+#: source/php/Settings.php:110
 msgid "You cannot have negative time slots configured."
 msgstr "Du kan inte ha negativa tidsluckor konfigurerade."
 
@@ -1231,13 +1278,55 @@ msgid "Book a physical resource for a predefined period of time"
 msgstr "Boka en fysiskt resurs under en fördefinierad period"
 
 #. Author of the plugin/theme
-msgid "Sebastian Thulin, Nikolas Ramstedt"
-msgstr ""
-"Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson och Johan Silvergrund"
+msgid "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
+msgstr "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
 
 #. Author URI of the plugin/theme
 msgid "https://github.com/helsingborg-stad"
 msgstr ""
+
+#~ msgid "Each table array item must contain 'url' and 'text' sub keys."
+#~ msgstr "Varje "
+
+#~ msgid "Sebastian Thulin, Nikolas Ramstedt"
+#~ msgstr ""
+#~ "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson och Johan Silvergrund"
+
+#~ msgid "Zero weeks"
+#~ msgstr "Noll veckor"
+
+#~ msgid "One week"
+#~ msgstr "1 vecka"
+
+#~ msgid "Two weeks"
+#~ msgstr "Två veckor"
+
+#~ msgid "Three weeks"
+#~ msgstr "Tre veckor"
+
+#~ msgid "Four weeks"
+#~ msgstr "Fyra veckor"
+
+#~ msgid "Five weeks"
+#~ msgstr "Fem veckor"
+
+#~ msgid "Six weeks"
+#~ msgstr "Sex veckor"
+
+#~ msgid "Seven weeks"
+#~ msgstr "Sju veckor"
+
+#~ msgid "Eight weeks"
+#~ msgstr "Åtta veckor"
+
+#~ msgid "Nine weeks"
+#~ msgstr "Nio veckor"
+
+#~ msgid "Ten weeks"
+#~ msgstr "10 veckor."
+
+#~ msgid "Email adress: "
+#~ msgstr "E-post adress"
 
 #~ msgid "Billing info"
 #~ msgstr "Faktureringsinformation"
@@ -1271,9 +1360,6 @@ msgstr ""
 
 #~ msgid "Media requirement"
 #~ msgstr "Materialkrav"
-
-#~ msgid "Add media requirement"
-#~ msgstr "Lägg till materialkrav"
 
 #~ msgid "Image"
 #~ msgstr "Bild"

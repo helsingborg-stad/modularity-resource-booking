@@ -11,7 +11,15 @@
         {
             "name": "Nikolas Ramstedt",
             "email": "nikolas.ramstedt@helsingborg.se"
-        }
+        },
+        {
+            "name": "Jonatan Hanson",
+            "email": "jonatan.hanson@hiq.se"
+        },
+        {
+            "name": "Johan Silvergrund",
+            "email": "johan.silvergrund@hiq.se"
+        },
     ],
     "require": {
         "composer/installers": "~1.0",

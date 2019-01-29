@@ -5,7 +5,7 @@
  * Plugin URI:        https://github.com/helsingborg-stad/modularity-resource-booking
  * Description:       Book a physical resource for a predefined period of time
  * Version:           1.0.0
- * Author:            Sebastian Thulin, Nikolas Ramstedt
+ * Author:            Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund
  * Author URI:        https://github.com/helsingborg-stad
  * License:           MIT
  * License URI:       https://opensource.org/licenses/MIT
@@ -69,6 +69,7 @@ add_action('plugins_loaded', function () {
             'mod-order-status-actions' => 'group_5c360bf77a6cf',
             'mod-group-settings' => 'group_5c0a43038051e',
             'mod-sign-in-settings' => 'group_5c4ef6a792434',
+            'mod-resource_booking_map' => 'group_5c4acdd9a5388',
         )
     );
     $acfExportManager->import();
