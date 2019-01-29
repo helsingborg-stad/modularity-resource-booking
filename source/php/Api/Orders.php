@@ -97,6 +97,30 @@ class Orders
             );
         }
 
+        $orderId = get_the_title($id);
+
+        //Send manager email
+        new \ModularityResourceBooking\Helper\ManagerMail(
+            __('Canceled order', 'modularity-resource-booking'),
+            sprintf(__('The order #%s has been canceled.', 'modularity-resource-booking'), $orderId),
+            array(
+                array(
+                    'heading' => __('Order number:', 'modularity-resource-booking'),
+                    'content' => $orderId
+                ),
+                array(
+                    'heading' => __('Customer: ', 'modularity-resource-booking'),
+                    'content' => \ModularityResourceBooking\Helper\Customer::getName(self::$userId)
+                )
+            ),
+            array(
+                array(
+                    'text' => __('Show order', 'modularity-resource-booking'),
+                    'url' => add_query_arg(array('post' => $id, 'action' => 'edit'), self_admin_url('post.php'))
+                )
+            )
+        );
+
         // Return success
         return new \WP_REST_Response(
             array(
