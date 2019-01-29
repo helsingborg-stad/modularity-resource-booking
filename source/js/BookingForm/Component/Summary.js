@@ -32,8 +32,8 @@ class Summary extends React.Component {
                         {children.map(slot => (
                             <tr key={slot.id}>
                                 <td>{slot.articleName}</td>
-                                <td>{dateFns.format(slot.start, 'DD-MM-YYYY')}</td>
-                                <td>{dateFns.format(slot.stop, 'DD-MM-YYYY')}</td>
+                                <td>{dateFns.format(slot.start, 'DD-MM-YYYY HH:mm')}</td>
+                                <td>{dateFns.format(slot.stop, 'DD-MM-YYYY HH:mm')}</td>
                                 <td className="text-right">
                                     <Button
                                         color="plain"
