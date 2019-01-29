@@ -123,6 +123,7 @@ class Mail
             'content' => apply_filters('the_content', $content),
             'table' => $this->_table,
             'links' => $this->_links,
+            'color' => get_field('mod_rb_email_brand_color', 'options') 
         );
 
         //Ensure that cache folder exits

@@ -1,0 +1,39 @@
+[{
+    "key": "group_5c505a650df0a",
+    "title": "Brand color",
+    "fields": [
+        {
+            "key": "field_5c505bba20c6b",
+            "label": "Email brand color",
+            "name": "mod_rb_email_brand_color",
+            "type": "color_picker",
+            "instructions": "Select a dark brand color to be used in the automatic email from resource booking.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#cb0050"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "resource-booking-options"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+

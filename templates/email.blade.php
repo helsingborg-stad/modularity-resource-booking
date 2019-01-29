@@ -24,6 +24,8 @@
 
                 .container{
                     width: 100% !important;
+                    border-radius: 3px !important;
+                    box-shadow: 0 0 10px 10px rgba(0,0,0,0.01) !important;
                 }
 
                 /* ----- Header ----- */
@@ -77,23 +79,31 @@
             <tr>
                 <td align="center" valign="top">
                     <!-- / 700px container -->
-                    <table class="container" border="0" cellpadding="0" cellspacing="0" width="700" bgcolor="#ffffff" style="width: 700px;">
+                    <table class="container" border="0" cellpadding="0" cellspacing="0" width="700" bgcolor="#ffffff" style="width: 700px; box-shadow: 0 0 10px 10px rgba(0,0,0,0.01); border-radius: 3px;">
                         <tr>
                             <td align="center" valign="top">
 
-                                <!-- / Hero subheader -->
-                                <table class="container hero-subheader" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+                                <!-- / Hero header -->
+                                <table border="0" cellpadding="0" cellspacing="0" width="700" style="width: 700px; background: {{ $color }}; padding: 40px;">
                                     <tr>
-                                        <td class="hero-subheader__title" style="font-size: 43px; font-weight: bold; padding: 40px 0 15px 0;" align="left">{{ $title }}</td>
-                                    </tr>
+                                        <td>
+                                            <!-- / Hero subheader -->
+                                            <table class="container hero-subheader" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+                                                <tr>
+                                                    <td class="hero-subheader__title" style="font-size: 43px; font-weight: bold; padding: 40px 0 5px 0; color: #ffffff; text-transform: uppercase;" align="left">{{ $title }}</td>
+                                                </tr>
 
-                                    <tr>
-                                        <td class="hero-subheader__content" style="font-size: 16px; line-height: 27px; color: #969696; padding: 0 60px 0 0;" align="left">
-                                            {!! $content !!}
+                                                <tr>
+                                                    <td class="hero-subheader__content" style="font-size: 18px; line-height: 30px; color: #ffffff; padding: 0 60px 0 0;" align="left">
+                                                        {!! $content !!}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <!-- /// Hero subheader -->
                                         </td>
                                     </tr>
                                 </table>
-                                <!-- /// Hero subheader -->
+
 
                                 <!-- / Paragraph -->
                                 <table class="container paragraph-block" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -125,7 +135,6 @@
                                 <!-- /// Paragraph -->
 
                                 <!-- / Links -->
-                                @if(is_array($links) && !empty($links))
                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
                                     <tr>
                                         <td align="center">
@@ -136,7 +145,7 @@
                                                             @foreach ($links as $link)
                                                                 <tr>
                                                                     <td>
-                                                                        <a href="{{ $link['url'] }}" target="_blank" style="color: #fff; font-size:15px; text-decoration: none; border-radius: 3px;  background-color: #555; border: 7px solid #555; display: inline-block;">
+                                                                        <a href="{{ $link['url'] }}" target="_blank" style="color: #fff; font-size:18px; text-decoration: none; border-radius: 3px; margin-right: 5px; background-color: {{ $color }}; border: 12px solid {{ $color }}; display: inline-block; padding: 0 10px;">
                                                                             <span style="color:#fff">{{ $link['text'] }}</span>
                                                                         </a>
                                                                     </td>
@@ -149,7 +158,6 @@
                                         </td>
                                     </tr>
                                 </table>
-                                @endif
                                 <!-- /// Links -->
 
                                 <!-- / Divider -->
