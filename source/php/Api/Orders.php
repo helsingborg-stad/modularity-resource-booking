@@ -435,7 +435,7 @@ class Orders
             return true;
         }
 
-        if (is_user_logged_in() && current_user_can('edit_posts')) {
+        if (is_user_logged_in() && current_user_can('order')) {
             return true;
         }
 
