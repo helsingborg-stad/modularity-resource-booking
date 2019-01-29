@@ -25,7 +25,7 @@
             "key": "field_5c01038bde6c4",
             "label": "Company number",
             "name": "billing_company_number",
-            "type": "number",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -35,12 +35,10 @@
                 "id": ""
             },
             "default_value": "",
+            "maxlength": "",
             "placeholder": "",
             "prepend": "",
-            "append": "",
-            "min": "",
-            "max": "",
-            "step": ""
+            "append": ""
         },
         {
             "key": "field_5c010402de6c6",

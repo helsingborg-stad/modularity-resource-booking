@@ -185,7 +185,7 @@ class Customer
             );
         } else {
             $cleaner = new \Olssonm\IdentityNumber\IdentityNumberFormatter($data['billing_company_number'], 10, true); 
-            $data['billing_company_number'] = $cleaner->getFormatted(); 
+            $data['billing_company_number'] = $cleaner->getFormatted();
         }        
 
         //Define update array
