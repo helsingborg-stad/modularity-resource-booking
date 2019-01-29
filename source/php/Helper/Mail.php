@@ -174,6 +174,13 @@ class Mail
     {
         if (is_array($links) && !empty($links)) {
             foreach ($links as $key => &$link) {
+
+                //Validate item object
+                if (!isset($link['url']) ||!isset($link['text'])) {
+                    return new \WP_Error('malformed_link_array', __("Each button array item must contain 'url' and 'text' sub keys.", 'modularity-resource-booking'));
+                }
+
+                //Remove empty buttons 
                 if (empty($link['url']) || empty($link['text'])) {
                     unset($links[$key]);
                 }

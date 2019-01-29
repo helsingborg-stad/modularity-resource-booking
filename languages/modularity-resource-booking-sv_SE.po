@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-28 16:47+0100\n"
-"PO-Revision-Date: 2019-01-28 16:50+0100\n"
+"POT-Creation-Date: 2019-01-29 09:41+0100\n"
+"PO-Revision-Date: 2019-01-29 09:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -290,91 +290,88 @@ msgstr "Produktens plats"
 msgid "Where the resource is located"
 msgstr "Var produkten finns geografiskt belägen (t.ex. upphämtningsplats)"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:6
+#: source/acf-fields/php/mod-product-media-requirement.php:8
 msgid "Product media requirements"
 msgstr "Produktens materialkrav"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:10
-msgid "Materialkrav"
+#: source/acf-fields/php/mod-product-media-requirement.php:12
+msgid "Media requirements"
 msgstr "Materialkrav"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:25
-msgid "Lägg till materialkrav"
+#: source/acf-fields/php/mod-product-media-requirement.php:27
+msgid "Add media requirement"
 msgstr "Lägg till materialkrav"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:29
+#: source/acf-fields/php/mod-product-media-requirement.php:31
 #: source/php/Module/PackageMap/PackageMap.php:79
 msgid "Media name"
 msgstr "Namn på material"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:41
+#: source/acf-fields/php/mod-product-media-requirement.php:43
 msgid "Enter the media name"
 msgstr "Ange materialets namn"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:48
-#, fuzzy
-#| msgid "Media type"
+#: source/acf-fields/php/mod-product-media-requirement.php:50
 msgid "File types"
-msgstr "Typ av media"
+msgstr "Accepterade filtyper."
 
-#: source/acf-fields/php/mod-product-media-requirement.php:51
+#: source/acf-fields/php/mod-product-media-requirement.php:53
 msgid "Accepted file types."
 msgstr "Accepterade filtyper."
 
-#: source/acf-fields/php/mod-product-media-requirement.php:60
-msgid "JPG"
-msgstr ""
-
-#: source/acf-fields/php/mod-product-media-requirement.php:61
-msgid "PNG"
-msgstr ""
-
 #: source/acf-fields/php/mod-product-media-requirement.php:62
-msgid "MP4"
-msgstr ""
+msgid "JPG"
+msgstr "JPG"
 
 #: source/acf-fields/php/mod-product-media-requirement.php:63
+msgid "PNG"
+msgstr "PNG"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:64
+msgid "MP4"
+msgstr "MP4"
+
+#: source/acf-fields/php/mod-product-media-requirement.php:65
 msgid "PDF"
 msgstr "PDF"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:75
+#: source/acf-fields/php/mod-product-media-requirement.php:77
 #: source/php/Module/PackageMap/PackageMap.php:81
 msgid "Maxiumum filesize"
 msgstr "Maximal filstorlek"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:89
+#: source/acf-fields/php/mod-product-media-requirement.php:91
 msgid "MB"
 msgstr "MB"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:96
+#: source/acf-fields/php/mod-product-media-requirement.php:98
 msgid "Width"
 msgstr "Bredd"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:117
-#: source/acf-fields/php/mod-product-media-requirement.php:145
+#: source/acf-fields/php/mod-product-media-requirement.php:119
+#: source/acf-fields/php/mod-product-media-requirement.php:147
 msgid "px"
 msgstr "px"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:124
+#: source/acf-fields/php/mod-product-media-requirement.php:126
 msgid "Height"
 msgstr "Höjd"
 
 #: source/acf-fields/php/mod-resource_booking_map.php:32
 msgid "Google API Key"
-msgstr "Google API-nyckel"
+msgstr "Google API nyckel"
 
 #: source/acf-fields/php/mod-resource_booking_map.php:35
 msgid "Add your google API key"
-msgstr "Lägg till din google API-nyckel"
+msgstr "Ange en google api-nyckel"
 
 #: source/acf-fields/php/mod-resource_booking_map.php:51
 msgid "Map Location"
-msgstr "Plats"
+msgstr "Kartans position"
 
 #: source/acf-fields/php/mod-resource_booking_map.php:54
 msgid "Add area name of you resources (Helsingborg)"
-msgstr ""
-"Lägg till områdets/gatans nummer/Plats namn på dina resurser (Helsingborg)"
+msgstr "Ange i vilken stad dina resurser finns"
 
 #: source/acf-fields/php/mod-sign-in-settings.php:6 source/php/Customer.php:60
 msgid "Sign in"
@@ -382,11 +379,13 @@ msgstr "Logga in"
 
 #: source/acf-fields/php/mod-sign-in-settings.php:10
 msgid "Sign in form"
-msgstr "Loginformulär"
+msgstr "Inloggningsformulär"
 
 #: source/acf-fields/php/mod-sign-in-settings.php:13
 msgid "Select the page where the sign in form is placed."
-msgstr "Välj den sida där inloggningsformuläret är placerat."
+msgstr ""
+"Välj vilken sida som användaren ska landa på för att kunna logga in (där "
+"inloggningsformuläret visas)"
 
 #: source/acf-fields/php/mod-time-slots-management.php:6
 msgid "Time Slots Management"
@@ -408,21 +407,47 @@ msgstr "Manuell inmatning"
 msgid "Time slots"
 msgstr "Schemaläggning"
 
-#: source/acf-fields/php/mod-time-slots-management.php:61
+#: source/acf-fields/php/mod-time-slots-management.php:37
+msgid ""
+"This list will automatically be filtered for invalid slots, the following "
+"rules will apply: <br/>\r\n"
+"<br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Negative timeslots "
+"cannot be stored.</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Passed time slots "
+"will be removed (taking account the offset time).</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Duplicate "
+"timeslots will be removed.</span><br/>\r\n"
+"<br/>\r\n"
+"If your value won't save, it's possible it dosen't meet the requirements."
+msgstr ""
+"Den här listan filtreras automatiskt. Ogilitga tidsperioder kommer att tas "
+"bort. Följande regler appliceras: <br/>\r\n"
+"<br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Negativa perioder "
+"kan inte lagras.</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Passerade perioder "
+"filtreras bort (inklusive tidsförskjutning).</span> <br/>\r\n"
+"<span style=\"background-color: #ff0000; color: #fff;\">- Identiska/"
+"dubbletter av tidsperioder tas bort.</span><br/>\r\n"
+"<br/>\r\n"
+"Om ditt värde inte sparas, är det troligt att kraven inte uppfylls."
+
+#: source/acf-fields/php/mod-time-slots-management.php:67
 #: source/php/Module/BookingForm/BookingForm.php:54
 msgid "Start date"
 msgstr "Startdatum"
 
-#: source/acf-fields/php/mod-time-slots-management.php:78
+#: source/acf-fields/php/mod-time-slots-management.php:84
 #: source/php/Module/BookingForm/BookingForm.php:55
 msgid "End date"
 msgstr "Slutdatum"
 
-#: source/acf-fields/php/mod-time-slots-management.php:97
+#: source/acf-fields/php/mod-time-slots-management.php:103
 msgid "Pattern mode"
 msgstr "Mönsterläge"
 
-#: source/acf-fields/php/mod-time-slots-management.php:116
+#: source/acf-fields/php/mod-time-slots-management.php:122
 msgid ""
 "You have selected a weekly pattern, the system will automatically create "
 "slots a year ahead."
@@ -430,25 +455,25 @@ msgstr ""
 "Du har angett ett automatiskt mönster baserat på veckor. Systemet skapar "
 "automatiskt upp mönster för ett år framöver."
 
-#: source/acf-fields/php/mod-time-slots-management.php:122
+#: source/acf-fields/php/mod-time-slots-management.php:128
 msgid "Time slots offset"
-msgstr "Schemaläggning"
+msgstr "Förskjutning av bokningsbara tider"
 
-#: source/acf-fields/php/mod-time-slots-management.php:125
+#: source/acf-fields/php/mod-time-slots-management.php:131
 msgid ""
 "You can offset the bookable time slots by 'n' number of weeks. This will "
 "prevent users from booking the upcoming weeks in set period of time."
 msgstr ""
-"Du kan kompensera de bokningsbara tidsluckorna med 'n' antal veckor. Detta "
-"förhindrar att användarna bokar de kommande veckorna inom bestämd tidsperiod."
+"Du kan förskjuta första bokbara datum med x-antal veckor. Den här "
+"inställningen förhindrar bokning av tider i omedelbar framtid. "
 
-#: source/acf-fields/php/mod-time-slots-management.php:150
+#: source/acf-fields/php/mod-time-slots-management.php:156
 msgid "Offset bookable weeks by"
-msgstr "Offset bokbara veckor av"
+msgstr "Förskjut första lediga tid med"
 
-#: source/acf-fields/php/mod-time-slots-management.php:151
+#: source/acf-fields/php/mod-time-slots-management.php:157
 msgid "weeks"
-msgstr "Veckor"
+msgstr "veckor"
 
 #: source/php/Api/Customer.php:22
 msgid "Glnr (e-invoice number)"
@@ -510,7 +535,7 @@ msgstr "Kontaktperson:"
 
 #: source/php/Api/Customer.php:241
 msgid "Email address: "
-msgstr "E-postadress:"
+msgstr "Epostadress:"
 
 #: source/php/Api/Customer.php:245
 msgid "Phone number: "
@@ -794,6 +819,10 @@ msgstr "Odefinierad ämnesrad."
 msgid "Undefined content data."
 msgstr "Odefinierad innehållsinformation."
 
+#: source/php/Helper/Mail.php:180
+msgid "Each button array item must contain 'url' and 'text' sub keys."
+msgstr "Varje knappelement måste innehålla nycklar för 'url' och 'text'."
+
 #: source/php/Helper/MediaUpload.php:33
 #, php-format
 msgid "The file: \"%s\" could not be uploaded."
@@ -858,15 +887,21 @@ msgstr ""
 
 #: source/php/Helper/Validation.php:49
 msgid "Invalid format on provided organization number."
-msgstr "Ogiltigt format på angivet organisationsnummer."
+msgstr ""
+"Du har inget ett felaktigt organisationsnummer. Ett organisationsnummer "
+"består av 10 siffror. "
 
 #: source/php/Helper/Validation.php:61
 msgid "Invalid format on provided personal number."
-msgstr "Ogiltigt format på angivet personnummer."
+msgstr ""
+"Du har angivit ett felaktigt personnummer. Ett personnummer ska bestå av 10 "
+"eller 12 siffror. "
 
 #: source/php/Helper/Validation.php:73
 msgid "Invalid format on provided personal or organization number."
-msgstr "Ogiltigt format på angivet person- eller organisationsnummer."
+msgstr ""
+"Du har angivit ett felaktigt person eller organisations -nummer. Ett  person "
+"eller organisations -nummer ska bestå av 10 eller 12 siffror."
 
 #: source/php/Module/BookingForm/BookingForm.php:12
 msgid "Resource Booking Form"
@@ -1209,15 +1244,15 @@ msgstr "Produktregister"
 msgid "Packages"
 msgstr "Paket"
 
-#: source/php/Settings.php:33
+#: source/php/Settings.php:36
 msgid "Resource Booking"
 msgstr "Resursbokning"
 
-#: source/php/Settings.php:49
+#: source/php/Settings.php:52
 msgid "Current nonce key is: "
 msgstr "Nuvarande nonce-nyckel är:"
 
-#: source/php/Settings.php:107
+#: source/php/Settings.php:110
 msgid "You cannot have negative time slots configured."
 msgstr "Du kan inte ha negativa tidsluckor konfigurerade."
 
@@ -1243,13 +1278,19 @@ msgid "Book a physical resource for a predefined period of time"
 msgstr "Boka en fysiskt resurs under en fördefinierad period"
 
 #. Author of the plugin/theme
-msgid "Sebastian Thulin, Nikolas Ramstedt"
-msgstr ""
-"Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson och Johan Silvergrund"
+msgid "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
+msgstr "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
 
 #. Author URI of the plugin/theme
 msgid "https://github.com/helsingborg-stad"
 msgstr ""
+
+#~ msgid "Each table array item must contain 'url' and 'text' sub keys."
+#~ msgstr "Varje "
+
+#~ msgid "Sebastian Thulin, Nikolas Ramstedt"
+#~ msgstr ""
+#~ "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson och Johan Silvergrund"
 
 #~ msgid "Zero weeks"
 #~ msgstr "Noll veckor"
@@ -1319,9 +1360,6 @@ msgstr ""
 
 #~ msgid "Media requirement"
 #~ msgstr "Materialkrav"
-
-#~ msgid "Add media requirement"
-#~ msgstr "Lägg till materialkrav"
 
 #~ msgid "Image"
 #~ msgstr "Bild"
