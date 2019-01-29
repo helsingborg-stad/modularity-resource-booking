@@ -18,7 +18,7 @@ class Files extends React.Component {
                     return (
                         <div
                             className="form-group u-p-3"
-                            style={backgroundColor: '#f4f4f4'}
+                            style={{ backgroundColor: '#f4f4f4' }}
                             key={media['media_name'] + '-' + index}
                         >
                             <label htmlFor={media['media_name'] + '-' + index}>
