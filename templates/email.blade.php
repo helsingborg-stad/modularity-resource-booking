@@ -84,7 +84,7 @@
                             <td align="center" valign="top">
 
                                 <!-- / Hero header -->
-                                <table border="0" cellpadding="0" cellspacing="0" width="700" style="width: 700px; background: {{ $color }}; padding: 40px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="700" bgcolor="{{ $color }}" style="width: 700px; background: {{ $color }}; padding: 40px; border-radius: 3px 3px 0 0;">
                                     <tr>
                                         <td>
                                             <!-- / Hero subheader -->
