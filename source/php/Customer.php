@@ -212,6 +212,11 @@ class Customer
      */
     public function hideAdminBar()
     {
+        //Prevent unintentional lockout
+        if(is_super_admin()||current_user_can('administrator')) {
+            return;
+        }
+
         if (current_user_can('customer')) {
             show_admin_bar(false);
         }
