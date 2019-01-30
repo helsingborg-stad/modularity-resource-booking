@@ -11,7 +11,7 @@ class Files extends React.Component {
     }
 
     render() {
-        const { children, onFileUpload, disabled } = this.props;
+        const { children, onFileUpload, disabled, translation } = this.props;
         return (
             <span>
                 {children.map((media, index) => {
@@ -57,18 +57,20 @@ class Files extends React.Component {
                             <ul className="unlist">
                                 <li>
                                     <small>
-                                        <b>Dimensions:</b>{' '}
+                                        <b>{translation.dimensions}:</b>{' '}
                                         {media['image_width'] + 'x' + media['image_height']}
                                     </small>
                                 </li>
                                 <li>
                                     <small>
-                                        <b>Max Filesize:</b> {media['maxiumum_filesize'] + 'MB'}
+                                        <b>{translation.maxFileSize}:</b>{' '}
+                                        {media['maxiumum_filesize'] + 'MB'}
                                     </small>
                                 </li>
                                 <li>
                                     <small>
-                                        <b>Allowed Filetypes:</b> {media['file_types'].join(', ')}
+                                        <b>{translation.allowedFileTypes}:</b>{' '}
+                                        {media['file_types'].join(', ')}
                                     </small>
                                 </li>
                             </ul>

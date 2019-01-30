@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-29 15:10+0100\n"
-"PO-Revision-Date: 2019-01-29 15:14+0100\n"
+"POT-Creation-Date: 2019-01-30 17:23+0100\n"
+"PO-Revision-Date: 2019-01-30 17:31+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -527,7 +527,7 @@ msgstr "Momsreg Nr"
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: source/php/Api/Customer.php:95 source/php/Api/Orders.php:223
+#: source/php/Api/Customer.php:95 source/php/Api/Orders.php:247
 msgid "A parameter is missing: "
 msgstr "Ett inmatningsvärde saknas: "
 
@@ -611,57 +611,68 @@ msgstr "Dina kontouppgifter har uppdaterats."
 msgid "The order could not be canceled."
 msgstr "Avbeställningen misslyckades."
 
-#: source/php/Api/Orders.php:103
+#: source/php/Api/Orders.php:104
+msgid "Canceled order"
+msgstr ""
+
+#: source/php/Api/Orders.php:105
+#, php-format
+msgid "The order #%s has been canceled."
+msgstr ""
+
+#: source/php/Api/Orders.php:108 source/php/Api/Orders.php:394
+#: source/php/Api/Orders.php:398 source/php/Orders.php:85
+#: source/php/Orders.php:139
+msgid "Order number:"
+msgstr "Ordernummer:"
+
+#: source/php/Api/Orders.php:112 source/php/Api/Orders.php:407
+msgid "Customer: "
+msgstr "Kund:"
+
+#: source/php/Api/Orders.php:118 source/php/Api/Orders.php:413
+msgid "Show order"
+msgstr "Visa beställning"
+
+#: source/php/Api/Orders.php:127
 msgid "The order has been canceled."
 msgstr "Beställningen har tagits bort."
 
-#: source/php/Api/Orders.php:236
+#: source/php/Api/Orders.php:260
 msgid "The post request sent was empty."
 msgstr "Fel: Ett anrop som var tomt skickades."
 
-#: source/php/Api/Orders.php:253
+#: source/php/Api/Orders.php:277
 msgid "You have to specify a article."
 msgstr "Du måste ange en artikel."
 
-#: source/php/Api/Orders.php:268 source/php/Api/TimeSlots.php:107
+#: source/php/Api/Orders.php:292 source/php/Api/TimeSlots.php:107
 msgid "No articles could be found with 'article_id': "
 msgstr "Det fanns ingen artikel med följande artikel-id: "
 
-#: source/php/Api/Orders.php:278
+#: source/php/Api/Orders.php:302
 msgid "Out of stock for 'article_id': "
 msgstr "Slut i lager för 'article_id':"
 
-#: source/php/Api/Orders.php:331
+#: source/php/Api/Orders.php:355
 msgid "Bummer, something went wrong."
 msgstr "Hoppsan, något gick fel."
 
-#: source/php/Api/Orders.php:366
+#: source/php/Api/Orders.php:390
 msgid "New order"
 msgstr "Ny beställning"
 
-#: source/php/Api/Orders.php:367
+#: source/php/Api/Orders.php:391
 msgid ""
 "A new order has been submitted, please review it and accept it as soon as "
 "possible."
 msgstr ""
 "En ny order har skickats in, var god och granska den så snart som möjligt."
 
-#: source/php/Api/Orders.php:370 source/php/Api/Orders.php:374
-#: source/php/Orders.php:85 source/php/Orders.php:139
-msgid "Order number:"
-msgstr "Ordernummer:"
-
-#: source/php/Api/Orders.php:383
-msgid "Customer: "
-msgstr "Kund:"
-
-#: source/php/Api/Orders.php:389
-msgid "Show order"
-msgstr "Visa beställning"
-
-#: source/php/Api/Orders.php:399
-msgid "Your order has been registered."
-msgstr "Din beställningar blev registrerad"
+#: source/php/Api/Orders.php:423
+msgid ""
+"Your order has been registered. A comfirmation has been sent to your email."
+msgstr ""
 
 #: source/php/Api/Products.php:99
 msgid "Could not find any package with that id."
@@ -948,6 +959,40 @@ msgstr "Gå tillbaka"
 #: source/php/Module/BookingForm/BookingForm.php:61
 msgid "Order"
 msgstr "Order"
+
+#: source/php/Module/BookingForm/BookingForm.php:62
+msgid "Could not find any slots, please contact an administrator."
+msgstr ""
+"Det gick inte att hitta några tillgängliga datum, var god kontakta en "
+"administratör."
+
+#: source/php/Module/BookingForm/BookingForm.php:63
+msgid "Make a new order"
+msgstr "Ny order"
+
+#: source/php/Module/BookingForm/BookingForm.php:64
+msgid "Add"
+msgstr "Lägg till"
+
+#: source/php/Module/BookingForm/BookingForm.php:65
+msgid "Remove"
+msgstr "Ta bort"
+
+#: source/php/Module/BookingForm/BookingForm.php:66
+msgid "Week"
+msgstr "Vecka"
+
+#: source/php/Module/BookingForm/BookingForm.php:67
+msgid "Dimensions"
+msgstr "Dimensioner"
+
+#: source/php/Module/BookingForm/BookingForm.php:68
+msgid "Max Filesize"
+msgstr "Max filstorlek"
+
+#: source/php/Module/BookingForm/BookingForm.php:69
+msgid "Allowed Filetypes"
+msgstr "Tillåtna filtyper"
 
 #: source/php/Module/BookingForm/views/booking-form.blade.php:19
 #: source/php/Module/OrderHistory/views/order-history.blade.php:10
@@ -1302,6 +1347,12 @@ msgstr "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
 #. Author URI of the plugin/theme
 msgid "https://github.com/helsingborg-stad"
 msgstr ""
+
+#~ msgid "Make a new order."
+#~ msgstr "Sortera efter"
+
+#~ msgid "Your order has been registered."
+#~ msgstr "Din beställningar blev registrerad"
 
 #~ msgid "Sign in form"
 #~ msgstr "Inloggningsformulär"

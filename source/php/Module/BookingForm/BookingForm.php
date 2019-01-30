@@ -25,7 +25,8 @@ class BookingForm extends \Modularity\Module
             'articleId' => get_field('article_type', $this->ID) == 'package' ? get_field('package_id', $this->ID) : 0,
             'userId' => get_current_user_id(),
             'fileUploadTitle' => get_field('fileupload_title', $this->ID) ? get_field('fileupload_title', $this->ID) : __('Upload files', 'modularity-resource-booking'),
-            'orderHistoryPage' => get_field('order_history_page', 'options') ? get_permalink(get_field('order_history_page', 'options')) : ''
+            'orderHistoryPage' => get_field('order_history_page', 'options') ? get_permalink(get_field('order_history_page', 'options')) : '',
+            'locale' => get_locale() === 'sv_SE' ? 'sv' : 'en'
 
         );
         return $data;
@@ -59,6 +60,14 @@ class BookingForm extends \Modularity\Module
                     'total' => __('Total', 'modularity-resource-booking'),
                     'goback' => __('Go back', 'modularity-resource-booking'),
                     'order' => __('Order', 'modularity-resource-booking'),
+                    'noSlots' => __('Could not find any slots, please contact an administrator.', 'modularity-resource-booking'),
+                    'newOrder' => __('Make a new order', 'modularity-resource-booking'),
+                    'add' => __('Add', 'modularity-resource-booking'),
+                    'remove' => __('Remove', 'modularity-resource-booking'),
+                    'week' => __('Week', 'modularity-resource-booking'),
+                    'dimensions' => __('Dimensions', 'modularity-resource-booking'),
+                    'maxFileSize' => __('Max Filesize', 'modularity-resource-booking'),
+                    'allowedFileTypes' => __('Allowed Filetypes', 'modularity-resource-booking')
                 )
             ));
         }

@@ -55,6 +55,7 @@ class App {
                     restUrl={moduleData['restUrl']}
                     orderHistoryPage={moduleData['orderHistoryPage']}
                     fileUploadTitle={moduleData['fileUploadTitle']}
+                    locale={moduleData['locale']}
                 />,
                 element
             );

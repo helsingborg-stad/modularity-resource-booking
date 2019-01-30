@@ -62,7 +62,7 @@ class BookingForm extends React.Component {
             if (this.state.avalibleSlots.length <= 0) {
                 this.setState({
                     lockForm: true,
-                    notice: 'Could not find any slots, please contact an administrator.',
+                    notice: this.props.translation.noSlots,
                     noticeType: 'warning'
                 });
             }
@@ -292,7 +292,7 @@ class BookingForm extends React.Component {
                             'pricon-plus-o': !isSelected
                         })}
                     />
-                    {!isSelected ? ' Lägg till ' : ' Ta bort '}
+                    {!isSelected ? ' ' + translation.add + ' ' : ' ' + translation.remove + ' '}
                 </span>
             </div>
         );
@@ -395,7 +395,7 @@ class BookingForm extends React.Component {
     }
 
     render() {
-        const { translation, fileUploadTitle, orderHistoryPage } = this.props;
+        const { translation, fileUploadTitle, orderHistoryPage, locale } = this.props;
         const {
             avalibleSlots,
             selectedSlots,
@@ -439,6 +439,7 @@ class BookingForm extends React.Component {
                                     avalibleSlots.length > 0 ? avalibleSlots[0].start : new Date()
                                 }
                                 disable={lockForm ? true : false}
+                                locale={locale}
                             />
                         </div>
 
@@ -448,6 +449,7 @@ class BookingForm extends React.Component {
                                 <Files
                                     onFileUpload={this.handleFileUpload}
                                     disabled={lockForm ? true : false}
+                                    translation={translation}
                                 >
                                     {files}
                                 </Files>
@@ -479,7 +481,9 @@ class BookingForm extends React.Component {
 
                                 {submitted ? (
                                     <div className="grid-fit-content u-pl-0">
-                                        <Button onClick={this.resetForm}>Make a new order</Button>
+                                        <Button onClick={this.resetForm}>
+                                            {translation.newOrder}
+                                        </Button>
                                     </div>
                                 ) : null}
 
