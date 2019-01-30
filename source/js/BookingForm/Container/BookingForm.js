@@ -59,7 +59,7 @@ class BookingForm extends React.Component {
     }
 
     /**
-     * [fetchData description]
+     * Fetches article and slot data and initiates filesize validation on file input fields
      * @return {void} [description]
      */
     fetchData() {
@@ -80,7 +80,7 @@ class BookingForm extends React.Component {
     }
 
     /**
-     * [fetchArticle description]
+     * Fetches article data such as name, price & files.
      * @return {Promise}
      */
     fetchArticle() {
@@ -105,7 +105,7 @@ class BookingForm extends React.Component {
     }
 
     /**
-     * [fetchSlots description]
+     * Fetches slots and maps additional data to each slot
      * @return {Promise}
      */
     fetchSlots() {
@@ -147,7 +147,7 @@ class BookingForm extends React.Component {
     }
 
     /**
-     * [resetForm description]
+     * Resets the form by fetching new article & slot data and clearing all input.
      * @return {void}
      */
     resetForm() {
@@ -165,7 +165,7 @@ class BookingForm extends React.Component {
     }
 
     /**
-     * [submitOrder description]
+     * Submits an order to the rest API
      * @param  {[type]} e Click event
      * @return {void}
      */
@@ -174,14 +174,15 @@ class BookingForm extends React.Component {
         const { articleType, articleId, restUrl, restNonce } = this.props;
         const { selectedSlots, files, notice, lockForm } = this.state;
 
-        let orders = [];
-
+        //Locked
         if (lockForm) {
             return;
         }
 
+        //Lock & load
         this.setState({ lockForm: true, formIsLoading: true });
 
+        //Make sure we have selected slots
         if (selectedSlots.length <= 0) {
             this.setState({
                 formIsLoading: false,
@@ -192,9 +193,13 @@ class BookingForm extends React.Component {
             return;
         }
 
+        //Reset notice
         if (notice.length > 0) {
             this.setState({ notice: '' });
         }
+
+        //Orders
+        let orders = [];
 
         selectedSlots.forEach(id => {
             orders.push({
@@ -206,8 +211,10 @@ class BookingForm extends React.Component {
 
         createOrder(orders, files, restUrl, restNonce)
             .then(result => {
+                //Reset loading
                 this.setState({ formIsLoading: false });
 
+                //Dimension error
                 if (
                     result.state === 'dimension-error' &&
                     Object.keys(result.data.invalid_dimensions).length > 0
@@ -220,6 +227,7 @@ class BookingForm extends React.Component {
                     });
                 }
 
+                //Unlock form if not succesful
                 if (result.state !== 'success') {
                     this.setState({ lockForm: false });
                 }
