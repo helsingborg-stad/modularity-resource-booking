@@ -1,5 +1,6 @@
 import { Button, Calendar } from 'hbg-react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 class Files extends React.Component {
     static propTypes = {};
@@ -10,14 +11,18 @@ class Files extends React.Component {
     }
 
     render() {
-        const { children, onFileUpload } = this.props;
+        const { children, onFileUpload, disabled } = this.props;
         return (
             <span>
                 {children.map((media, index) => {
                     media.index = index;
                     return (
                         <div
-                            className="form-group u-p-3"
+                            className={classNames({
+                                'form-group': true,
+                                'u-p-3': true,
+                                disabled: typeof disabled !== 'undefined' && disabled ? true : false
+                            })}
                             style={{ backgroundColor: '#f4f4f4' }}
                             key={media['media_name'] + '-' + index}
                         >
@@ -42,6 +47,9 @@ class Files extends React.Component {
                                         : null
                                 }
                                 data-max-filesize={media['maxiumum_filesize']}
+                                disabled={
+                                    typeof disabled !== 'undefined' && disabled ? true : false
+                                }
                                 required
                             />
                             {typeof media.error !== 'undefined' && media.error.length > 0}{' '}

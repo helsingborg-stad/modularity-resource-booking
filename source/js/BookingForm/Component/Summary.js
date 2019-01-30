@@ -1,6 +1,7 @@
 import { Button, Calendar } from 'hbg-react';
 import PropTypes from 'prop-types';
 import dateFns from 'date-fns';
+import classNames from 'classnames';
 
 class Summary extends React.Component {
     static propTypes = {};
@@ -11,7 +12,7 @@ class Summary extends React.Component {
     }
 
     render() {
-        const { children, onClickRemoveItem, translation } = this.props;
+        const { children, onClickRemoveItem, translation, disabled } = this.props;
 
         const totalPrice =
             children.length > 0
@@ -34,7 +35,15 @@ class Summary extends React.Component {
                                 <td>{slot.articleName}</td>
                                 <td>{dateFns.format(slot.start, 'DD-MM-YYYY HH:mm')}</td>
                                 <td>{dateFns.format(slot.stop, 'DD-MM-YYYY HH:mm')}</td>
-                                <td className="text-right">
+                                <td
+                                    className={classNames({
+                                        'text-right': true,
+                                        disabled:
+                                            typeof disabled !== 'undefined' && disabled
+                                                ? true
+                                                : false
+                                    })}
+                                >
                                     <Button
                                         color="plain"
                                         onClick={

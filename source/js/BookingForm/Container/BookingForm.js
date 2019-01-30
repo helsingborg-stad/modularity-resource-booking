@@ -39,7 +39,9 @@ class BookingForm extends React.Component {
             isLoading: true,
 
             lockForm: false,
-            formIsLoading: false
+            formIsLoading: false,
+
+            submitted: false
         };
 
         this.handleClickEvent = this.handleClickEvent.bind(this);
@@ -124,6 +126,8 @@ class BookingForm extends React.Component {
                 //Unlock form if not succesful
                 if (result.state !== 'success') {
                     this.setState({ lockForm: false });
+                } else {
+                    this.setState({ submitted: true });
                 }
 
                 this.setState((state, props) => {
@@ -234,15 +238,14 @@ class BookingForm extends React.Component {
      * @return {void}
      */
     resetForm() {
-        if (!this.state.isLoading) {
-            this.setState({ isLoading: true });
-        }
-
-        if (this.state.selectedSlots.length > 0) {
-            this.setState({ selectedSlots: [] });
-        }
-
-        this.setState({ notice: '', noticeType: '' });
+        this.setState({
+            isLoading: true,
+            submitted: false,
+            lockForm: false,
+            selectedSlots: [],
+            notice: '',
+            noticeType: ''
+        });
 
         this.fetchData();
     }
@@ -392,7 +395,8 @@ class BookingForm extends React.Component {
             noticeType,
             isLoading,
             lockForm,
-            formIsLoading
+            formIsLoading,
+            submitted
         } = this.state;
 
         if (isLoading) {
@@ -425,13 +429,19 @@ class BookingForm extends React.Component {
                                 currentMonth={
                                     avalibleSlots.length > 0 ? avalibleSlots[0].start : null
                                 }
+                                disable={lockForm ? true : false}
                             />
                         </div>
 
                         {files.length > 0 ? (
                             <div className="grid-xs-12 u-mb-3">
                                 <h4 className="u-mb-2">{fileUploadTitle}</h4>
-                                <Files onFileUpload={this.handleFileUpload}>{files}</Files>
+                                <Files
+                                    onFileUpload={this.handleFileUpload}
+                                    disabled={lockForm ? true : false}
+                                >
+                                    {files}
+                                </Files>
                             </div>
                         ) : null}
 
@@ -440,6 +450,7 @@ class BookingForm extends React.Component {
                                 <Summary
                                     onClickRemoveItem={this.handleRemoveItem}
                                     translation={translation}
+                                    disabled={lockForm ? true : false}
                                 >
                                     {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
                                 </Summary>
@@ -456,6 +467,13 @@ class BookingForm extends React.Component {
                                         title={translation.order}
                                     />
                                 </div>
+
+                                {submitted ? (
+                                    <div className="grid-fit-content u-pl-0">
+                                        <Button onClick={this.resetForm}>Make a new order</Button>
+                                    </div>
+                                ) : null}
+
                                 {formIsLoading ? (
                                     <div className="grid-fit-content u-pl-0">
                                         {' '}
