@@ -57,7 +57,16 @@ class BookingForm extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchData();
+        this.fetchData().then(() => {
+            //Lock if there is no avalible slots
+            if (this.state.avalibleSlots.length <= 0) {
+                this.setState({
+                    lockForm: true,
+                    notice: 'Could not find any slots, please contact an administrator.',
+                    noticeType: 'warning'
+                });
+            }
+        });
     }
 
     /**
@@ -147,10 +156,10 @@ class BookingForm extends React.Component {
 
     /**
      * Fetches article and slot data and initiates filesize validation on file input fields
-     * @return {void} [description]
+     * @return {Promise}
      */
     fetchData() {
-        this.fetchArticle()
+        return this.fetchArticle()
             .then(() => {
                 this.fetchSlots()
                     .then(() => {
