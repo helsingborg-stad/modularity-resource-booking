@@ -427,7 +427,7 @@ class BookingForm extends React.Component {
                                 }
                                 minDate={avalibleSlots.length > 0 ? avalibleSlots[0].start : null}
                                 currentMonth={
-                                    avalibleSlots.length > 0 ? avalibleSlots[0].start : null
+                                    avalibleSlots.length > 0 ? avalibleSlots[0].start : new Date()
                                 }
                                 disable={lockForm ? true : false}
                             />
