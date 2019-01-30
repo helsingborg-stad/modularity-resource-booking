@@ -59,6 +59,89 @@ class BookingForm extends React.Component {
     }
 
     /**
+     * Submits an order to the rest API
+     * @param  {[type]} e Click event
+     * @return {void}
+     */
+    submitOrder(e) {
+        e.preventDefault();
+        const { articleType, articleId, restUrl, restNonce } = this.props;
+        const { selectedSlots, files, notice, lockForm } = this.state;
+
+        //Locked
+        if (lockForm) {
+            return;
+        }
+
+        //Lock & load
+        this.setState({ lockForm: true, formIsLoading: true });
+
+        //Make sure we have selected slots
+        if (selectedSlots.length <= 0) {
+            this.setState({
+                formIsLoading: false,
+                lockForm: false,
+                notice: 'Please select atleast one date in the calendar.',
+                noticeType: 'warning'
+            });
+            return;
+        }
+
+        //Reset notice
+        if (notice.length > 0) {
+            this.setState({ notice: '' });
+        }
+
+        //Orders
+        let orders = [];
+
+        selectedSlots.forEach(id => {
+            orders.push({
+                type: articleType,
+                article_id: articleId,
+                slot_id: id
+            });
+        });
+
+        createOrder(orders, files, restUrl, restNonce)
+            .then(result => {
+                //Reset loading
+                this.setState({ formIsLoading: false });
+
+                //Dimension error
+                if (
+                    result.state === 'dimension-error' &&
+                    Object.keys(result.data.invalid_dimensions).length > 0
+                ) {
+                    this.setState((state, props) => {
+                        let files = state.files;
+                        Object.keys(result.data.invalid_dimensions).forEach(fileIndex => {
+                            files[fileIndex].error = result.data.invalid_dimensions[fileIndex];
+                        });
+                    });
+                }
+
+                //Unlock form if not succesful
+                if (result.state !== 'success') {
+                    this.setState({ lockForm: false });
+                }
+
+                this.setState((state, props) => {
+                    return {
+                        notice: result.message,
+                        noticeType: result.state === 'success' ? 'success' : 'warning'
+                    };
+                });
+            })
+            .catch(result => {
+                console.log(result);
+                this.setState((state, props) => {
+                    return { notice: result, noticeType: 'warning' };
+                });
+            });
+    }
+
+    /**
      * Fetches article and slot data and initiates filesize validation on file input fields
      * @return {void} [description]
      */
@@ -165,102 +248,20 @@ class BookingForm extends React.Component {
     }
 
     /**
-     * Submits an order to the rest API
-     * @param  {[type]} e Click event
-     * @return {void}
-     */
-    submitOrder(e) {
-        e.preventDefault();
-        const { articleType, articleId, restUrl, restNonce } = this.props;
-        const { selectedSlots, files, notice, lockForm } = this.state;
-
-        //Locked
-        if (lockForm) {
-            return;
-        }
-
-        //Lock & load
-        this.setState({ lockForm: true, formIsLoading: true });
-
-        //Make sure we have selected slots
-        if (selectedSlots.length <= 0) {
-            this.setState({
-                formIsLoading: false,
-                lockForm: false,
-                notice: 'Please select atleast one date in the calendar.',
-                noticeType: 'warning'
-            });
-            return;
-        }
-
-        //Reset notice
-        if (notice.length > 0) {
-            this.setState({ notice: '' });
-        }
-
-        //Orders
-        let orders = [];
-
-        selectedSlots.forEach(id => {
-            orders.push({
-                type: articleType,
-                article_id: articleId,
-                slot_id: id
-            });
-        });
-
-        createOrder(orders, files, restUrl, restNonce)
-            .then(result => {
-                //Reset loading
-                this.setState({ formIsLoading: false });
-
-                //Dimension error
-                if (
-                    result.state === 'dimension-error' &&
-                    Object.keys(result.data.invalid_dimensions).length > 0
-                ) {
-                    this.setState((state, props) => {
-                        let files = state.files;
-                        Object.keys(result.data.invalid_dimensions).forEach(fileIndex => {
-                            files[fileIndex].error = result.data.invalid_dimensions[fileIndex];
-                        });
-                    });
-                }
-
-                //Unlock form if not succesful
-                if (result.state !== 'success') {
-                    this.setState({ lockForm: false });
-                }
-
-                this.setState((state, props) => {
-                    return {
-                        notice: result.message,
-                        noticeType: result.state === 'success' ? 'success' : 'warning'
-                    };
-                });
-            })
-            .catch(result => {
-                console.log(result);
-                this.setState((state, props) => {
-                    return { notice: result, noticeType: 'warning' };
-                });
-            });
-    }
-
-    /**
-     * Callback for customizing event content, fires once for each event
+     * Callback for customizing event content output, fires once for each event
      * @param  {object} event Event object data
      * @return {jsx} React Component object
      */
     handleEventContent(event) {
         const { selectedSlots } = this.state;
         let disabled = !event['unlimited_stock'] && event['available_stock'] <= 0 ? true : false;
-        let exists = selectedSlots.includes(event.id) ? true : false;
+        let isSelected = selectedSlots.includes(event.id) ? true : false;
+
         let stockCount = '';
 
         if (!event['unlimited_stock']) {
             let avalibleStock = event['total_stock'] - event['available_stock'];
-            avalibleStock = exists ? avalibleStock + 1 : avalibleStock;
+            avalibleStock = isSelected ? avalibleStock + 1 : avalibleStock;
 
             stockCount = ' - ' + avalibleStock + '/' + event['total_stock'];
         }
@@ -275,11 +276,11 @@ class BookingForm extends React.Component {
                 <span className="calendar__event_hidden">
                     <i
                         className={classNames('pricon', {
-                            'pricon-minus-o': exists,
-                            'pricon-plus-o': !exists
+                            'pricon-minus-o': isSelected,
+                            'pricon-plus-o': !isSelected
                         })}
                     />
-                    {!exists ? ' Lägg till ' : ' Ta bort '}
+                    {!isSelected ? ' Lägg till ' : ' Ta bort '}
                 </span>
             </div>
         );
@@ -367,10 +368,10 @@ class BookingForm extends React.Component {
     }
 
     /**
-     * [handleFileUpload description]
-     * @param  {[type]} files [description]
-     * @param  {[type]} media [description]
-     * @return {[type]}       [description]
+     * Fires on file upload, saves the file in state
+     * @param  {array} files Array of file objects uploaded through the file input
+     * @param  {object} media The file object taken from files in states
+     * @return {void}
      */
     handleFileUpload(files, media) {
         this.setState((state, props) => {
