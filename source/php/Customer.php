@@ -222,6 +222,13 @@ class Customer
      */
     public function restrictAdminPanel()
     {
+
+        //Prevent unintentional lockout
+        if(is_super_admin()||current_user_can('administrator')) {
+            return;
+        }
+
+        //Lockout customers
         if (is_admin() && current_user_can('customer') &&
             !(defined('DOING_AJAX') && DOING_AJAX)) {
             wp_safe_redirect(home_url());
