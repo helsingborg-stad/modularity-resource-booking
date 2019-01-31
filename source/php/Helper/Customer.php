@@ -152,6 +152,29 @@ class Customer
     }
 
     /**
+     * Get tax indicator
+     *
+     * @param int|WP_User $user The user object or user id
+     *
+     * @return string with excl. tax or incl. tax
+     */
+    public static function getTaxIndicator($user)
+    {
+        $user = self::_transformToUserId($user);
+
+        if ($userGroup = get_field('customer_group', 'user_' . $user)) {
+            if($taxSetting = get_field('mod_rb_include_tax_in_price', 'customer_group_' . $userGroup)) {
+                if($taxSetting) {
+                    return __('incl. vat', 'modularity-resource-booking'); 
+                } else {
+                    return __('excl. vat', 'modularity-resource-booking');
+                }
+            }
+        }
+        return ""; 
+    }
+
+    /**
      * Transform user id's to object
      *
      * @param int|WP_User $user Data to be streamlined
@@ -188,4 +211,5 @@ class Customer
             __('The user data you requested was not found.', 'modularity-resource-booking')
         );
     }
+    
 }
