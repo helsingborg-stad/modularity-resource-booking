@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-31 09:41+0100\n"
-"PO-Revision-Date: 2019-01-31 09:43+0100\n"
+"POT-Creation-Date: 2019-01-31 09:56+0100\n"
+"PO-Revision-Date: 2019-01-31 09:56+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -1223,9 +1223,9 @@ msgstr "Vår referens"
 msgid "Their reference: "
 msgstr "Deras referens:"
 
-#: source/php/Orders.php:106 source/php/Orders.php:160
-msgid "Total (exluding VAT): "
-msgstr "Totalt (exkl moms):"
+#: source/php/Orders.php:106
+msgid "Total: "
+msgstr "Totalt: "
 
 #: source/php/Orders.php:116
 msgid "VAT-Number: "
@@ -1256,6 +1256,10 @@ msgstr ""
 #: source/php/Orders.php:147
 msgid "Articles:"
 msgstr "Artiklar:"
+
+#: source/php/Orders.php:160
+msgid "Total (exluding VAT): "
+msgstr "Totalt (exkl moms):"
 
 #: source/php/Orders.php:253
 msgid "Time period"
