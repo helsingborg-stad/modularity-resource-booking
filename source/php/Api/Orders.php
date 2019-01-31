@@ -421,7 +421,7 @@ class Orders
             array(
                 'message' => sprintf(
                     __('Your order has been registered. A comfirmation has been sent to your email.', 'modularity-resource-booking')
-                ) . ' Visit <a href="' . get_permalink(get_field('order_history_page', 'options')) . '">' . 'Order History' . '</a> to view your order.',
+                ) . ' ' . __('Visit', 'modularity-resource-booking') . ' <a href="' . get_permalink(get_field('order_history_page', 'options')) . '">' . __('Order History', 'modularity-resource-booking') . '</a> '. __('to view your order', 'modularity-resource-booking') . '.',
                 'order' => $this->filterorderOutput(get_post($insert)),
                 'state' => 'success'
             ),

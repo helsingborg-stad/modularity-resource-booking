@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-31 12:18+0100\n"
-"PO-Revision-Date: 2019-01-31 12:18+0100\n"
+"POT-Creation-Date: 2019-01-31 12:26+0100\n"
+"PO-Revision-Date: 2019-01-31 12:28+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -698,6 +698,20 @@ msgstr ""
 msgid ""
 "Your order has been registered. A comfirmation has been sent to your email."
 msgstr ""
+"Din order har registrerats, ett mail med bekräftelse har skickats till din e-"
+"postadress."
+
+#: source/php/Api/Orders.php:424
+msgid "Visit"
+msgstr "Besök"
+
+#: source/php/Api/Orders.php:424
+msgid "Order History"
+msgstr "Orderhistorik"
+
+#: source/php/Api/Orders.php:424
+msgid "to view your order"
+msgstr "för att se din beställning"
 
 #: source/php/Api/Products.php:99
 msgid "Could not find any package with that id."
