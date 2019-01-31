@@ -70,6 +70,84 @@ class BookingForm extends React.Component {
     }
 
     /**
+     * Fetches article and slot data and initiates filesize validation on file input fields
+     * @return {Promise}
+     */
+    fetchData() {
+        return this.fetchArticle().then(() => {
+            return this.fetchSlots()
+                .then(() => {
+                    this.setState({ isLoading: false });
+                    new ValidateFileSize();
+                })
+                .catch(error => {});
+        });
+    }
+
+    /**
+     * Fetches article data such as name, price & files.
+     * @return {Promise}
+     */
+    fetchArticle() {
+        const { userId, articleType, articleId, restNonce, restUrl } = this.props;
+
+        return getArticle(articleId, articleType, restUrl)
+            .then(article => {
+                this.setState((state, props) => ({
+                    articleName: article[0]['title'],
+                    articlePrice: article[0]['price'],
+                    files: article[0].media_requirements.map(mediaObject => {
+                        let media = mediaObject;
+                        media.file = null;
+
+                        return media;
+                    })
+                }));
+            })
+            .catch(error => {});
+    }
+
+    /**
+     * Fetches slots and maps additional data to each slot
+     * @return {Promise}
+     */
+    fetchSlots() {
+        const { userId, articleType, articleId, restNonce, restUrl } = this.props;
+
+        return getSlots(articleId, articleType, userId, restUrl)
+            .then(slots => {
+                this.setState((state, props) => ({
+                    avalibleSlots: slots.map(slotData => {
+                        let slot = slotData;
+                        slot['start'] = dateFns.parse(slotData.start);
+                        slot['stop'] = dateFns.parse(slotData.stop);
+                        slot['articleName'] = state.articleName;
+                        slot['articlePrice'] = state.articlePrice;
+
+                        let startOfWeek = dateFns.startOfWeek(slot['start'], { weekStartsOn: 1 });
+                        let endOfWeek = dateFns.endOfWeek(slot['start'], { weekStartsOn: 1 });
+
+                        if (
+                            dateFns.isSameDay(startOfWeek, slot['start']) &&
+                            dateFns.isSameDay(endOfWeek, slot['stop'])
+                        ) {
+                            slot['title'] =
+                                state.articleName +
+                                ' (Vecka ' +
+                                dateFns.getISOWeek(slot.start) +
+                                ')';
+                        } else {
+                            slot['title'] = state.articleName;
+                        }
+
+                        return slot;
+                    })
+                }));
+            })
+            .catch(() => {});
+    }
+
+    /**
      * Submits an order to the rest API
      * @param  {[type]} e Click event
      * @return {void}
@@ -147,98 +225,9 @@ class BookingForm extends React.Component {
                 });
             })
             .catch(result => {
-                console.log(result);
                 this.setState((state, props) => {
                     return { notice: result, noticeType: 'warning' };
                 });
-            });
-    }
-
-    /**
-     * Fetches article and slot data and initiates filesize validation on file input fields
-     * @return {Promise}
-     */
-    fetchData() {
-        return this.fetchArticle()
-            .then(() => {
-                this.fetchSlots()
-                    .then(() => {
-                        this.setState({ isLoading: false });
-                        new ValidateFileSize();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
-
-    /**
-     * Fetches article data such as name, price & files.
-     * @return {Promise}
-     */
-    fetchArticle() {
-        const { userId, articleType, articleId, restNonce, restUrl } = this.props;
-
-        return getArticle(articleId, articleType, restUrl)
-            .then(article => {
-                this.setState((state, props) => ({
-                    articleName: article[0]['title'],
-                    articlePrice: article[0]['price'],
-                    files: article[0].media_requirements.map(mediaObject => {
-                        let media = mediaObject;
-                        media.file = null;
-
-                        return media;
-                    })
-                }));
-            })
-            .catch(result => {
-                console.log(result);
-            });
-    }
-
-    /**
-     * Fetches slots and maps additional data to each slot
-     * @return {Promise}
-     */
-    fetchSlots() {
-        const { userId, articleType, articleId, restNonce, restUrl } = this.props;
-
-        return getSlots(articleId, articleType, userId, restUrl)
-            .then(slots => {
-                this.setState((state, props) => ({
-                    avalibleSlots: slots.map(slotData => {
-                        let slot = slotData;
-                        slot['start'] = dateFns.parse(slotData.start);
-                        slot['stop'] = dateFns.parse(slotData.stop);
-                        slot['articleName'] = state.articleName;
-                        slot['articlePrice'] = state.articlePrice;
-
-                        let startOfWeek = dateFns.startOfWeek(slot['start'], { weekStartsOn: 1 });
-                        let endOfWeek = dateFns.endOfWeek(slot['start'], { weekStartsOn: 1 });
-
-                        if (
-                            dateFns.isSameDay(startOfWeek, slot['start']) &&
-                            dateFns.isSameDay(endOfWeek, slot['stop'])
-                        ) {
-                            slot['title'] =
-                                state.articleName +
-                                ' (Vecka ' +
-                                dateFns.getISOWeek(slot.start) +
-                                ')';
-                        } else {
-                            slot['title'] = state.articleName;
-                        }
-
-                        return slot;
-                    })
-                }));
-            })
-            .catch(result => {
-                console.log(result);
             });
     }
 
@@ -265,6 +254,7 @@ class BookingForm extends React.Component {
      * @return {jsx} React Component object
      */
     handleEventContent(event) {
+        const { translation } = this.props;
         const { selectedSlots } = this.state;
         let disabled = !event['unlimited_stock'] && event['available_stock'] <= 0 ? true : false;
         let isSelected = selectedSlots.includes(event.id) ? true : false;
