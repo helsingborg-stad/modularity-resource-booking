@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-31 12:26+0100\n"
-"PO-Revision-Date: 2019-01-31 12:28+0100\n"
+"POT-Creation-Date: 2019-01-31 09:56+0100\n"
+"PO-Revision-Date: 2019-01-31 14:31+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -71,11 +71,11 @@ msgstr "Rubrik ovanför filuppladdning"
 
 #: source/acf-fields/php/mod-customer-group-vat.php:6
 msgid "Customer group tax setting"
-msgstr ""
+msgstr "Kundgruppens momsinställningar"
 
 #: source/acf-fields/php/mod-customer-group-vat.php:10
 msgid "Show incl. vat"
-msgstr ""
+msgstr "Visa pris inkl. moms"
 
 #: source/acf-fields/php/mod-customer-group-vat.php:13
 msgid ""
@@ -83,11 +83,13 @@ msgid ""
 "setting will not affect or calculate the sum of products to reflect a value "
 "with tax."
 msgstr ""
+"Växlar mellan att visa priser med eller utan moms. Den här inställningen "
+"kommer inte göra någon priskalkylering eller påverka priset på något sätt. "
 
 #: source/acf-fields/php/mod-customer-group-vat.php:24
 #: source/php/Helper/Customer.php:171
 msgid "incl. vat"
-msgstr ""
+msgstr "Inkl. moms"
 
 #: source/acf-fields/php/mod-customer-group-vat.php:25
 #: source/php/Helper/Customer.php:176
@@ -185,7 +187,7 @@ msgid "The article type."
 msgstr "Artikeltyp"
 
 #: source/acf-fields/php/mod-order-details.php:76
-#: source/php/Module/BookingForm/BookingForm.php:59
+#: source/php/Module/BookingForm/BookingForm.php:58
 #: source/php/Module/OrderHistory/OrderHistory.php:50 source/php/Orders.php:265
 msgid "Product"
 msgstr "Produkt"
@@ -497,12 +499,12 @@ msgstr ""
 "Om ditt värde inte sparas, är det troligt att kraven inte uppfylls."
 
 #: source/acf-fields/php/mod-time-slots-management.php:67
-#: source/php/Module/BookingForm/BookingForm.php:57
+#: source/php/Module/BookingForm/BookingForm.php:56
 msgid "Start date"
 msgstr "Startdatum"
 
 #: source/acf-fields/php/mod-time-slots-management.php:84
-#: source/php/Module/BookingForm/BookingForm.php:58
+#: source/php/Module/BookingForm/BookingForm.php:57
 msgid "End date"
 msgstr "Slutdatum"
 
@@ -540,7 +542,7 @@ msgstr "veckor"
 
 #: source/php/Api/Customer.php:22
 msgid "Glnr (e-invoice number)"
-msgstr "Glnr (e-fakturanummer)"
+msgstr "GLN nr. (e-fakturanummer)"
 
 #: source/php/Api/Customer.php:23
 msgid "VAT-Number"
@@ -586,7 +588,7 @@ msgstr "Org.nr"
 
 #: source/php/Api/Customer.php:178
 msgid "Glnr number: "
-msgstr "Glnr-nummer:"
+msgstr "GLN-nummer:"
 
 #: source/php/Api/Customer.php:182
 msgid "Vat-number: "
@@ -638,12 +640,12 @@ msgstr "Avbeställningen misslyckades."
 
 #: source/php/Api/Orders.php:104
 msgid "Canceled order"
-msgstr ""
+msgstr "Avbruten order"
 
 #: source/php/Api/Orders.php:105
 #, php-format
 msgid "The order #%s has been canceled."
-msgstr ""
+msgstr "Ordern med order id #%s har blivit avbruten."
 
 #: source/php/Api/Orders.php:108 source/php/Api/Orders.php:394
 #: source/php/Api/Orders.php:398 source/php/Orders.php:85
@@ -698,20 +700,8 @@ msgstr ""
 msgid ""
 "Your order has been registered. A comfirmation has been sent to your email."
 msgstr ""
-"Din order har registrerats, ett mail med bekräftelse har skickats till din e-"
-"postadress."
-
-#: source/php/Api/Orders.php:424
-msgid "Visit"
-msgstr "Besök"
-
-#: source/php/Api/Orders.php:424
-msgid "Order History"
-msgstr "Orderhistorik"
-
-#: source/php/Api/Orders.php:424
-msgid "to view your order"
-msgstr "för att se din beställning"
+"Din order har registrerats, ett mail med godkännande har skickats till din "
+"epostadress. "
 
 #: source/php/Api/Products.php:99
 msgid "Could not find any package with that id."
@@ -855,11 +845,11 @@ msgstr "De användardata du begärde hittades inte."
 
 #: source/php/Helper/Customer.php:169
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: source/php/Helper/Customer.php:174
 msgid "No"
-msgstr ""
+msgstr "Nej"
 
 #: source/php/Helper/Mail.php:37
 msgid "The email provided was not in a valid format."
@@ -991,55 +981,17 @@ msgstr "Visar ett formulär för bokning av resurser."
 msgid "Upload files"
 msgstr "Ladda upp filer"
 
-#: source/php/Module/BookingForm/BookingForm.php:60
+#: source/php/Module/BookingForm/BookingForm.php:59
 msgid "Total"
 msgstr "Totalt"
 
-#: source/php/Module/BookingForm/BookingForm.php:61
+#: source/php/Module/BookingForm/BookingForm.php:60
 msgid "Go back"
 msgstr "Gå tillbaka"
 
-#: source/php/Module/BookingForm/BookingForm.php:62
+#: source/php/Module/BookingForm/BookingForm.php:61
 msgid "Order"
-msgstr "Order"
-
-#: source/php/Module/BookingForm/BookingForm.php:63
-msgid "Could not find any slots, please contact an administrator."
-msgstr ""
-"Det gick inte att hitta några tillgängliga datum, var god kontakta en "
-"administratör."
-
-#: source/php/Module/BookingForm/BookingForm.php:64
-msgid "Make a new order"
-msgstr "Ny order"
-
-#: source/php/Module/BookingForm/BookingForm.php:65
-msgid "Add"
-msgstr "Lägg till"
-
-#: source/php/Module/BookingForm/BookingForm.php:66
-msgid "Remove"
-msgstr "Ta bort"
-
-#: source/php/Module/BookingForm/BookingForm.php:67
-msgid "Week"
-msgstr "Vecka"
-
-#: source/php/Module/BookingForm/BookingForm.php:68
-msgid "Dimensions"
-msgstr "Dimensioner"
-
-#: source/php/Module/BookingForm/BookingForm.php:69
-msgid "Max Filesize"
-msgstr "Max filstorlek"
-
-#: source/php/Module/BookingForm/BookingForm.php:70
-msgid "Allowed Filetypes"
-msgstr "Tillåtna filtyper"
-
-#: source/php/Module/BookingForm/BookingForm.php:71
-msgid "Please select atleast one date in the calendar"
-msgstr "Vänligen välj minst ett datum i kalendern"
+msgstr "Boka"
 
 #: source/php/Module/BookingForm/views/booking-form.blade.php:19
 #: source/php/Module/OrderHistory/views/order-history.blade.php:10
@@ -1193,7 +1145,7 @@ msgstr "Organisationsnr"
 #: source/php/Module/Registration/RegistrationForm.php:48
 #: source/php/Module/UserAccount/UserAccount.php:71
 msgid "Glnr number"
-msgstr "Glnr-nummer"
+msgstr "GLN-nummer"
 
 #: source/php/Module/Registration/RegistrationForm.php:49
 #: source/php/Module/UserAccount/UserAccount.php:72
@@ -1273,7 +1225,7 @@ msgstr "Deras referens:"
 
 #: source/php/Orders.php:106
 msgid "Total: "
-msgstr ""
+msgstr "Totalt: "
 
 #: source/php/Orders.php:116
 msgid "VAT-Number: "
@@ -1281,11 +1233,11 @@ msgstr "Moms-nummer"
 
 #: source/php/Orders.php:120
 msgid "Price include VAT: "
-msgstr ""
+msgstr "Priset inkluderar moms: "
 
 #: source/php/Orders.php:124
 msgid "GLNR number: "
-msgstr "GLNR-nummer:"
+msgstr "GLN-nummer:"
 
 #: source/php/Orders.php:128
 msgid "Notes: "
@@ -1402,9 +1354,6 @@ msgstr "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
 #. Author URI of the plugin/theme
 msgid "https://github.com/helsingborg-stad"
 msgstr ""
-
-#~ msgid "Make a new order."
-#~ msgstr "Sortera efter"
 
 #~ msgid "Your order has been registered."
 #~ msgstr "Din beställningar blev registrerad"
