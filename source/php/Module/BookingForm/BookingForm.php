@@ -67,7 +67,8 @@ class BookingForm extends \Modularity\Module
                     'week' => __('Week', 'modularity-resource-booking'),
                     'dimensions' => __('Dimensions', 'modularity-resource-booking'),
                     'maxFileSize' => __('Max Filesize', 'modularity-resource-booking'),
-                    'allowedFileTypes' => __('Allowed Filetypes', 'modularity-resource-booking')
+                    'allowedFileTypes' => __('Allowed Filetypes', 'modularity-resource-booking'),
+                    'selectAtleastOneDate' => __('Please select atleast one date in the calendar', 'modularity-resource-booking')
                 )
             ));
         }

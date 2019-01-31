@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-31 12:02+0100\n"
-"PO-Revision-Date: 2019-01-31 12:02+0100\n"
+"POT-Creation-Date: 2019-01-31 12:18+0100\n"
+"PO-Revision-Date: 2019-01-31 12:18+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -1022,6 +1022,10 @@ msgstr "Max filstorlek"
 #: source/php/Module/BookingForm/BookingForm.php:70
 msgid "Allowed Filetypes"
 msgstr "Tillåtna filtyper"
+
+#: source/php/Module/BookingForm/BookingForm.php:71
+msgid "Please select atleast one date in the calendar"
+msgstr "Vänligen välj minst ett datum i kalendern"
 
 #: source/php/Module/BookingForm/views/booking-form.blade.php:19
 #: source/php/Module/OrderHistory/views/order-history.blade.php:10
