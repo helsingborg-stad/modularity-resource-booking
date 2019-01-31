@@ -62,5 +62,23 @@
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/polyfill": "^7.2.5",
     "google-maps-react": "^2.0.2"
+  },
+  "babel": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "ie": "11"
+            }
+          }
+        ],
+        "@babel/preset-react"
+      ],
+      "plugins": [
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-proposal-export-default-from",
+        "@babel/plugin-proposal-class-properties"
+      ]
   }
 }
