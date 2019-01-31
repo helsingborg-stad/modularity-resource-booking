@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
 "POT-Creation-Date: 2019-01-31 09:56+0100\n"
-"PO-Revision-Date: 2019-01-31 09:56+0100\n"
+"PO-Revision-Date: 2019-01-31 10:31+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -542,7 +542,7 @@ msgstr "veckor"
 
 #: source/php/Api/Customer.php:22
 msgid "Glnr (e-invoice number)"
-msgstr "Glnr (e-fakturanummer)"
+msgstr "GLN nr. (e-fakturanummer)"
 
 #: source/php/Api/Customer.php:23
 msgid "VAT-Number"
@@ -588,7 +588,7 @@ msgstr "Org.nr"
 
 #: source/php/Api/Customer.php:178
 msgid "Glnr number: "
-msgstr "Glnr-nummer:"
+msgstr "GLN-nummer:"
 
 #: source/php/Api/Customer.php:182
 msgid "Vat-number: "
@@ -1145,7 +1145,7 @@ msgstr "Organisationsnr"
 #: source/php/Module/Registration/RegistrationForm.php:48
 #: source/php/Module/UserAccount/UserAccount.php:71
 msgid "Glnr number"
-msgstr "Glnr-nummer"
+msgstr "GLN-nummer"
 
 #: source/php/Module/Registration/RegistrationForm.php:49
 #: source/php/Module/UserAccount/UserAccount.php:72
@@ -1237,7 +1237,7 @@ msgstr "Priset inkluderar moms: "
 
 #: source/php/Orders.php:124
 msgid "GLNR number: "
-msgstr "GLNR-nummer:"
+msgstr "GLN-nummer:"
 
 #: source/php/Orders.php:128
 msgid "Notes: "
