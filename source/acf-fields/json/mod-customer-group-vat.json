@@ -1,0 +1,43 @@
+[{
+    "key": "group_5c52a6c8c0db5",
+    "title": "Customer group tax setting",
+    "fields": [
+        {
+            "key": "field_5c52a6d1658bf",
+            "label": "Show incl. vat",
+            "name": "mod_rb_include_tax_in_price",
+            "type": "true_false",
+            "instructions": "Toggles the indicator to show if the price is with or without tax. This setting will not affect or calculate the sum of products to reflect a value with tax.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "incl. vat",
+            "ui_off_text": "excl. vat"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "customer_group"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+
