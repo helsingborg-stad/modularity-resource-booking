@@ -154,7 +154,7 @@ class BookingForm extends React.Component {
      */
     submitOrder(e) {
         e.preventDefault();
-        const { articleType, articleId, restUrl, restNonce } = this.props;
+        const { articleType, articleId, restUrl, restNonce, translation } = this.props;
         const { selectedSlots, files, notice, lockForm } = this.state;
 
         //Locked
@@ -170,7 +170,7 @@ class BookingForm extends React.Component {
             this.setState({
                 formIsLoading: false,
                 lockForm: false,
-                notice: 'Please select atleast one date in the calendar.',
+                notice: translation.selectAtleastOneDate,
                 noticeType: 'warning'
             });
             return;
