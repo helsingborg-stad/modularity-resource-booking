@@ -356,7 +356,7 @@ class BookingForm extends React.Component {
     }
 
     /**
-     * Callback responsible
+     * Callback responsible for removing selected slots through the summary
      * @param  {Date object} date The date being clicked
      * @return {void}
      */
