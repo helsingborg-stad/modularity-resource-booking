@@ -70,7 +70,7 @@ class App
         //Account stuff
         new Customer();
 
-        //Fronted API
+        //Frontend API
         new Api\Orders();
         new Api\TimeSlots();
         new Api\Products();

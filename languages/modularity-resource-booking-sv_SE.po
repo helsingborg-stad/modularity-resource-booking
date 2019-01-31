@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-30 17:23+0100\n"
-"PO-Revision-Date: 2019-01-30 17:31+0100\n"
+"POT-Creation-Date: 2019-01-31 09:56+0100\n"
+"PO-Revision-Date: 2019-01-31 10:31+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -51,7 +51,7 @@ msgstr "Välj artikeltyp"
 #: source/acf-fields/php/mod-booking-form.php:22
 #: source/acf-fields/php/mod-order-details.php:77
 #: source/acf-fields/php/mod-resource_booking_map.php:10
-#: source/php/Module/OrderHistory/OrderHistory.php:51 source/php/Orders.php:261
+#: source/php/Module/OrderHistory/OrderHistory.php:51 source/php/Orders.php:265
 #: source/php/Products.php:64 source/php/Products.php:111
 msgid "Package"
 msgstr "Paket"
@@ -69,12 +69,39 @@ msgstr "Välj paket"
 msgid "Fileupload Title"
 msgstr "Rubrik ovanför filuppladdning"
 
+#: source/acf-fields/php/mod-customer-group-vat.php:6
+msgid "Customer group tax setting"
+msgstr "Kundgruppens momsinställningar"
+
+#: source/acf-fields/php/mod-customer-group-vat.php:10
+msgid "Show incl. vat"
+msgstr "Visa pris inkl. moms"
+
+#: source/acf-fields/php/mod-customer-group-vat.php:13
+msgid ""
+"Toggles the indicator to show if the price is with or without tax. This "
+"setting will not affect or calculate the sum of products to reflect a value "
+"with tax."
+msgstr ""
+"Växlar mellan att visa priser med eller utan moms. Den här inställningen "
+"kommer inte göra någon priskalkylering eller påverka priset på något sätt. "
+
+#: source/acf-fields/php/mod-customer-group-vat.php:24
+#: source/php/Helper/Customer.php:171
+msgid "incl. vat"
+msgstr "Inkl. moms"
+
+#: source/acf-fields/php/mod-customer-group-vat.php:25
+#: source/php/Helper/Customer.php:176
+msgid "excl. vat"
+msgstr "exkl. moms"
+
 #: source/acf-fields/php/mod-customer-group.php:10
 msgid "Select the customer group of this profile"
 msgstr "Välj användargrupp för den här kunden"
 
 #: source/acf-fields/php/mod-default-order-status.php:10
-#: source/php/Orders.php:395
+#: source/php/Orders.php:399
 msgid "Order status"
 msgstr "Orderstatus"
 
@@ -137,7 +164,7 @@ msgid "{{ORDER_ID}}"
 msgstr ""
 
 #: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:143
-#: source/php/Orders.php:324
+#: source/php/Orders.php:328
 msgid "Customer"
 msgstr "Kund"
 
@@ -151,7 +178,7 @@ msgid "List of ordered articles."
 msgstr "Lista på beställda artiklar"
 
 #: source/acf-fields/php/mod-order-details.php:64
-#: source/php/Module/OrderHistory/OrderHistory.php:47 source/php/Orders.php:247
+#: source/php/Module/OrderHistory/OrderHistory.php:47 source/php/Orders.php:251
 msgid "Type"
 msgstr "Typ"
 
@@ -161,7 +188,7 @@ msgstr "Artikeltyp"
 
 #: source/acf-fields/php/mod-order-details.php:76
 #: source/php/Module/BookingForm/BookingForm.php:58
-#: source/php/Module/OrderHistory/OrderHistory.php:50 source/php/Orders.php:261
+#: source/php/Module/OrderHistory/OrderHistory.php:50 source/php/Orders.php:265
 msgid "Product"
 msgstr "Produkt"
 
@@ -170,7 +197,7 @@ msgid "product"
 msgstr "produkt"
 
 #: source/acf-fields/php/mod-order-details.php:91
-#: source/php/Module/OrderHistory/OrderHistory.php:46 source/php/Orders.php:246
+#: source/php/Module/OrderHistory/OrderHistory.php:46 source/php/Orders.php:250
 msgid "Article"
 msgstr "Artikel"
 
@@ -515,7 +542,7 @@ msgstr "veckor"
 
 #: source/php/Api/Customer.php:22
 msgid "Glnr (e-invoice number)"
-msgstr "Glnr (e-fakturanummer)"
+msgstr "GLN nr. (e-fakturanummer)"
 
 #: source/php/Api/Customer.php:23
 msgid "VAT-Number"
@@ -561,7 +588,7 @@ msgstr "Org.nr"
 
 #: source/php/Api/Customer.php:178
 msgid "Glnr number: "
-msgstr "Glnr-nummer:"
+msgstr "GLN-nummer:"
 
 #: source/php/Api/Customer.php:182
 msgid "Vat-number: "
@@ -613,16 +640,16 @@ msgstr "Avbeställningen misslyckades."
 
 #: source/php/Api/Orders.php:104
 msgid "Canceled order"
-msgstr ""
+msgstr "Avbruten order"
 
 #: source/php/Api/Orders.php:105
 #, php-format
 msgid "The order #%s has been canceled."
-msgstr ""
+msgstr "Ordern med order id #%s har blivit avbruten."
 
 #: source/php/Api/Orders.php:108 source/php/Api/Orders.php:394
 #: source/php/Api/Orders.php:398 source/php/Orders.php:85
-#: source/php/Orders.php:139
+#: source/php/Orders.php:143
 msgid "Order number:"
 msgstr "Ordernummer:"
 
@@ -673,6 +700,8 @@ msgstr ""
 msgid ""
 "Your order has been registered. A comfirmation has been sent to your email."
 msgstr ""
+"Din order har registrerats, ett mail med godkännande har skickats till din "
+"epostadress. "
 
 #: source/php/Api/Products.php:99
 msgid "Could not find any package with that id."
@@ -810,9 +839,17 @@ msgstr "Ny %s namn"
 #: source/php/Helper/Customer.php:24 source/php/Helper/Customer.php:45
 #: source/php/Helper/Customer.php:66 source/php/Helper/Customer.php:87
 #: source/php/Helper/Customer.php:108 source/php/Helper/Customer.php:129
-#: source/php/Helper/Customer.php:150 source/php/Helper/Customer.php:188
+#: source/php/Helper/Customer.php:150 source/php/Helper/Customer.php:217
 msgid "The user data you requested was not found."
 msgstr "De användardata du begärde hittades inte."
+
+#: source/php/Helper/Customer.php:169
+msgid "Yes"
+msgstr "Ja"
+
+#: source/php/Helper/Customer.php:174
+msgid "No"
+msgstr "Nej"
 
 #: source/php/Helper/Mail.php:37
 msgid "The email provided was not in a valid format."
@@ -944,10 +981,6 @@ msgstr "Visar ett formulär för bokning av resurser."
 msgid "Upload files"
 msgstr "Ladda upp filer"
 
-#: source/php/Module/BookingForm/BookingForm.php:55
-msgid "excl. vat"
-msgstr "exkl. moms"
-
 #: source/php/Module/BookingForm/BookingForm.php:59
 msgid "Total"
 msgstr "Totalt"
@@ -959,40 +992,6 @@ msgstr "Gå tillbaka"
 #: source/php/Module/BookingForm/BookingForm.php:61
 msgid "Order"
 msgstr "Order"
-
-#: source/php/Module/BookingForm/BookingForm.php:62
-msgid "Could not find any slots, please contact an administrator."
-msgstr ""
-"Det gick inte att hitta några tillgängliga datum, var god kontakta en "
-"administratör."
-
-#: source/php/Module/BookingForm/BookingForm.php:63
-msgid "Make a new order"
-msgstr "Ny order"
-
-#: source/php/Module/BookingForm/BookingForm.php:64
-msgid "Add"
-msgstr "Lägg till"
-
-#: source/php/Module/BookingForm/BookingForm.php:65
-msgid "Remove"
-msgstr "Ta bort"
-
-#: source/php/Module/BookingForm/BookingForm.php:66
-msgid "Week"
-msgstr "Vecka"
-
-#: source/php/Module/BookingForm/BookingForm.php:67
-msgid "Dimensions"
-msgstr "Dimensioner"
-
-#: source/php/Module/BookingForm/BookingForm.php:68
-msgid "Max Filesize"
-msgstr "Max filstorlek"
-
-#: source/php/Module/BookingForm/BookingForm.php:69
-msgid "Allowed Filetypes"
-msgstr "Tillåtna filtyper"
 
 #: source/php/Module/BookingForm/views/booking-form.blade.php:19
 #: source/php/Module/OrderHistory/views/order-history.blade.php:10
@@ -1036,11 +1035,11 @@ msgstr "Beställning #"
 msgid "Date"
 msgstr "Datum"
 
-#: source/php/Module/OrderHistory/OrderHistory.php:45 source/php/Orders.php:341
+#: source/php/Module/OrderHistory/OrderHistory.php:45 source/php/Orders.php:345
 msgid "Status"
 msgstr "Status"
 
-#: source/php/Module/OrderHistory/OrderHistory.php:48 source/php/Orders.php:248
+#: source/php/Module/OrderHistory/OrderHistory.php:48 source/php/Orders.php:252
 #: source/php/Products.php:89
 msgid "Price"
 msgstr "Pris"
@@ -1049,7 +1048,7 @@ msgstr "Pris"
 msgid "Period"
 msgstr "Period"
 
-#: source/php/Module/OrderHistory/OrderHistory.php:52 source/php/Orders.php:443
+#: source/php/Module/OrderHistory/OrderHistory.php:52 source/php/Orders.php:447
 msgid "Canceled"
 msgstr "Avbruten"
 
@@ -1146,7 +1145,7 @@ msgstr "Organisationsnr"
 #: source/php/Module/Registration/RegistrationForm.php:48
 #: source/php/Module/UserAccount/UserAccount.php:71
 msgid "Glnr number"
-msgstr "Glnr-nummer"
+msgstr "GLN-nummer"
 
 #: source/php/Module/Registration/RegistrationForm.php:49
 #: source/php/Module/UserAccount/UserAccount.php:72
@@ -1216,7 +1215,7 @@ msgstr ""
 msgid "Ordered articles:"
 msgstr "Beställda artiklar:"
 
-#: source/php/Orders.php:98 source/php/Orders.php:152
+#: source/php/Orders.php:98 source/php/Orders.php:156
 msgid "Our reference: "
 msgstr "Vår referens"
 
@@ -1224,68 +1223,76 @@ msgstr "Vår referens"
 msgid "Their reference: "
 msgstr "Deras referens:"
 
-#: source/php/Orders.php:106 source/php/Orders.php:156
-msgid "Total (exluding VAT): "
-msgstr "Totalt (exkl moms):"
+#: source/php/Orders.php:106
+msgid "Total: "
+msgstr "Totalt: "
 
 #: source/php/Orders.php:116
 msgid "VAT-Number: "
 msgstr "Moms-nummer"
 
 #: source/php/Orders.php:120
-msgid "GLNR number: "
-msgstr "GLNR-nummer:"
+msgid "Price include VAT: "
+msgstr "Priset inkluderar moms: "
 
 #: source/php/Orders.php:124
+msgid "GLNR number: "
+msgstr "GLN-nummer:"
+
+#: source/php/Orders.php:128
 msgid "Notes: "
 msgstr "Anteckningar:"
 
-#: source/php/Orders.php:135
+#: source/php/Orders.php:139
 msgid "Order approved"
 msgstr "Beställning godkänd"
 
-#: source/php/Orders.php:136
+#: source/php/Orders.php:140
 msgid ""
 "Your order has been verified by us, and scheduled at your desired occasion."
 msgstr ""
 "Din beställning har verifierats av oss, och planeras till önskat tillfälle."
 
-#: source/php/Orders.php:143
+#: source/php/Orders.php:147
 msgid "Articles:"
 msgstr "Artiklar:"
 
-#: source/php/Orders.php:249
+#: source/php/Orders.php:160
+msgid "Total (exluding VAT): "
+msgstr "Totalt (exkl moms):"
+
+#: source/php/Orders.php:253
 msgid "Time period"
 msgstr "Tidsperiod"
 
-#: source/php/Orders.php:299
+#: source/php/Orders.php:303
 msgctxt "Post type plural"
 msgid "Orders"
 msgstr "Beställningar"
 
-#: source/php/Orders.php:300
+#: source/php/Orders.php:304
 msgctxt "Post type singular"
 msgid "Order"
 msgstr "Beställning"
 
-#: source/php/Orders.php:303
+#: source/php/Orders.php:307
 msgid "Order registry."
 msgstr "Beställningsregister"
 
-#: source/php/Orders.php:311
+#: source/php/Orders.php:315
 msgid "purchase"
 msgstr "köp"
 
-#: source/php/Orders.php:333 source/php/Orders.php:349
-#: source/php/Orders.php:376 source/php/Products.php:71
+#: source/php/Orders.php:337 source/php/Orders.php:353
+#: source/php/Orders.php:380 source/php/Products.php:71
 msgid "Undefined"
 msgstr "Odefinierat"
 
-#: source/php/Orders.php:367
+#: source/php/Orders.php:371
 msgid "Order ID"
 msgstr "Beställnings ID"
 
-#: source/php/Orders.php:394
+#: source/php/Orders.php:398
 msgid "Order statuses"
 msgstr "Orderstatusar"
 
@@ -1347,9 +1354,6 @@ msgstr "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
 #. Author URI of the plugin/theme
 msgid "https://github.com/helsingborg-stad"
 msgstr ""
-
-#~ msgid "Make a new order."
-#~ msgstr "Sortera efter"
 
 #~ msgid "Your order has been registered."
 #~ msgstr "Din beställningar blev registrerad"
