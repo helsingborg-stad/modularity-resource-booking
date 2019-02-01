@@ -144,7 +144,7 @@ class OrderHistory extends React.Component {
     render() {
         const { filteredItems, error, isLoaded, totalPages, currentPage, cancelError } = this.state;
         const { translation } = this.props;
-        const headings = ['Campagin' ,translation.orderNumber, translation.date, translation.status];
+        const headings = [translation.campaign ,translation.orderNumber, translation.date, translation.status];
         const articleHeadings = [
             translation.article,
             translation.type,
