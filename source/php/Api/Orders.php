@@ -317,7 +317,7 @@ class Orders
 
         //Define new post
         $postItem = array(
-            'post_title' => $orderId,
+            'post_title' => isset($data['order_title']) && is_string($data['order_title']) && !empty($data['order_title']) ? $data['order_title'] : $orderId,
             'post_type' => 'purchase',
             'post_status' => 'publish',
             'post_author' => self::$userId
@@ -363,6 +363,10 @@ class Orders
         update_field('field_5c0fc16aaefa4', $orderArticles, $insert);
 
         //Update meta
+        if (isset($data['order_title'])) {
+            update_post_meta($insert, 'order_title', $data['order_title']);
+        }
+
         update_post_meta($insert, 'order_id', $orderId);
 
         //Update fields

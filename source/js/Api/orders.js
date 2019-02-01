@@ -25,9 +25,11 @@ const getCustomerOrders = (restUrl, nonce, data = [], page = 1) => {
         });
 };
 
-const createOrder = (orders, files, restUrl, restNonce) => {
+const createOrder = (orderTitle, orders, files, restUrl, restNonce) => {
     let url = restUrl + 'ModularityResourceBooking/v1/CreateOrder';
     let formData = new FormData();
+
+    formData.append('order_title', orderTitle);
 
     orders.forEach((order, index) => {
         formData.append('order_articles[' + index + ']', JSON.stringify(order));

@@ -1,4 +1,4 @@
-import { Button, Calendar, Notice } from 'hbg-react';
+import { Button, Calendar, Notice, Input } from 'hbg-react';
 import { getArticle, getSlots } from '../../Api/products';
 import PropTypes from 'prop-types';
 import dateFns from 'date-fns';
@@ -41,7 +41,9 @@ class BookingForm extends React.Component {
             lockForm: false,
             formIsLoading: false,
 
-            submitted: false
+            submitted: false,
+
+            orderTitle: ''
         };
 
         this.handleClickEvent = this.handleClickEvent.bind(this);
@@ -155,7 +157,7 @@ class BookingForm extends React.Component {
     submitOrder(e) {
         e.preventDefault();
         const { articleType, articleId, restUrl, restNonce, translation } = this.props;
-        const { selectedSlots, files, notice, lockForm } = this.state;
+        const { selectedSlots, files, notice, lockForm, orderTitle } = this.state;
 
         //Locked
         if (lockForm) {
@@ -192,7 +194,7 @@ class BookingForm extends React.Component {
             });
         });
 
-        createOrder(orders, files, restUrl, restNonce)
+        createOrder(orderTitle, orders, files, restUrl, restNonce)
             .then(result => {
                 //Reset loading
                 this.setState({ formIsLoading: false });
@@ -395,7 +397,8 @@ class BookingForm extends React.Component {
             isLoading,
             lockForm,
             formIsLoading,
-            submitted
+            submitted,
+            orderTitle
         } = this.state;
 
         if (isLoading) {
@@ -414,6 +417,18 @@ class BookingForm extends React.Component {
                 <form onSubmit={this.submitOrder}>
                     <div className="grid">
                         <div className="grid-xs-12 u-mb-3">
+                            <h4 className="u-mb-2">{'1. Choose a campaign name'}</h4>
+                            <Input
+                                type="text"
+                                name="orderTitle"
+                                value={orderTitle}
+                                handleChange={(e) => {this.setState({'orderTitle': e.target.value})}}
+                                placeholder={'Campaign name'}
+                                required
+                            />
+                        </div>
+                        <div className="grid-xs-12 u-mb-3">
+                            <h4 className="u-mb-2">{'2. Select advertising period'}</h4>
                             <Calendar
                                 events={avalibleSlots}
                                 onClickEvent={this.handleClickEvent}
@@ -448,6 +463,7 @@ class BookingForm extends React.Component {
 
                         {selectedSlots.length > 0 ? (
                             <div className="grid-xs-12 u-mb-3">
+                                <h4 className="u-mb-2">{'Summary'}</h4>
                                 <Summary
                                     onClickRemoveItem={this.handleRemoveItem}
                                     translation={translation}
