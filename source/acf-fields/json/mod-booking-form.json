@@ -59,9 +59,66 @@
             "multiple": 0
         },
         {
+            "key": "field_5c53f823fc41a",
+            "label": "Campaign Name Heading",
+            "name": "campaign_heading",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5c53f858fc41b",
+            "label": "Calendar Heading",
+            "name": "calendar_heading",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_5c50181473158",
-            "label": "Fileupload Title",
-            "name": "fileupload_title",
+            "label": "Files Heading",
+            "name": "files_heading",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5c53f88ffc41c",
+            "label": "Summary Heading",
+            "name": "summary_heading",
             "type": "text",
             "instructions": "",
             "required": 0,
