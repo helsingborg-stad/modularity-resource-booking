@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-01-31 09:56+0100\n"
-"PO-Revision-Date: 2019-01-31 14:31+0100\n"
+"POT-Creation-Date: 2019-02-01 08:46+0100\n"
+"PO-Revision-Date: 2019-02-01 08:47+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -66,8 +66,20 @@ msgid "Select package"
 msgstr "Välj paket"
 
 #: source/acf-fields/php/mod-booking-form.php:66
-msgid "Fileupload Title"
-msgstr "Rubrik ovanför filuppladdning"
+msgid "Campaign Name Heading"
+msgstr "Rubrik för kampanjnamn"
+
+#: source/acf-fields/php/mod-booking-form.php:85
+msgid "Calendar Heading"
+msgstr "Rubrik för kalender"
+
+#: source/acf-fields/php/mod-booking-form.php:104
+msgid "Files Heading"
+msgstr "Rubrik för filer"
+
+#: source/acf-fields/php/mod-booking-form.php:123
+msgid "Summary Heading"
+msgstr "Rubrik för summering"
 
 #: source/acf-fields/php/mod-customer-group-vat.php:6
 msgid "Customer group tax setting"
@@ -187,7 +199,7 @@ msgid "The article type."
 msgstr "Artikeltyp"
 
 #: source/acf-fields/php/mod-order-details.php:76
-#: source/php/Module/BookingForm/BookingForm.php:58
+#: source/php/Module/BookingForm/BookingForm.php:64
 #: source/php/Module/OrderHistory/OrderHistory.php:50 source/php/Orders.php:265
 msgid "Product"
 msgstr "Produkt"
@@ -337,70 +349,69 @@ msgstr "Produktens plats"
 msgid "Where the resource is located"
 msgstr "Var produkten finns geografiskt belägen (t.ex. upphämtningsplats)"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:8
+#: source/acf-fields/php/mod-product-media-requirement.php:6
 msgid "Product media requirements"
 msgstr "Produktens materialkrav"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:12
-msgid "Media requirements"
-msgstr "Materialkrav"
+#: source/acf-fields/php/mod-product-media-requirement.php:10
+msgid "Materialkrav"
+msgstr ""
 
-#: source/acf-fields/php/mod-product-media-requirement.php:27
-msgid "Add media requirement"
-msgstr "Lägg till materialkrav"
+#: source/acf-fields/php/mod-product-media-requirement.php:25
+msgid "Lägg till materialkrav"
+msgstr ""
 
-#: source/acf-fields/php/mod-product-media-requirement.php:31
-#: source/php/Module/PackageMap/PackageMap.php:79
-msgid "Media name"
-msgstr "Namn på material"
+#: source/acf-fields/php/mod-product-media-requirement.php:29
+msgid "Media name (optional)"
+msgstr ""
 
-#: source/acf-fields/php/mod-product-media-requirement.php:43
+#: source/acf-fields/php/mod-product-media-requirement.php:41
 msgid "Enter the media name"
 msgstr "Ange materialets namn"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:50
+#: source/acf-fields/php/mod-product-media-requirement.php:48
 msgid "File types"
 msgstr "Accepterade filtyper."
 
-#: source/acf-fields/php/mod-product-media-requirement.php:53
+#: source/acf-fields/php/mod-product-media-requirement.php:51
 msgid "Accepted file types."
 msgstr "Accepterade filtyper."
 
-#: source/acf-fields/php/mod-product-media-requirement.php:62
+#: source/acf-fields/php/mod-product-media-requirement.php:60
 msgid "JPG"
 msgstr "JPG"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:63
+#: source/acf-fields/php/mod-product-media-requirement.php:61
 msgid "PNG"
 msgstr "PNG"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:64
+#: source/acf-fields/php/mod-product-media-requirement.php:62
 msgid "MP4"
 msgstr "MP4"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:65
+#: source/acf-fields/php/mod-product-media-requirement.php:63
 msgid "PDF"
 msgstr "PDF"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:77
+#: source/acf-fields/php/mod-product-media-requirement.php:75
 #: source/php/Module/PackageMap/PackageMap.php:81
 msgid "Maxiumum filesize"
 msgstr "Maximal filstorlek"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:91
+#: source/acf-fields/php/mod-product-media-requirement.php:89
 msgid "MB"
 msgstr "MB"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:98
+#: source/acf-fields/php/mod-product-media-requirement.php:96
 msgid "Width"
 msgstr "Bredd"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:119
-#: source/acf-fields/php/mod-product-media-requirement.php:147
+#: source/acf-fields/php/mod-product-media-requirement.php:117
+#: source/acf-fields/php/mod-product-media-requirement.php:145
 msgid "px"
 msgstr "px"
 
-#: source/acf-fields/php/mod-product-media-requirement.php:126
+#: source/acf-fields/php/mod-product-media-requirement.php:124
 msgid "Height"
 msgstr "Höjd"
 
@@ -499,12 +510,12 @@ msgstr ""
 "Om ditt värde inte sparas, är det troligt att kraven inte uppfylls."
 
 #: source/acf-fields/php/mod-time-slots-management.php:67
-#: source/php/Module/BookingForm/BookingForm.php:56
+#: source/php/Module/BookingForm/BookingForm.php:62
 msgid "Start date"
 msgstr "Startdatum"
 
 #: source/acf-fields/php/mod-time-slots-management.php:84
-#: source/php/Module/BookingForm/BookingForm.php:57
+#: source/php/Module/BookingForm/BookingForm.php:63
 msgid "End date"
 msgstr "Slutdatum"
 
@@ -647,17 +658,17 @@ msgstr "Avbruten order"
 msgid "The order #%s has been canceled."
 msgstr "Ordern med order id #%s har blivit avbruten."
 
-#: source/php/Api/Orders.php:108 source/php/Api/Orders.php:394
-#: source/php/Api/Orders.php:398 source/php/Orders.php:85
+#: source/php/Api/Orders.php:108 source/php/Api/Orders.php:398
+#: source/php/Api/Orders.php:402 source/php/Orders.php:85
 #: source/php/Orders.php:143
 msgid "Order number:"
 msgstr "Ordernummer:"
 
-#: source/php/Api/Orders.php:112 source/php/Api/Orders.php:407
+#: source/php/Api/Orders.php:112 source/php/Api/Orders.php:411
 msgid "Customer: "
 msgstr "Kund:"
 
-#: source/php/Api/Orders.php:118 source/php/Api/Orders.php:413
+#: source/php/Api/Orders.php:118 source/php/Api/Orders.php:417
 msgid "Show order"
 msgstr "Visa beställning"
 
@@ -685,23 +696,35 @@ msgstr "Slut i lager för 'article_id':"
 msgid "Bummer, something went wrong."
 msgstr "Hoppsan, något gick fel."
 
-#: source/php/Api/Orders.php:390
+#: source/php/Api/Orders.php:394
 msgid "New order"
 msgstr "Ny beställning"
 
-#: source/php/Api/Orders.php:391
+#: source/php/Api/Orders.php:395
 msgid ""
 "A new order has been submitted, please review it and accept it as soon as "
 "possible."
 msgstr ""
 "En ny order har skickats in, var god och granska den så snart som möjligt."
 
-#: source/php/Api/Orders.php:423
+#: source/php/Api/Orders.php:427
 msgid ""
 "Your order has been registered. A comfirmation has been sent to your email."
 msgstr ""
 "Din order har registrerats, ett mail med godkännande har skickats till din "
 "epostadress. "
+
+#: source/php/Api/Orders.php:428
+msgid "Visit"
+msgstr ""
+
+#: source/php/Api/Orders.php:428
+msgid "Order History"
+msgstr ""
+
+#: source/php/Api/Orders.php:428
+msgid "to view your order"
+msgstr ""
 
 #: source/php/Api/Products.php:99
 msgid "Could not find any package with that id."
@@ -977,21 +1000,71 @@ msgstr "Resursbokningsformulär"
 msgid "Outputs a form for booking resources."
 msgstr "Visar ett formulär för bokning av resurser."
 
-#: source/php/Module/BookingForm/BookingForm.php:27
-msgid "Upload files"
-msgstr "Ladda upp filer"
+#: source/php/Module/BookingForm/BookingForm.php:30
+msgid "1. Choose a campaign name"
+msgstr "1. Välj ett kampanjnamn"
 
-#: source/php/Module/BookingForm/BookingForm.php:59
+#: source/php/Module/BookingForm/BookingForm.php:31
+msgid "2. Select advertising period"
+msgstr "2. Välj annonsperiod"
+
+#: source/php/Module/BookingForm/BookingForm.php:32
+msgid "3. Upload files"
+msgstr "3. Ladda upp filer"
+
+#: source/php/Module/BookingForm/BookingForm.php:33
+msgid "Summary"
+msgstr "Summering"
+
+#: source/php/Module/BookingForm/BookingForm.php:65
 msgid "Total"
 msgstr "Totalt"
 
-#: source/php/Module/BookingForm/BookingForm.php:60
+#: source/php/Module/BookingForm/BookingForm.php:66
 msgid "Go back"
 msgstr "Gå tillbaka"
 
-#: source/php/Module/BookingForm/BookingForm.php:61
+#: source/php/Module/BookingForm/BookingForm.php:67
 msgid "Order"
 msgstr "Boka"
+
+#: source/php/Module/BookingForm/BookingForm.php:68
+msgid "Could not find any slots, please contact an administrator."
+msgstr ""
+"Det gick inte att hitta några tillgängliga datum, var god kontakta en "
+"administratör."
+
+#: source/php/Module/BookingForm/BookingForm.php:69
+msgid "Make a new order"
+msgstr "Skapa ny order"
+
+#: source/php/Module/BookingForm/BookingForm.php:70
+msgid "Add"
+msgstr "Lägg till"
+
+#: source/php/Module/BookingForm/BookingForm.php:71
+msgid "Remove"
+msgstr "Ta bort"
+
+#: source/php/Module/BookingForm/BookingForm.php:72
+msgid "Week"
+msgstr "Vecka"
+
+#: source/php/Module/BookingForm/BookingForm.php:73
+msgid "Dimensions"
+msgstr "Dimensioner"
+
+#: source/php/Module/BookingForm/BookingForm.php:74
+msgid "Max Filesize"
+msgstr "Max filstorlek"
+
+#: source/php/Module/BookingForm/BookingForm.php:75
+msgid "Allowed Filetypes"
+msgstr "Tillåtna filtyper"
+
+#: source/php/Module/BookingForm/BookingForm.php:76
+msgid "Please select atleast one date in the calendar"
+msgstr "Vänligen välj minst ett datum i kalendern"
 
 #: source/php/Module/BookingForm/views/booking-form.blade.php:19
 #: source/php/Module/OrderHistory/views/order-history.blade.php:10
@@ -1064,6 +1137,10 @@ msgstr "Vill du verkligen avbryta denna beställning?"
 msgid "The order could not be canceled. Please try again later."
 msgstr "Avbeställningen misslyckades. Vänligen försök igen senare."
 
+#: source/php/Module/OrderHistory/OrderHistory.php:57
+msgid "Campaign"
+msgstr "Kampanj"
+
 #: source/php/Module/PackageMap/PackageMap.php:13
 #: source/php/Module/PackageMap/PackageMap.php:14
 msgid "Resource Booking Package Map"
@@ -1072,6 +1149,10 @@ msgstr "Resursbokning paketkarta"
 #: source/php/Module/PackageMap/PackageMap.php:15
 msgid "Outputs a google map over products booked in package."
 msgstr "Visar en Google karta med alla produkter i ett paket."
+
+#: source/php/Module/PackageMap/PackageMap.php:79
+msgid "Media name"
+msgstr "Namn på material"
 
 #: source/php/Module/PackageMap/PackageMap.php:80
 msgid "Media type"
@@ -1354,6 +1435,18 @@ msgstr "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
 #. Author URI of the plugin/theme
 msgid "https://github.com/helsingborg-stad"
 msgstr ""
+
+#~ msgid "Fileupload Title"
+#~ msgstr "Rubrik ovanför filuppladdning"
+
+#~ msgid "Media requirements"
+#~ msgstr "Materialkrav"
+
+#~ msgid "Add media requirement"
+#~ msgstr "Lägg till materialkrav"
+
+#~ msgid "Upload files"
+#~ msgstr "Ladda upp filer"
 
 #~ msgid "Your order has been registered."
 #~ msgstr "Din beställningar blev registrerad"
