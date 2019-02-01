@@ -23,11 +23,11 @@
             "sub_fields": [
                 {
                     "key": "field_5bffb838f14ac",
-                    "label": "Media name",
+                    "label": "Media name (optional)",
                     "name": "media_name",
                     "type": "text",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "25",

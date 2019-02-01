@@ -201,7 +201,7 @@ class Product
             }
 
             foreach (get_field('media_requirement', $product->ID) as $media) {
-                $mediaName = $media['media_name'];
+                $mediaName = isset($media['media_name']) && !empty($media['media_name']) ? $media['media_name'] : $product->post_title;
                 unset($media['media_name']);
                 $mediaKey = md5(json_encode($media));
 

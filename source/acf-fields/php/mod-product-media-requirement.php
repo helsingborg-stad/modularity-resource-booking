@@ -1,15 +1,13 @@
 <?php 
 
-
-if (function_exists('acf_add_local_field_group')) {
-
-    acf_add_local_field_group(array(
+if (function_exists('acf_add_local_field_group')) {
+    acf_add_local_field_group(array(
     'key' => 'group_5bffb822b9213',
     'title' => __('Product media requirements', 'modularity-resource-booking'),
     'fields' => array(
         0 => array(
             'key' => 'field_5bffb829f14ab',
-            'label' => __('Media requirements', 'modularity-resource-booking'),
+            'label' => __('Materialkrav', 'modularity-resource-booking'),
             'name' => 'media_requirement',
             'type' => 'repeater',
             'instructions' => '',
@@ -24,15 +22,15 @@ if (function_exists('acf_add_local_field_group')) {
             'min' => 0,
             'max' => 1,
             'layout' => 'table',
-            'button_label' => __('Add media requirement', 'modularity-resource-booking'),
+            'button_label' => __('Lägg till materialkrav', 'modularity-resource-booking'),
             'sub_fields' => array(
                 0 => array(
                     'key' => 'field_5bffb838f14ac',
-                    'label' => __('Media name', 'modularity-resource-booking'),
+                    'label' => __('Media name (optional)', 'modularity-resource-booking'),
                     'name' => 'media_name',
                     'type' => 'text',
                     'instructions' => '',
-                    'required' => 1,
+                    'required' => 0,
                     'conditional_logic' => 0,
                     'wrapper' => array(
                         'width' => '25',
@@ -170,5 +168,4 @@ if (function_exists('acf_add_local_field_group')) {
     'active' => 1,
     'description' => '',
 ));
-
-}
+}
