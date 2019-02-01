@@ -31,7 +31,7 @@ class App {
                 'articleId',
                 'userId',
                 'orderHistoryPage',
-                'fileUploadTitle'
+                'headings'
             ];
             const requiedKeysExists = requiredKeys.reduce((accumulator, key) => {
                 if (typeof moduleData[key] === 'undefined') {
@@ -54,7 +54,7 @@ class App {
                     restNonce={moduleData['restNonce']}
                     restUrl={moduleData['restUrl']}
                     orderHistoryPage={moduleData['orderHistoryPage']}
-                    fileUploadTitle={moduleData['fileUploadTitle']}
+                    headings={moduleData['headings']}
                     locale={moduleData['locale']}
                 />,
                 element

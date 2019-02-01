@@ -387,7 +387,7 @@ class BookingForm extends React.Component {
     }
 
     render() {
-        const { translation, fileUploadTitle, orderHistoryPage, locale } = this.props;
+        const { translation, headings, orderHistoryPage, locale } = this.props;
         const {
             avalibleSlots,
             selectedSlots,
@@ -417,7 +417,7 @@ class BookingForm extends React.Component {
                 <form onSubmit={this.submitOrder}>
                     <div className="grid">
                         <div className="grid-xs-12 u-mb-3">
-                            <h4 className="u-mb-2">{'1. Choose a campaign name'}</h4>
+                            <h4 className="u-mb-2">{headings.orderName}</h4>
                             <Input
                                 type="text"
                                 name="orderTitle"
@@ -428,7 +428,7 @@ class BookingForm extends React.Component {
                             />
                         </div>
                         <div className="grid-xs-12 u-mb-3">
-                            <h4 className="u-mb-2">{'2. Select advertising period'}</h4>
+                            <h4 className="u-mb-2">{headings.calendar}</h4>
                             <Calendar
                                 events={avalibleSlots}
                                 onClickEvent={this.handleClickEvent}
@@ -450,7 +450,7 @@ class BookingForm extends React.Component {
 
                         {files.length > 0 ? (
                             <div className="grid-xs-12 u-mb-3">
-                                <h4 className="u-mb-2">{fileUploadTitle}</h4>
+                                <h4 className="u-mb-2">{headings.files}</h4>
                                 <Files
                                     onFileUpload={this.handleFileUpload}
                                     disabled={lockForm ? true : false}
@@ -463,7 +463,7 @@ class BookingForm extends React.Component {
 
                         {selectedSlots.length > 0 ? (
                             <div className="grid-xs-12 u-mb-3">
-                                <h4 className="u-mb-2">{'Summary'}</h4>
+                                <h4 className="u-mb-2">{headings.summary}</h4>
                                 <Summary
                                     onClickRemoveItem={this.handleRemoveItem}
                                     translation={translation}

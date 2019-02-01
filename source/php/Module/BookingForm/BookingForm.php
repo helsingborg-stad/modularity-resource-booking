@@ -24,9 +24,14 @@ class BookingForm extends \Modularity\Module
             'articleType' => get_field('article_type', $this->ID),
             'articleId' => get_field('article_type', $this->ID) == 'package' ? get_field('package_id', $this->ID) : 0,
             'userId' => get_current_user_id(),
-            'fileUploadTitle' => get_field('fileupload_title', $this->ID) ? get_field('fileupload_title', $this->ID) : __('Upload files', 'modularity-resource-booking'),
             'orderHistoryPage' => get_field('order_history_page', 'options') ? get_permalink(get_field('order_history_page', 'options')) : '',
-            'locale' => get_locale() === 'sv_SE' ? 'sv' : 'en'
+            'locale' => get_locale() === 'sv_SE' ? 'sv' : 'en',
+            'headings' => array(
+                'orderName' => get_field('campaign_heading', $this->ID) ? get_field('campaign_heading', $this->ID) : __('1. Choose a campaign name', 'modularity-resource-booking'),
+                'calendar' => get_field('calendar_heading', $this->ID) ? get_field('calendar_heading', $this->ID) : __('2. Select advertising period', 'modularity-resource-booking'),
+                'files' => get_field('files_heading', $this->ID) ? get_field('files_heading', $this->ID) : __('3. Upload files', 'modularity-resource-booking'),
+                'summary' => get_field('summary_heading', $this->ID) ? get_field('summary_heading', $this->ID) : __('Summary', 'modularity-resource-booking')
+            )
 
         );
         return $data;
