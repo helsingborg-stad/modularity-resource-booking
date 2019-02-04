@@ -52,7 +52,7 @@ class BookingForm extends \Modularity\Module
             \Modularity\Helper\React::enqueue();
 
             // Enqueue module script
-            wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/BookingForm/Index.js'), array('jquery', 'react', 'react-dom'));
+            wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/BookingForm/Index.js'), array('jquery', 'react', 'react-dom'), false, true);
 
             //Localize
             wp_localize_script('modularity-' . $this->slug, 'modResourceBookingForm', array(

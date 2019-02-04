@@ -34,7 +34,7 @@ class OrderHistory extends \Modularity\Module
             // Enqueue react
             \Modularity\Helper\React::enqueue();
             // Enqueue module script
-            wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/OrderHistory/Index.js'), array('jquery', 'react', 'react-dom'));
+            wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/OrderHistory/Index.js'), array('jquery', 'react', 'react-dom'), false, true);
             wp_localize_script('modularity-' . $this->slug, 'modOrderHistory', array(
                 'next' => __('Next', 'modularity-resource-booking'),
                 'prev' => __('Previous', 'modularity-resource-booking'),
