@@ -578,7 +578,7 @@ class Orders
                     $price += $this->getProductPrice($product->ID, $groupId);
                 }
                 // Get custom price for package
-                if (get_field('package_price', $term) !== '') {
+                if (!empty(get_field('package_price', $term))) {
                     $price = get_field('package_price', $term);
                 }
                 // Get group variation price
