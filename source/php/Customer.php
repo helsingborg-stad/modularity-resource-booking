@@ -35,6 +35,14 @@ class Customer
             return $message;
         }
 
+        if (isset($user->errors) && isset($user->errors['invalid_username'])) {
+            return $user->errors['invalid_username'][0];
+        }
+
+        if (isset($user->errors) && isset($user->errors['incorrect_password'])) {
+            return $user->errors['incorrect_password'][0];
+        }
+
         if($message === false) {
             if(!is_numeric(get_user_meta($user->ID, 'customer_group', true))) {
                 $message = __("Your account has not been enabled yet, please wait for a activation notice in your email inbox.", 'modularity-resource-booking');
