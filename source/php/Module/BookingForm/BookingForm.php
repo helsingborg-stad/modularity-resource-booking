@@ -27,7 +27,7 @@ class BookingForm extends \Modularity\Module
             'orderHistoryPage' => get_field('order_history_page', 'options') ? get_permalink(get_field('order_history_page', 'options')) : '',
             'locale' => get_locale() === 'sv_SE' ? 'sv' : 'en',
             'headings' => array(
-                'orderName' => get_field('campaign_heading', $this->ID) ? get_field('campaign_heading', $this->ID) : __('1. Choose a campaign name', 'modularity-resource-booking'),
+                'orderName' => get_field('campaign_heading', $this->ID) ? get_field('campaign_heading', $this->ID) : __('1. Enter campaign name', 'modularity-resource-booking'),
                 'calendar' => get_field('calendar_heading', $this->ID) ? get_field('calendar_heading', $this->ID) : __('2. Select advertising period', 'modularity-resource-booking'),
                 'files' => get_field('files_heading', $this->ID) ? get_field('files_heading', $this->ID) : __('3. Upload files', 'modularity-resource-booking'),
                 'summary' => get_field('summary_heading', $this->ID) ? get_field('summary_heading', $this->ID) : __('Summary', 'modularity-resource-booking')

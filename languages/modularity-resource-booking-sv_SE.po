@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-02-01 08:46+0100\n"
-"PO-Revision-Date: 2019-02-01 08:47+0100\n"
+"POT-Creation-Date: 2019-02-05 11:03+0100\n"
+"PO-Revision-Date: 2019-02-05 11:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -175,7 +175,7 @@ msgstr "Order ID"
 msgid "{{ORDER_ID}}"
 msgstr ""
 
-#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:143
+#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:151
 #: source/php/Orders.php:328
 msgid "Customer"
 msgstr "Kund"
@@ -313,7 +313,7 @@ msgid "Product price"
 msgstr "Produktens pris"
 
 #: source/acf-fields/php/mod-package-details.php:71
-#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:173
+#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:181
 msgid "Customer group"
 msgstr "Kundgrupp"
 
@@ -559,7 +559,7 @@ msgstr "GLN nr. (e-fakturanummer)"
 msgid "VAT-Number"
 msgstr "Momsreg Nr"
 
-#: source/php/Api/Customer.php:24 source/php/Customer.php:104
+#: source/php/Api/Customer.php:24 source/php/Customer.php:112
 #: source/php/Module/Registration/RegistrationForm.php:51
 #: source/php/Module/UserAccount/UserAccount.php:74
 msgid "Phone number"
@@ -738,7 +738,7 @@ msgstr "Hittade inget resultat"
 msgid "USD"
 msgstr "SEK"
 
-#: source/php/Customer.php:40
+#: source/php/Customer.php:48
 msgid ""
 "Your account has not been enabled yet, please wait for a activation notice "
 "in your email inbox."
@@ -746,15 +746,15 @@ msgstr ""
 "Ditt konto har inte aktiverats än, vänta vänta på ett aktiveringsmeddelande "
 "i din e-postbrevlåda."
 
-#: source/php/Customer.php:60
+#: source/php/Customer.php:68
 msgid "Sign in"
 msgstr "Logga in"
 
-#: source/php/Customer.php:67
+#: source/php/Customer.php:75
 msgid "Activated account"
 msgstr "Aktiverat konto"
 
-#: source/php/Customer.php:68
+#: source/php/Customer.php:76
 msgid ""
 "Your account has now been verified by one of our managers. You can now "
 "proceed to make a new reservation for a spot."
@@ -762,31 +762,31 @@ msgstr ""
 "Ditt konto har nu verifierats av en av våra administratörer. Du kan nu "
 "fortsätta göra en ny bokning för en plats."
 
-#: source/php/Customer.php:71
+#: source/php/Customer.php:79
 msgid "Account owner:"
 msgstr "kontoinnehavare"
 
-#: source/php/Customer.php:75
+#: source/php/Customer.php:83
 msgid "Registered email:"
 msgstr "Registrerad e-post:"
 
-#: source/php/Customer.php:79
+#: source/php/Customer.php:87
 msgid "Registered phone:"
 msgstr "Registrerad telefon:"
 
-#: source/php/Customer.php:83
+#: source/php/Customer.php:91
 msgid "Registered company:"
 msgstr "Registrerat företag:"
 
-#: source/php/Customer.php:87
+#: source/php/Customer.php:95
 msgid "Registered company number:"
 msgstr "Registrerat org.nr"
 
-#: source/php/Customer.php:172
+#: source/php/Customer.php:180
 msgid "Customer groups"
 msgstr "Kundgrupper"
 
-#: source/php/Customer.php:202
+#: source/php/Customer.php:210
 msgid "Your account is not verified yet."
 msgstr "Ditt konto har inte verifierats ännu."
 
@@ -942,22 +942,22 @@ msgstr ""
 msgid "Wrong file dimensions."
 msgstr "Felaktiga mått."
 
-#: source/php/Helper/Product.php:43
+#: source/php/Helper/Product.php:45
 msgid "The id sent for price calculation is not valid."
 msgstr "ID-sänt för prisberäkning är inte giltigt."
 
-#: source/php/Helper/Product.php:56
+#: source/php/Helper/Product.php:58
 msgid ""
 "The type sent for price calculation is not valid, must be WP_Post or WP_Term."
 msgstr ""
 "Typen som skickas för prisberäkning är inte giltig, måste vara WP_Post eller "
 "WP_Term."
 
-#: source/php/Helper/Product.php:144
+#: source/php/Helper/Product.php:146
 msgid "Removed package"
 msgstr "Ta bort paketet"
 
-#: source/php/Helper/Product.php:150
+#: source/php/Helper/Product.php:152
 msgid "Removed product"
 msgstr "Borttagen produkt"
 
@@ -1001,8 +1001,8 @@ msgid "Outputs a form for booking resources."
 msgstr "Visar ett formulär för bokning av resurser."
 
 #: source/php/Module/BookingForm/BookingForm.php:30
-msgid "1. Choose a campaign name"
-msgstr "1. Välj ett kampanjnamn"
+msgid "1. Enter campaign name"
+msgstr "1. Ange kampanjnamn"
 
 #: source/php/Module/BookingForm/BookingForm.php:31
 msgid "2. Select advertising period"
@@ -1435,6 +1435,9 @@ msgstr "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
 #. Author URI of the plugin/theme
 msgid "https://github.com/helsingborg-stad"
 msgstr ""
+
+#~ msgid "1. Choose a campaign name"
+#~ msgstr "1. Välj ett kampanjnamn"
 
 #~ msgid "Fileupload Title"
 #~ msgstr "Rubrik ovanför filuppladdning"
