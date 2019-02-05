@@ -5,6 +5,136 @@ namespace ModularityResourceBooking\Helper;
 class Product
 {
     /**
+     * Get package price
+     * @param  int/object(WP_TERM)  $package        The term ID or term object of a package
+     * @param  boolean/int $userId                  User ID, if set to false it will get current user ID
+     * @param  boolean $currencySymbol              Wheter or not to include currency symbol
+     * @return int/string                           Returns as a string if currency symbol is included
+     */
+    public static function getPackagePrice($package, $userId = false, $currencySymbol = false)
+    {
+        //Type check
+        if (!$package instanceof \WP_Term && !is_numeric($package)) {
+            return new \WP_Error(
+                    'type_error',
+                    __('$package must either be numeric or an instance of WP_Term', 'modularity-resource-booking')
+                );
+        }
+
+        //Convert to object
+        if (is_numeric($package)) {
+            $package = get_term($package, 'product-package');
+
+            if (!$package instanceof \WP_Term) {
+                return new \WP_Error(
+                    'id_not_valid',
+                    __('The package id sent for price calculation is not valid.', 'modularity-resource-booking')
+                );
+            }
+        }
+
+
+        $price = !empty(get_field('package_price', $package)) ? get_field('package_price', $package) : false;
+
+        //Customer Group Price
+        if ($userId && $userId > 0 && !empty(get_field('customer_group_price_variations', $package)) && get_field('customer_group', 'user_' . (string) $userId)) {
+            $customerGroup = get_field('customer_group', 'user_' . (string) $userId);
+            $customerPrice = array_filter(get_field('customer_group_price_variations', $package), function($customPrice) use ($customerGroup, $price) {
+                if ($customPrice['customer_group'] === $customerGroup) {
+                    return true;
+                }
+            });
+
+            if (!empty($customerPrice)) {
+                $price = $customerPrice[0]['product_price'];
+            }
+
+        }
+
+        //Get price from products
+        if ($price === false) {
+            $products = get_posts(
+                array(
+                    'post_type' => 'product',
+                    'numberposts' => -1,
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'product-package',
+                            'field' => 'id',
+                            'terms' => $package->term_id
+                        )
+                    )
+                )
+            );
+
+            $price = 0;
+
+            foreach ($products as $product) {
+                $productPrice = self::getProductPrice($product, $userId, false);
+
+                if (is_numeric($productPrice)) {
+                    $price = $price + $productPrice;
+                }
+            }
+        }
+
+        return $currencySymbol ? (string) $price . ' ' . RESOURCE_BOOKING_CURRENCY_SYMBOL : (int) $price;
+    }
+
+    /**
+     * Get product price
+     * @param  int/object(WP_Post) $package         The post ID or post object of a product
+     * @param  boolean/int $userId                  User ID, if set to false it will get current user ID
+     * @param  boolean $currencySymbol              Wheter or not to include currency symbol
+     * @return int/string                           Returns as a string if currency symbol is included
+     */
+    public static function getProductPrice($product, $userId = false, $currencySymbol = false)
+    {
+        //Type check
+        if (!$product instanceof \WP_Post && !is_numeric($product)) {
+            return new \WP_Error(
+                    'type_error',
+                    __('$product must either be numeric or an instance of WP_Post', 'modularity-resource-booking')
+                );
+        }
+
+        //Convert to object
+        if (is_numeric($product)) {
+            $product = get_post($product);
+
+            if ($product->post_type !== 'product') {
+                return new \WP_Error(
+                    'id_not_valid',
+                    __('The product id sent for price calculation is not valid.', 'modularity-resource-booking')
+                );
+            }
+        }
+
+        if ($userId === false) {
+            $userId = get_current_user_id();
+        }
+
+        $price = !empty(get_field('product_price', $product->ID)) ? get_field('product_price', $product->ID) : 0;
+
+        //Customer Group Price
+        if ($userId && $userId > 0 && !empty(get_field('customer_group_price_variations', $product->ID)) && get_field('customer_group', 'user_' . (string) $userId)) {
+            $customerGroup = get_field('customer_group', 'user_' . (string) $userId);
+            $customerPrice = array_filter(get_field('customer_group_price_variations', $product->ID), function($customPrice) use ($customerGroup, $price) {
+                if ($customPrice['customer_group'] === $customerGroup) {
+                    return true;
+                }
+            });
+
+            if (!empty($customerPrice)) {
+                $price = $customerPrice[0]['product_price'];
+            }
+        }
+
+        return $currencySymbol ? (string) $price . ' ' . RESOURCE_BOOKING_CURRENCY_SYMBOL : (int) $price;
+    }
+
+
+    /**
      * Get the price of a product (post) or package (taxonomy)
      *
      * @param array|int|string $item           Object representing a taxonomy or
