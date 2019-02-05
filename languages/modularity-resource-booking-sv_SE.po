@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-02-05 11:11+0100\n"
-"PO-Revision-Date: 2019-02-05 11:11+0100\n"
+"POT-Creation-Date: 2019-02-05 11:35+0100\n"
+"PO-Revision-Date: 2019-02-05 11:35+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -708,23 +708,20 @@ msgstr ""
 "En ny order har skickats in, var god och granska den så snart som möjligt."
 
 #: source/php/Api/Orders.php:427
-msgid ""
-"Your order has been registered. A comfirmation has been sent to your email."
-msgstr ""
-"Din order har registrerats, ett mail med godkännande har skickats till din "
-"epostadress. "
+msgid "Your order have been registered."
+msgstr "Din beställning har registrerats."
 
-#: source/php/Api/Orders.php:428
+#: source/php/Api/Orders.php:427
 msgid "Visit"
-msgstr ""
+msgstr "Besök"
 
-#: source/php/Api/Orders.php:428
+#: source/php/Api/Orders.php:427
 msgid "Order History"
-msgstr ""
+msgstr "Orderhistorik"
 
-#: source/php/Api/Orders.php:428
+#: source/php/Api/Orders.php:427
 msgid "to view your order"
-msgstr ""
+msgstr "för att se din beställning"
 
 #: source/php/Api/Products.php:99
 msgid "Could not find any package with that id."
@@ -1440,6 +1437,16 @@ msgstr "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
 msgid "https://github.com/helsingborg-stad"
 msgstr ""
 
+#~ msgid "Your order has been registered."
+#~ msgstr "Din beställning har registrerats."
+
+#~ msgid ""
+#~ "Your order has been registered. A comfirmation has been sent to your "
+#~ "email."
+#~ msgstr ""
+#~ "Din order har registrerats, ett mail med godkännande har skickats till "
+#~ "din epostadress. "
+
 #~ msgid "1. Choose a campaign name"
 #~ msgstr "1. Välj ett kampanjnamn"
 
@@ -1454,9 +1461,6 @@ msgstr ""
 
 #~ msgid "Upload files"
 #~ msgstr "Ladda upp filer"
-
-#~ msgid "Your order has been registered."
-#~ msgstr "Din beställningar blev registrerad"
 
 #~ msgid "Sign in form"
 #~ msgstr "Inloggningsformulär"

@@ -423,9 +423,8 @@ class Orders
         //Return success
         return new \WP_REST_Response(
             array(
-                'message' => sprintf(
-                    __('Your order has been registered. A comfirmation has been sent to your email.', 'modularity-resource-booking')
-                ) . ' ' . __('Visit', 'modularity-resource-booking') . ' <a href="' . get_permalink(get_field('order_history_page', 'options')) . '">' . __('Order History', 'modularity-resource-booking') . '</a> '. __('to view your order', 'modularity-resource-booking') . '.',
+                'message' => get_field('registered_order', 'options') && !empty(get_field('registered_order', 'options')) ? get_field('registered_order', 'options') :
+                __('Your order have been registered.', 'modularity-resource-booking') . ' ' . __('Visit', 'modularity-resource-booking') . ' <a href="' . get_permalink(get_field('order_history_page', 'options')) . '">' . __('Order History', 'modularity-resource-booking') . '</a> ' . __('to view your order', 'modularity-resource-booking') . '.',
                 'order' => $this->filterorderOutput(get_post($insert)),
                 'state' => 'success'
             ),
