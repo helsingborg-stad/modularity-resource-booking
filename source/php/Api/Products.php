@@ -4,6 +4,13 @@ namespace ModularityResourceBooking\Api;
 
 class Products
 {
+    /**
+     * Class variables
+     *
+     * @var The current user id
+     */
+    public static $userId;
+
     public function __construct()
     {
         //Run register rest routes
@@ -17,6 +24,9 @@ class Products
      */
     public function registerRestRoutes()
     {
+        //Get user id
+        self::$userId = get_current_user_id();
+
         //Get single product
         register_rest_route(
             "ModularityResourceBooking/v1",
@@ -87,7 +97,7 @@ class Products
      */
     public function getPackage($request)
     {
-        if ($term = get_term($request->get_param('id'), 'product-package')) {
+        if ($term = get_term((int) $request->get_param('id'), 'product-package')) {
             return new \WP_REST_Response(
                 $this->filterTaxonomyOutput($term),
                 200
@@ -124,7 +134,7 @@ class Products
                     'id' => (int) $postitem->ID,
                     'title' => (string) $postitem->post_title,
                     'description' => (string) $postitem->post_content,
-                    'price' => (int) \ModularityResourceBooking\Helper\Product::price($postitem),
+                    'price' => (int) \ModularityResourceBooking\Helper\Product::getProductPrice($postitem, self::$userId),
                     'location' => get_field('product_location', $postitem->ID),
                     'total_stock' => (int) get_field('items_in_stock', $postitem->ID),
                     'packages' => wp_get_post_terms(
@@ -165,7 +175,7 @@ class Products
                     'id' => $term->term_id,
                     'title' => $term->name,
                     'description' => $term->description,
-                    'price' => (int) \ModularityResourceBooking\Helper\Product::price($term),
+                    'price' => (int) \ModularityResourceBooking\Helper\Product::getPackagePrice($term, self::$userId),
                     'media_requirements' => \ModularityResourceBooking\Helper\Product::getPackageMediaRequirements($term->term_id),
                     'products' => $this->filterPostOutput(
                         get_posts(
