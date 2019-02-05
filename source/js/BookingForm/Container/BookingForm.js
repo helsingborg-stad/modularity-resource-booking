@@ -244,7 +244,8 @@ class BookingForm extends React.Component {
             lockForm: false,
             selectedSlots: [],
             notice: '',
-            noticeType: ''
+            noticeType: '',
+            orderTitle: ''
         });
 
         this.fetchData();
