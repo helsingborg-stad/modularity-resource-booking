@@ -424,7 +424,7 @@ class BookingForm extends React.Component {
                                 name="orderTitle"
                                 value={orderTitle}
                                 handleChange={(e) => {this.setState({'orderTitle': e.target.value})}}
-                                placeholder={'Campaign name'}
+                                placeholder={translation.campaignName}
                                 required
                             />
                         </div>
