@@ -1,11 +1,11 @@
 @if($data['apiKey'])
     <div class="grid">
-        <div class="grid-md-12" id="login-box">
-            <div class="box box-panel box-panel-primary">
+        <div class="grid-md-12">
+            <div>
                 @if (!$hideTitle && !empty($post_title))
-                    <h4 class="box-title">{!! apply_filters('the_title', $post_title) !!}</h4>
+                    <h4 class="u-mb-3">{!! apply_filters('the_title', $post_title) !!}</h4>
                 @endif
-                <div class="box-content">
+                <div>
                     <div id="mod-rb-google-map"></div>
                 </div>
 
