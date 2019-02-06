@@ -561,29 +561,13 @@ class Orders
 
         $price = 0;
         foreach ($articles as $key => &$article) {
+            $price = 0;
             $slot = TimeSlots::getSlotInterval($article['slot_id']);
             if ($article['type'] === 'package') {
-                $term = get_term($article['article_id'], 'product-package');
-                $products = TimeSlots::getProductsByPackage((int)$article['article_id']);
-                // Calculate total price of all included products
-                foreach ($products as $product) {
-                    $price += $this->getProductPrice($product->ID, $groupId);
-                }
-                // Get custom price for package
-                if (!empty(get_field('package_price', $term))) {
-                    $price = get_field('package_price', $term);
-                }
-                // Get group variation price
-                $groupVariations = get_field('customer_group_price_variations', 'product-package' . '_' . $article['article_id']);
-                if ($groupId && is_array($groupVariations) && !empty($groupVariations)) {
-                    $key = array_search($groupId, array_column($groupVariations, 'customer_group'));
-                    if ($key !== false) {
-                        $price = $groupVariations[$key]['product_price'];
-                    }
-                }
+                $price = \ModularityResourceBooking\Helper\Product::getPrice(get_term($article['article_id']), self::$userId);
             } elseif ($article['type'] === 'product') {
                 // Get product price
-                $price = $this->getProductPrice($article['article_id'], $groupId);
+                $price = \ModularityResourceBooking\Helper\Product::getPrice(get_post($article['article_id']), self::$userId);
             }
 
             $article = array(
