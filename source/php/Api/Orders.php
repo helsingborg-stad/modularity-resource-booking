@@ -394,28 +394,21 @@ class Orders
             __('New order', 'modularity-resource-booking'),
             __('A new order has been submitted, please review it and accept it as soon as possible.', 'modularity-resource-booking'),
             array(
-                array(
-                    'heading' => __('Order number:', 'modularity-resource-booking'),
-                    'content' => $orderId
-                ),
-                array(
-                    'heading' => __('Order number:', 'modularity-resource-booking'),
-                    'content' => \ModularityResourceBooking\Helper\Product::name(
-                        \ModularityResourceBooking\Helper\ArrayParser::getSubKey(
-                            $data['order_articles'],
-                            'article_id'
-                        )
+                'table' => array(
+                    array(
+                        'heading' => __('Order number:', 'modularity-resource-booking'),
+                        'content' => $orderId
+                    ),
+                    array(
+                        'heading' => __('Customer: ', 'modularity-resource-booking'),
+                        'content' => \ModularityResourceBooking\Helper\Customer::getName(self::$userId)
                     )
                 ),
-                array(
-                    'heading' => __('Customer: ', 'modularity-resource-booking'),
-                    'content' => \ModularityResourceBooking\Helper\Customer::getName(self::$userId)
-                )
-            ),
-            array(
-                array(
-                    'text' => __('Show order', 'modularity-resource-booking'),
-                    'url' => add_query_arg(array('post' => $insert, 'action' => 'edit'), self_admin_url('post.php'))
+                'links' => array(
+                    array(
+                        'text' => __('Show order', 'modularity-resource-booking'),
+                        'url' => add_query_arg(array('post' => $insert, 'action' => 'edit'), self_admin_url('post.php'))
+                    )
                 )
             )
         );

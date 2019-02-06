@@ -61,6 +61,21 @@
             .table__content{
                 padding: 5px 5px 5px 0 !important;
             }
+
+            .text-left {
+                text-align: left;
+            }
+
+            .text-right {
+                text-align: right;
+            }
+
+            .summary-item td {
+                border-bottom: solid 1px #eeeeee;
+                margin-bottom: 24px;
+                padding-bottom: 24px;
+                padding-top: 24px;
+            }
         </style>
 
         <!--[if gte mso 9]><xml>
@@ -114,6 +129,9 @@
                                                     <td class="paragraph-block__content" style="padding: 30px 0 30px 0; font-size: 16px; line-height: 27px; color: #969696;" align="left">
                                                         @if(is_array($table) && !empty($table))
                                                             <table class="table">
+                                                                    <tr>
+                                                                        <td><h2 style="color: {{$color}};">Detaljer</h2></td>
+                                                                    </tr>
                                                                 @foreach ($table as $row)
                                                                     <tr>
                                                                         <td class="table__heading">
@@ -133,6 +151,77 @@
                                     </tr>
                                 </table>
                                 <!-- /// Paragraph -->
+
+                                <!-- / Divider -->
+                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 0;" align="center">
+                                    <tr>
+                                        <td align="center">
+                                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-bottom: solid 1px #eeeeee; width: 620px;">
+                                                <tr>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!-- /// Divider -->
+
+                                <!-- / Summary -->
+                                @if (isset($summary) && isset($summary['items']) && is_array($summary['items']) && !empty($summary['items']))
+                                <table class="container paragraph-block" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td align="center" valign="top">
+                                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+                                                <tr>
+                                                    <td class="paragraph-block__content" style="padding: 30px 0 30px 0; font-size: 16px; line-height: 27px;" align="left">
+                                                            <table class="table" style="width: 100%;">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th align="left">
+                                                                        <h2 style="color: {{$color}}; margin: 0;">{{$summary['title']}}</h2>
+                                                                    </th>
+                                                                </tr>
+                                                                </thead>
+                                                                @foreach ($summary['items'] as $item)
+                                                                    <tr class="summary-item">
+                                                                        <td>
+                                                                            <strong>{{ $item['title'] }}</strong>
+
+                                                                            @if (isset($item['content']) && !empty($item['content']))
+                                                                            <br>
+                                                                                @if (is_string($item['content']))
+                                                                                    <small>{{$item['content']}}</small>
+                                                                                @elseif (is_array($item['content']))
+                                                                                    @foreach ($item['content'] as $content)
+                                                                                        <small>{{$content}}</small><br>
+                                                                                    @endforeach
+                                                                                @endif
+                                                                            @endif
+                                                                        </td>
+                                                                        <td  class="text-right">
+                                                                            <strong>{{ $item['price'] }}</strong>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h2 style="color: {{$color}}">{{$summary['totalTitle']}}</h2>
+                                                                        </td>
+                                                                        <td  class="text-right">
+                                                                            <h2 style="color: {{$color}}">{{ $summary['totalPrice'] }}</h2>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                @endif
+                                <!-- /// Summary -->
 
                                 <!-- / Links -->
                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
@@ -166,7 +255,7 @@
                                         <td align="center">
                                             <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-bottom: solid 1px #eeeeee; width: 620px;">
                                                 <tr>
-                                                    <td align="center">&nbsp;</td>
+
                                                 </tr>
                                             </table>
                                         </td>

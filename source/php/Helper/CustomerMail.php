@@ -22,17 +22,27 @@ class CustomerMail extends Mail
      *
      * @return bool true if sent, false if undefined or malformed email
      */
-    public function __construct($reciver, $subject, $content, $table = array(), $links = array())
+    public function __construct($reciver, $subject, $content, $data = array())
     {
-        if(is_integer($reciver) && $email = \ModularityResourceBooking\Helper\Customer::getEmail($reciver)) {
+        if(is_numeric($reciver) && $email = \ModularityResourceBooking\Helper\Customer::getEmail((int) $reciver)) {
             $reciver = $email;
         }
 
         if (!is_wp_error($this->setReciver($reciver))) {
             $this->setSubject($subject);
             $this->setContent($content);
-            $this->setTable($table);
-            $this->setLinks($links);
+
+            if (isset($data['table']) && !empty($data['table'])) {
+                $this->setTable($data['table']);
+                unset($data['table']);
+            }
+
+            if (isset($data['links']) && !empty($data['links'])) {
+                $this->setLinks($data['links']);
+                unset($data['links']);
+            }
+
+            $this->data = $data;
             $this->dispatch();
             return true;
         }

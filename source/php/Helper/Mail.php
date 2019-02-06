@@ -123,7 +123,8 @@ class Mail
             'content' => apply_filters('the_content', $content),
             'table' => $this->_table,
             'links' => $this->_links,
-            'color' => get_field('mod_rb_email_brand_color', 'options') 
+            'color' => get_field('mod_rb_email_brand_color', 'options'),
+            'summary' => isset($this->data['summary']) ? $this->data['summary'] : false
         );
 
         //Ensure that cache folder exits
@@ -181,7 +182,7 @@ class Mail
                     return new \WP_Error('malformed_link_array', __("Each button array item must contain 'url' and 'text' sub keys.", 'modularity-resource-booking'));
                 }
 
-                //Remove empty buttons 
+                //Remove empty buttons
                 if (empty($link['url']) || empty($link['text'])) {
                     unset($links[$key]);
                 }

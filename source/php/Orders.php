@@ -44,8 +44,6 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
      */
     public function taxonomyChangeActions($postId)
     {
-
-        //Not order posttype
         if (get_post_type($postId) != self::$postTypeSlug) {
             return;
         }
@@ -67,67 +65,56 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
         $newTermSetup = $data["acf"][get_field_object('order_status')['key']];
         $oldTermSetup = get_the_terms($postId, self::$statusTaxonomySlug);
 
+        $articles = get_post_meta($postId, 'order_data', true)[0]['articles'];
+
+        if (!empty($articles)) {
+            $summary = $this->mapSummary($articles);
+        }
+
         if (is_array($oldTermSetup) && !empty($oldTermSetup)) {
             foreach ($oldTermSetup as $term) {
                 if ($term->term_id != $newTermSetup) {
-
                     //Get actions
                     $actionOnAcquisition = get_field('do_action_on_aqusition', self::$statusTaxonomySlug . "_" . $newTermSetup);
 
                     //Send email to economy
                     if (!is_null($actionOnAcquisition) && is_array($actionOnAcquisition) && in_array('economy_mail', $actionOnAcquisition)) {
-
                         new \ModularityResourceBooking\Helper\EconomyMail(
                             __('Request of new invoice', 'modularity-resource-booking'),
                             __('This is a request to create an invoice to the specifications below.', 'modularity-resource-booking'),
                             array(
-                                array(
-                                    'heading' => __('Order number:', 'modularity-resource-booking'),
-                                    'content' => get_post_meta($postId, 'order_id', true)
-                                ),
-                                array(
-                                    'heading' => __('Ordered articles:', 'modularity-resource-booking'),
-                                    'content' => Helper\Product::name(
-                                        Helper\ArrayParser::getSubKey(
-                                            get_field('order_articles', $postId),
-                                            'article_id'
-                                        )
+                                'table' => array(
+                                    array(
+                                        'heading' => __('Order number:', 'modularity-resource-booking'),
+                                        'content' => get_post_meta($postId, 'order_id', true)
+                                    ),
+                                    array(
+                                        'heading' => __('Our reference: ', 'modularity-resource-booking'),
+                                        'content' => Helper\Customer::getName(get_current_user_id()),
+                                    ),
+                                    array(
+                                        'heading' => __('Their reference: ', 'modularity-resource-booking'),
+                                        'content' => Helper\Customer::getName($data["acf"][get_field_object('customer_id')['key']])
+                                    ),
+                                    array(
+                                        'heading' => __('VAT-Number: ', 'modularity-resource-booking'),
+                                        'content' => Helper\Customer::getVat($data["acf"][get_field_object('customer_id')['key']])
+                                    ),
+                                    array(
+                                        'heading' => __('Price include VAT: ', 'modularity-resource-booking'),
+                                        'content' => Helper\Customer::getTaxIndicator($data["acf"][get_field_object('customer_id')['key']])
+                                    ),
+                                    array(
+                                        'heading' => __('GLNR number: ', 'modularity-resource-booking'),
+                                        'content' => Helper\Customer::getGlnr($data["acf"][get_field_object('customer_id')['key']])
+                                    ),
+                                    array(
+                                        'heading' => __('Notes: ', 'modularity-resource-booking'),
+                                        'content' => $data["acf"][get_field_object('order_notations')['key']]
                                     )
                                 ),
-                                array(
-                                    'heading' => __('Our reference: ', 'modularity-resource-booking'),
-                                    'content' => Helper\Customer::getName(get_current_user_id()),
-                                ),
-                                array(
-                                    'heading' => __('Their reference: ', 'modularity-resource-booking'),
-                                    'content' => Helper\Customer::getName($data["acf"][get_field_object('customer_id')['key']])
-                                ),
-                                array(
-                                    'heading' => __('Total: ', 'modularity-resource-booking'),
-                                    'content' => Helper\Product::price(
-                                        Helper\ArrayParser::getSubKey(
-                                            get_field('order_articles', $postId),
-                                            'article_id'
-                                        ),
-                                        true
-                                    )
-                                ),
-                                array(
-                                    'heading' => __('VAT-Number: ', 'modularity-resource-booking'),
-                                    'content' => Helper\Customer::getVat($data["acf"][get_field_object('customer_id')['key']])
-                                ),
-                                array(
-                                    'heading' => __('Price include VAT: ', 'modularity-resource-booking'),
-                                    'content' => Helper\Customer::getTaxIndicator($data["acf"][get_field_object('customer_id')['key']])
-                                ),
-                                array(
-                                    'heading' => __('GLNR number: ', 'modularity-resource-booking'),
-                                    'content' => Helper\Customer::getGlnr($data["acf"][get_field_object('customer_id')['key']])
-                                ),
-                                array(
-                                    'heading' => __('Notes: ', 'modularity-resource-booking'),
-                                    'content' => $data["acf"][get_field_object('order_notations')['key']]
-                                )
+                                'summary' => isset($summary) ? $summary : false,
+                                'links' => array()
                             )
                         );
                     }
@@ -139,40 +126,65 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                             __('Order approved', 'modularity-resource-booking'),
                             __('Your order has been verified by us, and scheduled at your desired occasion.', 'modularity-resource-booking'),
                             array(
-                                array(
-                                    'heading' => __('Order number:', 'modularity-resource-booking'),
-                                    'content' => get_post_meta($postId, 'order_id', true)
-                                ),
-                                array(
-                                    'heading' => __('Articles:', 'modularity-resource-booking'),
-                                    'content' => Helper\Product::name(
-                                        Helper\ArrayParser::getSubKey(
-                                            get_field('order_articles', $postId),
-                                            'article_id'
-                                        )
+                                'table' => array(
+                                    array(
+                                        'heading' => __('Order number:', 'modularity-resource-booking'),
+                                        'content' => get_post_meta($postId, 'order_id', true)
+                                    ),
+                                    array(
+                                        'heading' => __('Our reference: ', 'modularity-resource-booking'),
+                                        'content' => Helper\Customer::getName(get_current_user_id())
                                     )
                                 ),
-                                array(
-                                    'heading' => __('Our reference: ', 'modularity-resource-booking'),
-                                    'content' => Helper\Customer::getName(get_current_user_id())
-                                ),
-                                array(
-                                    'heading' => __('Total (exluding VAT): ', 'modularity-resource-booking'),
-                                    'content' => Helper\Product::price(
-                                        Helper\ArrayParser::getSubKey(
-                                            get_field('order_articles', $postId),
-                                            'article_id'
-                                        ),
-                                        true
-                                    )
-                                )
+                                'summary' => isset($summary) ? $summary : false
                             )
                         );
+
                     }
                 }
             }
         }
+    }
 
+    /**
+     * Maps summary data for view
+     * @param  [array] $articles Array of articles (from the post meta 'order_data')
+     * @return [array]
+     */
+    public function mapSummary(array $articles)
+    {
+        if (empty($articles)) {
+            return;
+        }
+
+        return array(
+            'title' => __('Summary', 'modularity-resource-booking'),
+            'items' => array_map(function($article) {
+                return array(
+                    'title' => $article['title'],
+                    'content' => [__('Start date', 'modularity-resource-booking') . ': ' . $article['start'], __('End date', 'modularity-resource-booking') . ': ' . $article['stop']],
+                    'price' => (string) $article['price'] . ' ' . RESOURCE_BOOKING_CURRENCY_SYMBOL
+                );
+            }, $articles),
+            'totalPrice' => (string) $this->getTotalPrice($articles) . ' ' . RESOURCE_BOOKING_CURRENCY_SYMBOL,
+            'totalTitle' => __('Total', 'modularity-resource-booking'),
+        );
+    }
+
+    /**
+     * Get the sum of all article prices
+     * @param  [array] $articles Array of articles (from the post meta 'order_data')
+     * @return [int]
+     */
+    public function getTotalPrice($articles)
+    {
+        if (empty($articles)) {
+            return 0;
+        }
+
+        return array_reduce($articles, function($articleA, $articleB) {
+            return (is_numeric($articleA) ? $articleA : $articleA['price']) + $articleB['price'];
+        });
     }
 
     /**
