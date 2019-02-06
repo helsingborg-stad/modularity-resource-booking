@@ -23,7 +23,7 @@ class Files extends React.Component {
                                 'u-p-3': true,
                                 disabled: typeof disabled !== 'undefined' && disabled ? true : false
                             })}
-                            style={{ backgroundColor: '#f4f4f4' }}
+                            style={{ backgroundColor: '#e5e5e5' }}
                             key={media['media_name'] + '-' + index}
                         >
                             <label htmlFor={media['media_name'] + '-' + index}>

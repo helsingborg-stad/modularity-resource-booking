@@ -415,103 +415,107 @@ class BookingForm extends React.Component {
             );
         } else {
             return (
-                <form onSubmit={this.submitOrder}>
-                    <div className="grid">
-                        <div className="grid-xs-12 u-mb-3">
-                            <h4 className="u-mb-2">{headings.orderName}</h4>
-                            <Input
-                                type="text"
-                                name="orderTitle"
-                                value={orderTitle}
-                                handleChange={(e) => {this.setState({'orderTitle': e.target.value})}}
-                                placeholder={translation.campaignName}
-                                required
-                            />
-                        </div>
-                        <div className="grid-xs-12 u-mb-3">
-                            <h4 className="u-mb-2">{headings.calendar}</h4>
-                            <Calendar
-                                events={avalibleSlots}
-                                onClickEvent={this.handleClickEvent}
-                                eventClassName={this.handleEventClassName}
-                                eventContent={this.handleEventContent}
-                                maxDate={
-                                    avalibleSlots.length > 0
-                                        ? avalibleSlots[avalibleSlots.length - 1].stop
-                                        : null
-                                }
-                                minDate={avalibleSlots.length > 0 ? avalibleSlots[0].start : null}
-                                currentMonth={
-                                    avalibleSlots.length > 0 ? avalibleSlots[0].start : new Date()
-                                }
-                                disable={lockForm ? true : false}
-                                locale={locale}
-                            />
-                        </div>
-
-                        {files.length > 0 ? (
-                            <div className="grid-xs-12 u-mb-3">
-                                <h4 className="u-mb-2">{headings.files}</h4>
-                                <Files
-                                    onFileUpload={this.handleFileUpload}
-                                    disabled={lockForm ? true : false}
-                                    translation={translation}
-                                >
-                                    {files}
-                                </Files>
-                            </div>
-                        ) : null}
-
-                        {selectedSlots.length > 0 ? (
-                            <div className="grid-xs-12 u-mb-3">
-                                <h4 className="u-mb-2">{headings.summary}</h4>
-                                <Summary
-                                    onClickRemoveItem={this.handleRemoveItem}
-                                    translation={translation}
-                                    disabled={lockForm ? true : false}
-                                >
-                                    {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
-                                </Summary>
-                            </div>
-                        ) : null}
-
-                        <div className="grid-xs-12">
-                            <div className="grid grid-va-middle">
-                                <div className="grid-fit-content">
-                                    <Button
-                                        color="primary"
-                                        submit
-                                        disabled={lockForm ? true : false}
-                                        title={translation.order}
+                <div className="c-card">
+                    <div className="c-card__body" style={{ backgroundColor: '#f4f4f4' }}>
+                        <form onSubmit={this.submitOrder}>
+                            <div className="grid">
+                                <div className="grid-xs-12 u-mb-3">
+                                    <h4 className="u-mb-2">{headings.orderName}</h4>
+                                    <Input
+                                        type="text"
+                                        name="orderTitle"
+                                        value={orderTitle}
+                                        handleChange={(e) => {this.setState({'orderTitle': e.target.value})}}
+                                        placeholder={translation.campaignName}
+                                        required
+                                    />
+                                </div>
+                                <div className="grid-xs-12 u-mb-3">
+                                    <h4 className="u-mb-2">{headings.calendar}</h4>
+                                    <Calendar
+                                        events={avalibleSlots}
+                                        onClickEvent={this.handleClickEvent}
+                                        eventClassName={this.handleEventClassName}
+                                        eventContent={this.handleEventContent}
+                                        maxDate={
+                                            avalibleSlots.length > 0
+                                                ? avalibleSlots[avalibleSlots.length - 1].stop
+                                                : null
+                                        }
+                                        minDate={avalibleSlots.length > 0 ? avalibleSlots[0].start : null}
+                                        currentMonth={
+                                            avalibleSlots.length > 0 ? avalibleSlots[0].start : new Date()
+                                        }
+                                        disable={lockForm ? true : false}
+                                        locale={locale}
                                     />
                                 </div>
 
-                                {submitted ? (
-                                    <div className="grid-fit-content u-pl-0">
-                                        <Button onClick={this.resetForm}>
-                                            {translation.newOrder}
-                                        </Button>
+                                {files.length > 0 ? (
+                                    <div className="grid-xs-12 u-mb-3">
+                                        <h4 className="u-mb-2">{headings.files}</h4>
+                                        <Files
+                                            onFileUpload={this.handleFileUpload}
+                                            disabled={lockForm ? true : false}
+                                            translation={translation}
+                                        >
+                                            {files}
+                                        </Files>
                                     </div>
                                 ) : null}
 
-                                {formIsLoading ? (
-                                    <div className="grid-fit-content u-pl-0">
-                                        {' '}
-                                        <div className="spinner spinner-dark" />
+                                {selectedSlots.length > 0 ? (
+                                    <div className="grid-xs-12 u-mb-3">
+                                        <h4 className="u-mb-2">{headings.summary}</h4>
+                                        <Summary
+                                            onClickRemoveItem={this.handleRemoveItem}
+                                            translation={translation}
+                                            disabled={lockForm ? true : false}
+                                        >
+                                            {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
+                                        </Summary>
                                     </div>
                                 ) : null}
-                            </div>
-                        </div>
 
-                        {notice.length > 0 && (
-                            <div className="grid-xs-12 u-mt-2">
-                                <Notice type={noticeType} icon>
-                                    <span dangerouslySetInnerHTML={{ __html: notice }} />
-                                </Notice>
+                                <div className="grid-xs-12">
+                                    <div className="grid grid-va-middle">
+                                        <div className="grid-fit-content">
+                                            <Button
+                                                color="primary"
+                                                submit
+                                                disabled={lockForm ? true : false}
+                                                title={translation.order}
+                                            />
+                                        </div>
+
+                                        {submitted ? (
+                                            <div className="grid-fit-content u-pl-0">
+                                                <Button onClick={this.resetForm}>
+                                                    {translation.newOrder}
+                                                </Button>
+                                            </div>
+                                        ) : null}
+
+                                        {formIsLoading ? (
+                                            <div className="grid-fit-content u-pl-0">
+                                                {' '}
+                                                <div className="spinner spinner-dark" />
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                </div>
+
+                                {notice.length > 0 && (
+                                    <div className="grid-xs-12 u-mt-2">
+                                        <Notice type={noticeType} icon>
+                                            <span dangerouslySetInnerHTML={{ __html: notice }} />
+                                        </Notice>
+                                    </div>
+                                )}
                             </div>
-                        )}
-                    </div>
-                </form>
+                        </form>
+                  </div>
+                </div>
             );
         }
     }
