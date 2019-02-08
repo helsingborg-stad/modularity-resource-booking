@@ -26,6 +26,7 @@
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
     "classnames": "^2.2.6",
@@ -64,21 +65,21 @@
     "google-maps-react": "^2.0.2"
   },
   "babel": {
-      "presets": [
-        [
-          "@babel/preset-env",
-          {
-            "targets": {
-              "ie": "11"
-            }
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "ie": "11"
           }
-        ],
-        "@babel/preset-react"
+        }
       ],
-      "plugins": [
-        "@babel/plugin-syntax-dynamic-import",
-        "@babel/plugin-proposal-export-default-from",
-        "@babel/plugin-proposal-class-properties"
-      ]
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-syntax-dynamic-import",
+      "@babel/plugin-proposal-export-default-from",
+      "@babel/plugin-proposal-class-properties"
+    ]
   }
 }
