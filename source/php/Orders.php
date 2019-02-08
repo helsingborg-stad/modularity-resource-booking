@@ -25,6 +25,9 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
         // Hide ACF field
         add_filter('acf/load_field/key=field_5c0fc16aaefa4', array($this, 'hideField'));
 
+        //Reset resend mail button
+        add_filter('acf/load_field/name=resend_email', array($this, 'resetReSendEmailField'));
+
         //Save author to post on change
         add_action('save_post', array($this, 'updateAuthor'));
 
@@ -33,6 +36,18 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         // Create default order statuses
         add_action('init', array($this, 'createDefaultStatuses'), 9);
+    }
+
+    /**
+     * Resets the resend button
+     *
+     * @param  [array] $field The ACF Field
+     * @return void
+     */
+    public function resetReSendEmailField($field)
+    {
+        $field['value'] = false;
+        return $field;
     }
 
     /**
@@ -56,6 +71,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
         //Get post data
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
+
         //Not defined
         if (!isset($data["acf"][get_field_object('order_status')['key']])) {
             return;
@@ -73,7 +89,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         if (is_array($oldTermSetup) && !empty($oldTermSetup)) {
             foreach ($oldTermSetup as $term) {
-                if ($term->term_id != $newTermSetup) {
+                if ($term->term_id != $newTermSetup || isset($data['acf'][get_field_object('resend_email')['key']]) && $data['acf'][get_field_object('resend_email')['key']] === '1') {
                     //Get actions
                     $actionOnAcquisition = get_field('do_action_on_aqusition', self::$statusTaxonomySlug . "_" . $newTermSetup);
 
