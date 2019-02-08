@@ -192,15 +192,15 @@ class MediaUpload
     {
         $fileInformation = new \finfo(FILEINFO_MIME_TYPE);
         if (false === $ext = array_search(
-                $fileInformation->file($file['tmp_name']),
-                array(
+            $fileInformation->file($file['tmp_name']),
+            array(
                     'jpg' => 'image/jpeg',
                     'png' => 'image/png',
                     'mp4' => 'video/mp4',
                     'pdf' => 'application/pdf'
                 ),
-                true
-            )) {
+            true
+        )) {
             return false;
         }
         return true;

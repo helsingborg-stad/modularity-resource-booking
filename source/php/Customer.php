@@ -12,7 +12,7 @@ class Customer
 
         add_action('admin_menu', array($this, 'registerTaxonomyPage'));
         add_action('parent_file', array($this, 'highlightTaxonomyParentMenu'));
-        add_action('profile_update', array($this, 'sendActivationEmail'),5, 2); 
+        add_action('profile_update', array($this, 'sendActivationEmail'), 5, 2);
         add_filter('user_contactmethods', array($this, 'addUserContactFields'));
         add_filter('authenticate', array($this, 'checkCustomerGroup'), 99, 3);
         add_action('after_setup_theme', array($this, 'hideAdminBar'));
@@ -25,13 +25,14 @@ class Customer
      *
      * @param bool|string $message  A string witrh a previous message or false if not set
      * @param WP_User     $user     The user object
-     * 
+     *
      * @return false|string
      */
-    public function prohibitGrouplessLogins($message, $user) {
+    public function prohibitGrouplessLogins($message, $user)
+    {
 
         //Not a valid user
-        if(is_a($user, "WP_User")) {
+        if (is_a($user, "WP_User")) {
             return $message;
         }
 
@@ -43,8 +44,8 @@ class Customer
             return $user->errors['incorrect_password'][0];
         }
 
-        if($message === false) {
-            if(!is_numeric(get_user_meta($user->ID, 'customer_group', true))) {
+        if ($message === false) {
+            if (!is_numeric(get_user_meta($user->ID, 'customer_group', true))) {
                 $message = __("Your account has not been enabled yet, please wait for a activation notice in your email inbox.", 'modularity-resource-booking');
             }
         }
@@ -56,10 +57,11 @@ class Customer
      *
      * @param int    $userId      The user id
      * @param object $oldUserData The old user data
-     * 
+     *
      * @return void
      */
-    public function sendActivationEmail($userId, $oldUserData) {
+    public function sendActivationEmail($userId, $oldUserData)
+    {
         if (empty(get_field('customer_group', 'user_' . $userId))) {
             if (isset($_POST['acf']['field_5bfe8eb5174c1']) && is_numeric($_POST['acf']['field_5bfe8eb5174c1'])) {
                 $links = array();
@@ -153,8 +155,8 @@ class Customer
             'level_0' => true,
             'upload_files' => true
         ));
-        $role = get_role( 'customer' );
-        $role->add_cap( 'order' );
+        $role = get_role('customer');
+        $role->add_cap('order');
     }
 
     /**
@@ -207,7 +209,8 @@ class Customer
         if (isset($user->roles) && in_array('customer', (array)$user->roles)) {
             if (empty(get_field('customer_group', 'user_' . $user->ID))) {
                 return new \WP_Error(
-                    'not-verified', __('Your account is not verified yet.', 'modularity-resource-booking')
+                    'not-verified',
+                    __('Your account is not verified yet.', 'modularity-resource-booking')
                 );
             }
         }
@@ -221,7 +224,7 @@ class Customer
     public function hideAdminBar()
     {
         //Prevent unintentional lockout
-        if(is_super_admin()||current_user_can('administrator')) {
+        if (is_super_admin()||current_user_can('administrator')) {
             return;
         }
 
@@ -237,7 +240,7 @@ class Customer
     {
 
         //Prevent unintentional lockout
-        if(is_super_admin()||current_user_can('administrator')) {
+        if (is_super_admin()||current_user_can('administrator')) {
             return;
         }
 
@@ -248,5 +251,4 @@ class Customer
             exit;
         }
     }
-
 }

@@ -34,7 +34,10 @@ class RegistrationForm extends \Modularity\Module
             \Modularity\Helper\React::enqueue();
             // Enqueue module script
             wp_enqueue_script('modularity-' . $this->slug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/RegistrationForm/Index.js'), array('jquery', 'react', 'react-dom'), false, true);
-            wp_localize_script('modularity-' . $this->slug, 'modRegistrationForm', array(
+            wp_localize_script(
+                'modularity-' . $this->slug,
+                'modRegistrationForm',
+                array(
                     'email' => __('Email', 'modularity-resource-booking'),
                     'confirmEmail' => __('Confirm email', 'modularity-resource-booking'),
                     'emailMisMatch' => __('The email does not match.', 'modularity-resource-booking'),

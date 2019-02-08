@@ -18,7 +18,6 @@ class App
 
         //Register currency symbol
         add_action('init', array($this, 'registerCurrencySymbol'), 1);
-
     }
 
     /**
@@ -106,6 +105,4 @@ class App
             );
         }
     }
-
-
 }

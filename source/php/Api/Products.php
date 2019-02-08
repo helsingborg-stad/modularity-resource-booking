@@ -84,7 +84,8 @@ class Products
                 $this->filterPostOutput(
                     get_post($request->get_param('id'))
                 )
-            ), 200
+            ),
+            200
         );
     }
 
@@ -108,7 +109,8 @@ class Products
             array(
                 'message' => __('Could not find any package with that id.', 'modularity-resource-booking'),
                 'state' => 'error'
-            ), 404
+            ),
+            404
         );
     }
 

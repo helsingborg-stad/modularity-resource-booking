@@ -106,13 +106,13 @@ class TimeSlots
                 array(
                     'message' => __('No articles could be found with \'article_id\': ' . $params['article_id'], 'modularity-resource-booking'),
                     'state' => 'error'
-                ), 404
+                ),
+                404
             );
         }
 
-        // Automatic schedule 
+        // Automatic schedule
         if (get_field('mod_res_book_automatic_or_manual', 'option') == "weekly") {
-            
             //Decide what monday to refer to
             if (date("N") == 1) {
                 $whatMonday = "monday";
@@ -121,7 +121,7 @@ class TimeSlots
             }
 
             //Get offset
-            if($offset = get_field('mod_res_offset_bookable_weeks_by', 'option')) {
+            if ($offset = get_field('mod_res_offset_bookable_weeks_by', 'option')) {
                 $weekStart = (int)$offset;
                 $weekStop  = 52 + (int)$offset;
             } else {
@@ -146,7 +146,8 @@ class TimeSlots
                         array(
                             'message' => $articleStock->get_error_message(),
                             'state' => 'error'
-                        ), 404
+                        ),
+                        404
                     );
                 }
 
@@ -163,14 +164,12 @@ class TimeSlots
             }
         }
 
-        //Manual schedule 
+        //Manual schedule
         if (get_field('mod_res_book_automatic_or_manual', 'option') == "manual") {
-            
             $data = get_field('mod_res_book_time_slots', 'option');
            
             if (is_array($data) && !empty($data)) {
                 foreach ($data as $item) {
-
                     $start  = $item['start_date'] . " 00:00";
                     $stop   = $item['end_date'] . " 23:59";
                     $slotId = self::getSlotId($item['start_date'] . " 00:00", $stop);
@@ -187,7 +186,8 @@ class TimeSlots
                             array(
                                 'message' => $articleStock->get_error_message(),
                                 'state' => 'error'
-                            ), 404
+                            ),
+                            404
                         );
                     }
 
@@ -212,7 +212,8 @@ class TimeSlots
                 array(
                     'message' => __('No result found.', 'modularity-resource-booking'),
                     'state' => 'error'
-                ), 404
+                ),
+                404
             );
         }
     }
@@ -343,14 +344,18 @@ class TimeSlots
             $orders = self::getOrders(
                 array(
                     'tax_query' => array(
-                    array(
-                        'taxonomy' => 'order-status',
-                        'terms' => array('canceled'),
-                        'field' => 'slug',
-                        'operator' => 'NOT IN',
+                        array(
+                            'taxonomy' => 'order-status',
+                            'terms' => array('canceled'),
+                            'field' => 'slug',
+                            'operator' => 'NOT IN',
+                        )
                     )
-                )
-            ), $articleType, $articleIds, $slotId);
+                ),
+                $articleType,
+                $articleIds,
+                $slotId
+            );
 
             // Get number of times the customer(or other group members) have purchased this product
             $purchaseCount = 0;
@@ -380,7 +385,6 @@ class TimeSlots
             );
 
             return $product;
-            
         }, $products);
 
         // Remove NULL(Unlimited stock) values, to get list of products with a stock value

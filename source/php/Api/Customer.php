@@ -133,9 +133,9 @@ class Customer
                 'state' => 'error'
             );
         } else {
-            $cleaner = new \Olssonm\IdentityNumber\IdentityNumberFormatter($data['billing_company_number'], 10, true); 
+            $cleaner = new \Olssonm\IdentityNumber\IdentityNumberFormatter($data['billing_company_number'], 10, true);
             $data['billing_company_number'] = $cleaner->getFormatted();
-        }        
+        }
 
         //Define update array
         $insertArray = array(
@@ -153,7 +153,6 @@ class Customer
 
         //Insert the user
         if ($userId = wp_insert_user($insertArray)) {
-
             //Update user meta data
             foreach (self::$metaKeys as $metaKey => $metaField) {
                 if (isset($data[$metaKey])) {
@@ -210,7 +209,6 @@ class Customer
                     get_user_by('ID', $userId)
                 )
             );
-
         } else {
             return array(
                 'message' => __('Something unexpected happened.', 'modularity-resource-booking'),
@@ -228,7 +226,6 @@ class Customer
      */
     public function modify($request)
     {
-
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         //Check if user id exists
@@ -263,7 +260,6 @@ class Customer
 
         //Set new password
         if (isset($data['password']) && !empty($data['password'])) {
-
             if (is_wp_error($strength = \ModularityResourceBooking\Helper\Validation::passwordStrenght($data['password']))) {
                 return array(
                     'message' => $strength->get_error_message(),
@@ -281,8 +277,8 @@ class Customer
                 'state' => 'error'
             );
         } else {
-            $cleaner = new \Olssonm\IdentityNumber\IdentityNumberFormatter($data['billing_company_number'], 10, true); 
-            $data['billing_company_number'] = $cleaner->getFormatted(); 
+            $cleaner = new \Olssonm\IdentityNumber\IdentityNumberFormatter($data['billing_company_number'], 10, true);
+            $data['billing_company_number'] = $cleaner->getFormatted();
         }
 
         //Update array creation of to be updated fields
@@ -334,7 +330,6 @@ class Customer
 
         if (is_array($users) && !empty($users)) {
             foreach ($users as $user) {
-
                 //Automatically fetch user meta
                 $userMeta = array();
                 foreach (self::$metaKeys as $key => $value) {

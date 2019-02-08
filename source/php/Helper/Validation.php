@@ -19,7 +19,8 @@ class Validation
      *
      * @return true if verified, array if not verified (with response message)
      */
-    public static function passwordStrenght($password) {
+    public static function passwordStrenght($password)
+    {
 
         //Length
         if (strlen($password) < 6) {
@@ -44,23 +45,25 @@ class Validation
      *
      * @return true if verified, array if not verified (with response message)
      */
-    public static function companyNumber($input) {
-        if(!\Olssonm\IdentityNumber\Pin::isValid($input, 'identity')) {
+    public static function companyNumber($input)
+    {
+        if (!\Olssonm\IdentityNumber\Pin::isValid($input, 'identity')) {
             return new \WP_Error('invalid_pattern_company', __('Invalid format on provided organization number.', 'modularity-resource-booking'));
         }
-        return true; 
+        return true;
     }
 
     /**
-     * Validates personal number 
+     * Validates personal number
      *
      * @return true if verified, array if not verified (with response message)
      */
-    public static function personalNumber($input) {
-        if(!\Olssonm\IdentityNumber\Pin::isValid($input, 'organization')) {
+    public static function personalNumber($input)
+    {
+        if (!\Olssonm\IdentityNumber\Pin::isValid($input, 'organization')) {
             return new \WP_Error('invalid_pattern_person', __('Invalid format on provided personal number.', 'modularity-resource-booking'));
         }
-        return true; 
+        return true;
     }
 
     /**
@@ -68,13 +71,11 @@ class Validation
      *
      * @return true if verified, array if not verified (with response message)
      */
-    public static function coordinationNumber($input) {
-        if(!\Olssonm\IdentityNumber\Pin::isValid($input, 'coordination')) {
+    public static function coordinationNumber($input)
+    {
+        if (!\Olssonm\IdentityNumber\Pin::isValid($input, 'coordination')) {
             return new \WP_Error('invalid_pattern_coordination', __('Invalid format on provided personal or organization number.', 'modularity-resource-booking'));
         }
-        return true; 
+        return true;
     }
 }
-
-
-

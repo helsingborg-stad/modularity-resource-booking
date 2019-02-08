@@ -71,13 +71,11 @@ class Products extends \ModularityResourceBooking\Entity\PostType
                     _e("Undefined", 'modularity-resource-booking');
                 } else {
                     foreach ((array)$types as $typeKey => $type) {
-
                         echo $type->name;
 
                         if ($typeKey+1 !== count($types)) {
                             echo ", ";
                         }
-
                     }
                 }
             }
@@ -125,5 +123,4 @@ class Products extends \ModularityResourceBooking\Entity\PostType
         //Return taxonomy slug
         return $packages->slug;
     }
-
 }

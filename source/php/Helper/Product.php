@@ -16,9 +16,9 @@ class Product
         //Type check
         if (!$object instanceof \WP_Term && !$object instanceof \WP_Post) {
             return new \WP_Error(
-                    'type_not_valid',
-                    __('$object must either be an instance of WP_Post or WP_Term', 'modularity-resource-booking')
-                );
+                'type_not_valid',
+                __('$object must either be an instance of WP_Post or WP_Term', 'modularity-resource-booking')
+            );
         }
 
         $priceFields = array(
@@ -28,9 +28,9 @@ class Product
 
         if (!isset($priceFields[get_class($object)])) {
             return new \WP_Error(
-                    'field_missing',
-                    __('Price field is missing for ', 'modularity-resource-booking') . get_class($object)
-                );
+                'field_missing',
+                __('Price field is missing for ', 'modularity-resource-booking') . get_class($object)
+            );
         }
 
         $price = !empty(get_field($priceFields[get_class($object)], $object)) ? get_field($priceFields[get_class($object)], $object) : false;
@@ -38,7 +38,7 @@ class Product
         //Customer Group Price
         if ($userId && $userId > 0 && !empty(get_field('customer_group_price_variations', $object)) && get_field('customer_group', 'user_' . (string) $userId)) {
             $customerGroup = get_field('customer_group', 'user_' . (string) $userId);
-            $customerPrice = array_filter(get_field('customer_group_price_variations', $object), function($customPrice) use ($customerGroup, $price) {
+            $customerPrice = array_filter(get_field('customer_group_price_variations', $object), function ($customPrice) use ($customerGroup, $price) {
                 if ($customPrice['customer_group'] === $customerGroup) {
                     return true;
                 }
@@ -105,7 +105,6 @@ class Product
 
         //Get object
         if (is_numeric($item)) {
-
             if ($tempItem = get_post($item)) {
                 $item = $tempItem;
             } else {
@@ -146,7 +145,6 @@ class Product
         if (is_array($userGroupPrices) && !empty($userGroupPrices)) {
             foreach ($userGroupPrices as $userGroupPrice) {
                 if ($userGroupPrice['customer_group'] == $userGroup) {
-
                     if ($currencySymbol) {
                         return $userGroupPrice['product_price'] . " " . RESOURCE_BOOKING_CURRENCY_SYMBOL;
                     }
@@ -158,7 +156,6 @@ class Product
 
         //Could not find specified price, sum all products
         if (get_class($item) == "WP_Term" && empty($basePrice)) {
-
             $posts = get_posts(
                 array(
                     'post_type' => 'product',
@@ -309,5 +306,3 @@ class Product
         );
     }
 }
-
-

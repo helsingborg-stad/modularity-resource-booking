@@ -13,7 +13,6 @@ namespace ModularityResourceBooking\Helper;
  */
 class Mail
 {
-
     private $_reciver = array();
     private $_subject = null;
     private $_content = null;
@@ -81,7 +80,6 @@ class Mail
     {
         if (!empty($table) && is_array($table)) {
             foreach ($table as $rowKey => $row) {
-
                 //Validate item object
                 if (!isset($row['heading']) ||!isset($row['content'])) {
                     return new \WP_Error('malformed_table_content', __("Each table array item must contain 'content' and 'heading' sub keys.", 'modularity-resource-booking'));
@@ -176,7 +174,6 @@ class Mail
     {
         if (is_array($links) && !empty($links)) {
             foreach ($links as $key => &$link) {
-
                 //Validate item object
                 if (!isset($link['url']) ||!isset($link['text'])) {
                     return new \WP_Error('malformed_link_array', __("Each button array item must contain 'url' and 'text' sub keys.", 'modularity-resource-booking'));

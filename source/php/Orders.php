@@ -155,7 +155,6 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                                 'summary' => isset($summary) ? $summary : false
                             )
                         );
-
                     }
                 }
             }
@@ -175,7 +174,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         return array(
             'title' => __('Summary', 'modularity-resource-booking'),
-            'items' => array_map(function($article) {
+            'items' => array_map(function ($article) {
                 return array(
                     'title' => $article['title'],
                     'content' => [__('Start date', 'modularity-resource-booking') . ': ' . $article['start'], __('End date', 'modularity-resource-booking') . ': ' . $article['stop']],
@@ -198,7 +197,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
             return 0;
         }
 
-        return array_reduce($articles, function($articleA, $articleB) {
+        return array_reduce($articles, function ($articleA, $articleB) {
             return (is_numeric($articleA) ? $articleA : $articleA['price']) + $articleB['price'];
         });
     }
@@ -356,7 +355,6 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
             __('Customer', 'modularity-resource-booking'),
             true,
             function ($column, $postId) {
-
                 $userId = get_post_meta($postId, 'customer_id', true);
 
                 if ($userId) {
@@ -381,13 +379,11 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                     _e("Undefined", 'modularity-resource-booking');
                 } else {
                     foreach ((array)$types as $typeKey => $type) {
-
                         echo $type->name;
 
                         if ($typeKey + 1 !== count($types)) {
                             echo ", ";
                         }
-
                     }
                 }
             }
@@ -399,7 +395,6 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
             __('Order ID', 'modularity-resource-booking'),
             true,
             function ($column, $postId) {
-
                 $orderId = get_post_meta($postId, 'order_id', true);
 
                 if ($orderId) {

@@ -24,7 +24,7 @@ class CustomerMail extends Mail
      */
     public function __construct($reciver, $subject, $content, $data = array())
     {
-        if(is_numeric($reciver) && $email = \ModularityResourceBooking\Helper\Customer::getEmail((int) $reciver)) {
+        if (is_numeric($reciver) && $email = \ModularityResourceBooking\Helper\Customer::getEmail((int) $reciver)) {
             $reciver = $email;
         }
 

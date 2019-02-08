@@ -4,7 +4,6 @@ namespace ModularityResourceBooking\Module;
 
 class PackageMap extends \Modularity\Module
 {
-
     public $slug = 'rb-package-map';
     public $supports = array();
 
@@ -16,12 +15,10 @@ class PackageMap extends \Modularity\Module
     }
 
     public function getPackageData($id)
-    { 
-
+    {
         if ($term = get_term($id, 'product-package')) {
-
-            if(!is_a($term, 'WP_Term')) {
-                return false; 
+            if (!is_a($term, 'WP_Term')) {
+                return false;
             }
 
             $postData = get_posts(
@@ -71,8 +68,10 @@ class PackageMap extends \Modularity\Module
         $data['data']['lng'] = $location['value']['lng'];
         $data['data']['title'] = $location['value']['address'];
         $data['data']['url'] = MODULARITYRESOURCEBOOKING_URL;
-        $data['data']['classes'] = implode(' ',
-            apply_filters('Modularity/Module/Classes', array(), $this->post_type, $this->args));
+        $data['data']['classes'] = implode(
+            ' ',
+            apply_filters('Modularity/Module/Classes', array(), $this->post_type, $this->args)
+        );
         
         $data['data']['getPackageData'] = $this->getPackageData($package['value']);
         $data['data']['translation'] = array(
@@ -83,14 +82,16 @@ class PackageMap extends \Modularity\Module
         );
 
 
-         return $data;
+        return $data;
     }
 
     public function style()
     {
         if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'))) {
-            wp_enqueue_style('modularity-resource-booking-css',
-                MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'));
+            wp_enqueue_style(
+                'modularity-resource-booking-css',
+                MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css')
+            );
         }
     }
 

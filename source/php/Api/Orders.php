@@ -237,7 +237,6 @@ class Orders
     {
         //Verify that post data is avabile
         if (isset($_POST) && !empty($_POST)) {
-
             $requiredKeys = array('order_articles');
 
             foreach ($requiredKeys as $requirement) {
@@ -253,7 +252,6 @@ class Orders
             }
 
             $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
         } else {
             return new \WP_REST_Response(
                 array(
@@ -375,7 +373,6 @@ class Orders
 
         //Append attachment data
         if (is_array($mediaItems) && !empty($mediaItems)) {
-
             //Add items for storage of each id
             foreach ($mediaItems as $mediaKey => $mediaItem) {
                 update_sub_field(array('media_items', $mediaKey + 1, 'file'), $mediaItem, $insert);
@@ -500,7 +497,6 @@ class Orders
 
         if (is_array($orders) && !empty($orders)) {
             foreach ($orders as $order) {
-
                 //Order status
                 $terms = wp_get_post_terms($order->ID, 'order-status', array('fields' => 'ids'));
                 $orderStatus = isset($terms[0]) ? get_term($terms[0], 'order-status') : null;
@@ -537,7 +533,6 @@ class Orders
         //Append action links if owner
         if (is_array($result) && !empty($result)) {
             foreach ($result as $key => $item) {
-
                 if ($item['user_id'] == self::$userId) {
                     $result[$key] = $item + array(
                             'actions' => array(
