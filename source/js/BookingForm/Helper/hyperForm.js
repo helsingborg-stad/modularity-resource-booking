@@ -1,15 +1,16 @@
+/* eslint-disable import/prefer-default-export */
 class ValidateFileSize {
     constructor() {
         this.validateFileSizeFields();
     }
 
     validateFileSizeFields() {
-        if (typeof hyperform == 'undefined') {
+        if (typeof hyperform === 'undefined') {
             return;
         }
 
-        var fileInputFields = document.querySelectorAll('input[type="file"][data-max-filesize]');
-        if (fileInputFields.length == 0) {
+        const fileInputFields = document.querySelectorAll('input[type="file"][data-max-filesize]');
+        if (fileInputFields.length === 0) {
             return;
         }
 
@@ -26,15 +27,13 @@ class ValidateFileSize {
 
             if (typeof element.files[0] !== 'undefined') {
                 const fileSize = element.files[0].size / 1024 / 1024;
-                valid = fileSize > maxFileSize ? false : true;
+                valid = !(fileSize > maxFileSize);
             }
 
             element.setCustomValidity(
                 valid
                     ? ''
-                    : 'The uploaded file is larger then the maximum filesize of ' +
-                          maxFileSize +
-                          'MB.'
+                    : `The uploaded file is larger then the maximum filesize of ${maxFileSize}MB.`
             );
             return valid;
         });

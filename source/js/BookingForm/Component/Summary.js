@@ -1,5 +1,4 @@
-import { Button, Calendar } from 'hbg-react';
-import PropTypes from 'prop-types';
+import { Button } from 'hbg-react';
 import dateFns from 'date-fns';
 import classNames from 'classnames';
 
@@ -38,10 +37,7 @@ class Summary extends React.Component {
                                 <td
                                     className={classNames({
                                         'text-right': true,
-                                        disabled:
-                                            typeof disabled !== 'undefined' && disabled
-                                                ? true
-                                                : false
+                                        disabled: !!(typeof disabled !== 'undefined' && disabled),
                                     })}
                                 >
                                     <Button

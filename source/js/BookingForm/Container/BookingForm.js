@@ -1,11 +1,11 @@
-import { Button, Calendar, Notice, Input } from 'hbg-react';
-import { getArticle, getSlots } from '../../Api/products';
 import PropTypes from 'prop-types';
 import dateFns from 'date-fns';
+import classNames from 'classnames';
+import { Button, Calendar, Notice, Input } from 'hbg-react';
+import { getArticle, getSlots } from '../../Api/products';
 import Summary from '../Component/Summary';
 import Files from '../Component/Files';
 import { createOrder } from '../../Api/orders';
-import classNames from 'classnames';
 import { ValidateFileSize } from '../Helper/hyperForm';
 
 class BookingForm extends React.Component {
@@ -15,24 +15,24 @@ class BookingForm extends React.Component {
         articleType: PropTypes.string.isRequired,
         articleId: PropTypes.number.isRequired,
         restNonce: PropTypes.string.isRequired,
-        restUrl: PropTypes.string.isRequired
+        restUrl: PropTypes.string.isRequired,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            //Article
+            // Article
             articleName: '',
             articlePrice: 0,
 
-            //Slots
+            // Slots
             avalibleSlots: [],
             selectedSlots: [],
 
-            //Files
+            // Files
             files: [],
 
-            //Notice
+            // Notice
             notice: '',
             noticeType: '',
 
@@ -43,7 +43,7 @@ class BookingForm extends React.Component {
 
             submitted: false,
 
-            orderTitle: ''
+            orderTitle: '',
         };
 
         this.handleClickEvent = this.handleClickEvent.bind(this);
@@ -60,12 +60,12 @@ class BookingForm extends React.Component {
 
     componentDidMount() {
         this.fetchData().then(() => {
-            //Lock if there is no avalible slots
+            // Lock if there is no avalible slots
             if (this.state.avalibleSlots.length <= 0) {
                 this.setState({
                     lockForm: true,
                     notice: this.props.translation.noSlots,
-                    noticeType: 'warning'
+                    noticeType: 'warning',
                 });
             }
         });
@@ -91,19 +91,19 @@ class BookingForm extends React.Component {
      * @return {Promise}
      */
     fetchArticle() {
-        const { userId, articleType, articleId, restNonce, restUrl } = this.props;
+        const { articleType, articleId, restUrl } = this.props;
 
         return getArticle(articleId, articleType, restUrl)
             .then(article => {
                 this.setState((state, props) => ({
-                    articleName: article[0]['title'],
-                    articlePrice: article[0]['price'],
+                    articleName: article[0].title,
+                    articlePrice: article[0].price,
                     files: article[0].media_requirements.map(mediaObject => {
-                        let media = mediaObject;
+                        const media = mediaObject;
                         media.file = null;
 
                         return media;
-                    })
+                    }),
                 }));
             })
             .catch(error => {});
@@ -114,36 +114,34 @@ class BookingForm extends React.Component {
      * @return {Promise}
      */
     fetchSlots() {
-        const { userId, articleType, articleId, restNonce, restUrl } = this.props;
+        const { userId, articleType, articleId, restUrl } = this.props;
 
         return getSlots(articleId, articleType, userId, restUrl)
             .then(slots => {
                 this.setState((state, props) => ({
                     avalibleSlots: slots.map(slotData => {
-                        let slot = slotData;
-                        slot['start'] = dateFns.parse(slotData.start);
-                        slot['stop'] = dateFns.parse(slotData.stop);
-                        slot['articleName'] = state.articleName;
-                        slot['articlePrice'] = state.articlePrice;
+                        const slot = slotData;
+                        slot.start = dateFns.parse(slotData.start);
+                        slot.stop = dateFns.parse(slotData.stop);
+                        slot.articleName = state.articleName;
+                        slot.articlePrice = state.articlePrice;
 
-                        let startOfWeek = dateFns.startOfWeek(slot['start'], { weekStartsOn: 1 });
-                        let endOfWeek = dateFns.endOfWeek(slot['start'], { weekStartsOn: 1 });
+                        const startOfWeek = dateFns.startOfWeek(slot.start, { weekStartsOn: 1 });
+                        const endOfWeek = dateFns.endOfWeek(slot.start, { weekStartsOn: 1 });
 
                         if (
-                            dateFns.isSameDay(startOfWeek, slot['start']) &&
-                            dateFns.isSameDay(endOfWeek, slot['stop'])
+                            dateFns.isSameDay(startOfWeek, slot.start) &&
+                            dateFns.isSameDay(endOfWeek, slot.stop)
                         ) {
-                            slot['title'] =
-                                state.articleName +
-                                ' (Vecka ' +
-                                dateFns.getISOWeek(slot.start) +
-                                ')';
+                            slot.title = `${state.articleName} (Vecka ${dateFns.getISOWeek(
+                                slot.start
+                            )})`;
                         } else {
-                            slot['title'] = state.articleName;
+                            slot.title = state.articleName;
                         }
 
                         return slot;
-                    })
+                    }),
                 }));
             })
             .catch(() => {});
@@ -159,60 +157,60 @@ class BookingForm extends React.Component {
         const { articleType, articleId, restUrl, restNonce, translation } = this.props;
         const { selectedSlots, files, notice, lockForm, orderTitle } = this.state;
 
-        //Locked
+        // Locked
         if (lockForm) {
             return;
         }
 
-        //Lock & load
+        // Lock & load
         this.setState({ lockForm: true, formIsLoading: true });
 
-        //Make sure we have selected slots
+        // Make sure we have selected slots
         if (selectedSlots.length <= 0) {
             this.setState({
                 formIsLoading: false,
                 lockForm: false,
                 notice: translation.selectAtleastOneDate,
-                noticeType: 'warning'
+                noticeType: 'warning',
             });
             return;
         }
 
-        //Reset notice
+        // Reset notice
         if (notice.length > 0) {
             this.setState({ notice: '' });
         }
 
-        //Orders
-        let orders = [];
+        // Orders
+        const orders = [];
 
         selectedSlots.forEach(id => {
             orders.push({
                 type: articleType,
                 article_id: articleId,
-                slot_id: id
+                slot_id: id,
             });
         });
 
         createOrder(orderTitle, orders, files, restUrl, restNonce)
             .then(result => {
-                //Reset loading
+                // Reset loading
                 this.setState({ formIsLoading: false });
 
-                //Dimension error
+                // Dimension error
                 if (
                     result.state === 'dimension-error' &&
                     Object.keys(result.data.invalid_dimensions).length > 0
                 ) {
                     this.setState((state, props) => {
-                        let files = state.files;
+                        const { files } = state;
                         Object.keys(result.data.invalid_dimensions).forEach(fileIndex => {
                             files[fileIndex].error = result.data.invalid_dimensions[fileIndex];
                         });
                     });
                 }
 
-                //Unlock form if not succesful
+                // Unlock form if not succesful
                 if (result.state !== 'success') {
                     this.setState({ lockForm: false });
                 } else {
@@ -222,7 +220,7 @@ class BookingForm extends React.Component {
                 this.setState((state, props) => {
                     return {
                         notice: result.message,
-                        noticeType: result.state === 'success' ? 'success' : 'warning'
+                        noticeType: result.state === 'success' ? 'success' : 'warning',
                     };
                 });
             })
@@ -245,7 +243,7 @@ class BookingForm extends React.Component {
             selectedSlots: [],
             notice: '',
             noticeType: '',
-            orderTitle: ''
+            orderTitle: '',
         });
 
         this.fetchData();
@@ -259,16 +257,16 @@ class BookingForm extends React.Component {
     handleEventContent(event) {
         const { translation } = this.props;
         const { selectedSlots } = this.state;
-        let disabled = !event['unlimited_stock'] && event['available_stock'] <= 0 ? true : false;
-        let isSelected = selectedSlots.includes(event.id) ? true : false;
+        const disabled = !!(!event.unlimited_stock && event.available_stock <= 0);
+        const isSelected = !!selectedSlots.includes(event.id);
 
         let stockCount = '';
 
-        if (!event['unlimited_stock']) {
-            let avalibleStock = event['total_stock'] - event['available_stock'];
+        if (!event.unlimited_stock) {
+            let avalibleStock = event.total_stock - event.available_stock;
             avalibleStock = isSelected ? avalibleStock + 1 : avalibleStock;
 
-            stockCount = ' - ' + avalibleStock + '/' + event['total_stock'];
+            stockCount = ` - ${avalibleStock}/${event.total_stock}`;
         }
 
         if (disabled) {
@@ -282,10 +280,10 @@ class BookingForm extends React.Component {
                     <i
                         className={classNames('pricon', {
                             'pricon-minus-o': isSelected,
-                            'pricon-plus-o': !isSelected
+                            'pricon-plus-o': !isSelected,
                         })}
                     />
-                    {!isSelected ? ' ' + translation.add + ' ' : ' ' + translation.remove + ' '}
+                    {!isSelected ? ` ${translation.add} ` : ` ${translation.remove} `}
                 </span>
             </div>
         );
@@ -299,33 +297,31 @@ class BookingForm extends React.Component {
     handleClickEvent(event) {
         const { selectedSlots } = this.state;
 
-        //Add slot
+        // Add slot
         if (
-            (!selectedSlots.includes(event.id) && event['available_stock'] > 0) ||
-            (!selectedSlots.includes(event.id) && event['available_stock'] === null)
+            (!selectedSlots.includes(event.id) && event.available_stock > 0) ||
+            (!selectedSlots.includes(event.id) && event.available_stock === null)
         ) {
             this.setState((state, props) => {
-                let slots = state.selectedSlots;
+                const slots = state.selectedSlots;
                 slots.push(event.id);
 
                 return {
-                    selectedSlots: slots
+                    selectedSlots: slots,
                 };
             });
 
             return;
         }
 
-        //Remove slot
+        // Remove slot
         if (selectedSlots.includes(event.id)) {
             this.setState((state, props) => {
-                let slots = state.selectedSlots.filter(id => id !== event.id);
+                const slots = state.selectedSlots.filter(id => id !== event.id);
                 return {
-                    selectedSlots: slots
+                    selectedSlots: slots,
                 };
             });
-
-            return;
         }
     }
 
@@ -336,13 +332,13 @@ class BookingForm extends React.Component {
      */
     handleEventClassName(event) {
         const { selectedSlots } = this.state;
-        let classes = [];
+        const classes = [];
 
         classes.push('calendar__event--slot');
 
         if (
-            (event['unlimited_stock'] && event['available_stock'] === null) ||
-            event['available_stock'] > 0
+            (event.unlimited_stock && event.available_stock === null) ||
+            event.available_stock > 0
         ) {
             classes.push('calendar__event--action');
         }
@@ -351,7 +347,7 @@ class BookingForm extends React.Component {
             classes.push('is-active');
         }
 
-        if (!event['unlimited_stock'] && event['available_stock'] <= 0) {
+        if (!event.unlimited_stock && event.available_stock <= 0) {
             classes.push('is-disabled');
         }
 
@@ -367,7 +363,7 @@ class BookingForm extends React.Component {
         this.setState((state, props) => {
             const slots = state.selectedSlots.filter(id => id !== slot.id);
             return {
-                selectedSlots: slots
+                selectedSlots: slots,
             };
         });
     }
@@ -380,7 +376,7 @@ class BookingForm extends React.Component {
      */
     handleFileUpload(files, media) {
         this.setState((state, props) => {
-            let mediaRequirements = state.files;
+            const mediaRequirements = state.files;
             mediaRequirements[media.index].file = files.length > 0 ? files[0] : null;
             mediaRequirements[media.index].error = '';
             return { files: mediaRequirements };
@@ -388,7 +384,7 @@ class BookingForm extends React.Component {
     }
 
     render() {
-        const { translation, headings, orderHistoryPage, locale } = this.props;
+        const { translation, headings, locale } = this.props;
         const {
             avalibleSlots,
             selectedSlots,
@@ -399,7 +395,7 @@ class BookingForm extends React.Component {
             lockForm,
             formIsLoading,
             submitted,
-            orderTitle
+            orderTitle,
         } = this.state;
 
         if (isLoading) {
@@ -413,111 +409,118 @@ class BookingForm extends React.Component {
                     </div>
                 </div>
             );
-        } else {
-            return (
-                <div className="c-card">
-                    <div className="c-card__body" style={{ backgroundColor: '#f4f4f4' }}>
-                        <form onSubmit={this.submitOrder}>
-                            <div className="grid">
-                                <div className="grid-xs-12 u-mb-3">
-                                    <h4 className="u-mb-2">{headings.orderName}</h4>
-                                    <Input
-                                        type="text"
-                                        name="orderTitle"
-                                        value={orderTitle}
-                                        handleChange={(e) => {this.setState({'orderTitle': e.target.value})}}
-                                        placeholder={translation.campaignName}
-                                        required
-                                    />
-                                </div>
-                                <div className="grid-xs-12 u-mb-3">
-                                    <h4 className="u-mb-2">{headings.calendar}</h4>
-                                    <Calendar
-                                        events={avalibleSlots}
-                                        onClickEvent={this.handleClickEvent}
-                                        eventClassName={this.handleEventClassName}
-                                        eventContent={this.handleEventContent}
-                                        maxDate={
-                                            avalibleSlots.length > 0
-                                                ? avalibleSlots[avalibleSlots.length - 1].stop
-                                                : null
-                                        }
-                                        minDate={avalibleSlots.length > 0 ? avalibleSlots[0].start : null}
-                                        currentMonth={
-                                            avalibleSlots.length > 0 ? avalibleSlots[0].start : new Date()
-                                        }
-                                        disable={lockForm ? true : false}
-                                        locale={locale}
-                                    />
-                                </div>
-
-                                {files.length > 0 ? (
-                                    <div className="grid-xs-12 u-mb-3">
-                                        <h4 className="u-mb-2">{headings.files}</h4>
-                                        <Files
-                                            onFileUpload={this.handleFileUpload}
-                                            disabled={lockForm ? true : false}
-                                            translation={translation}
-                                        >
-                                            {files}
-                                        </Files>
-                                    </div>
-                                ) : null}
-
-                                {selectedSlots.length > 0 ? (
-                                    <div className="grid-xs-12 u-mb-3">
-                                        <h4 className="u-mb-2">{headings.summary}</h4>
-                                        <Summary
-                                            onClickRemoveItem={this.handleRemoveItem}
-                                            translation={translation}
-                                            disabled={lockForm ? true : false}
-                                        >
-                                            {avalibleSlots.filter(slot => selectedSlots.includes(slot.id))}
-                                        </Summary>
-                                    </div>
-                                ) : null}
-
-                                <div className="grid-xs-12">
-                                    <div className="grid grid-va-middle">
-                                        <div className="grid-fit-content">
-                                            <Button
-                                                color="primary"
-                                                submit
-                                                disabled={lockForm ? true : false}
-                                                title={translation.order}
-                                            />
-                                        </div>
-
-                                        {submitted ? (
-                                            <div className="grid-fit-content u-pl-0">
-                                                <Button onClick={this.resetForm}>
-                                                    {translation.newOrder}
-                                                </Button>
-                                            </div>
-                                        ) : null}
-
-                                        {formIsLoading ? (
-                                            <div className="grid-fit-content u-pl-0">
-                                                {' '}
-                                                <div className="spinner spinner-dark" />
-                                            </div>
-                                        ) : null}
-                                    </div>
-                                </div>
-
-                                {notice.length > 0 && (
-                                    <div className="grid-xs-12 u-mt-2">
-                                        <Notice type={noticeType} icon>
-                                            <span dangerouslySetInnerHTML={{ __html: notice }} />
-                                        </Notice>
-                                    </div>
-                                )}
-                            </div>
-                        </form>
-                  </div>
-                </div>
-            );
         }
+        return (
+            <div className="c-card">
+                <div className="c-card__body" style={{ backgroundColor: '#f4f4f4' }}>
+                    <form onSubmit={this.submitOrder}>
+                        <div className="grid">
+                            <div className="grid-xs-12 u-mb-3">
+                                <h4 className="u-mb-2">{headings.orderName}</h4>
+                                <Input
+                                    type="text"
+                                    name="orderTitle"
+                                    value={orderTitle}
+                                    handleChange={e => {
+                                        this.setState({ orderTitle: e.target.value });
+                                    }}
+                                    placeholder={translation.campaignName}
+                                    required
+                                />
+                            </div>
+                            <div className="grid-xs-12 u-mb-3">
+                                <h4 className="u-mb-2">{headings.calendar}</h4>
+                                <Calendar
+                                    events={avalibleSlots}
+                                    onClickEvent={this.handleClickEvent}
+                                    eventClassName={this.handleEventClassName}
+                                    eventContent={this.handleEventContent}
+                                    maxDate={
+                                        avalibleSlots.length > 0
+                                            ? avalibleSlots[avalibleSlots.length - 1].stop
+                                            : null
+                                    }
+                                    minDate={
+                                        avalibleSlots.length > 0 ? avalibleSlots[0].start : null
+                                    }
+                                    currentMonth={
+                                        avalibleSlots.length > 0
+                                            ? avalibleSlots[0].start
+                                            : new Date()
+                                    }
+                                    disable={!!lockForm}
+                                    locale={locale}
+                                />
+                            </div>
+
+                            {files.length > 0 ? (
+                                <div className="grid-xs-12 u-mb-3">
+                                    <h4 className="u-mb-2">{headings.files}</h4>
+                                    <Files
+                                        onFileUpload={this.handleFileUpload}
+                                        disabled={!!lockForm}
+                                        translation={translation}
+                                    >
+                                        {files}
+                                    </Files>
+                                </div>
+                            ) : null}
+
+                            {selectedSlots.length > 0 ? (
+                                <div className="grid-xs-12 u-mb-3">
+                                    <h4 className="u-mb-2">{headings.summary}</h4>
+                                    <Summary
+                                        onClickRemoveItem={this.handleRemoveItem}
+                                        translation={translation}
+                                        disabled={!!lockForm}
+                                    >
+                                        {avalibleSlots.filter(slot =>
+                                            selectedSlots.includes(slot.id)
+                                        )}
+                                    </Summary>
+                                </div>
+                            ) : null}
+
+                            <div className="grid-xs-12">
+                                <div className="grid grid-va-middle">
+                                    <div className="grid-fit-content">
+                                        <Button
+                                            color="primary"
+                                            submit
+                                            disabled={!!lockForm}
+                                            title={translation.order}
+                                        />
+                                    </div>
+
+                                    {submitted ? (
+                                        <div className="grid-fit-content u-pl-0">
+                                            <Button onClick={this.resetForm}>
+                                                {translation.newOrder}
+                                            </Button>
+                                        </div>
+                                    ) : null}
+
+                                    {formIsLoading ? (
+                                        <div className="grid-fit-content u-pl-0">
+                                            {' '}
+                                            <div className="spinner spinner-dark" />
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                            {notice.length > 0 && (
+                                <div className="grid-xs-12 u-mt-2">
+                                    <Notice type={noticeType} icon>
+                                        <span dangerouslySetInnerHTML={{ __html: notice }} />
+                                    </Notice>
+                                </div>
+                            )}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        );
     }
 }
 

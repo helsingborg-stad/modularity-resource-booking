@@ -1,5 +1,3 @@
-import { Button, Calendar } from 'hbg-react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 class Files extends React.Component {
@@ -21,23 +19,21 @@ class Files extends React.Component {
                             className={classNames({
                                 'form-group': true,
                                 'u-p-3': true,
-                                disabled: typeof disabled !== 'undefined' && disabled ? true : false
+                                disabled: !!(typeof disabled !== 'undefined' && disabled),
                             })}
                             style={{ backgroundColor: '#e5e5e5' }}
-                            key={media['media_name'] + '-' + index}
+                            key={`${media.media_name}-${index}`}
                         >
-                            <label htmlFor={media['media_name'] + '-' + index}>
-                                {media['media_name']}
+                            <label htmlFor={`${media.media_name}-${index}`}>
+                                {media.media_name}
                             </label>
                             <input
                                 className="form-input u-py-1"
-                                id={media['media_name'] + '-' + index}
-                                name={media['media_name'] + '-' + index}
+                                id={`${media.media_name}-${index}`}
+                                name={`${media.media_name}-${index}`}
                                 type="file"
                                 accept={
-                                    media['file_types'].length > 0
-                                        ? media['file_types'].join(', ')
-                                        : null
+                                    media.file_types.length > 0 ? media.file_types.join(', ') : null
                                 }
                                 onChange={
                                     typeof onFileUpload === 'function'
@@ -46,10 +42,8 @@ class Files extends React.Component {
                                           }
                                         : null
                                 }
-                                data-max-filesize={media['maxiumum_filesize']}
-                                disabled={
-                                    typeof disabled !== 'undefined' && disabled ? true : false
-                                }
+                                data-max-filesize={media.maxiumum_filesize}
+                                disabled={!!(typeof disabled !== 'undefined' && disabled)}
                                 required
                             />
                             {typeof media.error !== 'undefined' && media.error.length > 0}{' '}
@@ -58,19 +52,19 @@ class Files extends React.Component {
                                 <li>
                                     <small>
                                         <b>{translation.dimensions}:</b>{' '}
-                                        {media['image_width'] + 'x' + media['image_height']}
+                                        {`${media.image_width}x${media.image_height}`}
                                     </small>
                                 </li>
                                 <li>
                                     <small>
                                         <b>{translation.maxFileSize}:</b>{' '}
-                                        {media['maxiumum_filesize'] + 'MB'}
+                                        {`${media.maxiumum_filesize}MB`}
                                     </small>
                                 </li>
                                 <li>
                                     <small>
                                         <b>{translation.allowedFileTypes}:</b>{' '}
-                                        {media['file_types'].join(', ')}
+                                        {media.file_types.join(', ')}
                                     </small>
                                 </li>
                             </ul>
