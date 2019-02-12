@@ -9,19 +9,16 @@ const getArticle = (articleId, articleType, restUrl) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
-    const url =
-        restUrl +
-        'ModularityResourceBooking/v1/' +
-        capitalizeFirstLetter(articleType) +
-        '/' +
-        articleId;
+    const url = `${restUrl}ModularityResourceBooking/v1/${capitalizeFirstLetter(
+        articleType
+    )}/${articleId}`;
 
     return fetch(url)
         .then(response => {
             return response.json();
         })
         .then(response => {
-            if (response.state == 'error') {
+            if (response.state === 'error') {
                 throw new Error(response.message);
             }
 
@@ -37,12 +34,12 @@ const getArticle = (articleId, articleType, restUrl) => {
  * @return {array}             Array containing slots
  */
 const getSlots = (articleId, articleType, userId, restUrl) => {
-    let url = restUrl + 'ModularityResourceBooking/v1/Slots?';
+    let url = `${restUrl}ModularityResourceBooking/v1/Slots?`;
 
-    let params = {
-        articleType: 'type=' + articleType,
-        articleId: '&article_id=' + articleId,
-        userId: '&user_id=' + userId
+    const params = {
+        articleType: `type=${articleType}`,
+        articleId: `&article_id=${articleId}`,
+        userId: `&user_id=${userId}`,
     };
 
     url = url.concat(params.articleType, params.articleId, params.userId);
@@ -52,7 +49,7 @@ const getSlots = (articleId, articleType, userId, restUrl) => {
             return response.json();
         })
         .then(response => {
-            if (response.state == 'error') {
+            if (response.state === 'error') {
                 throw new Error(response.message);
             }
 

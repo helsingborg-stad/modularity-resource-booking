@@ -1,5 +1,5 @@
-import ArticlesTable from './ArticlesTable';
 import { Button } from 'hbg-react';
+import ArticlesTable from './ArticlesTable';
 
 const AccordionItem = ({
     id,

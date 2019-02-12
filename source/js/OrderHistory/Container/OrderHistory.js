@@ -1,7 +1,7 @@
 import { Pagination, PreLoader, Notice } from 'hbg-react';
+import update from 'immutability-helper';
 import AccordionTable from '../Components/AccordionTable';
 import { getCustomerOrders, postRequest } from '../../Api/orders';
-import update from 'immutability-helper';
 
 class OrderHistory extends React.Component {
     constructor() {
@@ -51,7 +51,7 @@ class OrderHistory extends React.Component {
             id: item.id,
             headings: [item.name, item.order_id, item.date, item.status],
             articles: item.articles,
-            cancelable: item.cancelable
+            cancelable: item.cancelable,
         }));
 
     updateItemList = () => {
@@ -112,7 +112,7 @@ class OrderHistory extends React.Component {
                 })
             );
 
-            postRequest(restUrl + 'ModularityResourceBooking/v1/CancelOrder/' + id, nonce)
+            postRequest(`${restUrl}ModularityResourceBooking/v1/CancelOrder/${id}`, nonce)
                 .then(response => {
                     // Do something
                 })
@@ -144,7 +144,12 @@ class OrderHistory extends React.Component {
     render() {
         const { filteredItems, error, isLoaded, totalPages, currentPage, cancelError } = this.state;
         const { translation } = this.props;
-        const headings = [translation.campaign ,translation.orderNumber, translation.date, translation.status];
+        const headings = [
+            translation.campaign,
+            translation.orderNumber,
+            translation.date,
+            translation.status,
+        ];
         const articleHeadings = [
             translation.article,
             translation.type,

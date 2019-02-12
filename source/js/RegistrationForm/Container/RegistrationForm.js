@@ -1,5 +1,5 @@
-import { Button, Input, Textarea, Notice, Pagination } from 'hbg-react';
-import { createUser } from '../../Api/user.js';
+import { Button, Input, Textarea, Notice } from 'hbg-react';
+import { createUser } from '../../Api/user';
 
 class RegistrationForm extends React.Component {
     constructor(props) {

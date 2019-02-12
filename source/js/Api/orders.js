@@ -1,12 +1,12 @@
 const getCustomerOrders = (restUrl, nonce, data = [], page = 1) => {
-    const completeUrl = restUrl + 'ModularityResourceBooking/v1/MyOrders?_wpnonce=' + nonce;
+    const completeUrl = `${restUrl}ModularityResourceBooking/v1/MyOrders?_wpnonce=${nonce}`;
 
-    return fetch(page ? completeUrl + '&page=' + page : completeUrl, {
+    return fetch(page ? `${completeUrl}&page=${page}` : completeUrl, {
         credentials: 'include',
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
-        }
+            'Content-Type': 'application/json',
+        },
     })
         .then(response => {
             if (response.ok) {
@@ -26,27 +26,27 @@ const getCustomerOrders = (restUrl, nonce, data = [], page = 1) => {
 };
 
 const createOrder = (orderTitle, orders, files, restUrl, restNonce) => {
-    let url = restUrl + 'ModularityResourceBooking/v1/CreateOrder';
-    let formData = new FormData();
+    const url = `${restUrl}ModularityResourceBooking/v1/CreateOrder`;
+    const formData = new FormData();
 
     formData.append('order_title', orderTitle);
 
     orders.forEach((order, index) => {
-        formData.append('order_articles[' + index + ']', JSON.stringify(order));
+        formData.append(`order_articles[${index}]`, JSON.stringify(order));
     });
 
     if (typeof files !== 'undefined' && files.length > 0) {
         files.forEach((media, index) => {
-            formData.append('files_' + index, media.file);
+            formData.append(`files_${index}`, media.file);
         });
     }
 
-    let options = {
+    const options = {
         method: 'POST',
         body: formData,
         headers: {
-            'X-WP-NONCE': restNonce
-        }
+            'X-WP-NONCE': restNonce,
+        },
     };
 
     return fetch(url, options)
@@ -54,7 +54,7 @@ const createOrder = (orderTitle, orders, files, restUrl, restNonce) => {
             return response.json();
         })
         .then(response => {
-            if (response.state == 'error') {
+            if (response.state === 'error') {
                 throw new Error(response.message);
             }
 
@@ -68,8 +68,8 @@ const postRequest = (restUrl, nonce) =>
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-WP-NONCE': nonce
-        }
+            'X-WP-NONCE': nonce,
+        },
     }).then(response => {
         if (response.ok) {
             return response.json();

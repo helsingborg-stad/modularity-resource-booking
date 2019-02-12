@@ -41,7 +41,7 @@ const createUser = (user, restUrl) => {
     return fetch(url, options)
         .then(response => response.json())
         .then(response => {
-            if (typeof response.state === 'undefined' || response.state == 'error') {
+            if (typeof response.state === 'undefined' || response.state === 'error') {
                 throw new Error(response.message);
             }
 

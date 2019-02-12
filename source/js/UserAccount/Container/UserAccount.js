@@ -1,5 +1,5 @@
 import { Button, Input, Textarea, Notice } from 'hbg-react';
-import { updateUser } from '../../Api/user.js';
+import { updateUser } from '../../Api/user';
 
 class UserAccount extends React.Component {
     constructor(props) {
@@ -85,10 +85,10 @@ class UserAccount extends React.Component {
     }
 
     handleInputChange(e) {
-        let { name, value } = e.target;
+        const { name, value } = e.target;
         this.setState((state, props) => {
-            let user = state.user;
-            if (typeof user[name] != 'undefined') {
+            const { user } = state;
+            if (typeof user[name] !== 'undefined') {
                 user[name] = value;
             }
 
@@ -117,7 +117,7 @@ class UserAccount extends React.Component {
 
         const { notice, noticeType, lockInput } = this.state;
 
-        let commonProps = {};
+        const commonProps = {};
 
         if (lockInput) {
             commonProps.disabled = true;
