@@ -8,6 +8,7 @@ module.exports = {
         modResourceBookingForm: 'readable',
         modOrderHistory: 'readable',
         modRegistrationForm: 'readable',
+        modUserAccount: 'readable',
         hyperform: 'readable',
     },
     extends: ['airbnb/base', 'prettier'],
@@ -41,5 +42,8 @@ module.exports = {
         'no-new': 0,
         'no-unused-vars': [1, { vars: 'local', args: 'none' }],
         'no-param-reassign': 0,
+        radix: 0,
+        'no-multi-assign': 0,
+        'no-alert': 0,
     },
 };
