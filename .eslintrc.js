@@ -8,6 +8,7 @@ module.exports = {
         modResourceBookingForm: 'readable',
         modOrderHistory: 'readable',
         modRegistrationForm: 'readable',
+        hyperform: 'readable',
     },
     extends: ['airbnb/base', 'prettier'],
     plugins: ['prettier', 'react'],
