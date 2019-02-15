@@ -416,7 +416,7 @@ class BookingForm extends React.Component {
                     <form onSubmit={this.submitOrder}>
                         <div className="grid">
                             <div className="grid-xs-12 u-mb-3">
-                                <h4 className="u-mb-2">{headings.orderName}</h4>
+                                <h4 className="u-mb-2">{headings.orderName}*</h4>
                                 <Input
                                     type="text"
                                     name="orderTitle"

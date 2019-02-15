@@ -138,7 +138,7 @@ class RegistrationForm extends React.Component {
                                 value={firstName}
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.firstName}
-                                label={translation.firstName}
+                                label={`${translation.firstName} *`}
                                 required
                                 {...commonProps}
                             />
@@ -152,7 +152,7 @@ class RegistrationForm extends React.Component {
                                 value={lastName}
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.lastName}
-                                label={translation.lastName}
+                                label={`${translation.lastName} *`}
                                 required
                                 {...commonProps}
                             />
@@ -165,7 +165,7 @@ class RegistrationForm extends React.Component {
                                 name="email"
                                 value={email}
                                 handleChange={this.handleInputChange}
-                                label={translation.email}
+                                label={`${translation.email} *`}
                                 placeholder={translation.email}
                                 required
                                 {...commonProps}
@@ -180,7 +180,7 @@ class RegistrationForm extends React.Component {
                                 value={emailConfirm}
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.confirmEmail}
-                                label={translation.confirmEmail}
+                                label={`${translation.confirmEmail} *`}
                                 confirmField="email"
                                 confirmFieldMessage={translation.emailMisMatch}
                                 required
@@ -225,7 +225,7 @@ class RegistrationForm extends React.Component {
                                 value={password}
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.password}
-                                label={translation.password}
+                                label={`${translation.password} *`}
                                 minLength="6"
                                 required
                                 {...commonProps}
@@ -240,7 +240,7 @@ class RegistrationForm extends React.Component {
                                 value={passwordConfirm}
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.confirmPassword}
-                                label={translation.confirmPassword}
+                                label={`${translation.confirmPassword} *`}
                                 minLength="6"
                                 confirmField="password"
                                 confirmFieldMessage={translation.passwordMisMatch}
@@ -260,7 +260,7 @@ class RegistrationForm extends React.Component {
                                 value={company}
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.company}
-                                label={translation.company}
+                                label={`${translation.company} *`}
                                 required
                                 {...commonProps}
                             />
@@ -274,7 +274,7 @@ class RegistrationForm extends React.Component {
                                 value={companyNumber}
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.organizationNumber}
-                                label={translation.organizationNumber}
+                                label={`${translation.organizationNumber} *`}
                                 required
                                 {...commonProps}
                             />
