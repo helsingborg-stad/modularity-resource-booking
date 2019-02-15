@@ -8,162 +8,162 @@
 //  "gulp watch"    -   Watch for file changes and build changed files
 //
 
-const gulp = require("gulp");
-const sass = require("gulp-sass");
-const terser = require("gulp-terser");
-const cleanCSS = require("gulp-clean-css");
-const rename = require("gulp-rename");
-const autoprefixer = require("gulp-autoprefixer");
-const plumber = require("gulp-plumber");
-const rev = require("gulp-rev");
-const revDel = require("rev-del");
-const runSequence = require("run-sequence");
-const sourcemaps = require("gulp-sourcemaps");
-const notifier = require("node-notifier");
-const del = require("del");
-const streamify = require("gulp-streamify");
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const terser = require('gulp-terser');
+const cleanCSS = require('gulp-clean-css');
+const rename = require('gulp-rename');
+const autoprefixer = require('gulp-autoprefixer');
+const plumber = require('gulp-plumber');
+const rev = require('gulp-rev');
+const revDel = require('rev-del');
+const runSequence = require('run-sequence');
+const sourcemaps = require('gulp-sourcemaps');
+const notifier = require('node-notifier');
+const del = require('del');
+const streamify = require('gulp-streamify');
 
-//Dependecies required to compile ES6 Scripts
-const browserify = require("browserify");
-const reactify = require("reactify");
-const source = require("vinyl-source-stream");
-const buffer = require("vinyl-buffer");
-const babelify = require("babelify");
-const es = require("event-stream");
+// Dependecies required to compile ES6 Scripts
+const browserify = require('browserify');
+const reactify = require('reactify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const babelify = require('babelify');
+const es = require('event-stream');
 
 // ==========================================================================
 // Default Task
 // ==========================================================================
 
-gulp.task("default", function(callback) {
-	runSequence("build", "watch", callback);
+gulp.task('default', function(callback) {
+    runSequence('build', 'watch', callback);
 });
 
 // ==========================================================================
 // Build Tasks
 // ==========================================================================
 
-gulp.task("build", function(callback) {
-	runSequence("clean:dist", ["sass", "scripts", "img"], "revision", callback);
+gulp.task('build', function(callback) {
+    runSequence('clean:dist', ['sass', 'scripts', 'img'], 'revision', callback);
 });
 
-gulp.task("build:sass", function(callback) {
-	runSequence("sass", "revision", callback);
+gulp.task('build:sass', function(callback) {
+    runSequence('sass', 'revision', callback);
 });
 
-gulp.task("build:scripts", function(callback) {
-	runSequence("scripts", "revision", callback);
+gulp.task('build:scripts', function(callback) {
+    runSequence('scripts', 'revision', callback);
 });
 
 // ==========================================================================
 // Watch Task
 // ==========================================================================
-gulp.task("watch", function() {
-	gulp.watch(["source/js/**/*.js", "source/js/**/*.jsx"], ["build:scripts"]);
-	gulp.watch("source/sass/**/*.scss", ["build:sass"]);
-	gulp.watch("source/img/**/*.*", ["build:img"]);
+gulp.task('watch', function() {
+    gulp.watch(['source/js/**/*.js', 'source/js/**/*.jsx'], ['build:scripts']);
+    gulp.watch('source/sass/**/*.scss', ['build:sass']);
+    gulp.watch('source/img/**/*.*', ['build:img']);
 });
 
 // ==========================================================================
 // SASS Task
 // ==========================================================================
-gulp.task("sass", function() {
-	var filePath = "source/sass/";
-	var files = ["modularity-resource-booking.scss"];
+gulp.task('sass', function() {
+    const filePath = 'source/sass/';
+    const files = ['modularity-resource-booking.scss'];
 
-	var tasks = files.map(function(entry) {
-		return gulp
-			.src(filePath + entry)
-			.pipe(plumber())
-			.pipe(sourcemaps.init())
-			.pipe(
-				sass().on("error", function(err) {
-					console.log(err.message);
-					notifier.notify({
-						title: "SASS Compile Error",
-						message: err.message
-					});
-				})
-			)
-			.pipe(autoprefixer("last 2 version", "safari 5", "ie 8", "ie 9", "opera 12.1"))
-			.pipe(sourcemaps.write())
-			.pipe(gulp.dest("dist/css"))
-			.pipe(cleanCSS({ debug: true }))
-			.pipe(gulp.dest("dist/.tmp/css"));
-	});
+    const tasks = files.map(function(entry) {
+        return gulp
+            .src(filePath + entry)
+            .pipe(plumber())
+            .pipe(sourcemaps.init())
+            .pipe(
+                sass().on('error', function(err) {
+                    console.log(err.message);
+                    notifier.notify({
+                        title: 'SASS Compile Error',
+                        message: err.message,
+                    });
+                })
+            )
+            .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
+            .pipe(sourcemaps.write())
+            .pipe(gulp.dest('dist/css'))
+            .pipe(cleanCSS({ debug: true }))
+            .pipe(gulp.dest('dist/.tmp/css'));
+    });
 
-	return es.merge.apply(null, tasks);
+    return es.merge.apply(null, tasks);
 });
 
 // ==========================================================================
 // Scripts Task
 // ==========================================================================
-gulp.task("scripts", function() {
-	var filePath = "source/js/";
-	var files = [
-		"RegistrationForm/Index.js",
-		"UserAccount/Index.js",
-		"OrderHistory/Index.js",
-		"BookingForm/Index.js"
-	];
-	var tasks = files.map(function(entry) {
-		return (
-			browserify({
-				entries: [filePath + entry],
-				debug: true
-			})
-				.transform([babelify])
-				.bundle()
-				.on("error", function(err) {
-					console.log(err.message);
+gulp.task('scripts', function() {
+    const filePath = 'source/js/';
+    const files = [
+        'RegistrationForm/Index.js',
+        'UserAccount/Index.js',
+        'OrderHistory/Index.js',
+        'BookingForm/Index.js',
+    ];
+    const tasks = files.map(function(entry) {
+        return (
+            browserify({
+                entries: [filePath + entry],
+                debug: true,
+            })
+                .transform([babelify])
+                .bundle()
+                .on('error', function(err) {
+                    console.log(err.message);
 
-					notifier.notify({
-						title: "Compile Error",
-						message: err.message
-					});
+                    notifier.notify({
+                        title: 'Compile Error',
+                        message: err.message,
+                    });
 
-					this.emit("end");
-				})
-				.pipe(source(entry)) // Converts To Vinyl Stream
-				.pipe(buffer()) // Converts Vinyl Stream To Vinyl Buffer
-				// Gulp Plugins Here!
-				.pipe(sourcemaps.init())
-				.pipe(sourcemaps.write())
-				.pipe(gulp.dest("dist/js"))
-				.pipe(terser())
-				.pipe(gulp.dest("dist/.tmp/js"))
-		);
-	});
+                    this.emit('end');
+                })
+                .pipe(source(entry)) // Converts To Vinyl Stream
+                .pipe(buffer()) // Converts Vinyl Stream To Vinyl Buffer
+                // Gulp Plugins Here!
+                .pipe(sourcemaps.init())
+                .pipe(sourcemaps.write())
+                .pipe(gulp.dest('dist/js'))
+                .pipe(terser())
+                .pipe(gulp.dest('dist/.tmp/js'))
+        );
+    });
 
-	return es.merge.apply(null, tasks);
+    return es.merge.apply(null, tasks);
 });
 
 // ==========================================================================
 // Images
 // ==========================================================================
-var filePath = "source/img/*.*";
+const filePath = 'source/img/*.*';
 
-gulp.task("img", function() {
-	gulp.src(filePath).pipe(gulp.dest("dist/img"));
+gulp.task('img', function() {
+    gulp.src(filePath).pipe(gulp.dest('dist/img'));
 });
 
 // ==========================================================================
 // Revision Task
 // ==========================================================================
 
-gulp.task("revision", function() {
-	return gulp
-		.src(["./dist/.tmp/**/*"])
-		.pipe(rev())
-		.pipe(gulp.dest("./dist"))
-		.pipe(rev.manifest("rev-manifest.json", { merge: true }))
-		.pipe(revDel({ dest: "./dist" }))
-		.pipe(gulp.dest("./dist"));
+gulp.task('revision', function() {
+    return gulp
+        .src(['./dist/.tmp/**/*'])
+        .pipe(rev())
+        .pipe(gulp.dest('./dist'))
+        .pipe(rev.manifest('rev-manifest.json', { merge: true }))
+        .pipe(revDel({ dest: './dist' }))
+        .pipe(gulp.dest('./dist'));
 });
 
 // ==========================================================================
 // Clean Task
 // ==========================================================================
-gulp.task("clean:dist", function() {
-	return del.sync("dist");
+gulp.task('clean:dist', function() {
+    return del.sync('dist');
 });
