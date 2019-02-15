@@ -110,7 +110,7 @@ class Service extends \ModularityResourceBooking\Helper\ErrorHandler
             //Controller
             $this->mail = apply_filters('ModularityResourceBooking/Mail/Service/composeMail', $mail, $this->templateId, $this->orderId, $this->userId);
 
-            if (is_object($this->mail) && get_class($this->mail) === 'ModularityResourceBooking\Entity\Mail') {
+            if (is_object($this->mail) && get_class($this->mail) === 'ModularityResourceBooking\Helper\Mail') {
                 return $this->composed = true;
             }
 
