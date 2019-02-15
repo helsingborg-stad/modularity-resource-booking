@@ -47,7 +47,9 @@ class Settings
      */
     public function nonceKeyMessage()
     {
-        if ((isset($_GET['page']) && $_GET['page'] == "resource-booking-options") && (is_super_admin() || current_user_can('administrator'))) {
+        if (isset($_GET['page']) && $_GET['page'] == "resource-booking-options" && is_super_admin()
+            || isset($_GET['page']) && $_GET['page'] == "resource-booking-options" && current_user_can('administrator')
+        ) {
             printf('<div class="updated notice"><p>%s: %s</p></div>', __('Current nonce key is: ', 'modularity-resource-booking'), wp_create_nonce('wp_rest'));
         }
     }
