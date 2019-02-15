@@ -66,6 +66,9 @@ class App
         //Ordering
         new Orders(); //Order data
 
+        //Mail
+        new Mail();
+
         //Account stuff
         new Customer();
 

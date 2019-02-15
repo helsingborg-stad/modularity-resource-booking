@@ -105,7 +105,7 @@
                                             <!-- / Hero subheader -->
                                             <table class="container hero-subheader" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
                                                 <tr>
-                                                    <td class="hero-subheader__title" style="font-size: 43px; font-weight: bold; padding: 40px 0 5px 0; color: #ffffff; text-transform: uppercase;" align="left">{{ $title }}</td>
+                                                    <td class="hero-subheader__title" style="font-size: 43px; font-weight: bold; padding: 40px 0 5px 0; color: #ffffff; text-transform: uppercase;" align="left">{{ $subject }}</td>
                                                 </tr>
 
                                                 <tr>
@@ -120,37 +120,41 @@
                                 </table>
 
 
-                                <!-- / Paragraph -->
-                                <table class="container paragraph-block" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                    <tr>
-                                        <td align="center" valign="top">
-                                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
-                                                <tr>
-                                                    <td class="paragraph-block__content" style="padding: 30px 0 30px 0; font-size: 16px; line-height: 27px; color: #969696;" align="left">
-                                                        @if(is_array($table) && !empty($table))
-                                                            <table class="table">
-                                                                    <tr>
-                                                                        <td><h2 style="color: {{$color}};">Detaljer</h2></td>
-                                                                    </tr>
-                                                                @foreach ($table as $row)
-                                                                    <tr>
-                                                                        <td class="table__heading">
-                                                                            <strong>{{ $row['heading'] }}</strong>
-                                                                        </td>
-                                                                        <td class="table_content">
-                                                                            {{ $row['content'] }}
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </table>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <!-- /// Paragraph -->
+                                <!-- / Table Content -->
+                                @if (is_array($sections) && !empty($sections))
+                                @foreach ($sections as $section)
+                                    @if (is_array($section['table']) && !empty($section['table']))
+                                    <table class="container paragraph-block" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                        <tr>
+                                            <td align="center" valign="top">
+                                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+                                                    <tr>
+                                                        <td class="paragraph-block__content" style="padding: 30px 0 30px 0; font-size: 16px; line-height: 27px; color: #969696;" align="left">
+                                                                <table class="table">
+                                                                        <tr>
+                                                                        <td><h2 style="color: {{$color}};">{{$section['title']}}</h2></td>
+                                                                        </tr>
+                                                                    @foreach ($section['table'] as $row)
+                                                                        <tr>
+                                                                            <td class="table__heading">
+                                                                                <strong>{{ $row['heading'] }}</strong>
+                                                                            </td>
+                                                                            <td class="table_content">
+                                                                                {{ $row['content'] }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    @endif
+                                @endforeach
+                                @endif
+                                <!-- /// Table Content -->
 
                                 <!-- / Divider -->
                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 0;" align="center">
