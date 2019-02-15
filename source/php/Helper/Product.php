@@ -6,12 +6,12 @@ class Product
 {
     /**
      * Get package or product price
-     * @param  object(WP_Term/WP_Post)  $package        The WP_Term Object of a package or WP_Post object of a product
+     * @param  WP_Term/WP_Post          $package        The WP_Term Object of a package or WP_Post object of a product
      * @param  boolean/int              $userId         User ID (optional)
      * @param  boolean                  currencySymbol  Wheter or not to include currency symbol (optional)
      * @return int/string                               Returns as a string if currency symbol is included
      */
-    public static function getPrice(object $object, $userId = false, $currencySymbol = false)
+    public static function getPrice($object, $userId = false, $currencySymbol = false)
     {
         //Type check
         if (!$object instanceof \WP_Term && !$object instanceof \WP_Post) {
@@ -44,7 +44,7 @@ class Product
                 }
             });
 
-            if (!empty($customerPrice)) {
+            if (!empty($customerPrice) && isset($customerPrice[0])) {
                 $price = $customerPrice[0]['product_price'];
             }
         }
