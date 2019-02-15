@@ -44,8 +44,8 @@ class Controller
                 'heading' => __('Order Date', 'modularity-resource-booking'),
                 'content' => get_the_date('', $orderId)
             ],
-            'orderName' => [
-                'heading' => __('Order Name', 'modularity-resource-booking'),
+            'campaignName' => [
+                'heading' => __('Campaign name', 'modularity-resource-booking'),
                 'content' => get_the_title($orderId),
             ]
         );
