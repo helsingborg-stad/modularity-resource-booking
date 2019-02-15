@@ -1,0 +1,288 @@
+[{
+    "key": "group_5c62cadbdf9b5",
+    "title": "Mail",
+    "fields": [
+        {
+            "key": "field_5c62cae5bddaf",
+            "label": "Recipient",
+            "name": "reciver",
+            "type": "text",
+            "instructions": "Use comma seperated list of emails (for multiple recipients). Avalible shortcodes for dynamic recipients: <b>[customer-mail] [manager-mail] [economy-mail]<\/b>",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5c62cb4746df9",
+            "label": "Subject",
+            "name": "subject",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5c62cb4e46dfa",
+            "label": "Content",
+            "name": "content",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_5c62fd7092a47",
+            "label": "Link",
+            "name": "link",
+            "type": "link",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_5c62daa7cb089",
+            "label": "Additional Content",
+            "name": "additional_content",
+            "type": "checkbox",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "customerDetails": "Customer Details",
+                "orderDetails": "Order Details",
+                "orderSummary": "Order Summary"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_5c6404dd0eba2",
+            "label": "Customer details - Heading",
+            "name": "customer_details_heading",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5c62daa7cb089",
+                        "operator": "==",
+                        "value": "customerDetails"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5c6404f30eba3",
+            "label": "Customer details - Fields",
+            "name": "customer_details_fields",
+            "type": "checkbox",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5c62daa7cb089",
+                        "operator": "==",
+                        "value": "customerDetails"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "name": "Name",
+                "email": "Email",
+                "phone": "Phone",
+                "glnr": "GLNR",
+                "vat": "Vat Number",
+                "company": "Company",
+                "companyNumber": "Company Number",
+                "contactPerson": "Contact Person",
+                "billingAddress": "Billing Address"
+            },
+            "allow_custom": 0,
+            "default_value": [
+                "name",
+                "email",
+                "phone",
+                "glnr",
+                "vat",
+                "company",
+                "companyNumber",
+                "contactPerson",
+                "billingAddress"
+            ],
+            "layout": "vertical",
+            "toggle": 1,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_5c64077a3b60b",
+            "label": "Order details - Heading",
+            "name": "order_details_heading",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5c62daa7cb089",
+                        "operator": "==",
+                        "value": "orderDetails"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5c6407c13b60c",
+            "label": "Order details - Fields",
+            "name": "order_details_fields",
+            "type": "checkbox",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5c62daa7cb089",
+                        "operator": "==",
+                        "value": "orderDetails"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "orderId": "Order ID",
+                "orderDate": "Order date",
+                "campaignName": "Campaign name"
+            },
+            "allow_custom": 0,
+            "default_value": [
+                "orderId",
+                "orderDate",
+                "campaignName"
+            ],
+            "layout": "vertical",
+            "toggle": 1,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_5c649828710e8",
+            "label": "Order summary - Heading",
+            "name": "order_summary_heading",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5c62daa7cb089",
+                        "operator": "==",
+                        "value": "orderSummary"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "modularity-rb-mail"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+
