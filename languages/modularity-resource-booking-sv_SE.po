@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-02-05 11:35+0100\n"
-"PO-Revision-Date: 2019-02-05 11:35+0100\n"
+"POT-Creation-Date: 2019-02-15 12:35+0100\n"
+"PO-Revision-Date: 2019-02-15 12:46+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -25,17 +25,20 @@ msgid "Company name"
 msgstr "Företagsnamn"
 
 #: source/acf-fields/php/mod-billing-info.php:29 source/php/Api/Customer.php:19
+#: source/php/Helper/Customer.php:23
 msgid "Company number"
 msgstr "Företagsnummer"
 
 #: source/acf-fields/php/mod-billing-info.php:48 source/php/Api/Customer.php:20
-#: source/php/Module/Registration/RegistrationForm.php:50
+#: source/php/Helper/Customer.php:26
+#: source/php/Module/Registration/RegistrationForm.php:53
 #: source/php/Module/UserAccount/UserAccount.php:73
 msgid "Contact person"
 msgstr "Kontaktperson"
 
 #: source/acf-fields/php/mod-billing-info.php:67 source/php/Api/Customer.php:21
-#: source/php/Module/Registration/RegistrationForm.php:53
+#: source/php/Helper/Customer.php:41
+#: source/php/Module/Registration/RegistrationForm.php:56
 #: source/php/Module/UserAccount/UserAccount.php:76
 msgid "Billing address"
 msgstr "Fakturaadress"
@@ -51,8 +54,8 @@ msgstr "Välj artikeltyp"
 #: source/acf-fields/php/mod-booking-form.php:22
 #: source/acf-fields/php/mod-order-details.php:77
 #: source/acf-fields/php/mod-resource_booking_map.php:10
-#: source/php/Module/OrderHistory/OrderHistory.php:51 source/php/Orders.php:265
-#: source/php/Products.php:64 source/php/Products.php:111
+#: source/php/Module/OrderHistory/OrderHistory.php:51 source/php/Orders.php:238
+#: source/php/Products.php:64 source/php/Products.php:109
 msgid "Package"
 msgstr "Paket"
 
@@ -81,6 +84,26 @@ msgstr "Rubrik för filer"
 msgid "Summary Heading"
 msgstr "Rubrik för summering"
 
+#: source/acf-fields/php/mod-customer-action-settings.php:6
+msgid "Customer actions"
+msgstr "Kund händelser"
+
+#: source/acf-fields/php/mod-customer-action-settings.php:10
+msgid "New customer account"
+msgstr "Nytt kund konto"
+
+#: source/acf-fields/php/mod-customer-action-settings.php:32
+msgid "New order"
+msgstr "Ny beställning"
+
+#: source/acf-fields/php/mod-customer-action-settings.php:54
+msgid "Customer cancel order"
+msgstr "Kund avbryter beställning"
+
+#: source/acf-fields/php/mod-customer-action-settings.php:76
+msgid "Customer account approved"
+msgstr "Kundkonto godkänt"
+
 #: source/acf-fields/php/mod-customer-group-vat.php:6
 msgid "Customer group tax setting"
 msgstr "Kundgruppens momsinställningar"
@@ -99,12 +122,12 @@ msgstr ""
 "kommer inte göra någon priskalkylering eller påverka priset på något sätt. "
 
 #: source/acf-fields/php/mod-customer-group-vat.php:24
-#: source/php/Helper/Customer.php:171
+#: source/php/Helper/Customer.php:249
 msgid "incl. vat"
 msgstr "Inkl. moms"
 
 #: source/acf-fields/php/mod-customer-group-vat.php:25
-#: source/php/Helper/Customer.php:176
+#: source/php/Helper/Customer.php:254
 msgid "excl. vat"
 msgstr "exkl. moms"
 
@@ -113,7 +136,7 @@ msgid "Select the customer group of this profile"
 msgstr "Välj användargrupp för den här kunden"
 
 #: source/acf-fields/php/mod-default-order-status.php:10
-#: source/php/Orders.php:399
+#: source/php/Orders.php:368
 msgid "Order status"
 msgstr "Orderstatus"
 
@@ -167,6 +190,195 @@ msgstr ""
 "Ange en bokningsgräns för gruppen under en tidsperiod. Lämna tom för att "
 "inte lägga en begränsning. "
 
+#: source/acf-fields/php/mod-mail-template.php:6
+msgid "Mail"
+msgstr "E-post"
+
+#: source/acf-fields/php/mod-mail-template.php:10
+msgid "Recipient"
+msgstr "Mottagare"
+
+#: source/acf-fields/php/mod-mail-template.php:13
+msgid ""
+"Use comma seperated list of emails (for multiple recipients). Avalible "
+"shortcodes for dynamic recipients: <b>[customer-mail] [manager-mail] "
+"[economy-mail]</b>"
+msgstr ""
+"Använd kommaseparerad med e-postadresser (för flera mottagare). Tillgängliga "
+"kortkoder för dynamiska mottagare: <b>[customer-mail] [manager-mail] "
+"[economy-mail]</b>"
+
+#: source/acf-fields/php/mod-mail-template.php:29
+msgid "Subject"
+msgstr "Ämne "
+
+#: source/acf-fields/php/mod-mail-template.php:48
+msgid "Content"
+msgstr "Innehåll"
+
+#: source/acf-fields/php/mod-mail-template.php:67
+msgid "Link"
+msgstr "Länk"
+
+#: source/acf-fields/php/mod-mail-template.php:82
+msgid "Additional Content"
+msgstr "Ytterligare innehåll"
+
+#: source/acf-fields/php/mod-mail-template.php:94
+msgid "Customer Details"
+msgstr "Kunduppgifter"
+
+#: source/acf-fields/php/mod-mail-template.php:95
+msgid "Order Details"
+msgstr "Orderdetaljer"
+
+#: source/acf-fields/php/mod-mail-template.php:96
+msgid "Order Summary"
+msgstr "Ordersummering"
+
+#: source/acf-fields/php/mod-mail-template.php:108
+msgid "Customer details - Heading"
+msgstr "Kunduppgifter - Rubrik"
+
+#: source/acf-fields/php/mod-mail-template.php:135
+msgid "Customer details - Fields"
+msgstr "Kunduppgifter - Rubrik"
+
+#: source/acf-fields/php/mod-mail-template.php:155
+#: source/php/Helper/Customer.php:17
+msgid "Name"
+msgstr "Namn"
+
+#: source/acf-fields/php/mod-mail-template.php:156
+#: source/php/Helper/Customer.php:29
+#: source/php/Module/Registration/RegistrationForm.php:41
+#: source/php/Module/UserAccount/UserAccount.php:63
+msgid "Email"
+msgstr "E-post"
+
+#: source/acf-fields/php/mod-mail-template.php:157
+#: source/php/Helper/Customer.php:32
+msgid "Phone"
+msgstr "Telefon"
+
+#: source/acf-fields/php/mod-mail-template.php:158
+msgid "GLNR"
+msgstr "GLN nr. (e-fakturanummer)"
+
+#: source/acf-fields/php/mod-mail-template.php:159
+msgid "Vat Number"
+msgstr "Momsregistreringsnummer"
+
+#: source/acf-fields/php/mod-mail-template.php:160
+#: source/php/Helper/Customer.php:20
+#: source/php/Module/Registration/RegistrationForm.php:49
+#: source/php/Module/UserAccount/UserAccount.php:69
+msgid "Company"
+msgstr "Företag"
+
+#: source/acf-fields/php/mod-mail-template.php:161
+msgid "Company Number"
+msgstr "Företagsnummer"
+
+#: source/acf-fields/php/mod-mail-template.php:162
+msgid "Contact Person"
+msgstr "Kontaktperson"
+
+#: source/acf-fields/php/mod-mail-template.php:163
+msgid "Billing Address"
+msgstr "Faktueringsadress"
+
+#: source/acf-fields/php/mod-mail-template.php:167
+msgid "name"
+msgstr "namn"
+
+#: source/acf-fields/php/mod-mail-template.php:168
+msgid "email"
+msgstr "e-pst"
+
+#: source/acf-fields/php/mod-mail-template.php:169
+msgid "phone"
+msgstr "telefon"
+
+#: source/acf-fields/php/mod-mail-template.php:170
+msgid "glnr"
+msgstr "glnr"
+
+#: source/acf-fields/php/mod-mail-template.php:171
+msgid "vat"
+msgstr "moms"
+
+#: source/acf-fields/php/mod-mail-template.php:172
+msgid "company"
+msgstr "företag"
+
+#: source/acf-fields/php/mod-mail-template.php:173
+msgid "companyNumber"
+msgstr "företagsnummer"
+
+#: source/acf-fields/php/mod-mail-template.php:174
+msgid "contactPerson"
+msgstr "kontaktperson"
+
+#: source/acf-fields/php/mod-mail-template.php:175
+msgid "billingAddress"
+msgstr ""
+
+#: source/acf-fields/php/mod-mail-template.php:184
+msgid "Order details - Heading"
+msgstr ""
+
+#: source/acf-fields/php/mod-mail-template.php:211
+msgid "Order details - Fields"
+msgstr ""
+
+#: source/acf-fields/php/mod-mail-template.php:231
+#: source/php/Mail/Controller.php:40 source/php/Orders.php:341
+msgid "Order ID"
+msgstr "Beställnings ID"
+
+#: source/acf-fields/php/mod-mail-template.php:232
+msgid "Order date"
+msgstr "Beställningsdatum"
+
+#: source/acf-fields/php/mod-mail-template.php:233
+#: source/php/Mail/Controller.php:48
+#: source/php/Module/BookingForm/BookingForm.php:77
+msgid "Campaign name"
+msgstr "Kampanjnamn"
+
+#: source/acf-fields/php/mod-mail-template.php:237
+msgid "orderId"
+msgstr ""
+
+#: source/acf-fields/php/mod-mail-template.php:238
+msgid "orderDate"
+msgstr ""
+
+#: source/acf-fields/php/mod-mail-template.php:239
+msgid "campaignName"
+msgstr ""
+
+#: source/acf-fields/php/mod-mail-template.php:248
+msgid "Order summary - Heading"
+msgstr "Ordersummering - Rubrik"
+
+#: source/acf-fields/php/mod-messages-settings.php:6
+msgid "Messages"
+msgstr "Meddelanden"
+
+#: source/acf-fields/php/mod-messages-settings.php:10
+msgid "Registered order"
+msgstr "Registrerad order"
+
+#: source/acf-fields/php/mod-messages-settings.php:13
+msgid ""
+"This message will appear when successfully submitting a new order through "
+"the booking form."
+msgstr ""
+"Detta meddelande kommer att visas när du skickat en ny order genom "
+"bokningsformuläret."
+
 #: source/acf-fields/php/mod-order-details.php:10
 msgid "OrderID"
 msgstr "Order ID"
@@ -175,8 +387,8 @@ msgstr "Order ID"
 msgid "{{ORDER_ID}}"
 msgstr ""
 
-#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:151
-#: source/php/Orders.php:328
+#: source/acf-fields/php/mod-order-details.php:27 source/php/Customer.php:138
+#: source/php/Mail/Controller.php:90 source/php/Orders.php:301
 msgid "Customer"
 msgstr "Kund"
 
@@ -190,7 +402,7 @@ msgid "List of ordered articles."
 msgstr "Lista på beställda artiklar"
 
 #: source/acf-fields/php/mod-order-details.php:64
-#: source/php/Module/OrderHistory/OrderHistory.php:47 source/php/Orders.php:251
+#: source/php/Module/OrderHistory/OrderHistory.php:47 source/php/Orders.php:224
 msgid "Type"
 msgstr "Typ"
 
@@ -200,7 +412,7 @@ msgstr "Artikeltyp"
 
 #: source/acf-fields/php/mod-order-details.php:76
 #: source/php/Module/BookingForm/BookingForm.php:64
-#: source/php/Module/OrderHistory/OrderHistory.php:50 source/php/Orders.php:265
+#: source/php/Module/OrderHistory/OrderHistory.php:50 source/php/Orders.php:238
 msgid "Product"
 msgstr "Produkt"
 
@@ -209,7 +421,7 @@ msgid "product"
 msgstr "produkt"
 
 #: source/acf-fields/php/mod-order-details.php:91
-#: source/php/Module/OrderHistory/OrderHistory.php:46 source/php/Orders.php:250
+#: source/php/Module/OrderHistory/OrderHistory.php:46 source/php/Orders.php:223
 msgid "Article"
 msgstr "Artikel"
 
@@ -257,23 +469,35 @@ msgstr "Interna anteckningar för den här ordern"
 msgid "No notes has been made about this order yet..."
 msgstr "Inga anteckningar har gjorts kopplat till den här ordern ännu"
 
+#: source/acf-fields/php/mod-order-resend-mail.php:6
+msgid "Order - Resend mail"
+msgstr ""
+
+#: source/acf-fields/php/mod-order-resend-mail.php:10
+msgid "Resend Mail"
+msgstr ""
+
+#: source/acf-fields/php/mod-order-resend-mail.php:24
+msgid "On"
+msgstr ""
+
+#: source/acf-fields/php/mod-order-resend-mail.php:25
+msgid "Off"
+msgstr ""
+
+#: source/acf-fields/php/mod-order-status-actions.php:6
+msgid "Status Change Actions"
+msgstr "Status Ändra åtgärd"
+
 #: source/acf-fields/php/mod-order-status-actions.php:10
 msgid "Do these actions when order aquire status"
 msgstr "Gör dessa åtgärder när statusen erhålls"
 
-#: source/acf-fields/php/mod-order-status-actions.php:22
-msgid "Send a invoice request to economy"
-msgstr "Skicka en fakturaförfrågan till ekonomin"
-
-#: source/acf-fields/php/mod-order-status-actions.php:23
-msgid "Send a message to the customer (order approved)"
-msgstr "Skicka ett meddelande till kunden (order godkänd)"
-
-#: source/acf-fields/php/mod-order-status-actions.php:36
+#: source/acf-fields/php/mod-order-status-actions.php:32
 msgid "Can be canceled"
 msgstr "Kan avbrytas"
 
-#: source/acf-fields/php/mod-order-status-actions.php:39
+#: source/acf-fields/php/mod-order-status-actions.php:35
 msgid "Enable this setting if an order can be canceled with this status."
 msgstr ""
 "Aktivera inställningen om en order kan avbrytas som har den här statusen."
@@ -313,7 +537,7 @@ msgid "Product price"
 msgstr "Produktens pris"
 
 #: source/acf-fields/php/mod-package-details.php:71
-#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:181
+#: source/acf-fields/php/mod-product-details.php:71 source/php/Customer.php:168
 msgid "Customer group"
 msgstr "Kundgrupp"
 
@@ -394,7 +618,7 @@ msgid "PDF"
 msgstr "PDF"
 
 #: source/acf-fields/php/mod-product-media-requirement.php:75
-#: source/php/Module/PackageMap/PackageMap.php:81
+#: source/php/Module/PackageMap/PackageMap.php:80
 msgid "Maxiumum filesize"
 msgstr "Maximal filstorlek"
 
@@ -510,12 +734,14 @@ msgstr ""
 "Om ditt värde inte sparas, är det troligt att kraven inte uppfylls."
 
 #: source/acf-fields/php/mod-time-slots-management.php:67
-#: source/php/Module/BookingForm/BookingForm.php:62
+#: source/php/Mail/Controller.php:137
+#: source/php/Module/BookingForm/BookingForm.php:62 source/php/Orders.php:126
 msgid "Start date"
 msgstr "Startdatum"
 
 #: source/acf-fields/php/mod-time-slots-management.php:84
-#: source/php/Module/BookingForm/BookingForm.php:63
+#: source/php/Mail/Controller.php:137
+#: source/php/Module/BookingForm/BookingForm.php:63 source/php/Orders.php:126
 msgid "End date"
 msgstr "Slutdatum"
 
@@ -559,13 +785,13 @@ msgstr "GLN nr. (e-fakturanummer)"
 msgid "VAT-Number"
 msgstr "Momsreg Nr"
 
-#: source/php/Api/Customer.php:24 source/php/Customer.php:112
-#: source/php/Module/Registration/RegistrationForm.php:51
+#: source/php/Api/Customer.php:24 source/php/Customer.php:99
+#: source/php/Module/Registration/RegistrationForm.php:54
 #: source/php/Module/UserAccount/UserAccount.php:74
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: source/php/Api/Customer.php:95 source/php/Api/Orders.php:247
+#: source/php/Api/Customer.php:95 source/php/Api/Orders.php:239
 msgid "A parameter is missing: "
 msgstr "Ett inmatningsvärde saknas: "
 
@@ -573,55 +799,11 @@ msgstr "Ett inmatningsvärde saknas: "
 msgid "A user account is already registered with this email."
 msgstr "Ett konto finns redan registrerat på denna epostadress."
 
-#: source/php/Api/Customer.php:116 source/php/Api/Customer.php:253
+#: source/php/Api/Customer.php:116 source/php/Api/Customer.php:222
 msgid "Malformed email adress provided."
 msgstr "Epostadressen är inte av ett giltigt format."
 
-#: source/php/Api/Customer.php:166
-msgid "New customer"
-msgstr "Ny kund"
-
-#: source/php/Api/Customer.php:167
-msgid ""
-"A new customer been registered in your booking system. You have to review "
-"this customer and assign the customer account a user group."
-msgstr ""
-"En ny kund har registrerats i ditt boknings-system. Du måste granska den här "
-"kunden och tilldela kundkontot en användargrupp."
-
-#: source/php/Api/Customer.php:170
-msgid "Company:"
-msgstr "Företag:"
-
-#: source/php/Api/Customer.php:174
-msgid "Company number:"
-msgstr "Org.nr"
-
 #: source/php/Api/Customer.php:178
-msgid "Glnr number: "
-msgstr "GLN-nummer:"
-
-#: source/php/Api/Customer.php:182
-msgid "Vat-number: "
-msgstr "Moms-nummer"
-
-#: source/php/Api/Customer.php:186
-msgid "Contact name:"
-msgstr "Kontaktperson:"
-
-#: source/php/Api/Customer.php:190
-msgid "Email address: "
-msgstr "Epostadress:"
-
-#: source/php/Api/Customer.php:194
-msgid "Phone number: "
-msgstr "Telefonnummer: "
-
-#: source/php/Api/Customer.php:200
-msgid "Show profile"
-msgstr "Visa profil"
-
-#: source/php/Api/Customer.php:207
 msgid ""
 "Your user account has been created, you will be notified when its approved "
 "and ready to use."
@@ -629,19 +811,19 @@ msgstr ""
 "Ditt användarkonto har skapats, du kommer att meddelas när det har godkänts "
 "och är klart att användas."
 
-#: source/php/Api/Customer.php:216 source/php/Api/Customer.php:313
+#: source/php/Api/Customer.php:186 source/php/Api/Customer.php:281
 msgid "Something unexpected happened."
 msgstr "Hoppsan, något gick fel."
 
-#: source/php/Api/Customer.php:237
+#: source/php/Api/Customer.php:206
 msgid "That is not a valid user identification."
 msgstr "Det här är inget giltigt användar-id."
 
-#: source/php/Api/Customer.php:245
+#: source/php/Api/Customer.php:214
 msgid "That email adress is already taken, sorry."
 msgstr "Den här e-postadressen är redan registrerad, "
 
-#: source/php/Api/Customer.php:305
+#: source/php/Api/Customer.php:273
 msgid "Your account details has been updated."
 msgstr "Dina kontouppgifter har uppdaterats."
 
@@ -649,81 +831,47 @@ msgstr "Dina kontouppgifter har uppdaterats."
 msgid "The order could not be canceled."
 msgstr "Avbeställningen misslyckades."
 
-#: source/php/Api/Orders.php:104
-msgid "Canceled order"
-msgstr "Avbruten order"
-
-#: source/php/Api/Orders.php:105
-#, php-format
-msgid "The order #%s has been canceled."
-msgstr "Ordern med order id #%s har blivit avbruten."
-
-#: source/php/Api/Orders.php:108 source/php/Api/Orders.php:398
-#: source/php/Api/Orders.php:402 source/php/Orders.php:85
-#: source/php/Orders.php:143
-msgid "Order number:"
-msgstr "Ordernummer:"
-
-#: source/php/Api/Orders.php:112 source/php/Api/Orders.php:411
-msgid "Customer: "
-msgstr "Kund:"
-
-#: source/php/Api/Orders.php:118 source/php/Api/Orders.php:417
-msgid "Show order"
-msgstr "Visa beställning"
-
-#: source/php/Api/Orders.php:127
+#: source/php/Api/Orders.php:120
 msgid "The order has been canceled."
 msgstr "Beställningen har tagits bort."
 
-#: source/php/Api/Orders.php:260
+#: source/php/Api/Orders.php:251
 msgid "The post request sent was empty."
 msgstr "Fel: Ett anrop som var tomt skickades."
 
-#: source/php/Api/Orders.php:277
+#: source/php/Api/Orders.php:268
 msgid "You have to specify a article."
 msgstr "Du måste ange en artikel."
 
-#: source/php/Api/Orders.php:292 source/php/Api/TimeSlots.php:107
+#: source/php/Api/Orders.php:283 source/php/Api/TimeSlots.php:107
 msgid "No articles could be found with 'article_id': "
 msgstr "Det fanns ingen artikel med följande artikel-id: "
 
-#: source/php/Api/Orders.php:302
+#: source/php/Api/Orders.php:293
 msgid "Out of stock for 'article_id': "
 msgstr "Slut i lager för 'article_id':"
 
-#: source/php/Api/Orders.php:355
+#: source/php/Api/Orders.php:346
 msgid "Bummer, something went wrong."
 msgstr "Hoppsan, något gick fel."
 
-#: source/php/Api/Orders.php:394
-msgid "New order"
-msgstr "Ny beställning"
-
-#: source/php/Api/Orders.php:395
-msgid ""
-"A new order has been submitted, please review it and accept it as soon as "
-"possible."
-msgstr ""
-"En ny order har skickats in, var god och granska den så snart som möjligt."
-
-#: source/php/Api/Orders.php:427
+#: source/php/Api/Orders.php:401
 msgid "Your order have been registered."
 msgstr "Din beställning har registrerats."
 
-#: source/php/Api/Orders.php:427
+#: source/php/Api/Orders.php:401
 msgid "Visit"
 msgstr "Besök"
 
-#: source/php/Api/Orders.php:427
+#: source/php/Api/Orders.php:401
 msgid "Order History"
 msgstr "Orderhistorik"
 
-#: source/php/Api/Orders.php:427
+#: source/php/Api/Orders.php:401
 msgid "to view your order"
 msgstr "för att se din beställning"
 
-#: source/php/Api/Products.php:99
+#: source/php/Api/Products.php:110
 msgid "Could not find any package with that id."
 msgstr "Kunde inte hitta något paket på det indetifikationsnumret som angavs."
 
@@ -731,11 +879,11 @@ msgstr "Kunde inte hitta något paket på det indetifikationsnumret som angavs."
 msgid "No result found."
 msgstr "Hittade inget resultat"
 
-#: source/php/App.php:32
+#: source/php/App.php:31
 msgid "USD"
 msgstr "SEK"
 
-#: source/php/Customer.php:48
+#: source/php/Customer.php:49
 msgid ""
 "Your account has not been enabled yet, please wait for a activation notice "
 "in your email inbox."
@@ -743,47 +891,15 @@ msgstr ""
 "Ditt konto har inte aktiverats än, vänta vänta på ett aktiveringsmeddelande "
 "i din e-postbrevlåda."
 
-#: source/php/Customer.php:68
+#: source/php/Customer.php:70
 msgid "Sign in"
 msgstr "Logga in"
 
-#: source/php/Customer.php:75
-msgid "Activated account"
-msgstr "Aktiverat konto"
-
-#: source/php/Customer.php:76
-msgid ""
-"Your account has now been verified by one of our managers. You can now "
-"proceed to make a new reservation for a spot."
-msgstr ""
-"Ditt konto har nu verifierats av en av våra administratörer. Du kan nu "
-"fortsätta göra en ny bokning för en plats."
-
-#: source/php/Customer.php:79
-msgid "Account owner:"
-msgstr "kontoinnehavare"
-
-#: source/php/Customer.php:83
-msgid "Registered email:"
-msgstr "Registrerad e-post:"
-
-#: source/php/Customer.php:87
-msgid "Registered phone:"
-msgstr "Registrerad telefon:"
-
-#: source/php/Customer.php:91
-msgid "Registered company:"
-msgstr "Registrerat företag:"
-
-#: source/php/Customer.php:95
-msgid "Registered company number:"
-msgstr "Registrerat org.nr"
-
-#: source/php/Customer.php:180
+#: source/php/Customer.php:167
 msgid "Customer groups"
 msgstr "Kundgrupper"
 
-#: source/php/Customer.php:210
+#: source/php/Customer.php:198
 msgid "Your account is not verified yet."
 msgstr "Ditt konto har inte verifierats ännu."
 
@@ -856,54 +972,55 @@ msgstr "Lägg till ny %s"
 msgid "New %s Name"
 msgstr "Ny %s namn"
 
-#: source/php/Helper/Customer.php:24 source/php/Helper/Customer.php:45
-#: source/php/Helper/Customer.php:66 source/php/Helper/Customer.php:87
-#: source/php/Helper/Customer.php:108 source/php/Helper/Customer.php:129
-#: source/php/Helper/Customer.php:150 source/php/Helper/Customer.php:217
+#: source/php/Helper/Customer.php:35
+msgid "GLNR number"
+msgstr ""
+
+#: source/php/Helper/Customer.php:38
+msgid "VAT-number"
+msgstr ""
+
+#: source/php/Helper/Customer.php:63 source/php/Helper/Customer.php:84
+#: source/php/Helper/Customer.php:104 source/php/Helper/Customer.php:125
+#: source/php/Helper/Customer.php:146 source/php/Helper/Customer.php:167
+#: source/php/Helper/Customer.php:188 source/php/Helper/Customer.php:208
+#: source/php/Helper/Customer.php:228 source/php/Helper/Customer.php:295
 msgid "The user data you requested was not found."
 msgstr "De användardata du begärde hittades inte."
 
-#: source/php/Helper/Customer.php:169
+#: source/php/Helper/Customer.php:247
 msgid "Yes"
 msgstr "Ja"
 
-#: source/php/Helper/Customer.php:174
+#: source/php/Helper/Customer.php:252
 msgid "No"
 msgstr "Nej"
 
-#: source/php/Helper/Mail.php:37
-msgid "The email provided was not in a valid format."
-msgstr "E-postmeddelandet var inte i ett giltigt format."
+#: source/php/Helper/Mail.php:90
+msgid "The email provided "
+msgstr ""
 
-#: source/php/Helper/Mail.php:53
+#: source/php/Helper/Mail.php:106
 msgid "The subject cannot be empty."
 msgstr "Ämnet kan inte vara tomt."
 
-#: source/php/Helper/Mail.php:69 source/php/Helper/Mail.php:109
+#: source/php/Helper/Mail.php:122
 msgid "The content cannot be empty."
 msgstr "Innehållet kan inte vara tomt."
 
-#: source/php/Helper/Mail.php:87
+#: source/php/Helper/Mail.php:153
 msgid "Each table array item must contain 'content' and 'heading' sub keys."
 msgstr ""
 "Varje tabelluppsättningspost måste innehålla \"innehåll\" och \"rubrik\" "
 "undernycklar."
 
-#: source/php/Helper/Mail.php:148
-msgid "Undefined reciver(s)."
-msgstr "Odefinierad mottagare"
+#: source/php/Helper/Mail.php:179
+msgid "Section title and table content is required"
+msgstr ""
 
-#: source/php/Helper/Mail.php:152
-msgid "Undefined subject line."
-msgstr "Odefinierad ämnesrad."
-
-#: source/php/Helper/Mail.php:156
-msgid "Undefined content data."
-msgstr "Odefinierad innehållsinformation."
-
-#: source/php/Helper/Mail.php:181
-msgid "Each button array item must contain 'url' and 'text' sub keys."
-msgstr "Varje knappelement måste innehålla nycklar för 'url' och 'text'."
+#: source/php/Helper/Mail.php:211
+msgid "Undefined recipient(s). Cannot send mail without any recipient"
+msgstr ""
 
 #: source/php/Helper/MediaUpload.php:33
 #, php-format
@@ -939,27 +1056,35 @@ msgstr ""
 msgid "Wrong file dimensions."
 msgstr "Felaktiga mått."
 
-#: source/php/Helper/Product.php:45
+#: source/php/Helper/Product.php:20
+msgid "$object must either be an instance of WP_Post or WP_Term"
+msgstr ""
+
+#: source/php/Helper/Product.php:32
+msgid "Price field is missing for "
+msgstr ""
+
+#: source/php/Helper/Product.php:118
 msgid "The id sent for price calculation is not valid."
 msgstr "ID-sänt för prisberäkning är inte giltigt."
 
-#: source/php/Helper/Product.php:58
+#: source/php/Helper/Product.php:131
 msgid ""
 "The type sent for price calculation is not valid, must be WP_Post or WP_Term."
 msgstr ""
 "Typen som skickas för prisberäkning är inte giltig, måste vara WP_Post eller "
 "WP_Term."
 
-#: source/php/Helper/Product.php:146
+#: source/php/Helper/Product.php:217
 msgid "Removed package"
 msgstr "Ta bort paketet"
 
-#: source/php/Helper/Product.php:152
+#: source/php/Helper/Product.php:223
 msgid "Removed product"
 msgstr "Borttagen produkt"
 
-#: source/php/Helper/Validation.php:26 source/php/Helper/Validation.php:31
-#: source/php/Helper/Validation.php:36
+#: source/php/Helper/Validation.php:27 source/php/Helper/Validation.php:32
+#: source/php/Helper/Validation.php:37
 msgid ""
 "Your password should be at least 6 characters long, containing both letters "
 "and numbers."
@@ -967,23 +1092,99 @@ msgstr ""
 "Ditt lösenord ska vara minst 6 tecken långt, innehållande både bokstäver och "
 "siffror."
 
-#: source/php/Helper/Validation.php:49
+#: source/php/Helper/Validation.php:51
 msgid "Invalid format on provided organization number."
 msgstr ""
 "Du har inget ett felaktigt organisationsnummer. Ett organisationsnummer "
 "består av 10 siffror. "
 
-#: source/php/Helper/Validation.php:61
+#: source/php/Helper/Validation.php:64
 msgid "Invalid format on provided personal number."
 msgstr ""
 "Du har angivit ett felaktigt personnummer. Ett personnummer ska bestå av 10 "
 "eller 12 siffror. "
 
-#: source/php/Helper/Validation.php:73
+#: source/php/Helper/Validation.php:77
 msgid "Invalid format on provided personal or organization number."
 msgstr ""
 "Du har angivit ett felaktigt person eller organisations -nummer. Ett  person "
 "eller organisations -nummer ska bestå av 10 eller 12 siffror."
+
+#: source/php/Mail.php:27
+msgctxt "Post type plural"
+msgid "Mail Templates"
+msgstr "E-post Mallar"
+
+#: source/php/Mail.php:28
+msgctxt "Post type singular"
+msgid "Mail Template"
+msgstr "E-post Mall"
+
+#: source/php/Mail.php:31
+msgid "Mail actions"
+msgstr "Mail-åtgärder"
+
+#: source/php/Mail.php:39
+msgid "modularity-rb-mail"
+msgstr ""
+
+#: source/php/Mail/Controller.php:35
+msgid "Order details"
+msgstr "Detaljer för order"
+
+#: source/php/Mail/Controller.php:44
+msgid "Order Date"
+msgstr "Beställningsdatum"
+
+#: source/php/Mail/Controller.php:133
+#: source/php/Module/BookingForm/BookingForm.php:33 source/php/Orders.php:122
+msgid "Summary"
+msgstr "Summering"
+
+#: source/php/Mail/Controller.php:142
+#: source/php/Module/BookingForm/BookingForm.php:65 source/php/Orders.php:131
+msgid "Total"
+msgstr "Totalt"
+
+#: source/php/Mail/Service.php:66
+msgid ""
+"Cannot find order. Param $order must be a post id (numeric value) or WP_Post "
+"object and the post type should be \"purchase\"."
+msgstr ""
+
+#: source/php/Mail/Service.php:84
+msgid ""
+"Cannot find user. Param $user must be a user id (numeric value) or a WP_User "
+"object."
+msgstr ""
+
+#: source/php/Mail/Service.php:99
+msgid "composeMail() method can only be run once within a MailAgent instance."
+msgstr ""
+
+#: source/php/Mail/Service.php:117
+msgid "Failed to compose mail because of invalid mail object."
+msgstr ""
+
+#: source/php/Mail/Service.php:120
+msgid "Failed to compose mail because of invalid Template ID"
+msgstr ""
+
+#: source/php/Mail/Service.php:131
+msgid ""
+"Cannot send the mail without composing the mail object. Please use "
+"composeMail() before this method."
+msgstr ""
+
+#: source/php/Mail/Service.php:145
+msgid ""
+"Cannot preview the mail without composing the mail object. Please use "
+"composeMail() before this method."
+msgstr ""
+
+#: source/php/Mail/Service.php:188
+msgid "Template could not be found."
+msgstr ""
 
 #: source/php/Module/BookingForm/BookingForm.php:12
 msgid "Resource Booking Form"
@@ -1008,14 +1209,6 @@ msgstr "2. Välj annonsperiod"
 #: source/php/Module/BookingForm/BookingForm.php:32
 msgid "3. Upload files"
 msgstr "3. Ladda upp filer"
-
-#: source/php/Module/BookingForm/BookingForm.php:33
-msgid "Summary"
-msgstr "Summering"
-
-#: source/php/Module/BookingForm/BookingForm.php:65
-msgid "Total"
-msgstr "Totalt"
 
 #: source/php/Module/BookingForm/BookingForm.php:66
 msgid "Go back"
@@ -1063,10 +1256,6 @@ msgstr "Tillåtna filtyper"
 msgid "Please select atleast one date in the calendar"
 msgstr "Vänligen välj minst ett datum i kalendern"
 
-#: source/php/Module/BookingForm/BookingForm.php:77
-msgid "Campaign name"
-msgstr "Kampanjnamn"
-
 #: source/php/Module/BookingForm/views/booking-form.blade.php:19
 #: source/php/Module/OrderHistory/views/order-history.blade.php:10
 #: source/php/Module/UserAccount/views/user-account.blade.php:23
@@ -1109,12 +1298,12 @@ msgstr "Beställning #"
 msgid "Date"
 msgstr "Datum"
 
-#: source/php/Module/OrderHistory/OrderHistory.php:45 source/php/Orders.php:345
+#: source/php/Module/OrderHistory/OrderHistory.php:45 source/php/Orders.php:317
 msgid "Status"
 msgstr "Status"
 
-#: source/php/Module/OrderHistory/OrderHistory.php:48 source/php/Orders.php:252
-#: source/php/Products.php:89
+#: source/php/Module/OrderHistory/OrderHistory.php:48 source/php/Orders.php:225
+#: source/php/Products.php:87
 msgid "Price"
 msgstr "Pris"
 
@@ -1122,7 +1311,7 @@ msgstr "Pris"
 msgid "Period"
 msgstr "Period"
 
-#: source/php/Module/OrderHistory/OrderHistory.php:52 source/php/Orders.php:447
+#: source/php/Module/OrderHistory/OrderHistory.php:52 source/php/Orders.php:416
 msgid "Canceled"
 msgstr "Avbruten"
 
@@ -1142,24 +1331,24 @@ msgstr "Avbeställningen misslyckades. Vänligen försök igen senare."
 msgid "Campaign"
 msgstr "Kampanj"
 
+#: source/php/Module/PackageMap/PackageMap.php:12
 #: source/php/Module/PackageMap/PackageMap.php:13
-#: source/php/Module/PackageMap/PackageMap.php:14
 msgid "Resource Booking Package Map"
 msgstr "Resursbokning paketkarta"
 
-#: source/php/Module/PackageMap/PackageMap.php:15
+#: source/php/Module/PackageMap/PackageMap.php:14
 msgid "Outputs a google map over products booked in package."
 msgstr "Visar en Google karta med alla produkter i ett paket."
 
-#: source/php/Module/PackageMap/PackageMap.php:79
+#: source/php/Module/PackageMap/PackageMap.php:78
 msgid "Media name"
 msgstr "Namn på material"
 
-#: source/php/Module/PackageMap/PackageMap.php:80
+#: source/php/Module/PackageMap/PackageMap.php:79
 msgid "Media type"
 msgstr "Mediatyp"
 
-#: source/php/Module/PackageMap/PackageMap.php:82
+#: source/php/Module/PackageMap/PackageMap.php:81
 msgid "Image width"
 msgstr "Bildens bredd"
 
@@ -1175,86 +1364,76 @@ msgstr "Registreingsformulär"
 msgid "Outputs a registration form for customers."
 msgstr "Visar ett registreringsformulär för kunder"
 
-#: source/php/Module/Registration/RegistrationForm.php:38
-#: source/php/Module/UserAccount/UserAccount.php:63
-msgid "Email"
-msgstr "Epost"
-
-#: source/php/Module/Registration/RegistrationForm.php:39
+#: source/php/Module/Registration/RegistrationForm.php:42
 msgid "Confirm email"
 msgstr "Bekräfta e-postadress"
 
-#: source/php/Module/Registration/RegistrationForm.php:40
+#: source/php/Module/Registration/RegistrationForm.php:43
 msgid "The email does not match."
 msgstr "E-postadresserna matchar inte."
 
-#: source/php/Module/Registration/RegistrationForm.php:41
-#: source/php/Module/Registration/RegistrationForm.php:61
+#: source/php/Module/Registration/RegistrationForm.php:44
+#: source/php/Module/Registration/RegistrationForm.php:64
 #: source/php/Module/UserAccount/UserAccount.php:64
 msgid "Password"
 msgstr "Lösenord"
 
-#: source/php/Module/Registration/RegistrationForm.php:42
+#: source/php/Module/Registration/RegistrationForm.php:45
 #: source/php/Module/UserAccount/UserAccount.php:65
 msgid "Confirm password"
 msgstr "Bekräfta lösenord"
 
-#: source/php/Module/Registration/RegistrationForm.php:43
+#: source/php/Module/Registration/RegistrationForm.php:46
 #: source/php/Module/UserAccount/UserAccount.php:66
 msgid "The password does not match."
 msgstr "Lösenordet matchar inte"
 
-#: source/php/Module/Registration/RegistrationForm.php:44
+#: source/php/Module/Registration/RegistrationForm.php:47
 #: source/php/Module/UserAccount/UserAccount.php:67
 msgid "First name"
 msgstr "Förnamn"
 
-#: source/php/Module/Registration/RegistrationForm.php:45
+#: source/php/Module/Registration/RegistrationForm.php:48
 #: source/php/Module/UserAccount/UserAccount.php:68
 msgid "Last name"
 msgstr "Efternamn"
 
-#: source/php/Module/Registration/RegistrationForm.php:46
-#: source/php/Module/UserAccount/UserAccount.php:69
-msgid "Company"
-msgstr "Företag"
-
-#: source/php/Module/Registration/RegistrationForm.php:47
+#: source/php/Module/Registration/RegistrationForm.php:50
 #: source/php/Module/UserAccount/UserAccount.php:70
 msgid "Organization number"
 msgstr "Organisationsnr"
 
-#: source/php/Module/Registration/RegistrationForm.php:48
+#: source/php/Module/Registration/RegistrationForm.php:51
 #: source/php/Module/UserAccount/UserAccount.php:71
 msgid "Glnr number"
 msgstr "GLN-nummer"
 
-#: source/php/Module/Registration/RegistrationForm.php:49
+#: source/php/Module/Registration/RegistrationForm.php:52
 #: source/php/Module/UserAccount/UserAccount.php:72
 msgid "VAT number"
 msgstr "Moms-nummer"
 
-#: source/php/Module/Registration/RegistrationForm.php:52
+#: source/php/Module/Registration/RegistrationForm.php:55
 #: source/php/Module/UserAccount/UserAccount.php:75
 msgid "Website"
 msgstr "Webbplats"
 
-#: source/php/Module/Registration/RegistrationForm.php:54
+#: source/php/Module/Registration/RegistrationForm.php:57
 #: source/php/Module/UserAccount/UserAccount.php:77
 msgid "Register"
 msgstr "Registrera"
 
-#: source/php/Module/Registration/RegistrationForm.php:56
+#: source/php/Module/Registration/RegistrationForm.php:59
 #: source/php/Module/UserAccount/UserAccount.php:80
 msgid "Identifier for value added tax purposes."
 msgstr "Identifierare för mervärdesskatteändamål."
 
-#: source/php/Module/Registration/RegistrationForm.php:57
+#: source/php/Module/Registration/RegistrationForm.php:60
 #: source/php/Module/UserAccount/UserAccount.php:81
 msgid "Electronic invoice number"
 msgstr "Elektroniskt fakturanummer"
 
-#: source/php/Module/Registration/RegistrationForm.php:60
+#: source/php/Module/Registration/RegistrationForm.php:63
 #: source/php/Module/UserAccount/UserAccount.php:84
 msgid "Billing"
 msgstr "Fakturering"
@@ -1284,97 +1463,34 @@ msgstr "Ändra lösenord"
 msgid "Save"
 msgstr "Spara"
 
-#: source/php/Orders.php:81
-msgid "Request of new invoice"
-msgstr "Begäran om ny faktura"
-
-#: source/php/Orders.php:82
-msgid "This is a request to create an invoice to the specifications below."
-msgstr ""
-"Detta är en begäran om att skapa en faktura enligt specifikationerna nedan."
-
-#: source/php/Orders.php:89
-msgid "Ordered articles:"
-msgstr "Beställda artiklar:"
-
-#: source/php/Orders.php:98 source/php/Orders.php:156
-msgid "Our reference: "
-msgstr "Vår referens"
-
-#: source/php/Orders.php:102
-msgid "Their reference: "
-msgstr "Deras referens:"
-
-#: source/php/Orders.php:106
-msgid "Total: "
-msgstr "Totalt: "
-
-#: source/php/Orders.php:116
-msgid "VAT-Number: "
-msgstr "Moms-nummer"
-
-#: source/php/Orders.php:120
-msgid "Price include VAT: "
-msgstr "Priset inkluderar moms: "
-
-#: source/php/Orders.php:124
-msgid "GLNR number: "
-msgstr "GLN-nummer:"
-
-#: source/php/Orders.php:128
-msgid "Notes: "
-msgstr "Anteckningar:"
-
-#: source/php/Orders.php:139
-msgid "Order approved"
-msgstr "Beställning godkänd"
-
-#: source/php/Orders.php:140
-msgid ""
-"Your order has been verified by us, and scheduled at your desired occasion."
-msgstr ""
-"Din beställning har verifierats av oss, och planeras till önskat tillfälle."
-
-#: source/php/Orders.php:147
-msgid "Articles:"
-msgstr "Artiklar:"
-
-#: source/php/Orders.php:160
-msgid "Total (exluding VAT): "
-msgstr "Totalt (exkl moms):"
-
-#: source/php/Orders.php:253
+#: source/php/Orders.php:226
 msgid "Time period"
 msgstr "Tidsperiod"
 
-#: source/php/Orders.php:303
+#: source/php/Orders.php:276
 msgctxt "Post type plural"
 msgid "Orders"
 msgstr "Beställningar"
 
-#: source/php/Orders.php:304
+#: source/php/Orders.php:277
 msgctxt "Post type singular"
 msgid "Order"
 msgstr "Beställning"
 
-#: source/php/Orders.php:307
+#: source/php/Orders.php:280
 msgid "Order registry."
 msgstr "Beställningsregister"
 
-#: source/php/Orders.php:315
+#: source/php/Orders.php:288
 msgid "purchase"
 msgstr "köp"
 
-#: source/php/Orders.php:337 source/php/Orders.php:353
-#: source/php/Orders.php:380 source/php/Products.php:71
+#: source/php/Orders.php:309 source/php/Orders.php:325
+#: source/php/Orders.php:349 source/php/Products.php:71
 msgid "Undefined"
 msgstr "Odefinierat"
 
-#: source/php/Orders.php:371
-msgid "Order ID"
-msgstr "Beställnings ID"
-
-#: source/php/Orders.php:398
+#: source/php/Orders.php:367
 msgid "Order statuses"
 msgstr "Orderstatusar"
 
@@ -1392,19 +1508,19 @@ msgstr "Produkt"
 msgid "Product registry."
 msgstr "Produktregister"
 
-#: source/php/Products.php:110
+#: source/php/Products.php:108
 msgid "Packages"
 msgstr "Paket"
 
-#: source/php/Settings.php:36
+#: source/php/Settings.php:35
 msgid "Resource Booking"
 msgstr "Resursbokning"
 
-#: source/php/Settings.php:52
+#: source/php/Settings.php:51
 msgid "Current nonce key is: "
 msgstr "Nuvarande nonce-nyckel är:"
 
-#: source/php/Settings.php:110
+#: source/php/Settings.php:109
 msgid "You cannot have negative time slots configured."
 msgstr "Du kan inte ha negativa tidsluckor konfigurerade."
 
@@ -1436,6 +1552,155 @@ msgstr "Sebastian Thulin, Nikolas Ramstedt, Jonatan Hansson, Johan Silvergrund"
 #. Author URI of the plugin/theme
 msgid "https://github.com/helsingborg-stad"
 msgstr ""
+
+#~ msgid "Send a invoice request to economy"
+#~ msgstr "Skicka en fakturaförfrågan till ekonomin"
+
+#~ msgid "Send a message to the customer (order approved)"
+#~ msgstr "Skicka ett meddelande till kunden (order godkänd)"
+
+#~ msgid "New customer"
+#~ msgstr "Ny kund"
+
+#~ msgid ""
+#~ "A new customer been registered in your booking system. You have to review "
+#~ "this customer and assign the customer account a user group."
+#~ msgstr ""
+#~ "En ny kund har registrerats i ditt boknings-system. Du måste granska den "
+#~ "här kunden och tilldela kundkontot en användargrupp."
+
+#~ msgid "Company:"
+#~ msgstr "Företag:"
+
+#~ msgid "Company number:"
+#~ msgstr "Org.nr"
+
+#~ msgid "Glnr number: "
+#~ msgstr "GLN-nummer:"
+
+#~ msgid "Vat-number: "
+#~ msgstr "Moms-nummer"
+
+#~ msgid "Contact name:"
+#~ msgstr "Kontaktperson:"
+
+#~ msgid "Email address: "
+#~ msgstr "Epostadress:"
+
+#~ msgid "Phone number: "
+#~ msgstr "Telefonnummer: "
+
+#~ msgid "Show profile"
+#~ msgstr "Visa profil"
+
+#~ msgid "Canceled order"
+#~ msgstr "Avbruten order"
+
+#~ msgid "The order #%s has been canceled."
+#~ msgstr "Ordern med order id #%s har blivit avbruten."
+
+#~ msgid "Order number:"
+#~ msgstr "Ordernummer:"
+
+#~ msgid "Customer: "
+#~ msgstr "Kund:"
+
+#~ msgid "Show order"
+#~ msgstr "Visa beställning"
+
+#~ msgid ""
+#~ "A new order has been submitted, please review it and accept it as soon as "
+#~ "possible."
+#~ msgstr ""
+#~ "En ny order har skickats in, var god och granska den så snart som möjligt."
+
+#~ msgid "Activated account"
+#~ msgstr "Aktiverat konto"
+
+#~ msgid ""
+#~ "Your account has now been verified by one of our managers. You can now "
+#~ "proceed to make a new reservation for a spot."
+#~ msgstr ""
+#~ "Ditt konto har nu verifierats av en av våra administratörer. Du kan nu "
+#~ "fortsätta göra en ny bokning för en plats."
+
+#~ msgid "Account owner:"
+#~ msgstr "kontoinnehavare"
+
+#~ msgid "Registered email:"
+#~ msgstr "Registrerad e-post:"
+
+#~ msgid "Registered phone:"
+#~ msgstr "Registrerad telefon:"
+
+#~ msgid "Registered company:"
+#~ msgstr "Registrerat företag:"
+
+#~ msgid "Registered company number:"
+#~ msgstr "Registrerat org.nr"
+
+#~ msgid "The email provided was not in a valid format."
+#~ msgstr "E-postmeddelandet var inte i ett giltigt format."
+
+#~ msgid "Undefined reciver(s)."
+#~ msgstr "Odefinierad mottagare"
+
+#~ msgid "Undefined subject line."
+#~ msgstr "Odefinierad ämnesrad."
+
+#~ msgid "Undefined content data."
+#~ msgstr "Odefinierad innehållsinformation."
+
+#~ msgid "Each button array item must contain 'url' and 'text' sub keys."
+#~ msgstr "Varje knappelement måste innehålla nycklar för 'url' och 'text'."
+
+#~ msgid "Request of new invoice"
+#~ msgstr "Begäran om ny faktura"
+
+#~ msgid "This is a request to create an invoice to the specifications below."
+#~ msgstr ""
+#~ "Detta är en begäran om att skapa en faktura enligt specifikationerna "
+#~ "nedan."
+
+#~ msgid "Ordered articles:"
+#~ msgstr "Beställda artiklar:"
+
+#~ msgid "Our reference: "
+#~ msgstr "Vår referens"
+
+#~ msgid "Their reference: "
+#~ msgstr "Deras referens:"
+
+#~ msgid "Total: "
+#~ msgstr "Totalt: "
+
+#~ msgid "VAT-Number: "
+#~ msgstr "Moms-nummer"
+
+#~ msgid "Price include VAT: "
+#~ msgstr "Priset inkluderar moms: "
+
+#~ msgid "GLNR number: "
+#~ msgstr "GLN-nummer:"
+
+#~ msgid "Notes: "
+#~ msgstr "Anteckningar:"
+
+#~ msgid "Order approved"
+#~ msgstr "Beställning godkänd"
+
+#~ msgid ""
+#~ "Your order has been verified by us, and scheduled at your desired "
+#~ "occasion."
+#~ msgstr ""
+#~ "Din beställning har verifierats av oss, och planeras till önskat "
+#~ "tillfälle."
+
+#~ msgid "Articles:"
+#~ msgstr "Artiklar:"
+
+#~ msgid "Total (exluding VAT): "
+#~ msgstr "Totalt (exkl moms):"
 
 #~ msgid "Your order has been registered."
 #~ msgstr "Din beställning har registrerats."
@@ -1545,17 +1810,11 @@ msgstr ""
 #~ msgid "Email settings"
 #~ msgstr "E-post inställningar"
 
-#~ msgid "Order details"
-#~ msgstr "Detaljer för order"
-
 #~ msgid "Attached order media"
 #~ msgstr "Bifogade filer till den här ordern"
 
 #~ msgid "Order notations"
 #~ msgstr "Anteckningar för ordern"
-
-#~ msgid "Status Change Actions"
-#~ msgstr "Status Ändra åtgärd"
 
 #~ msgid "Package details"
 #~ msgstr "Paketdetaljer"
