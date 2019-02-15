@@ -72,34 +72,20 @@ class Customer
                     );
                 }
 
-                new Helper\CustomerMail(
-                    $userId,
-                    __('Activated account', 'modularity-resource-booking'),
-                    __('Your account has now been verified by one of our managers. You can now proceed to make a new reservation for a spot.', 'modularity-resource-booking'),
-                    array(
-                        array(
-                            'heading' => __('Account owner:', 'modularity-resource-booking'),
-                            'content' => Helper\Customer::getName($userId)
-                        ),
-                        array(
-                            'heading' => __('Registered email:', 'modularity-resource-booking'),
-                            'content' => Helper\Customer::getEmail($userId)
-                        ),
-                        array(
-                            'heading' => __('Registered phone:', 'modularity-resource-booking'),
-                            'content' => Helper\Customer::getPhone($userId)
-                        ),
-                        array(
-                            'heading' => __('Registered company:', 'modularity-resource-booking'),
-                            'content' => Helper\Customer::getCompany($userId)
-                        ),
-                        array(
-                            'heading' => __('Registered company number:', 'modularity-resource-booking'),
-                            'content' => Helper\Customer::getCompanyNumber($userId)
-                        )
-                    ),
-                    $links
-                );
+                if (!empty(get_field('actions_customer_account_approved', 'options')) && is_array(get_field('actions_customer_account_approved', 'options'))) {
+                    foreach (get_field('actions_customer_account_approved', 'options') as $mailTemplate) {
+                        $mailService = new \ModularityResourceBooking\Mail\Service($mailTemplate);
+                        $mailService->setOrder($id);
+                        $mailService->setUser(self::$userId);
+                        $mailService->composeMail();
+                        $mailService->sendMail();
+
+                        $errors = $mailService->getErrors();
+                        if (!empty($errors->get_error_messages())) {
+                            error_log(print_r($errors, true));
+                        }
+                    }
+                }
             }
         }
     }

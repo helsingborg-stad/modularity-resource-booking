@@ -99,27 +99,20 @@ class Orders
 
         $orderId = get_the_title($id);
 
-        //Send manager email
-        new \ModularityResourceBooking\Helper\ManagerMail(
-            __('Canceled order', 'modularity-resource-booking'),
-            sprintf(__('The order #%s has been canceled.', 'modularity-resource-booking'), $orderId),
-            array(
-                array(
-                    'heading' => __('Order number:', 'modularity-resource-booking'),
-                    'content' => $orderId
-                ),
-                array(
-                    'heading' => __('Customer: ', 'modularity-resource-booking'),
-                    'content' => \ModularityResourceBooking\Helper\Customer::getName(self::$userId)
-                )
-            ),
-            array(
-                array(
-                    'text' => __('Show order', 'modularity-resource-booking'),
-                    'url' => add_query_arg(array('post' => $id, 'action' => 'edit'), self_admin_url('post.php'))
-                )
-            )
-        );
+        if (!empty(get_field('actions_customer_cancel_order', 'options')) && is_array(get_field('actions_customer_cancel_order', 'options'))) {
+            foreach (get_field('actions_customer_cancel_order', 'options') as $mailTemplate) {
+                $mailService = new \ModularityResourceBooking\Mail\Service($mailTemplate);
+                $mailService->setOrder($id);
+                $mailService->setUser(self::$userId);
+                $mailService->composeMail();
+                $mailService->sendMail();
+
+                $errors = $mailService->getErrors();
+                if (!empty($errors->get_error_messages())) {
+                    error_log(print_r($errors, true));
+                }
+            }
+        }
 
         // Return success
         return new \WP_REST_Response(
@@ -386,29 +379,20 @@ class Orders
         // Save complete order data with current prices etc
         update_post_meta($insert, 'order_data', $this->filterorderOutput(get_post($insert)));
 
-        //Send manager email
-        new \ModularityResourceBooking\Helper\ManagerMail(
-            __('New order', 'modularity-resource-booking'),
-            __('A new order has been submitted, please review it and accept it as soon as possible.', 'modularity-resource-booking'),
-            array(
-                'table' => array(
-                    array(
-                        'heading' => __('Order number:', 'modularity-resource-booking'),
-                        'content' => $orderId
-                    ),
-                    array(
-                        'heading' => __('Customer: ', 'modularity-resource-booking'),
-                        'content' => \ModularityResourceBooking\Helper\Customer::getName(self::$userId)
-                    )
-                ),
-                'links' => array(
-                    array(
-                        'text' => __('Show order', 'modularity-resource-booking'),
-                        'url' => add_query_arg(array('post' => $insert, 'action' => 'edit'), self_admin_url('post.php'))
-                    )
-                )
-            )
-        );
+        if (!empty(get_field('actions_new_order', 'options')) && is_array(get_field('actions_new_order', 'options'))) {
+            foreach (get_field('actions_new_order', 'options') as $mailTemplate) {
+                $mailService = new \ModularityResourceBooking\Mail\Service($mailTemplate);
+                $mailService->setOrder($insert);
+                $mailService->setUser(self::$userId);
+                $mailService->composeMail();
+                $mailService->sendMail();
+
+                $errors = $mailService->getErrors();
+                if (!empty($errors->get_error_messages())) {
+                    error_log(print_r($errors, true));
+                }
+            }
+        }
 
         //Return success
         return new \WP_REST_Response(

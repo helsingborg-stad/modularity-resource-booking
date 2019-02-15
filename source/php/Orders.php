@@ -81,80 +81,26 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
         $newTermSetup = $data["acf"][get_field_object('order_status')['key']];
         $oldTermSetup = get_the_terms($postId, self::$statusTaxonomySlug);
 
-        $articles = get_post_meta($postId, 'order_data', true)[0]['articles'];
-
-        if (!empty($articles)) {
-            $summary = $this->mapSummary($articles);
-        }
-
         if (is_array($oldTermSetup) && !empty($oldTermSetup)) {
             foreach ($oldTermSetup as $term) {
-                if ($term->term_id != $newTermSetup || isset($data['acf'][get_field_object('resend_email')['key']]) && $data['acf'][get_field_object('resend_email')['key']] === '1') {
+                if ($term->term_id != $newTermSetup
+                    || isset($data['acf'][get_field_object('resend_email')['key']]) && $data['acf'][get_field_object('resend_email')['key']] === '1') {
                     //Get actions
                     $actionOnAcquisition = get_field('do_action_on_aqusition', self::$statusTaxonomySlug . "_" . $newTermSetup);
 
-                    //Send email to economy
-                    if (!is_null($actionOnAcquisition) && is_array($actionOnAcquisition) && in_array('economy_mail', $actionOnAcquisition)) {
-                        new \ModularityResourceBooking\Helper\EconomyMail(
-                            __('Request of new invoice', 'modularity-resource-booking'),
-                            __('This is a request to create an invoice to the specifications below.', 'modularity-resource-booking'),
-                            array(
-                                'table' => array(
-                                    array(
-                                        'heading' => __('Order number:', 'modularity-resource-booking'),
-                                        'content' => get_post_meta($postId, 'order_id', true)
-                                    ),
-                                    array(
-                                        'heading' => __('Our reference: ', 'modularity-resource-booking'),
-                                        'content' => Helper\Customer::getName(get_current_user_id()),
-                                    ),
-                                    array(
-                                        'heading' => __('Their reference: ', 'modularity-resource-booking'),
-                                        'content' => Helper\Customer::getName($data["acf"][get_field_object('customer_id')['key']])
-                                    ),
-                                    array(
-                                        'heading' => __('VAT-Number: ', 'modularity-resource-booking'),
-                                        'content' => Helper\Customer::getVat($data["acf"][get_field_object('customer_id')['key']])
-                                    ),
-                                    array(
-                                        'heading' => __('Price include VAT: ', 'modularity-resource-booking'),
-                                        'content' => Helper\Customer::getTaxIndicator($data["acf"][get_field_object('customer_id')['key']])
-                                    ),
-                                    array(
-                                        'heading' => __('GLNR number: ', 'modularity-resource-booking'),
-                                        'content' => Helper\Customer::getGlnr($data["acf"][get_field_object('customer_id')['key']])
-                                    ),
-                                    array(
-                                        'heading' => __('Notes: ', 'modularity-resource-booking'),
-                                        'content' => $data["acf"][get_field_object('order_notations')['key']]
-                                    )
-                                ),
-                                'summary' => isset($summary) ? $summary : false,
-                                'links' => array()
-                            )
-                        );
-                    }
+                    if (is_array($actionOnAcquisition) && !empty($actionOnAcquisition)) {
+                        foreach ($actionOnAcquisition as $templateId) {
+                            $mailService = new \ModularityResourceBooking\Mail\Service($templateId);
+                            $mailService->setOrder($postId);
+                            $mailService->setUser($data["acf"][get_field_object('customer_id')['key']]);
+                            $mailService->composeMail();
+                            $mailService->sendMail();
 
-                    //Send email to customer
-                    if (!is_null($actionOnAcquisition) && in_array('customer_approval_mail', $actionOnAcquisition)) {
-                        new \ModularityResourceBooking\Helper\CustomerMail(
-                            $data["acf"][get_field_object('customer_id')['key']],
-                            __('Order approved', 'modularity-resource-booking'),
-                            __('Your order has been verified by us, and scheduled at your desired occasion.', 'modularity-resource-booking'),
-                            array(
-                                'table' => array(
-                                    array(
-                                        'heading' => __('Order number:', 'modularity-resource-booking'),
-                                        'content' => get_post_meta($postId, 'order_id', true)
-                                    ),
-                                    array(
-                                        'heading' => __('Our reference: ', 'modularity-resource-booking'),
-                                        'content' => Helper\Customer::getName(get_current_user_id())
-                                    )
-                                ),
-                                'summary' => isset($summary) ? $summary : false
-                            )
-                        );
+                            $errors = $mailService->getErrors();
+                            if (!empty($errors->get_error_messages())) {
+                                error_log(print_r($errors, true));
+                            }
+                        }
                     }
                 }
             }

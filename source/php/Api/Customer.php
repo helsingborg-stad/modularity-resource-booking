@@ -160,47 +160,19 @@ class Customer
                 }
             }
 
-            //Send manager email
-            new \ModularityResourceBooking\Helper\ManagerMail(
-                __('New customer', 'modularity-resource-booking'),
-                __('A new customer been registered in your booking system. You have to review this customer and assign the customer account a user group.', 'modularity-resource-booking'),
-                array(
-                    array(
-                        'heading' => __('Company:', 'modularity-resource-booking'),
-                        'content' => \ModularityResourceBooking\Helper\Customer::getCompany($userId)
-                    ),
-                    array(
-                        'heading' => __('Company number:', 'modularity-resource-booking'),
-                        'content' => \ModularityResourceBooking\Helper\Customer::getCompanyNumber($userId)
-                    ),
-                    array(
-                        'heading' => __('Glnr number: ', 'modularity-resource-booking'),
-                        'content' => \ModularityResourceBooking\Helper\Customer::getGlnr($userId)
-                    ),
-                    array(
-                        'heading' => __('Vat-number: ', 'modularity-resource-booking'),
-                        'content' => \ModularityResourceBooking\Helper\Customer::getVat($userId)
-                    ),
-                    array(
-                        'heading' => __('Contact name:', 'modularity-resource-booking'),
-                        'content' => \ModularityResourceBooking\Helper\Customer::getName($userId)
-                    ),
-                    array(
-                        'heading' => __('Email address: ', 'modularity-resource-booking'),
-                        'content' => \ModularityResourceBooking\Helper\Customer::getEmail($userId)
-                    ),
-                    array(
-                        'heading' => __('Phone number: ', 'modularity-resource-booking'),
-                        'content' => \ModularityResourceBooking\Helper\Customer::getPhone($userId)
-                    )
-                ),
-                array(
-                    array(
-                        'text' => __('Show profile', 'modularity-resource-booking'),
-                        'url' => add_query_arg('user_id', $userId, self_admin_url('user-edit.php'))
-                    )
-                )
-            );
+            if (!empty(get_field('actions_new_customer_account', 'options')) && is_array(get_field('actions_new_customer_account', 'options'))) {
+                foreach (get_field('actions_new_customer_account', 'options') as $mailTemplate) {
+                    $mailService = new \ModularityResourceBooking\Mail\Service($mailTemplate);
+                    $mailService->setUser($userId);
+                    $mailService->composeMail();
+                    $mailService->sendMail();
+
+                    $errors = $mailService->getErrors();
+                    if (!empty($errors->get_error_messages())) {
+                        error_log(print_r($errors, true));
+                    }
+                }
+            }
 
             return array(
                 'message' => __('Your user account has been created, you will be notified when its approved and ready to use.', 'modularity-resource-booking'),
