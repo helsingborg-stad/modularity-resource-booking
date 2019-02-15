@@ -5,6 +5,45 @@ namespace ModularityResourceBooking\Helper;
 class Customer
 {
     /**
+     * Get customer data
+     *
+     * @param int|WP_User The user object or user id
+     *
+     * @return array with user data
+     */
+    public static function getCustomerData($user, $headingsOnly = false)
+    {
+        return array(
+            'name' => $headingsOnly ?           __('Name', 'modularity-resource-booking')
+            : self::getName($user),
+
+            'company' => $headingsOnly ?        __('Company', 'modularity-resource-booking')
+            : self::getCompany($user),
+
+            'companyNumber' => $headingsOnly ?  __('Company number', 'modularity-resource-booking')
+            : self::getCompanyNumber($user),
+
+            'contactPerson' => $headingsOnly ?  __('Contact person', 'modularity-resource-booking')
+            : self::getContactPerson($user),
+
+            'email' => $headingsOnly ?          __('Email', 'modularity-resource-booking')
+            : self::getEmail($user),
+
+            'phone' => $headingsOnly ?          __('Phone', 'modularity-resource-booking')
+            : self::getPhone($user),
+
+            'glnr' => $headingsOnly ?           __('GLNR number', 'modularity-resource-booking')
+            : self::getGlnr($user),
+
+            'vat' => $headingsOnly ?            __('VAT-number', 'modularity-resource-booking')
+            : self::getVat($user),
+            
+            'billingAddress' => $headingsOnly ? __('Billing address', 'modularity-resource-booking')
+            : self::getBillingAddress($user)
+        );
+    }
+
+    /**
      * Get a customers first and lastname as string
      *
      * @param int|WP_User The user object or user id
@@ -56,7 +95,6 @@ class Customer
     public static function getPhone($user)
     {
         $user = self::_transformToUserId($user);
-
         if ($phone = get_user_meta($user, 'phone', true)) {
             return $phone;
         }
@@ -143,6 +181,46 @@ class Customer
 
         if ($companyNumber = get_user_meta($user, 'billing_company_number', true)) {
             return $companyNumber;
+        }
+
+        return new \WP_Error(
+            'user_not_found',
+            __('The user data you requested was not found.', 'modularity-resource-booking')
+        );
+    }
+
+    /**
+     * Get a customer's contact person
+     *
+     * @param int|WP_User $user The user object or user id
+     *
+     * @return string with the user phone or WP_Error if not found.
+     */
+    public static function getContactPerson($user)
+    {
+        $user = self::_transformToUserId($user);
+        if ($phone = get_user_meta($user, 'billing_contact_person', true)) {
+            return $phone;
+        }
+
+        return new \WP_Error(
+            'user_not_found',
+            __('The user data you requested was not found.', 'modularity-resource-booking')
+        );
+    }
+
+    /**
+     * Get a customer billing address
+     *
+     * @param int|WP_User $user The user object or user id
+     *
+     * @return string with the user phone or WP_Error if not found.
+     */
+    public static function getBillingAddress($user)
+    {
+        $user = self::_transformToUserId($user);
+        if ($phone = get_user_meta($user, 'billing_address', true)) {
+            return $phone;
         }
 
         return new \WP_Error(
