@@ -191,7 +191,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
      * @param  [array] $articles Array of articles (from the post meta 'order_data')
      * @return [int]
      */
-    public function getTotalPrice($articles)
+    public static function getTotalPrice($articles)
     {
         if (empty($articles)) {
             return 0;
