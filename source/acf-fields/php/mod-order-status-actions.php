@@ -3,13 +3,13 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5c360bf77a6cf',
-    'title' => 'Status Change Actions',
+    'title' => __('Status Change Actions', 'modularity-resource-booking'),
     'fields' => array(
         0 => array(
-            'key' => 'field_5c360bffe82b6',
+            'key' => 'field_5c62cbf1deb63',
             'label' => __('Do these actions when order aquire status', 'modularity-resource-booking'),
             'name' => 'do_action_on_aqusition',
-            'type' => 'select',
+            'type' => 'post_object',
             'instructions' => '',
             'required' => 0,
             'conditional_logic' => 0,
@@ -18,18 +18,14 @@
                 'class' => '',
                 'id' => '',
             ),
-            'choices' => array(
-                'economy_mail' => __('Send a invoice request to economy', 'modularity-resource-booking'),
-                'customer_approval_mail' => __('Send a message to the customer (order approved)', 'modularity-resource-booking'),
+            'post_type' => array(
+                0 => 'modularity-rb-mail',
             ),
-            'default_value' => array(
-            ),
+            'taxonomy' => '',
             'allow_null' => 1,
             'multiple' => 1,
+            'return_format' => 'id',
             'ui' => 1,
-            'ajax' => 0,
-            'return_format' => 'value',
-            'placeholder' => '',
         ),
         1 => array(
             'key' => 'field_5c3db4d98eb4a',

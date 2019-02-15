@@ -72,7 +72,9 @@ add_action('plugins_loaded', function () {
             'mod-sign-in-settings' => 'group_5c4ef6a792434',
             'mod-resource_booking_map' => 'group_5c4acdd9a5388',
             'mod-email-color-settings' => 'group_5c505a650df0a',
-            'mod-messages-settings' => 'group_5c5963e405f7b'
+            'mod-messages-settings' => 'group_5c5963e405f7b',
+            'mod-order-resend-mail' => 'group_5c5dc351c1bfc',
+            'mod-customer-action-settings' => 'group_5c65d682e3a62'
         )
     );
     $acfExportManager->import();

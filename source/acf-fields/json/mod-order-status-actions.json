@@ -3,10 +3,10 @@
     "title": "Status Change Actions",
     "fields": [
         {
-            "key": "field_5c360bffe82b6",
+            "key": "field_5c62cbf1deb63",
             "label": "Do these actions when order aquire status",
             "name": "do_action_on_aqusition",
-            "type": "select",
+            "type": "post_object",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -15,17 +15,14 @@
                 "class": "",
                 "id": ""
             },
-            "choices": {
-                "economy_mail": "Send a invoice request to economy",
-                "customer_approval_mail": "Send a message to the customer (order approved)"
-            },
-            "default_value": [],
+            "post_type": [
+                "modularity-rb-mail"
+            ],
+            "taxonomy": "",
             "allow_null": 1,
             "multiple": 1,
-            "ui": 1,
-            "ajax": 0,
-            "return_format": "value",
-            "placeholder": ""
+            "return_format": "id",
+            "ui": 1
         },
         {
             "key": "field_5c3db4d98eb4a",
