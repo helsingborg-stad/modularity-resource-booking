@@ -75,8 +75,7 @@ class Customer
                 if (!empty(get_field('actions_customer_account_approved', 'options')) && is_array(get_field('actions_customer_account_approved', 'options'))) {
                     foreach (get_field('actions_customer_account_approved', 'options') as $mailTemplate) {
                         $mailService = new \ModularityResourceBooking\Mail\Service($mailTemplate);
-                        $mailService->setOrder($id);
-                        $mailService->setUser(self::$userId);
+                        $mailService->setUser($userId);
                         $mailService->composeMail();
                         $mailService->sendMail();
 
