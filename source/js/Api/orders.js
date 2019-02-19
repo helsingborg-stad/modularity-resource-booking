@@ -81,4 +81,37 @@ const postRequest = (restUrl, nonce) =>
         throw Error(response.statusText);
     });
 
-export { getCustomerOrders, postRequest, createOrder };
+const uploadFiles = (orderId, files, restUrl, restNonce) => {
+    const url = `${restUrl}ModularityResourceBooking/v1/UploadFiles`;
+    const formData = new FormData();
+
+    formData.append('order_id', orderId);
+
+    if (typeof files !== 'undefined' && files.length > 0) {
+        files.forEach((media, index) => {
+            formData.append(`files_${index}`, media.file);
+        });
+    }
+
+    const options = {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-WP-NONCE': restNonce,
+        },
+    };
+
+    return fetch(url, options)
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            if (response.state === 'error') {
+                throw new Error(response.message);
+            }
+
+            return response;
+        });
+};
+
+export { getCustomerOrders, postRequest, createOrder, uploadFiles };
