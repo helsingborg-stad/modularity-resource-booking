@@ -8,6 +8,8 @@ import Files from '../Component/Files';
 import { createOrder } from '../../Api/orders';
 import { ValidateFileSize } from '../Helper/hyperForm';
 
+import Checkbox from '../Component/Checkbox';
+
 class BookingForm extends React.Component {
     static propTypes = {
         translation: PropTypes.object.isRequired,
@@ -44,6 +46,8 @@ class BookingForm extends React.Component {
             submitted: false,
 
             orderTitle: '',
+
+            skipFileUpload: false,
         };
 
         this.handleClickEvent = this.handleClickEvent.bind(this);
@@ -133,9 +137,7 @@ class BookingForm extends React.Component {
                             dateFns.isSameDay(startOfWeek, slot.start) &&
                             dateFns.isSameDay(endOfWeek, slot.stop)
                         ) {
-                            slot.title = `${state.articleName} (Vecka ${dateFns.getISOWeek(
-                                slot.start
-                            )})`;
+                            slot.title = `Vecka ${dateFns.getISOWeek(slot.start)}`;
                         } else {
                             slot.title = state.articleName;
                         }
@@ -155,7 +157,7 @@ class BookingForm extends React.Component {
     submitOrder(e) {
         e.preventDefault();
         const { articleType, articleId, restUrl, restNonce, translation } = this.props;
-        const { selectedSlots, files, notice, lockForm, orderTitle } = this.state;
+        const { selectedSlots, files, notice, lockForm, orderTitle, skipFileUpload } = this.state;
 
         // Locked
         if (lockForm) {
@@ -192,7 +194,7 @@ class BookingForm extends React.Component {
             });
         });
 
-        createOrder(orderTitle, orders, files, restUrl, restNonce)
+        createOrder(orderTitle, orders, files, restUrl, skipFileUpload, restNonce)
             .then(result => {
                 // Reset loading
                 this.setState({ formIsLoading: false });
@@ -396,6 +398,7 @@ class BookingForm extends React.Component {
             formIsLoading,
             submitted,
             orderTitle,
+            skipFileUpload,
         } = this.state;
 
         if (isLoading) {
@@ -456,13 +459,29 @@ class BookingForm extends React.Component {
                             {files.length > 0 ? (
                                 <div className="grid-xs-12 u-mb-3">
                                     <h4 className="u-mb-2">{headings.files}</h4>
-                                    <Files
-                                        onFileUpload={this.handleFileUpload}
-                                        disabled={!!lockForm}
-                                        translation={translation}
-                                    >
-                                        {files}
-                                    </Files>
+                                    <Checkbox
+                                        name="skipFileUpload"
+                                        checked={skipFileUpload}
+                                        label="Ladda upp material vid senare tillfälle"
+                                        onChange={e => {
+                                            this.setState((state, props) => {
+                                                const { skipFileUpload } = state;
+
+                                                return {
+                                                    skipFileUpload: !skipFileUpload,
+                                                };
+                                            });
+                                        }}
+                                    />
+                                    {!skipFileUpload && (
+                                        <Files
+                                            onFileUpload={this.handleFileUpload}
+                                            disabled={!!lockForm}
+                                            translation={translation}
+                                        >
+                                            {files}
+                                        </Files>
+                                    )}
                                 </div>
                             ) : null}
 

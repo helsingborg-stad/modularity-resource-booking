@@ -25,11 +25,15 @@ const getCustomerOrders = (restUrl, nonce, data = [], page = 1) => {
         });
 };
 
-const createOrder = (orderTitle, orders, files, restUrl, restNonce) => {
+const createOrder = (orderTitle, orders, files, restUrl, skipFileUpload, restNonce) => {
     const url = `${restUrl}ModularityResourceBooking/v1/CreateOrder`;
     const formData = new FormData();
 
     formData.append('order_title', orderTitle);
+
+    if (skipFileUpload) {
+        formData.append('skip_files', 1);
+    }
 
     orders.forEach((order, index) => {
         formData.append(`order_articles[${index}]`, JSON.stringify(order));
