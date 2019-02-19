@@ -4,7 +4,7 @@ namespace ModularityResourceBooking;
 
 class SingleOrder
 {
-    public function __construct($slug)
+    public function __construct()
     {
         //Modify content area
         add_action('the_content', array($this, 'filterContent'));
