@@ -105,6 +105,7 @@ gulp.task('scripts', function() {
         'UserAccount/Index.js',
         'OrderHistory/Index.js',
         'BookingForm/Index.js',
+        'UploadForm/Index.js',
     ];
     const tasks = files.map(function(entry) {
         return (
