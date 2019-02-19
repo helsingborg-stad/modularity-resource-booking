@@ -21,6 +21,11 @@ class SingleOrder
             return $content;
         }
 
+        //Restrict access
+        if (!current_user_can('administrator') && get_field('customer_id', get_queried_object_id())->ID !== (int) get_current_user_id()) {
+            return __("Sorry, you don't have permission to view this order.", 'modularity-resource-booking');
+        }
+
         $postId = get_queried_object_id();
         $orderData = get_post_meta($postId, 'order_data', true)[0];
 
