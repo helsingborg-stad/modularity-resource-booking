@@ -36,6 +36,35 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
 
         // Create default order statuses
         add_action('init', array($this, 'createDefaultStatuses'), 9);
+
+        //Enqueue UploadForm.js (found in single order pages)
+        add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'), 9);
+
+        //Single view
+        new \ModularityResourceBooking\SingleOrder(self::$postTypeSlug);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function enqueueScripts()
+    {
+        if (!is_singular(self::$postTypeSlug)) {
+            return;
+        }
+
+        wp_enqueue_script('modularity-single-' . self::$postTypeSlug, MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('js/UploadForm/Index.js'), array('jquery', 'react', 'react-dom'), false, true);
+        wp_localize_script('modularity-single-' . self::$postTypeSlug, 'modResourceUploadForm', array(
+            'translation' => array(
+                'dimensions' => __('Dimensions', 'modularity-resource-booking'),
+                'maxFileSize' => __('Max Filesize', 'modularity-resource-booking'),
+                'allowedFileTypes' => __('Allowed Filetypes', 'modularity-resource-booking'),
+                'uploadFiles' => __('Upload files', 'modularity-resource-booking'),
+                'uploadFilesHeading' => __('Upload material requirements', 'modularity-resource-booking')
+            )
+        ));
     }
 
     /**
