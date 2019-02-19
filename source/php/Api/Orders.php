@@ -81,6 +81,17 @@ class Orders
                 ),
             )
         );
+
+        //Upload files to order
+        register_rest_route(
+            "ModularityResourceBooking/v1",
+            "UploadFiles",
+            array(
+                'methods' => \WP_REST_Server::CREATABLE,
+                'callback' => array($this, 'upload'),
+                'permission_callback' => array($this, 'checkInsertCapability')
+            )
+        );
     }
 
     public function cancelOrder($request)
@@ -228,32 +239,12 @@ class Orders
      */
     public function create($request)
     {
-        //Verify that post data is avabile
-        if (isset($_POST) && !empty($_POST)) {
-            $requiredKeys = array('order_articles');
-
-            foreach ($requiredKeys as $requirement) {
-                if (!array_key_exists($requirement, $_POST)) {
-                    return new \WP_REST_Response(
-                        array(
-                            'message' => __('A parameter is missing: ', 'modularity-resource-booking') . $requirement,
-                            'state' => 'error'
-                        ),
-                        400
-                    );
-                }
-            }
-
-            $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        } else {
-            return new \WP_REST_Response(
-                array(
-                    'message' => __('The post request sent was empty.', 'modularity-resource-booking'),
-                    'state' => 'error'
-                ),
-                400
-            );
+        $validatePostDataResponse = $this->validatePostData(array('order_articles'));
+        if ($validatePostDataResponse instanceof \WP_REST_Response) {
+            return $validatePostDataResponse;
         }
+
+        $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         // Get customer group data
         $groupLimit = TimeSlots::customerGroupLimit(self::$userId);
@@ -323,21 +314,13 @@ class Orders
         $mediaItems = array();
         if (is_array($_FILES) && !empty($_FILES) && !isset($data['skip_files'])
             || is_array($_FILES) && !empty($_FILES) && $data['skip_files'] !== '1') {
-            $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($orderArticles[0]['field_5bed43f2bf1f2'], $orderArticles[0]['field_5c122674bc676'], $_FILES);
+            $mediaItems = $this->uploadFiles($_FILES, $orderArticles[0]['field_5bed43f2bf1f2'], $orderArticles[0]['field_5c122674bc676']);
 
-            if (is_wp_error($mediaItems)) {
-                return new \WP_REST_Response(
-                    array(
-                        'message' => $mediaItems->get_error_message(),
-                        'state' => $mediaItems->get_error_code(),
-                        'data' => $mediaItems->get_error_data(),
-                    ),
-                    400
-                );
+            if ($mediaItems instanceof \WP_REST_Response) {
+                return $mediaItems;
             }
         }
         
-
         //Make insert
         $insert = wp_insert_post($postItem);
 
@@ -406,6 +389,173 @@ class Orders
             ),
             201
         );
+    }
+
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $request
+     * @return void
+     */
+    public function upload($request)
+    {
+        //  Make sure we have files to process
+        if (!is_array($_FILES) || empty($_FILES)) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('$_FILES is empty', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                404
+            );
+        }
+
+        // Required post data keys
+        $requiredKeys = array(
+            'order_id'
+        );
+
+        //  Validate postdata
+        $validatePostDataResponse = $this->validatePostData($requiredKeys);
+        if ($validatePostDataResponse instanceof \WP_REST_Response) {
+            return $validatePostDataResponse;
+        }
+
+        //  Reference to form Data
+        $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+        //  Make sure order exists
+        if (get_post_type($data['order_id']) !== \ModularityResourceBooking\Orders::$postTypeSlug) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('Could not find any order with that id.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                404
+            );
+        }
+
+        //  Make sure user has permission to upload to this order
+        if (!isset(get_userdata(self::$userId)->caps['administrator'])
+            && get_field('customer_id', $data['order_id']) !== self::$userId) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('You dont have permission to upload to this order.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                404
+            );
+        }
+
+        $orderData = get_post_meta($data['order_id'], 'order_data', true)[0];
+        
+        //  Make sure order has articles
+        if (empty($orderData['articles'])) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('Order has no articles.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                404
+            );
+        }
+
+        $articleId = $orderData['articles'][0]['id'];
+        $articleType = $orderData['articles'][0]['type'];
+
+        $mediaItems = $this->uploadFiles($_FILES, $articleId, $articleType);
+        if ($mediaItems instanceof \WP_REST_Response) {
+            return $mediaItems;
+        }
+
+        //Append attachment data
+        if (is_array($mediaItems) && !empty($mediaItems)) {
+            //Add items for storage of each id
+            foreach ($mediaItems as $mediaKey => $mediaItem) {
+                update_sub_field(array('media_items', $mediaKey + 1, 'file'), $mediaItem, $data['order_id']);
+            }
+
+            //Add number of items avabile (hotfix!)
+            update_post_meta($data['order_id'], 'media_items', count($mediaItems));
+            update_post_meta($data['order_id'], '_media_items', 'field_5bffbfed18455');
+        }
+
+        //Return success
+        return new \WP_REST_Response(
+            array(
+                'message' => get_field('uploaded_items_notice', 'options') && !empty(get_field('uploaded_items_notice', 'options')) ? get_field('uploaded_items_notice', 'options') :
+                __('Files has been uploaded to the order.', 'modularity-resource-booking'),
+                'state' => 'success'
+            ),
+            201
+        );
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $requiredKeys
+     * @return void
+     */
+    public function validatePostData($requiredKeys)
+    {
+        //Verify that post data is avabile
+        if (isset($_POST) && !empty($_POST)) {
+            if (is_array($requiredKeys) && !empty($requiredKeys)) {
+                foreach ($requiredKeys as $requirement) {
+                    if (!array_key_exists($requirement, $_POST)) {
+                        return new \WP_REST_Response(
+                            array(
+                                'message' => __('A parameter is missing: ', 'modularity-resource-booking') . $requirement,
+                                'state' => 'error'
+                            ),
+                            400
+                        );
+                    }
+                }
+            }
+        } else {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('The post request sent was empty.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                400
+            );
+        }
+        
+        return true;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $files
+     * @param [type] $articleId
+     * @param [type] $articleType
+     * @return void
+     */
+    public function uploadFiles($files, $articleId, $articleType)
+    {
+        // Upload media files
+        $mediaItems = array();
+        if (is_array($files) && !empty($files)) {
+            $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($articleId, $articleType, $files);
+
+            if (is_wp_error($mediaItems)) {
+                return new \WP_REST_Response(
+                    array(
+                        'message' => $mediaItems->get_error_message(),
+                        'state' => $mediaItems->get_error_code(),
+                        'data' => $mediaItems->get_error_data(),
+                    ),
+                    400
+                );
+            }
+        }
+
+        return $mediaItems;
     }
 
     /**
