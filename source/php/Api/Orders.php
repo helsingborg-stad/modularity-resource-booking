@@ -321,7 +321,8 @@ class Orders
 
         // Upload media files
         $mediaItems = array();
-        if (is_array($_FILES) && !empty($_FILES)) {
+        if (is_array($_FILES) && !empty($_FILES) && !isset($data['skip_files'])
+            || is_array($_FILES) && !empty($_FILES) && $data['skip_files'] !== '1') {
             $mediaItems = \ModularityResourceBooking\Helper\MediaUpload::upload($orderArticles[0]['field_5bed43f2bf1f2'], $orderArticles[0]['field_5c122674bc676'], $_FILES);
 
             if (is_wp_error($mediaItems)) {
@@ -335,6 +336,7 @@ class Orders
                 );
             }
         }
+        
 
         //Make insert
         $insert = wp_insert_post($postItem);
