@@ -302,7 +302,8 @@ class Orders
             'post_title' => isset($data['order_title']) && is_string($data['order_title']) && !empty($data['order_title']) ? $data['order_title'] : $orderId,
             'post_type' => 'purchase',
             'post_status' => 'publish',
-            'post_author' => self::$userId
+            'post_author' => self::$userId,
+            'post_name' => $orderId
         );
 
         // Prepend id if provided (converted to update)
