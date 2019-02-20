@@ -272,12 +272,14 @@ class BookingForm extends React.Component {
         }
 
         if (disabled) {
-            return event.title + stockCount;
+            return `${event.title} - Fullbokad`;
         }
 
         return (
             <div>
-                <span className="calendar__event_content">{event.title + stockCount}</span>
+                <span className="calendar__event_content">
+                    {isSelected ? `${event.title} - Vald` : `${event.title} - Ledig`}
+                </span>
                 <span className="calendar__event_hidden">
                     <i
                         className={classNames('pricon', {
@@ -285,7 +287,9 @@ class BookingForm extends React.Component {
                             'pricon-plus-o': !isSelected,
                         })}
                     />
-                    {!isSelected ? ` ${translation.add} ` : ` ${translation.remove} `}
+                    {!isSelected
+                        ? ` ${translation.add} ${event.title}`
+                        : ` ${translation.remove} ${event.title}`}
                 </span>
             </div>
         );
