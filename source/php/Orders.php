@@ -314,7 +314,7 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                 'show_in_nav_menus' => true,
                 'has_archive' => false,
                 'rewrite' => array(
-                    'slug' => __('purchase', 'modularity-resource-booking'),
+                    'slug' => sanitize_title(__('order', 'modularity-resource-booking')),
                     'with_front' => false
                 ),
                 'hierarchical' => false,
