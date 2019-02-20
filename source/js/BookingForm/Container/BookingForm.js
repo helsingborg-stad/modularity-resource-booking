@@ -474,13 +474,15 @@ class BookingForm extends React.Component {
                                         }}
                                     />
                                     {!skipFileUpload && (
-                                        <Files
-                                            onFileUpload={this.handleFileUpload}
-                                            disabled={!!lockForm}
-                                            translation={translation}
-                                        >
-                                            {files}
-                                        </Files>
+                                        <div className="u-mt-2">
+                                            <Files
+                                                onFileUpload={this.handleFileUpload}
+                                                disabled={!!lockForm}
+                                                translation={translation}
+                                            >
+                                                {files}
+                                            </Files>
+                                        </div>
                                     )}
                                 </div>
                             ) : null}
