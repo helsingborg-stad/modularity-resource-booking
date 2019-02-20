@@ -48,6 +48,8 @@ class BookingForm extends React.Component {
             orderTitle: '',
 
             skipFileUpload: false,
+
+            acceptTerms: false,
         };
 
         this.handleClickEvent = this.handleClickEvent.bind(this);
@@ -403,6 +405,7 @@ class BookingForm extends React.Component {
             submitted,
             orderTitle,
             skipFileUpload,
+            acceptTerms,
         } = this.state;
 
         if (isLoading) {
@@ -433,6 +436,7 @@ class BookingForm extends React.Component {
                                     }}
                                     placeholder={translation.campaignName}
                                     required
+                                    disabled={!!lockForm}
                                 />
                             </div>
                             <div className="grid-xs-12 u-mb-3">
@@ -476,6 +480,7 @@ class BookingForm extends React.Component {
                                                 };
                                             });
                                         }}
+                                        disabled={!!lockForm}
                                     />
                                     {!skipFileUpload && (
                                         <div className="u-mt-2">
@@ -505,6 +510,25 @@ class BookingForm extends React.Component {
                                     </Summary>
                                 </div>
                             ) : null}
+
+                            <div className="grid-xs-12 u-mb-3">
+                                <Checkbox
+                                    name="acceptTerms"
+                                    checked={acceptTerms}
+                                    label="Jag godkänner dom allmäna villkoren"
+                                    onChange={e => {
+                                        this.setState((state, props) => {
+                                            const { acceptTerms } = state;
+
+                                            return {
+                                                acceptTerms: !acceptTerms,
+                                            };
+                                        });
+                                    }}
+                                    disabled={!!lockForm}
+                                    required
+                                />
+                            </div>
 
                             <div className="grid-xs-12">
                                 <div className="grid grid-va-middle">
