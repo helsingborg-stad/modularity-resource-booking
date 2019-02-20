@@ -312,13 +312,13 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
                 'publicly_queriable' => true,
                 'show_ui' => true,
                 'show_in_nav_menus' => true,
-                'has_archive' => true,
+                'has_archive' => false,
                 'rewrite' => array(
                     'slug' => __('purchase', 'modularity-resource-booking'),
                     'with_front' => false
                 ),
                 'hierarchical' => false,
-                'exclude_from_search' => false,
+                'exclude_from_search' => true,
                 'taxonomies' => array(),
                 'supports' => array('title', 'revisions')
             )
