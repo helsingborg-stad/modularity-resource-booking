@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 class Checkbox extends React.Component {
     static propTypes = {
@@ -27,7 +28,7 @@ class Checkbox extends React.Component {
         const { props } = this;
 
         return (
-            <div className="form-group">
+            <div className={classNames('form-group', { disabled: props.disabled })}>
                 {props.label && (
                     <label htmlFor={props.id || props.name} className="checkbox">
                         <input
@@ -37,6 +38,8 @@ class Checkbox extends React.Component {
                             type="checkbox"
                             checked={props.checked}
                             onChange={props.onChange}
+                            disabled={props.disabled}
+                            required={props.required}
                         />{' '}
                         {props.label}{' '}
                         {typeof props.explainer !== 'undefined' && props.explainer.length > 0 ? (
