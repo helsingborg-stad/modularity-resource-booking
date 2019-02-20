@@ -49,6 +49,28 @@
             'return_format' => 'id',
             'ui' => 1,
         ),
+        2 => array(
+            'key' => 'field_5c6d497c2b01d',
+            'label' => __('General terms page', 'modularity-resource-booking'),
+            'name' => 'general_terms_page',
+            'type' => 'post_object',
+            'instructions' => __('Select the page where the order history is placed.', 'modularity-resource-booking'),
+            'required' => 1,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'post_type' => array(
+                0 => 'page',
+            ),
+            'taxonomy' => '',
+            'allow_null' => 0,
+            'multiple' => 0,
+            'return_format' => 'id',
+            'ui' => 1,
+        ),
     ),
     'location' => array(
         0 => array(
