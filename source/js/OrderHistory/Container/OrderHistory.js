@@ -26,6 +26,7 @@ class OrderHistory extends React.Component {
 
         getCustomerOrders(restUrl, nonce)
             .then(response => {
+                console.log(response);
                 const data = this.mapData(response);
                 this.setState(
                     {
@@ -52,6 +53,7 @@ class OrderHistory extends React.Component {
             headings: [item.name, item.order_id, item.date, item.status],
             articles: item.articles,
             cancelable: item.cancelable,
+            permalink: item.permalink,
         }));
 
     updateItemList = () => {

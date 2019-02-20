@@ -10,6 +10,7 @@ const AccordionItem = ({
     translation,
     cancelOrder,
     cancelable,
+    permalink,
 }) => (
     <section className="accordion-section">
         <label tabIndex="0" className="accordion-toggle" htmlFor="accordion-section-1">
@@ -33,17 +34,30 @@ const AccordionItem = ({
                         translation={translation}
                     />
                 </div>
-                {cancelable && (
-                    <div className="grid-xs-12 u-mt-1">
-                        <Button
-                            title={translation.cancelOrder}
-                            onClick={e => cancelOrder(e, index, id)}
-                            color="primary"
-                            size="small"
-                            outline={false}
-                        />
+
+                <div className="grid-xs-12 u-mt-1">
+                    <div className="grid grid-va-middle">
+                        <div className="grid-fit-content">
+                            <Button
+                                title={translation.viewOrder}
+                                href={permalink}
+                                size="small"
+                                color="primary"
+                                outline={false}
+                            />
+                        </div>
+                        {cancelable && (
+                            <div className="grid-fit-content u-pl-0">
+                                <Button
+                                    title={translation.cancelOrder}
+                                    onClick={e => cancelOrder(e, index, id)}
+                                    size="small"
+                                    outline={false}
+                                />
+                            </div>
+                        )}
                     </div>
-                )}
+                </div>
             </div>
         </div>
     </section>

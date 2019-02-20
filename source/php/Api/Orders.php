@@ -182,6 +182,7 @@ class Orders
             $name = $order->post_title;
             $orderData = get_field('order_data', $order->ID);
             if (is_array($orderData) && !empty($orderData)) {
+                $orderId = $order->ID;
                 $order = array_shift($orderData);
                 $terms = wp_get_post_terms($order['id'], 'order-status', array('fields' => 'ids'));
                 $status = isset($terms[0]) ? get_term($terms[0], 'order-status') : null;
@@ -189,6 +190,7 @@ class Orders
                 $order['status'] = $status->name ?? '';
                 $order['cancelable'] = $cancelable;
                 $order['name'] = $name;
+                $order['permalink'] = get_permalink($orderId);
             } else {
                 unset($orders[$key]);
             }

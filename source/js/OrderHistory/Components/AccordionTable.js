@@ -26,6 +26,7 @@ const AccordionTable = ({ headings, items, articleHeadings, translation, cancelO
                     articles={item.articles}
                     translation={translation}
                     cancelOrder={cancelOrder}
+                    permalink={item.permalink}
                 />
             ))}
         </div>

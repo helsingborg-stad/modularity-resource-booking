@@ -55,6 +55,7 @@ class OrderHistory extends \Modularity\Module
                 'cancelFailed' => __('The order could not be canceled. Please try again later.', 'modularity-resource-booking'),
                 'currency' => RESOURCE_BOOKING_CURRENCY_SYMBOL,
                 'campaign' => __('Campaign', 'modularity-resource-booking'),
+                'viewOrder' => __('View order', 'modularity-resource-booking')
             ));
         }
     }
