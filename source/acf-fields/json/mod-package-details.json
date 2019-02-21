@@ -86,6 +86,91 @@
                     "multiple": 0
                 }
             ]
+        },
+        {
+            "key": "field_5c6eb32e3f17a",
+            "label": "Items in stock",
+            "name": "items_in_stock",
+            "type": "number",
+            "instructions": "This will override product stock, leave empty to use stock on product-level",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "We have",
+            "append": "items in stock",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_5c6eb336706e9",
+            "label": "Customer group stock limit",
+            "name": "customer_group_stock_limit",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5bfe95b8f90f5",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Add price variation",
+            "sub_fields": [
+                {
+                    "key": "field_5c6eb336706ea",
+                    "label": "Stock limit",
+                    "name": "stock_limit",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5c6eb336706eb",
+                    "label": "Customer group",
+                    "name": "customer_group",
+                    "type": "taxonomy",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "taxonomy": "customer_group",
+                    "field_type": "select",
+                    "allow_null": 0,
+                    "add_term": 0,
+                    "save_terms": 0,
+                    "load_terms": 0,
+                    "return_format": "id",
+                    "multiple": 0
+                }
+            ]
         }
     ],
     "location": [

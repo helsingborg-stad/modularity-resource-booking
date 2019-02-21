@@ -3,7 +3,7 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5beacf4f7895b',
-    'title' => 'Product details',
+    'title' => __('Product details', 'modularity-resource-booking'),
     'fields' => array(
         0 => array(
             'key' => 'field_5beacf5dac8a7',
@@ -112,6 +112,70 @@
             'step' => '',
         ),
         3 => array(
+            'key' => 'field_5c6eb21a919a7',
+            'label' => __('Customer group stock limit', 'modularity-resource-booking'),
+            'name' => 'customer_group_stock_limit',
+            'type' => 'repeater',
+            'instructions' => '',
+            'required' => 0,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'collapsed' => 'field_5bfe95b8f90f5',
+            'min' => 0,
+            'max' => 0,
+            'layout' => 'table',
+            'button_label' => __('Add price variation', 'modularity-resource-booking'),
+            'sub_fields' => array(
+                0 => array(
+                    'key' => 'field_5c6eb1e3919a6',
+                    'label' => __('Stock limit', 'modularity-resource-booking'),
+                    'name' => 'stock_limit',
+                    'type' => 'number',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'default_value' => 1,
+                    'placeholder' => '',
+                    'prepend' => __('Customer group is limited to order', 'modularity-resource-booking'),
+                    'append' => __('item(s) from stock', 'modularity-resource-booking'),
+                    'min' => '',
+                    'max' => '',
+                    'step' => '',
+                ),
+                1 => array(
+                    'key' => 'field_5c6eb21a919a9',
+                    'label' => __('Customer group', 'modularity-resource-booking'),
+                    'name' => 'customer_group',
+                    'type' => 'taxonomy',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'taxonomy' => 'customer_group',
+                    'field_type' => 'select',
+                    'allow_null' => 0,
+                    'add_term' => 0,
+                    'save_terms' => 0,
+                    'load_terms' => 0,
+                    'return_format' => 'id',
+                    'multiple' => 0,
+                ),
+            ),
+        ),
+        4 => array(
             'key' => 'field_5bead0faffc0e',
             'label' => __('Product location', 'modularity-resource-booking'),
             'name' => 'product_location',

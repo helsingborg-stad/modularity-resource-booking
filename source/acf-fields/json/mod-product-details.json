@@ -109,6 +109,70 @@
             "step": ""
         },
         {
+            "key": "field_5c6eb21a919a7",
+            "label": "Customer group stock limit",
+            "name": "customer_group_stock_limit",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5bfe95b8f90f5",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Add price variation",
+            "sub_fields": [
+                {
+                    "key": "field_5c6eb1e3919a6",
+                    "label": "Stock limit",
+                    "name": "stock_limit",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 1,
+                    "placeholder": "",
+                    "prepend": "Customer group is limited to order",
+                    "append": "item(s) from stock",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5c6eb21a919a9",
+                    "label": "Customer group",
+                    "name": "customer_group",
+                    "type": "taxonomy",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "taxonomy": "customer_group",
+                    "field_type": "select",
+                    "allow_null": 0,
+                    "add_term": 0,
+                    "save_terms": 0,
+                    "load_terms": 0,
+                    "return_format": "id",
+                    "multiple": 0
+                }
+            ]
+        },
+        {
             "key": "field_5bead0faffc0e",
             "label": "Product location",
             "name": "product_location",
