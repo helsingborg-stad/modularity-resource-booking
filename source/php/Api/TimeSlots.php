@@ -259,23 +259,78 @@ class TimeSlots
         return $orders;
     }
 
+    
     /**
      * Get customer group limit
      * @param $userId
      * @return null|int
      */
-    public static function customerGroupLimit($userId = 0)
+    public static function customerGroupLimit($articleId, $articleType, $userId = 0)
     {
         // Get user ID if missing
         $userId = $userId ? $userId : get_current_user_id();
         $customerGroup = wp_get_object_terms($userId, 'customer_group', array('fields' => 'ids'));
         $groupLimit = null;
         if (isset($customerGroup[0]) && !empty($customerGroup[0])) {
-            $groupLimit = get_field('customer_slot_limit', 'customer_group' . '_' . $customerGroup[0]);
-            $groupLimit = $groupLimit === '' ? null : (int)$groupLimit;
+            
+            //Get Package group limit
+            if ($articleType === 'package') {
+                $packageGroupLimits = get_field('customer_group_stock_limit', 'term_' . $articleId);
+                if (!empty($packageGroupLimits) && is_array($packageGroupLimits)) {
+                    foreach ($packageGroupLimits as $packageGroupLimit) {
+                        if ($packageGroupLimit['customer_group'] === $customerGroup[0]) {
+                            $groupLimit = $packageGroupLimit['stock_limit'];
+                            break;
+                        }
+                    }
+                }
+
+                //Get package product group limits
+                if ($groupLimit === null) {
+                    $lowestLimitOnProductLevel = null;
+                    $products = get_posts(
+                        array(
+                            'post_type' => 'product',
+                            'numberposts' => -1,
+                            'tax_query' => array(
+                                array(
+                                    'taxonomy' => 'product-package',
+                                    'field' => 'id',
+                                    'terms' => $articleId
+                                )
+                            )
+                        )
+                    );
+
+                    if (!empty($products) && is_array($products)) {
+                        foreach ($products as $product) {
+                            $limit = self::customerGroupLimit($product->ID, 'product', $userId);
+                            if (is_numeric($limit) && $limit > 0) {
+                                $lowestLimitOnProductLevel = ($lowestLimitOnProductLevel === null) ? $limit
+                                : ($lowestLimitOnProductLevel > $limit) ? $limit
+                                : $lowestLimitOnProductLevel;
+                            }
+                        }
+                    }
+
+                    $groupLimit = $lowestLimitOnProductLevel !== null ? $lowestLimitOnProductLevel : $groupLimit;
+                }
+            }
+            // Get Product Group Limit
+            if ($articleType === 'product') {
+                $productGroupLimits = get_field('customer_group_stock_limit', $articleId);
+                if (!empty($productGroupLimits) && is_array($productGroupLimits)) {
+                    foreach ($productGroupLimits as $productGroupLimit) {
+                        if ($productGroupLimit['customer_group'] === $customerGroup[0]) {
+                            $groupLimit = $productGroupLimit['stock_limit'];
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
-        return $groupLimit;
+        return is_numeric($groupLimit) ? (int) $groupLimit : $groupLimit;
     }
 
     /**
