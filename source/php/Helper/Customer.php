@@ -242,17 +242,17 @@ class Customer
 
         if ($userGroup = get_field('customer_group', 'user_' . $user)) {
             if ($taxSetting = get_field('mod_rb_include_tax_in_price', 'customer_group_' . $userGroup)) {
-                if ($taxSetting) {
-                    if ($yesNo === true) {
-                        return __('Yes', 'modularity-resource-booking');
-                    }
-                    return __('incl. vat', 'modularity-resource-booking');
-                } else {
-                    if ($yesNo === true) {
-                        return __('No', 'modularity-resource-booking');
-                    }
-                    return __('excl. vat', 'modularity-resource-booking');
+                if ($yesNo === true) {
+                    return __('Yes', 'modularity-resource-booking');
                 }
+                return __('incl. vat', 'modularity-resource-booking');
+
+            } else {
+                if ($yesNo === true) {
+                    return __('No', 'modularity-resource-booking');
+                }
+                
+                return __('excl. vat', 'modularity-resource-booking');
             }
         }
         return "";
