@@ -248,10 +248,6 @@ class Orders
 
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        // Get customer group data
-        $groupLimit = TimeSlots::customerGroupLimit(self::$userId);
-        $groupMembers = TimeSlots::customerGroupMembers(self::$userId);
-
         // Remap order items and check stock availability
         $orderArticles = $data['order_articles'];
 
@@ -264,6 +260,10 @@ class Orders
                 403
             );
         }
+
+        // Get customer group data
+        $groupLimit = TimeSlots::customerGroupLimit($data['order_articles'][0]['article_id'], $data['order_articles'][0]['type'], self::$userId);
+        $groupMembers = TimeSlots::customerGroupMembers(self::$userId);
 
         foreach ($orderArticles as $key => &$item) {
             $itemData = (array)json_decode(stripslashes(html_entity_decode($item)));

@@ -96,7 +96,7 @@ class TimeSlots
         $params = $request->get_params();
         $result = array();
         // Get customer group data
-        $groupLimit = self::customerGroupLimit($params['user_id']);
+        $groupLimit = self::customerGroupLimit($params['article_id'], $params['type'], $params['user_id']);
         $groupMembers = self::customerGroupMembers($params['user_id']);
 
         // Get list of product objects
