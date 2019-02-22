@@ -140,6 +140,7 @@ class BookingForm extends React.Component {
                             dateFns.isSameDay(endOfWeek, slot.stop)
                         ) {
                             slot.title = `Vecka ${dateFns.getISOWeek(slot.start)}`;
+                            slot.isoWeek = dateFns.getISOWeek(slot.start);
                         } else {
                             slot.title = state.articleName;
                         }
