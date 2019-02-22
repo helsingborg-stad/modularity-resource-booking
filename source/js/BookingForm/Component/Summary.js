@@ -2,6 +2,10 @@ import { Button } from 'hbg-react';
 import dateFns from 'date-fns';
 import classNames from 'classnames';
 
+const removeBg = {
+    backgroundColor: 'initial',
+};
+
 class Summary extends React.Component {
     static propTypes = {};
 
@@ -21,19 +25,47 @@ class Summary extends React.Component {
         return (
             <div>
                 <table className="table table--plain">
-                    <thead>
+                    {/* <thead>
                         <tr>
-                            <th>{translation.product}</th>
+                            <th colSpan="2">{translation.product}</th>
                             <th>{translation.start}</th>
                             <th colSpan="2">{translation.end}</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                    </thead> */}
+                    <tbody style={removeBg}>
                         {children.map(slot => (
                             <tr key={slot.id}>
-                                <td>{slot.articleName}</td>
-                                <td>{dateFns.format(slot.start, 'DD-MM-YYYY HH:mm')}</td>
-                                <td>{dateFns.format(slot.stop, 'DD-MM-YYYY HH:mm')}</td>
+                                <td className="u-pb-3">
+                                    <b>{slot.articleName}</b>
+                                    <br />
+                                    {slot.isoWeek && (
+                                        <React.Fragment>
+                                            <small>
+                                                <b>{`Vecka ${slot.isoWeek}`}</b>
+                                            </small>
+                                            <br />
+                                        </React.Fragment>
+                                    )}
+
+                                    <small>
+                                        {`${translation.start}: ${dateFns.format(
+                                            slot.start,
+                                            'DD-MM-YYYY HH:mm'
+                                        )}`}
+                                    </small>
+                                    <br />
+                                    <small>
+                                        {`${translation.end}: ${dateFns.format(
+                                            slot.stop,
+                                            'DD-MM-YYYY HH:mm'
+                                        )}`}
+                                    </small>
+                                </td>
+                                <td className="text-right">{`${slot.articlePrice} ${
+                                    translation.currency
+                                }`}</td>
+                                {/* <td>{dateFns.format(slot.start, 'DD-MM-YYYY HH:mm')}</td>
+                                <td>{dateFns.format(slot.stop, 'DD-MM-YYYY HH:mm')}</td> */}
                                 <td
                                     className={classNames({
                                         'text-right': true,
@@ -56,10 +88,10 @@ class Summary extends React.Component {
                             </tr>
                         ))}
                     </tbody>
-                    <tfoot>
+                    <tfoot style={removeBg}>
                         <tr>
-                            <td colSpan="3" className="text-right" />
-                            <td className="text-right">
+                            <td className="text-right" />
+                            <td className="text-right u-pt-2">
                                 <b>
                                     {translation.total}: {totalPrice} {translation.currency}{' '}
                                     <small>{translation.vat}</small>
