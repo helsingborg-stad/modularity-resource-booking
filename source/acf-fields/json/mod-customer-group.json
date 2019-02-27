@@ -1,10 +1,29 @@
 [{
     "key": "group_5bfe8d5fdeedd",
-    "title": "User Group",
+    "title": "Customer account",
     "fields": [
         {
+            "key": "field_5c73361b0f27d",
+            "label": "Account status",
+            "name": "customer_account_active",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Active",
+            "ui_off_text": "Disabled"
+        },
+        {
             "key": "field_5bfe8eb5174c1",
-            "label": "Select the customer group of this profile",
+            "label": "Customer group",
             "name": "customer_group",
             "type": "taxonomy",
             "instructions": "",
@@ -31,15 +50,35 @@
                 "param": "user_form",
                 "operator": "==",
                 "value": "all"
+            },
+            {
+                "param": "user_role",
+                "operator": "==",
+                "value": "customer"
             }
         ]
     ],
-    "menu_order": 0,
+    "menu_order": 99999,
     "position": "normal",
     "style": "default",
     "label_placement": "top",
     "instruction_placement": "label",
-    "hide_on_screen": "",
+    "hide_on_screen": [
+        "permalink",
+        "the_content",
+        "excerpt",
+        "discussion",
+        "comments",
+        "revisions",
+        "slug",
+        "author",
+        "format",
+        "page_attributes",
+        "featured_image",
+        "categories",
+        "tags",
+        "send-trackbacks"
+    ],
     "active": 1,
     "description": ""
 }]
