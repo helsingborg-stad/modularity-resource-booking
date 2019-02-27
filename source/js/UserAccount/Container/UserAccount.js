@@ -125,7 +125,10 @@ class UserAccount extends React.Component {
 
         return (
             <div>
-                <form onSubmit={this.handleFormSubmit} className="grid u-p-2 u-pt-5">
+                <form
+                    onSubmit={this.handleFormSubmit}
+                    className="grid u-p-2 u-pt-5 form-notice-fix"
+                >
                     <div className="grid-xs-12 grid-md-6 u-mb-3">
                         <Input
                             type="text"
