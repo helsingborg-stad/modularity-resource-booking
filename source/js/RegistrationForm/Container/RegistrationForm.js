@@ -132,7 +132,10 @@ class RegistrationForm extends React.Component {
         return (
             <div>
                 {!accountCreated && (
-                    <form onSubmit={this.handleFormSubmit} className="grid u-p-2 u-pt-5">
+                    <form
+                        onSubmit={this.handleFormSubmit}
+                        className="grid u-p-2 u-pt-5 form-notice-fix"
+                    >
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}first_name`}
@@ -283,6 +286,24 @@ class RegistrationForm extends React.Component {
                             />
                         </div>
 
+                        {typeof organisationTypes !== 'undefined' && organisationTypes.length > 0 && (
+                            <div className="grid-xs-12 grid-md-6 u-mb-3">
+                                <Select
+                                    name="organisationType"
+                                    value={organisationType}
+                                    onChange={this.handleInputChange}
+                                    label="Organisation type *"
+                                    placeholder="Select organisation type"
+                                    required
+                                    {...commonProps}
+                                >
+                                    {organisationTypes.map(option => (
+                                        <option value={option.value}>{option.label}</option>
+                                    ))}
+                                </Select>
+                            </div>
+                        )}
+
                         <div className="grid-xs-12 grid-md-6 u-mb-3">
                             <Input
                                 id={`${labelPrefix}contact_person`}
@@ -292,19 +313,6 @@ class RegistrationForm extends React.Component {
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.contactPerson}
                                 label={translation.contactPerson}
-                                {...commonProps}
-                            />
-                        </div>
-                        <div className="grid-xs-12 grid-md-6 u-mb-3">
-                            <Textarea
-                                id={`${labelPrefix}billing_address`}
-                                type="text"
-                                name="billingAdress"
-                                value={billingAdress}
-                                handleChange={this.handleInputChange}
-                                placeholder={translation.billingAddress}
-                                label={`${translation.billingAddress} *`}
-                                required
                                 {...commonProps}
                             />
                         </div>
@@ -338,25 +346,21 @@ class RegistrationForm extends React.Component {
                             />
                         </div>
 
-                        {typeof organisationTypes !== 'undefined' && organisationTypes.length > 0 && (
-                            <div className="grid-xs-12 grid-md-6 u-mb-3">
-                                <Select
-                                    name="organisationType"
-                                    value={organisationType}
-                                    onChange={this.handleInputChange}
-                                    label="Organisation type *"
-                                    placeholder="Select organisation type"
-                                    required
-                                    {...commonProps}
-                                >
-                                    {organisationTypes.map(option => (
-                                        <option value={option.value}>{option.label}</option>
-                                    ))}
-                                </Select>
-                            </div>
-                        )}
+                        <div className="grid-xs-12 grid-md-12 u-mb-3">
+                            <Textarea
+                                id={`${labelPrefix}billing_address`}
+                                type="text"
+                                name="billingAdress"
+                                value={billingAdress}
+                                handleChange={this.handleInputChange}
+                                placeholder={translation.billingAddress}
+                                label={`${translation.billingAddress} *`}
+                                required
+                                {...commonProps}
+                            />
+                        </div>
 
-                        <div className="grid-xs-12 u-mt-4">
+                        <div className="grid-xs-12">
                             <Button
                                 color="primary"
                                 title={translation.register}
