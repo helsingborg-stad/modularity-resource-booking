@@ -151,24 +151,26 @@
                 "name": "Name",
                 "email": "Email",
                 "phone": "Phone",
-                "glnr": "GLNR",
-                "vat": "Vat Number",
                 "company": "Company",
                 "companyNumber": "Company Number",
+                "customerUserGroup": "Customer Group",
                 "contactPerson": "Contact Person",
-                "billingAddress": "Billing Address"
+                "billingAddress": "Billing Address",
+                "vat": "Vat Number",
+                "glnr": "GLNR"
             },
             "allow_custom": 0,
             "default_value": [
                 "name",
                 "email",
                 "phone",
-                "glnr",
-                "vat",
                 "company",
                 "companyNumber",
+                "customerUserGroup",
                 "contactPerson",
-                "billingAddress"
+                "billingAddress",
+                "vat",
+                "glnr"
             ],
             "layout": "vertical",
             "toggle": 1,
