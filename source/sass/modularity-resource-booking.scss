@@ -11,3 +11,16 @@
         padding: 0px;
     }
 }
+
+.form-notice-fix {
+    .form-notice {
+        position: absolute;
+    }
+    input[type='file'] + .form-notice {
+        position: initial;
+    }
+    input[type='checkbox'][required]:not(.invalid),
+    input[type='file'] {
+        box-shadow: 0 0 0;
+    }
+}
