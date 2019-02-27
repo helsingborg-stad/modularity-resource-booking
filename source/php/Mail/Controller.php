@@ -108,6 +108,10 @@ class Controller
         $sectionTable = array();
 
         $orderFields = array(
+            'campaignName' => [
+                'heading' => __('Campaign name', 'modularity-resource-booking'),
+                'content' => get_the_title($orderId),
+            ],
             'orderId' => [
                 'heading' => __('Order ID', 'modularity-resource-booking'),
                 'content' => get_post_meta($orderId, 'order_id', true)
@@ -116,9 +120,9 @@ class Controller
                 'heading' => __('Order Date', 'modularity-resource-booking'),
                 'content' => get_the_date('', $orderId)
             ],
-            'campaignName' => [
-                'heading' => __('Campaign name', 'modularity-resource-booking'),
-                'content' => get_the_title($orderId),
+            'orderStatus' => [
+                'heading' => __('Order status', 'modularity-resource-booking'),
+                'content' => get_field('order_status', $orderId),
             ]
         );
         foreach (get_field('order_details_fields', $templateId) as $key) {

@@ -236,12 +236,12 @@
                 "email": "Email",
                 "phone": "Phone",
                 "company": "Company",
-                "companyNumber": "Company Number",
+                "companyNumber": "Organization number",
                 "customerUserGroup": "Customer Group",
-                "contactPerson": "Contact Person",
-                "billingAddress": "Billing Address",
-                "vat": "Vat Number",
-                "glnr": "GLNR"
+                "contactPerson": "Contact person",
+                "billingAddress": "Billing address",
+                "vat": "VAT number",
+                "glnr": "GLNR number"
             },
             "allow_custom": 0,
             "default_value": [
@@ -310,15 +310,17 @@
                 "id": ""
             },
             "choices": {
+                "campaignName": "Campaign name",
                 "orderId": "Order ID",
                 "orderDate": "Order date",
-                "campaignName": "Campaign name"
+                "orderStatus: Order status": "orderStatus: Order status"
             },
             "allow_custom": 0,
             "default_value": [
+                "campaignName",
                 "orderId",
                 "orderDate",
-                "campaignName"
+                "orderStatus"
             ],
             "layout": "vertical",
             "toggle": 1,
