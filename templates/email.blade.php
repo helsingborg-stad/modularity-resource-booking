@@ -189,7 +189,9 @@
                                                                     <tr class="summary-item">
                                                                         <td>
                                                                             <strong>{{ $item['title'] }}</strong>
-
+                                                                            @if (isset($item['week']) && !empty($item['week']))
+                                                                                <br><small><strong>{{$item['week']}}</strong></small>
+                                                                            @endif
                                                                             @if (isset($item['content']) && !empty($item['content']))
                                                                             <br>
                                                                                 @if (is_string($item['content']))
@@ -212,7 +214,8 @@
                                                                             <h2 style="color: {{$color}}">{{$summary['totalTitle']}}</h2>
                                                                         </td>
                                                                         <td  class="text-right">
-                                                                            <h2 style="color: {{$color}}">{{ $summary['totalPrice'] }}</h2>
+                                                                        <h2 style="color: {{$color}}; margin-bottom: 0px;">{{ $summary['totalPrice'] }}</h2>
+                                                                        <h4 style="color: {{$color}}; margin-top: 0px;">{{$vat}}</h4>
                                                                         </td>
                                                                     </tr>
                                                                 </tfoot>
