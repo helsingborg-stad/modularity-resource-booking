@@ -159,6 +159,13 @@ class Customer
                     update_user_meta($userId, $metaKey, $data[$metaKey]);
                 }
             }
+            
+            //Set organisation type
+            if (isset($data['organisation_type']) && !empty($data['organisation_type'])) {
+                error_log(print_r($data['organisation_type'], true));
+                update_field('customer_group', (int) $data['organisation_type'], 'user_' . $userId);
+                wp_set_post_terms($userId, array((int) $data['organisation_type']), 'customer_group');
+            }
 
             if (!empty(get_field('actions_new_customer_account', 'options')) && is_array(get_field('actions_new_customer_account', 'options'))) {
                 foreach (get_field('actions_new_customer_account', 'options') as $mailTemplate) {
