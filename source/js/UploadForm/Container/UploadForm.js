@@ -97,7 +97,6 @@ class UploadForm extends React.Component {
             <form onSubmit={this.handleSubmitForm}>
                 <div className="grid">
                     <div className="grid-xs-12 u-mb-3">
-                        <h4 class="u-mb-3">{translation.uploadFilesHeading}</h4>
                         <Files
                             onFileUpload={this.handleFileUpload}
                             disabled={!!lockForm}
