@@ -426,7 +426,7 @@ class BookingForm extends React.Component {
         return (
             <div className="c-card">
                 <div className="c-card__body" style={{ backgroundColor: '#f4f4f4' }}>
-                    <form onSubmit={this.submitOrder}>
+                    <form onSubmit={this.submitOrder} className="form-notice-fix">
                         <div className="grid">
                             <div className="grid-xs-12 u-mb-3">
                                 <h4 className="u-mb-2">{headings.orderName}*</h4>
