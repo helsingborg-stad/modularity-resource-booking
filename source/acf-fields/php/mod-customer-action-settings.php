@@ -93,6 +93,28 @@
             'return_format' => 'id',
             'ui' => 1,
         ),
+        4 => array(
+            'key' => 'field_5c7700ae08357',
+            'label' => __('Customer upload files', 'modularity-resource-booking'),
+            'name' => 'actions_customer_upload_files',
+            'type' => 'post_object',
+            'instructions' => '',
+            'required' => 0,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'post_type' => array(
+                0 => 'modularity-rb-mail',
+            ),
+            'taxonomy' => '',
+            'allow_null' => 1,
+            'multiple' => 1,
+            'return_format' => 'id',
+            'ui' => 1,
+        ),
     ),
     'location' => array(
         0 => array(

@@ -3,14 +3,36 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5bfd2dab2fd89',
-    'title' => 'Default order status',
+    'title' => __('Default order status', 'modularity-resource-booking'),
     'fields' => array(
         0 => array(
             'key' => 'field_5bfd2db48eb01',
-            'label' => __('Order status', 'modularity-resource-booking'),
+            'label' => __('New orders', 'modularity-resource-booking'),
             'name' => 'order_status',
             'type' => 'taxonomy',
             'instructions' => __('Defines a default order status on new orders.', 'modularity-resource-booking'),
+            'required' => 0,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'taxonomy' => 'order-status',
+            'field_type' => 'select',
+            'allow_null' => 0,
+            'add_term' => 0,
+            'save_terms' => 0,
+            'load_terms' => 0,
+            'return_format' => 'id',
+            'multiple' => 0,
+        ),
+        1 => array(
+            'key' => 'field_5c76ffd02e605',
+            'label' => __('On upload files', 'modularity-resource-booking'),
+            'name' => 'order_status_uploaded_files',
+            'type' => 'taxonomy',
+            'instructions' => __('Defines a default order status when customer upload files.', 'modularity-resource-booking'),
             'required' => 0,
             'conditional_logic' => 0,
             'wrapper' => array(

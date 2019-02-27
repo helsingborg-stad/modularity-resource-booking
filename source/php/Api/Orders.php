@@ -485,6 +485,28 @@ class Orders
             update_post_meta($data['order_id'], '_media_items', 'field_5bffbfed18455');
         }
 
+        // Mail actions
+        if (!empty(get_field('actions_customer_upload_files', 'options')) && is_array(get_field('actions_customer_upload_files', 'options'))) {
+            foreach (get_field('actions_customer_upload_files', 'options') as $mailTemplate) {
+                $mailService = new \ModularityResourceBooking\Mail\Service($mailTemplate);
+                $mailService->setOrder($data['order_id']);
+                $mailService->setUser(self::$userId);
+                $mailService->composeMail();
+                $mailService->sendMail();
+
+                $errors = $mailService->getErrors();
+                if (!empty($errors->get_error_messages())) {
+                    error_log(print_r($errors, true));
+                }
+            }
+        }
+
+        // Order Status actions
+        if (get_field('order_status_uploaded_files', 'options') && get_field('order_status_uploaded_files', 'options') > 0) {
+            $orderStatusId = get_field('order_status_uploaded_files', 'options');
+            update_field('order_status', $orderStatusId, $data['order_id']);
+        }
+
         //Return success
         return new \WP_REST_Response(
             array(

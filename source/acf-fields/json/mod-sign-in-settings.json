@@ -3,30 +3,8 @@
     "title": "Pages",
     "fields": [
         {
-            "key": "field_5c4ef6c47c961",
-            "label": "Sign in page",
-            "name": "sign_in_page",
-            "type": "post_object",
-            "instructions": "Select the page where the sign in form is placed.",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "page"
-            ],
-            "taxonomy": "",
-            "allow_null": 0,
-            "multiple": 0,
-            "return_format": "id",
-            "ui": 1
-        },
-        {
             "key": "field_5c5010ca2b9c4",
-            "label": "Order history page",
+            "label": "Order history",
             "name": "order_history_page",
             "type": "post_object",
             "instructions": "Select the page where the order history is placed.",
@@ -47,12 +25,34 @@
             "ui": 1
         },
         {
+            "key": "field_5c4ef6c47c961",
+            "label": "Sign in",
+            "name": "sign_in_page",
+            "type": "post_object",
+            "instructions": "Select the page where the sign in form is placed.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "page"
+            ],
+            "taxonomy": "",
+            "allow_null": 0,
+            "multiple": 0,
+            "return_format": "id",
+            "ui": 1
+        },
+        {
             "key": "field_5c6d497c2b01d",
-            "label": "General terms page",
+            "label": "General terms",
             "name": "general_terms_page",
             "type": "post_object",
-            "instructions": "Select the page where the order history is placed.",
-            "required": 1,
+            "instructions": "Select the page where the general terms is placed.",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
