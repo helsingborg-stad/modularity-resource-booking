@@ -1,5 +1,6 @@
 import { Button, Input, Textarea, Notice } from 'hbg-react';
 import { createUser } from '../../Api/user';
+import Select from '../components/Select';
 
 class RegistrationForm extends React.Component {
     constructor(props) {
@@ -21,6 +22,7 @@ class RegistrationForm extends React.Component {
                 contactPerson: '',
                 vatNumber: '',
                 glnrNumber: '',
+                organisationType: '',
             },
 
             // Notice
@@ -113,9 +115,10 @@ class RegistrationForm extends React.Component {
             contactPerson,
             vatNumber,
             glnrNumber,
+            organisationType,
         } = this.state.newUser;
 
-        const { translation } = this.props;
+        const { translation, organisationTypes } = this.props;
         const labelPrefix = 'registration_form_';
 
         const { notice, noticeType, accountCreated, lockInput } = this.state;
@@ -300,7 +303,23 @@ class RegistrationForm extends React.Component {
                                 value={billingAdress}
                                 handleChange={this.handleInputChange}
                                 placeholder={translation.billingAddress}
-                                label={translation.billingAddress}
+                                label={`${translation.billingAddress} *`}
+                                required
+                                {...commonProps}
+                            />
+                        </div>
+
+                        <div className="grid-xs-12 grid-md-6 u-mb-3">
+                            <Input
+                                id={`${labelPrefix}vat_number`}
+                                type="text"
+                                name="vatNumber"
+                                value={vatNumber}
+                                handleChange={this.handleInputChange}
+                                placeholder={translation.vatNumber}
+                                label={`${translation.vatNumber} *`}
+                                explainer={translation.explanation.vat}
+                                required
                                 {...commonProps}
                             />
                         </div>
@@ -319,19 +338,23 @@ class RegistrationForm extends React.Component {
                             />
                         </div>
 
-                        <div className="grid-xs-12 grid-md-6 u-mb-3">
-                            <Input
-                                id={`${labelPrefix}vat_number`}
-                                type="text"
-                                name="vatNumber"
-                                value={vatNumber}
-                                handleChange={this.handleInputChange}
-                                placeholder={translation.vatNumber}
-                                label={translation.vatNumber}
-                                explainer={translation.explanation.vat}
-                                {...commonProps}
-                            />
-                        </div>
+                        {typeof organisationTypes !== 'undefined' && organisationTypes.length > 0 && (
+                            <div className="grid-xs-12 grid-md-6 u-mb-3">
+                                <Select
+                                    name="organisationType"
+                                    value={organisationType}
+                                    onChange={this.handleInputChange}
+                                    label="Organisation type *"
+                                    placeholder="Select organisation type"
+                                    required
+                                    {...commonProps}
+                                >
+                                    {organisationTypes.map(option => (
+                                        <option value={option.value}>{option.label}</option>
+                                    ))}
+                                </Select>
+                            </div>
+                        )}
 
                         <div className="grid-xs-12 u-mt-4">
                             <Button
