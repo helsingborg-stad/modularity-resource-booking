@@ -25,13 +25,6 @@ class Summary extends React.Component {
         return (
             <div>
                 <table className="table table--plain">
-                    {/* <thead>
-                        <tr>
-                            <th colSpan="2">{translation.product}</th>
-                            <th>{translation.start}</th>
-                            <th colSpan="2">{translation.end}</th>
-                        </tr>
-                    </thead> */}
                     <tbody style={removeBg}>
                         {children.map(slot => (
                             <tr key={slot.id}>
@@ -64,8 +57,6 @@ class Summary extends React.Component {
                                 <td className="text-right">{`${slot.articlePrice} ${
                                     translation.currency
                                 }`}</td>
-                                {/* <td>{dateFns.format(slot.start, 'DD-MM-YYYY HH:mm')}</td>
-                                <td>{dateFns.format(slot.stop, 'DD-MM-YYYY HH:mm')}</td> */}
                                 <td
                                     className={classNames({
                                         'text-right': true,
@@ -93,7 +84,7 @@ class Summary extends React.Component {
                             <td className="text-right" />
                             <td className="text-right u-pt-2">
                                 <b>
-                                    {translation.total}: {totalPrice} {translation.currency}{' '}
+                                    {translation.total}: {totalPrice} {translation.currency} <br />
                                     <small>{translation.vat}</small>
                                 </b>
                             </td>
