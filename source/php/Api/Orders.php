@@ -248,10 +248,7 @@ class Orders
 
         $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        // Remap order items and check stock availability
-        $orderArticles = $data['order_articles'];
-
-        if (!is_array($orderArticles) || empty($orderArticles)) {
+        if (!is_array($data['order_articles']) || empty($data['order_articles'])) {
             return new \WP_REST_Response(
                 array(
                     'message' => __('You have to specify a article.', 'modularity-resource-booking'),
@@ -261,12 +258,16 @@ class Orders
             );
         }
 
+        $orderArticles = array_map(function ($article) {
+            return (array) json_decode(stripslashes(html_entity_decode($article)));
+        }, $data['order_articles']);
+
         // Get customer group data
-        $groupLimit = TimeSlots::customerGroupLimit($data['order_articles'][0]['article_id'], $data['order_articles'][0]['type'], self::$userId);
+        $groupLimit = TimeSlots::customerGroupLimit($orderArticles[0]['article_id'], $orderArticles[0]['type'], self::$userId);
         $groupMembers = TimeSlots::customerGroupMembers(self::$userId);
 
         foreach ($orderArticles as $key => &$item) {
-            $itemData = (array)json_decode(stripslashes(html_entity_decode($item)));
+            $itemData = $item;
 
             // Get list of product objects
             $products = TimeSlots::getProductsByArticle($itemData['article_id'], $itemData['type']);
