@@ -15,6 +15,7 @@ const createUser = (user, restUrl) => {
         contactPerson,
         glnrNumber,
         vatNumber,
+        organisationType,
     } = user;
 
     formData.append('email', email);
@@ -32,6 +33,8 @@ const createUser = (user, restUrl) => {
     formData.append('billing_contact_person', contactPerson);
     formData.append('billing_glnr_number', glnrNumber);
     formData.append('billing_vat_number', vatNumber);
+
+    formData.append('organisation_type', organisationType);
 
     const options = {
         method: 'POST',
