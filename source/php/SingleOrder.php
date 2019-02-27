@@ -59,11 +59,13 @@ class SingleOrder
 
         $data['summary'] = array();
         $data['summary']['items'] = array_map(function ($article) {
+            $startDate = new \DateTime($article['start']);
             return array(
                 'name' => $article['title'],
                 'price' => (string)$article['price'] . ' ' . RESOURCE_BOOKING_CURRENCY_SYMBOL,
                 'start' => $article['start'],
-                'stop' => $article['stop']
+                'stop' => $article['stop'],
+                'week' => __('Week', 'modularity-resource-booking') . ' ' . $startDate->format('W')
             );
         }, $orderData['articles']);
         $data['summary']['totalPrice'] = (string)\ModularityResourceBooking\Orders::getTotalPrice($orderData['articles']) . ' ' . RESOURCE_BOOKING_CURRENCY_SYMBOL;
