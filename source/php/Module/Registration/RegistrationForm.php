@@ -20,6 +20,18 @@ class RegistrationForm extends \Modularity\Module
         $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array('box', 'box-panel'), $this->post_type, $this->args));
         $data['rest_url'] = get_rest_url();
 
+
+        $customerGroups = get_terms('customer_group', array('hide_empty' => false));
+        $data['customerGroups'] = !empty($customerGroups) ? array_map(function ($group) {
+            return array(
+                'id' => $group->term_id,
+                'name' => $group->name,
+                'slug' => $group->slug,
+            );
+        }, $customerGroups) : array();
+
+        $data['customerGroups'] = json_encode($data['customerGroups']);
+
         return $data;
     }
 
@@ -62,7 +74,8 @@ class RegistrationForm extends \Modularity\Module
                     'headers' => array(
                         'billing' => __('Billing', 'modularity-resource-booking'),
                         'password' => __('Password', 'modularity-resource-booking')
-                    )
+                    ),
+                    'companyType' => __('Company type', 'modularity-resource-booking')
                 )
             );
         }
