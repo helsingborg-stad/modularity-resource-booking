@@ -20,7 +20,7 @@ class Customer
             'company' => $headingsOnly ?        __('Company', 'modularity-resource-booking')
             : self::getCompany($user),
 
-            'companyNumber' => $headingsOnly ?  __('Company number', 'modularity-resource-booking')
+            'companyNumber' => $headingsOnly ?  __('Organization number', 'modularity-resource-booking')
             : self::getCompanyNumber($user),
 
             'contactPerson' => $headingsOnly ?  __('Contact person', 'modularity-resource-booking')
@@ -39,7 +39,24 @@ class Customer
             : self::getVat($user),
             
             'billingAddress' => $headingsOnly ? __('Billing address', 'modularity-resource-booking')
-            : self::getBillingAddress($user)
+            : self::getBillingAddress($user),
+         
+            'customerUserGroup' => $headingsOnly ? __('Customer Group', 'modularity-resource-booking')
+            : self::getCustomerGroup($user),
+        );
+    }
+
+    public static function getCustomerGroup($user)
+    {
+        $user = self::_transformToUserId($user);
+
+        if ($customerGroup = get_field('customer_group', 'user_' . $user)) {
+            return get_term_by('id', $customerGroup, 'customer_group')->name;
+        }
+
+        return new \WP_Error(
+            'user_not_found',
+            __('The user data you requested was not found.', 'modularity-resource-booking')
         );
     }
 
@@ -282,8 +299,8 @@ class Customer
      */
     private static function _transformToUserId($user)
     {
-        if (is_a($user, "WP_User")) {
-            $user->ID;
+        if ($user instanceof \WP_User) {
+            return $user->ID;
         }
 
         if (is_numeric($user)) {
