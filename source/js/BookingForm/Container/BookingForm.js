@@ -443,7 +443,7 @@ class BookingForm extends React.Component {
                                 />
                             </div>
                             <div className="grid-xs-12 u-mb-3">
-                                <h4 className="u-mb-2">{headings.calendar}</h4>
+                                <h4 className="u-mb-2">{`${headings.calendar}*`}</h4>
                                 <Calendar
                                     events={avalibleSlots}
                                     onClickEvent={this.handleClickEvent}
@@ -467,41 +467,8 @@ class BookingForm extends React.Component {
                                 />
                             </div>
 
-                            {files.length > 0 ? (
-                                <div className="grid-xs-12 u-mb-3">
-                                    <h4 className="u-mb-2">{headings.files}</h4>
-                                    <Checkbox
-                                        name="skipFileUpload"
-                                        checked={skipFileUpload}
-                                        label="Ladda upp material vid senare tillfälle"
-                                        onChange={e => {
-                                            this.setState((state, props) => {
-                                                const { skipFileUpload } = state;
-
-                                                return {
-                                                    skipFileUpload: !skipFileUpload,
-                                                };
-                                            });
-                                        }}
-                                        disabled={!!lockForm}
-                                    />
-                                    {!skipFileUpload && (
-                                        <div className="u-mt-2">
-                                            <Files
-                                                onFileUpload={this.handleFileUpload}
-                                                disabled={!!lockForm}
-                                                translation={translation}
-                                            >
-                                                {files}
-                                            </Files>
-                                        </div>
-                                    )}
-                                </div>
-                            ) : null}
-
                             {selectedSlots.length > 0 ? (
                                 <div className="grid-xs-12 u-mb-3">
-                                    <h4 className="u-mb-2">{headings.summary}</h4>
                                     <Summary
                                         onClickRemoveItem={this.handleRemoveItem}
                                         translation={translation}
@@ -514,11 +481,44 @@ class BookingForm extends React.Component {
                                 </div>
                             ) : null}
 
+                            {files.length > 0 && !skipFileUpload ? (
+                                <div className="grid-xs-12">
+                                    <h4 className="u-mb-2">{headings.files}*</h4>
+                                    <div className="u-mt-2 u-mb-4">
+                                        <Files
+                                            onFileUpload={this.handleFileUpload}
+                                            disabled={!!lockForm}
+                                            translation={translation}
+                                        >
+                                            {files}
+                                        </Files>
+                                    </div>
+                                </div>
+                            ) : null}
+                            {files.length > 0 ? (
+                                <div className="grid-xs-12 u-mb-1">
+                                    <Checkbox
+                                        name="skipFileUpload"
+                                        checked={skipFileUpload}
+                                        label="Ladda upp material vid senare tillfälle (valfri)"
+                                        onChange={e => {
+                                            this.setState((state, props) => {
+                                                const { skipFileUpload } = state;
+
+                                                return {
+                                                    skipFileUpload: !skipFileUpload,
+                                                };
+                                            });
+                                        }}
+                                        disabled={!!lockForm}
+                                    />
+                                </div>
+                            ) : null}
                             <div className="grid-xs-12 u-mb-3">
                                 <Checkbox
                                     name="acceptTerms"
                                     checked={acceptTerms}
-                                    label="Jag godkänner dom allmäna villkoren"
+                                    label="Jag godkänner dom allmäna villkoren*"
                                     onChange={e => {
                                         this.setState((state, props) => {
                                             const { acceptTerms } = state;
