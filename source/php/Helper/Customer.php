@@ -35,7 +35,7 @@ class Customer
             'glnr' => $headingsOnly ?           __('GLNR number', 'modularity-resource-booking')
             : self::getGlnr($user),
 
-            'vat' => $headingsOnly ?            __('VAT-number', 'modularity-resource-booking')
+            'vat' => $headingsOnly ?            __('VAT number', 'modularity-resource-booking')
             : self::getVat($user),
             
             'billingAddress' => $headingsOnly ? __('Billing address', 'modularity-resource-booking')

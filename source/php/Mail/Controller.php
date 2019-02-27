@@ -63,8 +63,6 @@ class Controller
 
         $mail->addSection($sectionTitle, $sectionTable);
 
-        $mail->vat = isset($userId) && (int) $userId > 0  ? \ModularityResourceBooking\Helper\Customer::getTaxIndicator($userId) : '';
-
         return $mail;
     }
 
@@ -147,6 +145,9 @@ class Controller
             );
         }
         
+
+        $mail->vat = isset($userId) && (int) $userId > 0  ? \ModularityResourceBooking\Helper\Customer::getTaxIndicator($userId) : '';
+
         return $mail;
     }
 }

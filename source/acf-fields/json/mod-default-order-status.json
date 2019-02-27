@@ -4,10 +4,32 @@
     "fields": [
         {
             "key": "field_5bfd2db48eb01",
-            "label": "Order status",
+            "label": "New orders",
             "name": "order_status",
             "type": "taxonomy",
             "instructions": "Defines a default order status on new orders.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "order-status",
+            "field_type": "select",
+            "allow_null": 0,
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "multiple": 0
+        },
+        {
+            "key": "field_5c76ffd02e605",
+            "label": "On upload files",
+            "name": "order_status_uploaded_files",
+            "type": "taxonomy",
+            "instructions": "Defines a default order status when customer upload files.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
