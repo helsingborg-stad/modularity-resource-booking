@@ -63,6 +63,8 @@ class Controller
 
         $mail->addSection($sectionTitle, $sectionTable);
 
+        $mail->vat = isset($userId) && (int) $userId > 0  ? \ModularityResourceBooking\Helper\Customer::getTaxIndicator($userId) : '';
+
         return $mail;
     }
 
@@ -132,10 +134,12 @@ class Controller
             $mail->summary = array(
                 'title' => __('Summary', 'modularity-resource-booking'),
                 'items' => array_map(function ($article) {
+                    $startDate = new \DateTime($article['start']);
                     return array(
                         'title' => $article['title'],
                         'content' => [__('Start date', 'modularity-resource-booking') . ': ' . $article['start'], __('End date', 'modularity-resource-booking') . ': ' . $article['stop']],
-                        'price' => (string)$article['price'] . ' ' . RESOURCE_BOOKING_CURRENCY_SYMBOL
+                        'price' => (string)$article['price'] . ' ' . RESOURCE_BOOKING_CURRENCY_SYMBOL,
+                        'week' => __('Week', 'modularity-resource-booking') . ' ' . $startDate->format('W')
                     );
                 }, $articles),
                 'totalPrice' => (string)\ModularityResourceBooking\Orders::getTotalPrice($articles) . ' ' . RESOURCE_BOOKING_CURRENCY_SYMBOL,
