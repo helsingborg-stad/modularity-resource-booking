@@ -45,7 +45,7 @@ class Customer
         }
 
         if ($message === false) {
-            if (!is_numeric(get_user_meta($user->ID, 'customer_group', true))) {
+            if (!is_numeric(get_user_meta($user->ID, 'customer_group', true)) || !get_field('customer_account_active', 'user_' . $user->ID)) {
                 $message = __("Your account has not been enabled yet, please wait for a activation notice in your email inbox.", 'modularity-resource-booking');
             }
         }
@@ -62,27 +62,20 @@ class Customer
      */
     public function sendActivationEmail($userId, $oldUserData)
     {
-        if (empty(get_field('customer_group', 'user_' . $userId))) {
-            if (isset($_POST['acf']['field_5bfe8eb5174c1']) && is_numeric($_POST['acf']['field_5bfe8eb5174c1'])) {
-                $links = array();
-                if ($pageId = get_field('sign_in_page', 'option')) {
-                    $links[] = array(
-                        'text' => __('Sign in', 'modularity-resource-booking'),
-                        'url' => get_permalink((int)$pageId)
-                    );
-                }
+        if (in_array('customer', get_userdata($userId)->roles)
+            && !get_field('customer_account_active', 'user_' . $userId)
+            && $_POST['acf']['field_5c73361b0f27d'] === '1') {
+            // Get Actions
+            if (!empty(get_field('actions_customer_account_approved', 'options')) && is_array(get_field('actions_customer_account_approved', 'options'))) {
+                foreach (get_field('actions_customer_account_approved', 'options') as $mailTemplate) {
+                    $mailService = new \ModularityResourceBooking\Mail\Service($mailTemplate);
+                    $mailService->setUser($userId);
+                    $mailService->composeMail();
+                    $mailService->sendMail();
 
-                if (!empty(get_field('actions_customer_account_approved', 'options')) && is_array(get_field('actions_customer_account_approved', 'options'))) {
-                    foreach (get_field('actions_customer_account_approved', 'options') as $mailTemplate) {
-                        $mailService = new \ModularityResourceBooking\Mail\Service($mailTemplate);
-                        $mailService->setUser($userId);
-                        $mailService->composeMail();
-                        $mailService->sendMail();
-
-                        $errors = $mailService->getErrors();
-                        if (!empty($errors->get_error_messages())) {
-                            error_log(print_r($errors, true));
-                        }
+                    $errors = $mailService->getErrors();
+                    if (!empty($errors->get_error_messages())) {
+                        error_log(print_r($errors, true));
                     }
                 }
             }
@@ -155,8 +148,6 @@ class Customer
         }
     }
 
-
-
     /**
      * Create customer group taxonomy
      * @return string
@@ -192,7 +183,7 @@ class Customer
     public function checkCustomerGroup($user, $username, $password)
     {
         if (isset($user->roles) && in_array('customer', (array)$user->roles)) {
-            if (empty(get_field('customer_group', 'user_' . $user->ID))) {
+            if (empty(get_field('customer_group', 'user_' . $user->ID)) || !get_field('customer_account_active', 'user_' . $user->ID)) {
                 return new \WP_Error(
                     'not-verified',
                     __('Your account is not verified yet.', 'modularity-resource-booking')
