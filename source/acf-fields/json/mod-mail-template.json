@@ -61,9 +61,9 @@
         },
         {
             "key": "field_5c62fd7092a47",
-            "label": "Link",
-            "name": "link",
-            "type": "link",
+            "label": "Links",
+            "name": "links",
+            "type": "flexible_content",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -72,7 +72,91 @@
                 "class": "",
                 "id": ""
             },
-            "return_format": "array"
+            "layouts": {
+                "5c76e947bbea2": {
+                    "key": "5c76e947bbea2",
+                    "name": "custom_link",
+                    "label": "Custom link",
+                    "display": "table",
+                    "sub_fields": [
+                        {
+                            "key": "field_5c76e9afd774a",
+                            "label": "Link",
+                            "name": "link",
+                            "type": "link",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array"
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_5c76e9dcd774c": {
+                    "key": "layout_5c76e9dcd774c",
+                    "name": "dynamic_link",
+                    "label": "Dynamic link",
+                    "display": "table",
+                    "sub_fields": [
+                        {
+                            "key": "field_5c76ea18d774e",
+                            "label": "Dynamic page",
+                            "name": "dynamic_page",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "customerOrderPage": "Order Page (Customer)",
+                                "adminOrderPage": "Order Page (Admin)",
+                                "adminCustomerPage": "Customer Page (Admin)"
+                            },
+                            "default_value": [],
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "ui": 0,
+                            "return_format": "value",
+                            "ajax": 0,
+                            "placeholder": ""
+                        },
+                        {
+                            "key": "field_5c76e9dcd774d",
+                            "label": "Link text",
+                            "name": "link_text",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                }
+            },
+            "button_label": "L\u00e4gg till rad",
+            "min": "",
+            "max": 2
         },
         {
             "key": "field_5c62daa7cb089",

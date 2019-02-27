@@ -51,13 +51,6 @@ class Mail extends \ModularityResourceBooking\Helper\ErrorHandler
     /**
      * Undocumented variable
      *
-     * @var array
-     */
-    protected $links = array();
-
-    /**
-     * Undocumented variable
-     *
      * @var string
      */
     protected $color = 'black';

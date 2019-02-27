@@ -9,6 +9,78 @@ class Controller
         add_action('ModularityResourceBooking/Mail/Service/composeMail', array($this, 'composeCustomerDetails'), 99, 4);
         add_action('ModularityResourceBooking/Mail/Service/composeMail', array($this, 'composeOrderDetails'), 99, 4);
         add_action('ModularityResourceBooking/Mail/Service/composeMail', array($this, 'composeOrderSummary'), 99, 4);
+        add_action('ModularityResourceBooking/Mail/Service/composeMail', array($this, 'composeLinks'), 99, 4);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $mail
+     * @param [type] $templateId
+     * @param [type] $orderId
+     * @param [type] $userId
+     * @return void
+     */
+    public function composeLinks($mail, $templateId, $orderId, $userId)
+    {
+        if (!is_array(get_field('links', $templateId)) || empty(get_field('links', $templateId))) {
+            return $mail;
+        }
+
+        $dynamicPages = array(
+            'customerOrderPage' => isset($orderId) && $orderId > 0
+                                    ? get_permalink($orderId)
+                                    : false,
+            'adminOrderPage' => isset($orderId) && $orderId > 0
+                                    ? get_admin_url() . 'post.php?post=' . $orderId . '&action=edit'
+                                    : false,
+            'adminCustomerPage' => isset($userId) && $userId > 0
+                                    ? get_admin_url() . 'user-edit.php?user_id=' . $userId
+                                    : false
+        );
+
+        $links = array();
+
+        foreach (get_field('links', $templateId) as $linkType) {
+            if (!isset($linkType['acf_fc_layout'])) {
+                continue;
+            }
+
+            switch ($linkType['acf_fc_layout']) {
+                // Custom link
+                case 'custom_link':
+                    if (isset($linkType['link'])
+                    && is_array($linkType['link'])
+                    && isset($linkType['link']['title'])
+                    && isset($linkType['link']['url'])
+                    && !empty($linkType['link']['title'])
+                    && !empty($linkType['link']['url'])) {
+                        $links[] = array(
+                            'text' => $linkType['link']['title'],
+                            'url' => $linkType['link']['url']
+                        );
+                    }
+                    break;
+                // Dynamic link
+                case 'dynamic_link':
+                    if (isset($linkType['dynamic_page'])
+                    && isset($linkType['link_text'])
+                    && !empty($linkType['link_text'])
+                    && isset($dynamicPages[$linkType['dynamic_page']])
+                    && $dynamicPages[$linkType['dynamic_page']]) {
+                        $links[] = array(
+                            'text' => $linkType['link_text'],
+                            'url' => $dynamicPages[$linkType['dynamic_page']]
+                        );
+                    }
+            }
+        }
+
+        if (is_array($links) && !empty($links)) {
+            $mail->links = $links;
+        }
+
+        return $mail;
     }
 
     /**

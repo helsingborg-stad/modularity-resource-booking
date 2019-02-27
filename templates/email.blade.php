@@ -30,7 +30,7 @@
 
                 /* ----- Header ----- */
                 .header td{
-                    padding: 30px 15px 30px 15px !important;
+                    padding: 32px 15px 32px 15px !important;
                 }
 
                 /* ----- Title block ----- */
@@ -55,7 +55,7 @@
 
             .table__heading {
                 color: #000;
-                padding: 5px 30px 5px 0 !important;
+                padding: 5px 32px 5px 0 !important;
             }
 
             .table__content{
@@ -72,9 +72,8 @@
 
             .summary-item td {
                 border-bottom: solid 1px #eeeeee;
-                margin-bottom: 24px;
-                padding-bottom: 24px;
-                padding-top: 24px;
+                padding-bottom: 32px;
+                padding-top: 32px;
             }
         </style>
 
@@ -90,7 +89,7 @@
         <span style="color:transparent !important; overflow:hidden !important; display:none !important; line-height:0px !important; height:0 !important; opacity:0 !important; visibility:hidden !important; width:0 !important; mso-hide:all;">{{ $preheader }}</span>
 
         <!-- / Full width container -->
-        <table class="full-width-container" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" bgcolor="#eeeeee" style="width: 100%; height: 100%; padding: 30px 0 30px 0;">
+        <table class="full-width-container" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" bgcolor="#eeeeee" style="width: 100%; height: 100%; padding: 32px 0 32px 0;">
             <tr>
                 <td align="center" valign="top">
                     <!-- / 700px container -->
@@ -99,7 +98,7 @@
                             <td align="center" valign="top">
 
                                 <!-- / Hero header -->
-                                <table border="0" cellpadding="0" cellspacing="0" width="700" bgcolor="{{ $color }}" style="width: 700px; background: {{ $color }}; padding: 40px; border-radius: 3px 3px 0 0;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="700" bgcolor="{{ $color }}" style="width: 700px; background: {{ $color }}; padding: 40px; border-radius: 3px 3px 0 0; margin-bottom: 32px;">
                                     <tr>
                                         <td>
                                             <!-- / Hero subheader -->
@@ -109,7 +108,7 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="hero-subheader__content" style="font-size: 18px; line-height: 30px; color: #ffffff; padding: 0 60px 0 0;" align="left">
+                                                    <td class="hero-subheader__content" style="font-size: 18px; line-height: 32px; color: #ffffff; padding: 0 60px 0 0;" align="left">
                                                         {!! $content !!}
                                                     </td>
                                                 </tr>
@@ -129,10 +128,10 @@
                                             <td align="center" valign="top">
                                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
                                                     <tr>
-                                                        <td class="paragraph-block__content" style="padding: 30px 0 30px 0; font-size: 16px; line-height: 27px; color: #969696;" align="left">
+                                                        <td class="paragraph-block__content" style="padding: 32px 0 0 0; font-size: 16px; line-height: 27px; color: #969696;" align="left">
                                                                 <table class="table">
                                                                         <tr>
-                                                                        <td><h2 style="color: {{$color}};">{{$section['title']}}</h2></td>
+                                                                        <td><h2 style="color: {{$color}}; margin-top: 0;">{{$section['title']}}</h2></td>
                                                                         </tr>
                                                                     @foreach ($section['table'] as $row)
                                                                         <tr>
@@ -156,19 +155,6 @@
                                 @endif
                                 <!-- /// Table Content -->
 
-                                <!-- / Divider -->
-                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 0;" align="center">
-                                    <tr>
-                                        <td align="center">
-                                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-bottom: solid 1px #eeeeee; width: 620px;">
-                                                <tr>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <!-- /// Divider -->
-
                                 <!-- / Summary -->
                                 @if (isset($summary) && isset($summary['items']) && is_array($summary['items']) && !empty($summary['items']))
                                 <table class="container paragraph-block" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -176,7 +162,7 @@
                                         <td align="center" valign="top">
                                             <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
                                                 <tr>
-                                                    <td class="paragraph-block__content" style="padding: 30px 0 30px 0; font-size: 16px; line-height: 27px;" align="left">
+                                                    <td class="paragraph-block__content" style="padding: 32px 0 0 0; font-size: 16px; line-height: 27px;" align="left">
                                                             <table class="table" style="width: 100%;">
                                                                 <thead>
                                                                 <tr>
@@ -211,11 +197,11 @@
                                                                 <tfoot>
                                                                     <tr>
                                                                         <td>
-                                                                            <h2 style="color: {{$color}}">{{$summary['totalTitle']}}</h2>
+                                                                            <h2 style="color: {{$color}};  margin: 0;">{{$summary['totalTitle']}}</h2>
                                                                         </td>
                                                                         <td  class="text-right">
-                                                                        <h2 style="color: {{$color}}; margin-bottom: 0px;">{{ $summary['totalPrice'] }}</h2>
-                                                                        <h4 style="color: {{$color}}; margin-top: 0px;">{{$vat}}</h4>
+                                                                        <h2 style="color: {{$color}}; margin-bottom: 0px; margin-top: 32px;">{{ $summary['totalPrice'] }}</h2>
+                                                                        <h4 style="color: {{$color}}; margin-top: 0px; margin-bottom: 16px;">{{$vat}}</h4>
                                                                         </td>
                                                                     </tr>
                                                                 </tfoot>
@@ -231,29 +217,26 @@
                                 <!-- /// Summary -->
 
                                 <!-- / Links -->
+                                @if (isset($links) && is_array($links) && !empty($links))
                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
                                     <tr>
                                         <td align="center">
                                             <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="width: 620px;">
                                                 <tr>
-                                                    <td style="color: #d5d5d5; text-align: left; font-size: 15px; padding: 15px 0 15px 0; line-height: 22px;">
-                                                        <table class="table">
-                                                            @foreach ($links as $link)
-                                                                <tr>
-                                                                    <td>
-                                                                        <a href="{{ $link['url'] }}" target="_blank" style="color: #fff; font-size:18px; text-decoration: none; border-radius: 3px; margin-right: 5px; background-color: {{ $color }}; border: 12px solid {{ $color }}; display: inline-block; padding: 0 10px;">
-                                                                            <span style="color:#fff">{{ $link['text'] }}</span>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </table>
+                                                    <td style="padding: 32px 0;"  align="center">
+                                                        @foreach ($links as $link)
+                                                        <a href="{{ $link['url'] }}" target="_blank" style="color: #fff; font-size:18px; text-decoration: none; border-radius: 3px; margin-right: 5px; background-color: {{ $color }}; border: 12px solid {{ $color }}; display: inline-block; padding: 0 10px;">
+                                                            <span style="color:#fff">{{ $link['text'] }}</span>
+                                                        </a>
+                                                        @endforeach
                                                     </td>
                                                 </tr>
+                                            
                                             </table>
                                         </td>
                                     </tr>
                                 </table>
+                                @endif
                                 <!-- /// Links -->
 
                                 <!-- / Divider -->
@@ -276,7 +259,7 @@
                                         <td align="center">
                                             <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="width: 620px;">
                                                 <tr>
-                                                    <td style="color: #d5d5d5; text-align: center; font-size: 15px; padding: 30px 0 30px 0; line-height: 22px;">
+                                                    <td style="color: #d5d5d5; text-align: center; font-size: 15px; padding: 32px 0 32px 0; line-height: 22px;">
                                                         This is a automatically generated email. You cannot respond to this email.
                                                     </td>
                                                 </tr>
