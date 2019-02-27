@@ -249,6 +249,8 @@ class BookingForm extends React.Component {
             notice: '',
             noticeType: '',
             orderTitle: '',
+            acceptTerms: false,
+            skipFileUpload: false,
         });
 
         this.fetchData();
