@@ -25,6 +25,14 @@ class UserAccount extends \Modularity\Module
         return $data;
     }
 
+    public function style()
+    {
+        if (file_exists(MODULARITYRESOURCEBOOKING_PATH . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'))) {
+            // Enqueue module style
+            wp_enqueue_style('modularity-resource-booking-css', MODULARITYRESOURCEBOOKING_URL . '/dist/' . \ModularityResourceBooking\Helper\CacheBust::name('css/modularity-resource-booking.css'));
+        }
+    }
+
     public function getUserData(): array
     {
         if (!is_user_logged_in()) {
