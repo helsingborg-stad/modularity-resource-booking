@@ -313,7 +313,7 @@
                 "campaignName": "Campaign name",
                 "orderId": "Order ID",
                 "orderDate": "Order date",
-                "orderStatus: Order status": "orderStatus: Order status"
+                "orderStatus": "Order status"
             },
             "allow_custom": 0,
             "default_value": [

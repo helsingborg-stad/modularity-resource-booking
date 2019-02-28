@@ -318,7 +318,7 @@
                 'campaignName' => __('Campaign name', 'modularity-resource-booking'),
                 'orderId' => __('Order ID', 'modularity-resource-booking'),
                 'orderDate' => __('Order date', 'modularity-resource-booking'),
-                'orderStatus: Order status' => __('orderStatus: Order status', 'modularity-resource-booking'),
+                'orderStatus' => __('Order status', 'modularity-resource-booking'),
             ),
             'allow_custom' => 0,
             'default_value' => array(
