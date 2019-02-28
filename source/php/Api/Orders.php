@@ -585,29 +585,6 @@ class Orders
     }
 
     /**
-     * Check that the current user is the owner of order x
-     *
-     * @param object $request Request data
-     *
-     * @return bool
-     */
-    public function checkOrderOwnership($request): bool
-    {
-        //Bypass security, by constant
-        if (RESOURCE_BOOKING_DISABLE_SECURITY) {
-            return true;
-        }
-
-        $orderId = $request->get_param('id');
-
-        if (((int)get_post_meta($orderId, 'customer_id', true) === self::$userId) || (int)get_post($orderId)->post_author === self::$userId) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Check that the current user can enter a new item
      *
      * @return bool
@@ -620,12 +597,24 @@ class Orders
             return true;
         }
 
-        if (is_user_logged_in() && (current_user_can('order') || current_user_can('administrator'))) {
+        if (self::$userId) {
+            $user = get_userdata(self::$userId);
+            $roles = $user->roles;
+
+            if (in_array('customer', $roles) && get_field('customer_account_active', 'user_' . $user->ID)
+                || in_array('administrator')) {
+                return true;
+            }
+        }
+
+
+        if (self::$userId > 0 && current_user_can('order') || self::$userId > 0 && current_user_can('administrator')) {
             return true;
         }
 
         return false;
     }
+
 
     /**
      * Check if a user is logged in
