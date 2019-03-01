@@ -507,6 +507,13 @@ class Orders
             update_field('order_status', $orderStatusId, $data['order_id']);
         }
 
+        //Remove Notice
+        if (get_field('display_notice', $data['order_id'])
+        && get_field('hide_notice_on_fileupload', $data['order_id'])
+        && !empty(get_field('notice', $data['order_id']))) {
+            update_field('display_notice', false, $data['order_id']);
+        }
+
         //Return success
         return new \WP_REST_Response(
             array(
