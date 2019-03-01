@@ -3,7 +3,7 @@
 if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
     'key' => 'group_5bffbfe266f20',
-    'title' => 'Attached order media',
+    'title' => __('Attached order media', 'modularity-resource-booking'),
     'fields' => array(
         0 => array(
             'key' => 'field_5bffbfed18455',
@@ -30,7 +30,7 @@
                     'name' => 'file',
                     'type' => 'file',
                     'instructions' => '',
-                    'required' => 1,
+                    'required' => 0,
                     'conditional_logic' => 0,
                     'wrapper' => array(
                         'width' => '',
@@ -44,6 +44,23 @@
                     'mime_types' => '',
                 ),
             ),
+        ),
+        1 => array(
+            'key' => 'field_5c79333d0b7af',
+            'label' => __('Notice', 'modularity-resource-booking'),
+            'name' => '',
+            'type' => 'message',
+            'instructions' => '',
+            'required' => 0,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'message' => '',
+            'new_lines' => 'wpautop',
+            'esc_html' => 0,
         ),
     ),
     'location' => array(

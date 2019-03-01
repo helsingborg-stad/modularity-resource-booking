@@ -96,6 +96,11 @@ class SingleOrder
             trailingslashit(wp_upload_dir()['basedir']) . 'cache/modularity-resource-booking/'
         );
 
+        //Notice
+        if (get_field('display_notice', get_queried_object_id())
+            && !empty(get_field('notice', get_queried_object_id()))) {
+            $data['notice'] = get_field('notice', get_queried_object_id());
+        }
         
         return $blade->view()->make('single-order', $data)->render();
     }

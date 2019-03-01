@@ -1,4 +1,13 @@
 <div class="grid grid--columns u-pt-4@md u-pt-4@lg u-pt-4@xl">
+    
+    @if (isset($notice) && $notice)
+    <div class="grid-xs-12">
+        <div class="notice warning">
+            <i class="pricon pricon-notice-warning"></i> {!!$notice!!}
+        </div>
+    </div>
+    @endif
+
     <div class="grid-xs-12 grid-md-6">
 
         <div class="grid grid--columns">
