@@ -607,11 +607,6 @@ class Orders
             }
         }
 
-
-        if (self::$userId > 0 && current_user_can('order') || self::$userId > 0 && current_user_can('administrator')) {
-            return true;
-        }
-
         return false;
     }
 
