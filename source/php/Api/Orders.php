@@ -601,8 +601,8 @@ class Orders
             $user = get_userdata(self::$userId);
             $roles = $user->roles;
 
-            if (in_array('customer', $roles) && get_field('customer_account_active', 'user_' . $user->ID)
-                || in_array('administrator')) {
+            if (is_array($roles) && in_array('customer', $roles) && get_field('customer_account_active', 'user_' . $user->ID)
+                || is_array($roles) && in_array('administrator', $roles)) {
                 return true;
             }
         }
