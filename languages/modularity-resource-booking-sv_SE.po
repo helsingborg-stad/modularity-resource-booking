@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modularity Resource Booking\n"
-"POT-Creation-Date: 2019-03-04 09:45+0100\n"
-"PO-Revision-Date: 2019-03-04 09:47+0100\n"
+"POT-Creation-Date: 2019-03-04 09:53+0100\n"
+"PO-Revision-Date: 2019-03-04 09:53+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -553,6 +553,10 @@ msgstr "Ordernotis"
 #: source/acf-fields/php/mod-order-notice.php:10
 msgid "Display notice"
 msgstr "Visa ordernotis"
+
+#: source/acf-fields/php/mod-order-notice.php:13
+msgid "Enable to display a message to the customer on the order page"
+msgstr "Aktivera för att visa ett meddelande till kunden på ordersidan"
 
 #: source/acf-fields/php/mod-order-notice.php:24
 #: source/php/Helper/Customer.php:263
