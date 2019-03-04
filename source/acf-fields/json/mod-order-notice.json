@@ -7,7 +7,7 @@
             "label": "Display notice",
             "name": "display_notice",
             "type": "true_false",
-            "instructions": "",
+            "instructions": "Enable to display a message to the customer on the order page",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {

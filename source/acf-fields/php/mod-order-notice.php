@@ -10,7 +10,7 @@
             'label' => __('Display notice', 'modularity-resource-booking'),
             'name' => 'display_notice',
             'type' => 'true_false',
-            'instructions' => '',
+            'instructions' => __('Enable to display a message to the customer on the order page', 'modularity-resource-booking'),
             'required' => 0,
             'conditional_logic' => 0,
             'wrapper' => array(
