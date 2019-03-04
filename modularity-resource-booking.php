@@ -82,8 +82,12 @@ add_action('plugins_loaded', function () {
     $acfExportManager->import();
 });
 
+register_activation_hook(plugin_basename(__FILE__), '\ModularityResourceBooking\ResourceAdmin::createUserRoles');
+register_deactivation_hook(plugin_basename(__FILE__), '\ModularityResourceBooking\ResourceAdmin::removeCustomUserRoles');
 register_activation_hook(plugin_basename(__FILE__), '\ModularityResourceBooking\Customer::createUserRoles');
 register_deactivation_hook(plugin_basename(__FILE__), '\ModularityResourceBooking\Customer::removeUserRoles');
+
+
 
 // Start application
 new ModularityResourceBooking\App();

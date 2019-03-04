@@ -72,6 +72,9 @@ class App
         //Account stuff
         new Customer();
 
+        //ResourceAdmin stuff (User Role)
+        new ResourceAdmin();
+
         //Frontend API
         new Api\Orders();
         new Api\TimeSlots();
