@@ -292,8 +292,8 @@ class RegistrationForm extends React.Component {
                                     name="organisationType"
                                     value={organisationType}
                                     onChange={this.handleInputChange}
-                                    label="Organisation type *"
-                                    placeholder="Select organisation type"
+                                    label={`${translation.iAm}.. *`}
+                                    placeholder={`${translation.selectCompanyType}`}
                                     required
                                     {...commonProps}
                                 >

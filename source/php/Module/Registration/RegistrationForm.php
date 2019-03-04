@@ -69,7 +69,7 @@ class RegistrationForm extends \Modularity\Module
                     'lastName' => __('Last name', 'modularity-resource-booking'),
                     'company' => __('Company', 'modularity-resource-booking'),
                     'organizationNumber' => __('Organization number', 'modularity-resource-booking'),
-                    'glnrNumber' => __('Glnr number', 'modularity-resource-booking'),
+                    'glnrNumber' => __('Glnr number', 'modularity-resource-booking') . ' (' . __('optional', 'modularity-resource-booking') . ')',
                     'vatNumber' => __('VAT number', 'modularity-resource-booking'),
                     'contactPerson' => __('Contact person', 'modularity-resource-booking'),
                     'phoneNumber' => __('Phone number', 'modularity-resource-booking'),
@@ -84,7 +84,9 @@ class RegistrationForm extends \Modularity\Module
                         'billing' => __('Billing', 'modularity-resource-booking'),
                         'password' => __('Password', 'modularity-resource-booking')
                     ),
-                    'companyType' => __('Company type', 'modularity-resource-booking')
+                    'selectCompanyType' => __('Select organisation type', 'modularity-resource-booking'),
+                    'iAm' => __('I am', 'modularity-resource-booking')
+
                 )
             );
         }
