@@ -162,7 +162,6 @@ class Customer
             
             //Set organisation type
             if (isset($data['organisation_type']) && !empty($data['organisation_type'])) {
-                error_log(print_r($data['organisation_type'], true));
                 update_field('customer_group', (int) $data['organisation_type'], 'user_' . $userId);
                 wp_set_post_terms($userId, array((int) $data['organisation_type']), 'customer_group');
             }
