@@ -251,7 +251,7 @@ class TimeSlots
                             'slotId' => $slot['id'],
                             'startDate' => $startDate->format(get_option('date_format') . ' ' . get_option('time_format')),
                             'stopDate' => $stopDate->format(get_option('date_format') . ' ' . get_option('time_format')),
-                            'week' => __('Week', 'modularity-resource-booking') . ' ' . $startDate->format('W')
+                            'week' => $startDate->format('W')
                         ));
                     }
                 }
