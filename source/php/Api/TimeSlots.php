@@ -280,7 +280,7 @@ class TimeSlots
             $articleIds = array_merge(array($product->ID), $packages);
 
             // Exclude canceled orders from query
-            $orders = self::getOrders(
+            $orders = \ModularityResourceBooking\Api\Orders::getOrders(
                 array(
                     'tax_query' => array(
                         array(
