@@ -60,6 +60,20 @@
                 'value' => 'customer',
             ),
         ),
+        1 => array(
+            0 => array(
+                'param' => 'user_role',
+                'operator' => '==',
+                'value' => 'resource_admin',
+            ),
+        ),
+        2 => array(
+            0 => array(
+                'param' => 'user_role',
+                'operator' => '==',
+                'value' => 'administrator',
+            ),
+        ),
     ),
     'menu_order' => 99999,
     'position' => 'normal',

@@ -56,6 +56,20 @@
                 "operator": "==",
                 "value": "customer"
             }
+        ],
+        [
+            {
+                "param": "user_role",
+                "operator": "==",
+                "value": "resource_admin"
+            }
+        ],
+        [
+            {
+                "param": "user_role",
+                "operator": "==",
+                "value": "administrator"
+            }
         ]
     ],
     "menu_order": 99999,
