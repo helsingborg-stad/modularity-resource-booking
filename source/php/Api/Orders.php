@@ -328,10 +328,6 @@ class Orders
             return (array) json_decode(stripslashes(html_entity_decode($article)));
         }, $data['order_articles']);
 
-        // Get customer group data
-        $groupLimit = TimeSlots::customerGroupLimit($orderArticles[0]['article_id'], $orderArticles[0]['type'], self::$userId);
-        $groupMembers = TimeSlots::customerGroupMembers(self::$userId);
-
         foreach ($orderArticles as $key => &$item) {
             $itemData = $item;
 
@@ -346,7 +342,7 @@ class Orders
                     400
                 );
             }
-            $articleStock = TimeSlots::getArticleSlotStock($products, $itemData['type'], $itemData['slot_id'], $groupMembers, $groupLimit);
+            $articleStock = TimeSlots::getArticleSlotStock($itemData['article_id'], $itemData['type'], $itemData['slot_id'], self::$userId);
             if ($articleStock['available_stock'] !== null && $articleStock['available_stock'] <= 0) {
                 return new \WP_REST_Response(
                     array(
