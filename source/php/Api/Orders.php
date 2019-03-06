@@ -118,26 +118,22 @@ class Orders
         );
     }
 
+    /**
+     * Returns a list of orders related to an article. Callback for the /ArticleOrders endpoint.  
+     * @param object $request   Object containing request details
+     *
+     * @return \WP_REST_Response
+     */
     public function getOrdersByArticle($request)
     {
         $params = $request->get_params();
-        $slotType = get_field('mod_res_book_automatic_or_manual', 'option');
 
-        // Make sure slot type is configured
-        if (empty($slotType)) {
-            return new \WP_REST_Response(
-                array(
-                    'message' => __('No result found.', 'modularity-resource-booking'),
-                    'state' => 'error'
-                ),
-                404
-            );
-        }
-        
         $orders = array();
+        
+        $slotType = get_field('mod_res_book_automatic_or_manual', 'option');
         $slots = \ModularityResourceBooking\Api\TimeSlots::generateSlots($slotType);
         
-        if (is_array($slots) && !empty($slots)) {
+        if (!empty($slotType) && is_array($slots) && !empty($slots)) {
             foreach ($slots as $slot) {
                 //Get slot orders and append slot data
                 $slotOrders = array_map(function ($order) use ($slot) {
@@ -151,6 +147,14 @@ class Orders
 
                 $orders = array_merge($orders, $slotOrders);
             }
+        } else {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('No result found.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                404
+            );  
         }
 
         return new \WP_REST_Response($orders, 200);
