@@ -37,7 +37,7 @@ const getSlots = (articleId, articleType, userId, restUrl) => {
     let url = `${restUrl}ModularityResourceBooking/v1/Slots?`;
 
     const params = {
-        articleType: `type=${articleType}`,
+        articleType: `article_type=${articleType}`,
         articleId: `&article_id=${articleId}`,
         userId: `&user_id=${userId}`,
     };

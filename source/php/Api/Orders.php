@@ -33,7 +33,6 @@ class Orders
      */
     public function registerRestRoutes()
     {
-
         //Get user id
         self::$userId = get_current_user_id();
 
@@ -92,6 +91,69 @@ class Orders
                 'permission_callback' => array($this, 'checkInsertCapability')
             )
         );
+
+        //Get orders by Article
+        register_rest_route(
+            "ModularityResourceBooking/v1",
+            "ArticleOrders",
+            array(
+                'methods' => \WP_REST_Server::READABLE,
+                'callback' => array($this, 'getOrdersByArticle'),
+                'permission_callback' => array($this, 'CheckUserAuthentication'),
+                'args' => array(
+                    'article_type' => array(
+                        'description' => 'The article type.',
+                        'type' => 'string',
+                        'default' => 'product',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ),
+                    'article_id' => array(
+                        'description' => 'Article ID.',
+                        'type' => 'integer',
+                        'default' => 0,
+                        'sanitize_callback' => 'absint',
+                    )
+                )
+            )
+        );
+    }
+
+    public function getOrdersByArticle($request)
+    {
+        $params = $request->get_params();
+        $slotType = get_field('mod_res_book_automatic_or_manual', 'option');
+
+        // Make sure slot type is configured
+        if (empty($slotType)) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('No result found.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                404
+            );
+        }
+        
+        $orders = array();
+        $slots = \ModularityResourceBooking\Api\TimeSlots::generateSlots($slotType);
+        
+        if (is_array($slots) && !empty($slots)) {
+            foreach ($slots as $slot) {
+                //Get slot orders and append slot data
+                $slotOrders = array_map(function ($order) use ($slot) {
+                    $startOfWeek = new \DateTime($slot['start']);
+                    $order['startDate'] = $slot['start'];
+                    $order['stopDate'] = $slot['stop'];
+                    $order['week'] = $startOfWeek->format('W');
+                    unset($order['customer']['id']);
+                    return $order;
+                }, self::getOrdersBySlot($slot['id'], $params['article_type'], $params['article_id']));
+
+                $orders = array_merge($orders, $slotOrders);
+            }
+        }
+
+        return new \WP_REST_Response($orders, 200);
     }
 
     public function cancelOrder($request)
@@ -630,7 +692,7 @@ class Orders
             return true;
         }
 
-        return is_user_logged_in();
+        return self::$userId > 0;
     }
 
     /**
@@ -731,6 +793,67 @@ class Orders
         return $articles;
     }
 
+    public static function generateWeeklySlots()
+    {
+        $slots = array();
+
+        //Decide what monday to refer to
+        if (date("N") == 1) {
+            $whatMonday = "monday";
+        } else {
+            $whatMonday = "last monday";
+        }
+
+        //Get offset
+        if ($offset = get_field('mod_res_offset_bookable_weeks_by', 'option')) {
+            $weekStart = (int) $offset;
+            $weekStop  = 52 + (int) $offset;
+        } else {
+            $weekStart = 0;
+            $weekStop  = 52;
+        }
+
+        for ($n = $weekStart; $n <= $weekStop; $n++) {
+            $start  = date('Y-m-d', strtotime($whatMonday, strtotime('+' . $n . ' week'))) . " 00:00";
+            $stop   = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
+            $slotId = self::getSlotId($start, $stop);
+
+            //Append slot
+            $slots[] = array(
+                'id' => $slotId,
+                'start' => $start,
+                'stop' => $stop,
+                'orders' => $orders,
+            );
+        }
+
+        return $slots;
+    }
+
+    public static function generateManualSlots()
+    {
+        $slots = array();
+        $data = get_field('mod_res_book_time_slots', 'option');
+
+        if (is_array($data) && !empty($data)) {
+            foreach ($data as $item) {
+                $start  = $item['start_date'] . " 00:00";
+                $stop   = $item['end_date'] . " 23:59";
+                $slotId = self::getSlotId($item['start_date'] . " 00:00", $stop);
+
+                //Append slot
+                $slots[] = array(
+                    'id' => $slotId,
+                    'start' => $start,
+                    'stop' => $stop,
+                    'orders' => $orders,
+                );
+            }
+        }
+
+        return $slots;
+    }
+
     /**
      * Get the product price
      * @param $productId
@@ -761,5 +884,113 @@ class Orders
         $customerGroup = wp_get_object_terms(self::$userId, 'customer_group', array('fields' => 'ids'));
         $customerGroup = $customerGroup[0] ?? null;
         return $customerGroup;
+    }
+
+    /**
+     * Get orders by slot id
+     * @param $slotId
+     * @param $articleType
+     * @param $articleId
+     * @return array
+     */
+    public static function getOrdersBySlot($slotId, $articleType, $articleId)
+    {
+        // Exclude canceled orders from query
+        $getOrdersArgs = array('tax_query' => array(
+            array(
+                'taxonomy' => 'order-status',
+                'terms' => array('canceled'),
+                'field' => 'slug',
+                'operator' => 'NOT IN',
+            )));
+        // Get list of slot orders
+        $orders = array_values(self::getOrders($getOrdersArgs, $articleType, $articleId, $slotId));
+        return array_map(function ($order) {
+            $order = array(
+                'orderId' => (int)$order->ID,
+                'orderDate' => $order->post_date,
+                'orderTitle' => $order->post_title,
+                'customer' => array(
+                    'name' =>  \ModularityResourceBooking\Helper\Customer::getName($order->post_author),
+                    'company' => \ModularityResourceBooking\Helper\Customer::getCompany($order->post_author),
+                    'organisation' => \ModularityResourceBooking\Helper\Customer::getCustomerGroup($order->post_author),
+                    'id' => $order->post_author
+                )
+            );
+            return $order;
+        }, $orders);
+    }
+
+    /**
+     * Get user groups orders by slot ID
+     * @param $slotId
+     * @param $userId
+     * @param $articleType
+     * @param $articleId
+     * @return array
+     */
+    public static function getGroupOrdersBySlot($userId, $slotId, $articleType, $articleId)
+    {
+        // List of group members
+        $groupMembers = self::customerGroupMembers($userId);
+        return array_filter(
+            self::getOrdersBySlot($slotId, $articleType, $articleId),
+            function ($order) use ($groupMembers) {
+                // Only return group members orders
+                return in_array($order['customer']['id'], $groupMembers);
+            }
+        );
+    }
+
+
+    /**
+     * Get orders
+     * @param null  $type
+     * @param array $articleIds
+     * @param null  $slotId
+     * @param array $args
+     * @return array
+     */
+    public static function getOrders($args = array(), $type = null, $articleIds = null, $slotId = null)
+    {
+        $args = array_merge(array(
+            'post_type' => 'purchase',
+            'orderby' => 'date',
+            'numberposts' => -1,
+            'suppress_filters' => false,
+        ), $args);
+
+        $metaQuery = array(
+            'relation' => 'AND',
+        );
+
+        if (!(empty($type))) {
+            $metaQuery[] = array(
+                'key' => 'order_articles_$_type',
+                'value' => $type,
+                'compare' => '='
+            );
+        }
+
+        if (!(empty($articleIds))) {
+            $metaQuery[] = array(
+                'key' => 'order_articles_$_article_id',
+                'value' => $articleIds,
+                'compare' => 'IN'
+            );
+        }
+
+        if (!(empty($slotId))) {
+            $metaQuery[] = array(
+                'key' => 'order_articles_$_slot_id',
+                'value' => $slotId,
+                'compare' => '='
+            );
+        }
+
+        $args['meta_query'] = $metaQuery;
+        $orders = get_posts($args);
+
+        return $orders;
     }
 }

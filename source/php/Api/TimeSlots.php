@@ -51,7 +51,13 @@ class TimeSlots
 
         //Make sure we are logged in
         if ((int) self::$userId > 0) {
-            return true;
+            $userData = get_userdata(self::$userId);
+            $userRoles = $userData->roles;
+            
+            //Make sure we are admin or current user matches param
+            if (in_array('administrator', $userRoles) || self::$userId === $request->get_param('user_id')) {
+                return true;
+            }
         }
 
         return false;
@@ -65,7 +71,7 @@ class TimeSlots
     public function getCollectionParams()
     {
         return array(
-            'type' => array(
+            'article_type' => array(
                 'description' => 'The article type.',
                 'type' => 'string',
                 'default' => 'product',
@@ -95,171 +101,31 @@ class TimeSlots
         // Request params
         $params = $request->get_params();
         $result = array();
-        
-        if (isset($params['user_id']) && (int) $params['user_id'] === 0) {
-            unset($params['user_id']);
-        }
 
-        // Get customer group data
-        if (isset($params['user_id'])) {
-            $groupLimit = self::customerGroupLimit($params['article_id'], $params['type'], $params['user_id']);
-            $groupMembers = self::customerGroupMembers($params['user_id']);
-        }
-        
-        // Get list of product objects
-        $products = self::getProductsByArticle($params['article_id'], $params['type']);
-        if (empty($products)) {
+        $slotType = get_field('mod_res_book_automatic_or_manual', 'option');
+
+        // Make sure slot type is configured
+        if (empty($slotType)) {
             return new \WP_REST_Response(
                 array(
-                    'message' => __('No articles could be found with \'article_id\': ' . $params['article_id'], 'modularity-resource-booking'),
+                    'message' => __('Cannot generate time slots, go to settings and select "Weekly" or "Manual" time slots.', 'modularity-resource-booking'),
                     'state' => 'error'
                 ),
                 404
             );
         }
 
-        // Automatic schedule
-        if (get_field('mod_res_book_automatic_or_manual', 'option') == "weekly") {
-            //Decide what monday to refer to
-            if (date("N") == 1) {
-                $whatMonday = "monday";
-            } else {
-                $whatMonday = "last monday";
-            }
+        // Generate slots and append stock
+        $slots = array_map(function ($slot) use ($params) {
+            // Get stock
+            $stock = self::getArticleSlotStock($params['article_id'], $params['article_type'], $slot['id'], $params['user_id']);
+            unset($stock['id']);
 
-            //Get offset
-            if ($offset = get_field('mod_res_offset_bookable_weeks_by', 'option')) {
-                $weekStart = (int)$offset;
-                $weekStop  = 52 + (int)$offset;
-            } else {
-                $weekStart = 0;
-                $weekStop  = 52;
-            }
+            return array_merge($slot, $stock);
+        }, self::generateSlots($slotType));
 
-            for ($n = $weekStart; $n <= $weekStop; $n++) {
-                $start  = date('Y-m-d', strtotime($whatMonday, strtotime('+' . $n . ' week'))) . " 00:00";
-                $stop   = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
-                $slotId = self::getSlotId($start, $stop);
-
-                // Orders
-                if (isset($params['user_id'])) {
-                    // Get user groups orders
-                    $orders = self::getGroupOrdersBySlot($params['user_id'], $slotId, $params['type'], array((int)$params['article_id']));
-                } else {
-                    // Get all orders
-                    $orders = self::getOrdersBySlot($slotId, $params['type'], array((int)$params['article_id']));
-                }
-
-                //Get the articles avabile stock
-                $stock = array();
-                if (isset($groupLimit) && isset($groupMembers)) {
-                    $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
-                    $stock['unlimited_stock'] = $articleStock['unlimited_stock'];
-                    $stock['total_stock'] = $articleStock['total_stock'];
-                    $stock['available_stock'] = $articleStock['available_stock'];
-                }
-
-                //Nothing in stock
-                if (isset($articleStock) && is_wp_error($articleStock)) {
-                    return new \WP_REST_Response(
-                        array(
-                            'message' => $articleStock->get_error_message(),
-                            'state' => 'error'
-                        ),
-                        404
-                    );
-                }
-
-                //Append slot
-                $result[] = array_merge(array(
-                    'id' => $slotId,
-                    'start' => $start,
-                    'stop' => $stop,
-                    'orders' => $orders,
-                ), $stock);
-            }
-        }
-
-        //Manual schedule
-        if (get_field('mod_res_book_automatic_or_manual', 'option') == "manual") {
-            $data = get_field('mod_res_book_time_slots', 'option');
-           
-            if (is_array($data) && !empty($data)) {
-                foreach ($data as $item) {
-                    $start  = $item['start_date'] . " 00:00";
-                    $stop   = $item['end_date'] . " 23:59";
-                    $slotId = self::getSlotId($item['start_date'] . " 00:00", $stop);
-
-                    // Orders
-                    if (isset($params['user_id'])) {
-                        // Get user groups orders
-                        $orders = self::getGroupOrdersBySlot($params['user_id'], $slotId, $params['type'], array((int)$params['article_id']));
-                    } else {
-                        // Get all orders
-                        $orders = self::getOrdersBySlot($slotId, $params['type'], array((int)$params['article_id']));
-                    }
-
-                    //Get the articles avabile stock
-                    $stock = array();
-                    if (isset($groupLimit) && isset($groupMembers)) {
-                        $articleStock = self::getArticleSlotStock($products, $params['type'], $slotId, $groupMembers, $groupLimit);
-                        $stock['unlimited_stock'] = $articleStock['unlimited_stock'];
-                        $stock['total_stock'] = $articleStock['total_stock'];
-                        $stock['available_stock'] = $articleStock['available_stock'];
-                    }
-
-                    //Nothing in stock
-                    if (isset($articleStock) && is_wp_error($articleStock)) {
-                        return new \WP_REST_Response(
-                            array(
-                                'message' => $articleStock->get_error_message(),
-                                'state' => 'error'
-                            ),
-                            404
-                        );
-                    }
-
-                    //Append slot
-                    $result[] = array_merge(array(
-                        'id' => $slotId,
-                        'start' => $start,
-                        'stop' => $stop,
-                        'orders' => $orders,
-                    ), $stock);
-                }
-            }
-        }
-
-        if (!empty($result)) {
-            // Return orders only
-            if (isset($params['orders_only']) && (int) $params['orders_only'] === 1) {
-                $slotOrders = array();
-                foreach ($result as $slot) {
-                    if (empty($slot['orders'])) {
-                        continue;
-                    }
-
-                    foreach ($slot['orders'] as $order) {
-                        if (isset($slot['orders'])) {
-                            unset($slot['orders']);
-                        }
-
-                        $startDate = new \DateTime($slot['start']);
-                        $stopDate  = new \DateTime($slot['stop']);
-
-                        $slotOrders[] = array_merge($order, array(
-                            'slotId' => $slot['id'],
-                            'startDate' => $startDate->format(get_option('date_format') . ' ' . get_option('time_format')),
-                            'stopDate' => $stopDate->format(get_option('date_format') . ' ' . get_option('time_format')),
-                            'week' => $startDate->format('W')
-                        ));
-                    }
-                }
-
-                $result = $slotOrders;
-            }
-
-            return new \WP_REST_Response($result, 200);
+        if (!empty($slots)) {
+            return new \WP_REST_Response($slots, 200);
         } else {
             return new \WP_REST_Response(
                 array(
@@ -270,63 +136,6 @@ class TimeSlots
             );
         }
     }
-
-    /**
-     * Get orders by slot id
-     * @param $slotId
-     * @param $type
-     * @param $articleId
-     * @return array
-     */
-    public static function getOrdersBySlot($slotId, $type, $articleId)
-    {
-        // Exclude canceled orders from query
-        $getOrdersArgs = array('tax_query' => array(
-            array(
-                'taxonomy' => 'order-status',
-                'terms' => array('canceled'),
-                'field' => 'slug',
-                'operator' => 'NOT IN',
-            )));
-        // Get list of slot orders
-        $orders = array_values(self::getOrders($getOrdersArgs, $type, $articleId, $slotId));
-        return array_map(function ($order) {
-            $order = array(
-                'orderId' => (int)$order->ID,
-                'orderDate' => $order->post_date,
-                'orderTitle' => $order->post_title,
-                'customer' => array(
-                    'name' =>  \ModularityResourceBooking\Helper\Customer::getName($order->post_author),
-                    'company' => \ModularityResourceBooking\Helper\Customer::getCompany($order->post_author),
-                    'organisation' => \ModularityResourceBooking\Helper\Customer::getCustomerGroup($order->post_author),
-                    'id' => $order->post_author
-                )
-            );
-            return $order;
-        }, $orders);
-    }
-
-    /**
-     * Get user groups orders by slot
-     * @param $slotId
-     * @param $userId
-     * @param $type
-     * @param $articleId
-     * @return array
-     */
-    public static function getGroupOrdersBySlot($userId, $slotId, $type, $articleId)
-    {
-        // List of group members
-        $groupMembers = self::customerGroupMembers($userId);
-        return array_filter(
-            self::getOrdersBySlot($slotId, $type, $articleId),
-            function ($order) use ($groupMembers) {
-                // Only return group members orders
-                return in_array($order['customer']['id'], $groupMembers);
-            }
-        );
-    }
-
     
     /**
      * Get customer group limit
@@ -451,10 +260,12 @@ class TimeSlots
      * @param $groupLimit
      * @return array
      */
-    public static function getArticleSlotStock($products, $articleType, $slotId, $groupMembers, $groupLimit)
+    public static function getArticleSlotStock($articleId, $articleType, $slotId, $userId)
     {
+        $groupLimit = self::customerGroupLimit($articleId, $articleType, $userId);
+        $groupMembers = self::customerGroupMembers($userId);
+        $products = self::getProductsByArticle($articleId, $articleType);
         $products = array_map(function ($product) use ($articleType, $slotId, $groupMembers, $groupLimit) {
-
             // List of packages where the product is included
             $packages = wp_get_post_terms($product->ID, 'product-package', array('fields' => 'ids'));
             $packages = is_array($packages) && !empty($packages) ? $packages : array();
@@ -585,56 +396,99 @@ class TimeSlots
     }
 
     /**
-     * Get orders
-     * @param null  $type
-     * @param array $articleIds
-     * @param null  $slotId
-     * @param array $args
+     * Wrapper method for generating slots
+     * @param $type string Can be either "weekly" (default) or "manual"
      * @return array
      */
-    public static function getOrders($args = array(), $type = null, $articleIds = null, $slotId = null)
+    public static function generateSlots(string $type = 'weekly')
     {
-        $args = array_merge(array(
-            'post_type' => 'purchase',
-            'orderby' => 'date',
-            'numberposts' => -1,
-            'suppress_filters' => false,
-        ), $args);
+        $slotTypes = array('weekly', 'manual');
 
-        $metaQuery = array(
-            'relation' => 'AND',
-        );
-
-        if (!(empty($type))) {
-            $metaQuery[] = array(
-                'key' => 'order_articles_$_type',
-                'value' => $type,
-                'compare' => '='
-            );
+        if (!in_array($type, $slotTypes)) {
+            return false;
         }
 
-        if (!(empty($articleIds))) {
-            $metaQuery[] = array(
-                'key' => 'order_articles_$_article_id',
-                'value' => $articleIds,
-                'compare' => 'IN'
-            );
+        $slots = array();
+
+        switch ($type) {
+            case 'weekly':
+                return self::generateWeeklySlots();
+
+            case 'manual':
+                return self::generateManualSlots();
         }
 
-        if (!(empty($slotId))) {
-            $metaQuery[] = array(
-                'key' => 'order_articles_$_slot_id',
-                'value' => $slotId,
-                'compare' => '='
-            );
-        }
-
-        $args['meta_query'] = $metaQuery;
-        $orders = get_posts($args);
-
-        return $orders;
+        return $slots;
     }
 
+    /**
+     * Generates weekly slots
+     * @param $totalWeeks int Defines how many weeks in the future we want to generate, defaults to 1 year (52 weeks).
+     * @return array
+     */
+    public static function generateWeeklySlots(int $totalWeeks = 52)
+    {
+        $slots = array();
+
+        //Decide what monday to refer to
+        if (date("N") == 1) {
+            $whatMonday = "monday";
+        } else {
+            $whatMonday = "last monday";
+        }
+
+        //Get offset
+        if ($offset = get_field('mod_res_offset_bookable_weeks_by', 'option')) {
+            $weekStart = (int) $offset;
+            $weekStop  = $totalWeeks + (int) $offset;
+        } else {
+            $weekStart = 0;
+            $weekStop  = $totalWeeks;
+        }
+
+        for ($n = $weekStart; $n <= $weekStop; $n++) {
+            $start  = date('Y-m-d', strtotime($whatMonday, strtotime('+' . $n . ' week'))) . " 00:00";
+            $stop   = date('Y-m-d', strtotime('sunday', strtotime('+' . $n . ' week'))) . " 23:59";
+            $slotId = self::getSlotId($start, $stop);
+
+            //Append slot
+            $slots[] = array(
+                'id' => $slotId,
+                'start' => $start,
+                'stop' => $stop
+            );
+        }
+
+        return $slots;
+    }
+
+    /**
+     * Generates manual slots
+     * @return array
+     */
+    public static function generateManualSlots()
+    {
+        $slots = array();
+        $data = get_field('mod_res_book_time_slots', 'option');
+
+        if (is_array($data) && !empty($data)) {
+            foreach ($data as $item) {
+                $start  = $item['start_date'] . " 00:00";
+                $stop   = $item['end_date'] . " 23:59";
+                $slotId = self::getSlotId($item['start_date'] . " 00:00", $stop);
+
+                //Append slot
+                $slots[] = array(
+                    'id' => $slotId,
+                    'start' => $start,
+                    'stop' => $stop
+                );
+            }
+        }
+
+        return $slots;
+    }
+    
     /**
      * Transform slot interval to ID
      * @param $start
