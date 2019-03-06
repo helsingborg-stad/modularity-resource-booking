@@ -119,7 +119,7 @@ class Orders
     }
 
     /**
-     * Returns a list of orders related to an article. Callback for the /ArticleOrders endpoint.  
+     * Returns a list of orders related to an article. Callback for the /ArticleOrders endpoint.
      * @param object $request   Object containing request details
      *
      * @return \WP_REST_Response
@@ -128,11 +128,21 @@ class Orders
     {
         $params = $request->get_params();
 
+        if (empty(\ModularityResourceBooking\Api\TimeSlots::getProductsByArticle($params['article_id'], $params['article_type']))) {
+            return new \WP_REST_Response(
+                array(
+                    'message' => __('No products found.', 'modularity-resource-booking'),
+                    'state' => 'error'
+                ),
+                404
+            );
+        }
+
         $orders = array();
-        
+
         $slotType = get_field('mod_res_book_automatic_or_manual', 'option');
         $slots = \ModularityResourceBooking\Api\TimeSlots::generateSlots($slotType);
-        
+
         if (!empty($slotType) && is_array($slots) && !empty($slots)) {
             foreach ($slots as $slot) {
                 //Get slot orders and append slot data
@@ -154,7 +164,7 @@ class Orders
                     'state' => 'error'
                 ),
                 404
-            );  
+            );
         }
 
         return new \WP_REST_Response($orders, 200);
@@ -386,7 +396,7 @@ class Orders
                 return $mediaItems;
             }
         }
-        
+
         //Make insert
         $insert = wp_insert_post($postItem);
 
@@ -515,7 +525,7 @@ class Orders
         }
 
         $orderData = get_post_meta($data['order_id'], 'order_data', true)[0];
-        
+
         //  Make sure order has articles
         if (empty($orderData['articles'])) {
             return new \WP_REST_Response(
@@ -619,7 +629,7 @@ class Orders
                 400
             );
         }
-        
+
         return true;
     }
 
