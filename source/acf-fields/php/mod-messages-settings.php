@@ -22,7 +22,7 @@
             'tabs' => 'visual',
             'toolbar' => 'basic',
             'media_upload' => 1,
-            'delay' => 0,
+            'delay' => 1,
         ),
     ),
     'location' => array(
