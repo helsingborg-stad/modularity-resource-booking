@@ -1,4 +1,5 @@
 import { Button, Input, Textarea, Notice } from 'hbg-react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { createUser } from '../../Api/user';
 import Select from '../components/Select';
 
@@ -34,6 +35,9 @@ class RegistrationForm extends React.Component {
 
             // Lock input
             lockInput: false,
+
+            reCaptchaVerified: false,
+            reCaptchaErrorMessage: false,
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -42,10 +46,21 @@ class RegistrationForm extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        const { newUser, lockInput } = this.state;
+        const { newUser, lockInput, reCaptchaVerified, reCaptchaErrorMessage } = this.state;
         const { restUrl } = this.props;
 
         if (lockInput) {
+            return;
+        }
+
+        // Reset error message
+        if (reCaptchaErrorMessage) {
+            this.setState({ reCaptchaErrorMessage: false });
+        }
+
+        // Recaptcha
+        if (!reCaptchaVerified) {
+            this.setState({ reCaptchaErrorMessage: true });
             return;
         }
 
@@ -121,7 +136,7 @@ class RegistrationForm extends React.Component {
         const { translation, organisationTypes } = this.props;
         const labelPrefix = 'registration_form_';
 
-        const { notice, noticeType, accountCreated, lockInput } = this.state;
+        const { notice, noticeType, accountCreated, lockInput, reCaptchaErrorMessage } = this.state;
 
         const commonProps = {};
 
@@ -358,6 +373,20 @@ class RegistrationForm extends React.Component {
                                 required
                                 {...commonProps}
                             />
+                        </div>
+
+                        <div className="grid-xs-12 grid-md-12 u-mb-3">
+                            <ReCAPTCHA
+                                sitekey="6LewZZYUAAAAAO_oT5zQQ0zjO2IsWY_2w3QbyTIF"
+                                onChange={() => {
+                                    this.setState({ reCaptchaVerified: true });
+                                }}
+                            />
+                            {reCaptchaErrorMessage && (
+                                <span className="text-sm text-danger">
+                                    Please verify that you are a human
+                                </span>
+                            )}
                         </div>
 
                         <div className="grid-xs-12">
