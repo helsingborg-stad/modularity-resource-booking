@@ -28,7 +28,6 @@ class RegistrationForm extends \Modularity\Module
         $data['classes'] = implode(' ', apply_filters('Modularity/Module/Classes', array('box', 'box-panel'), $this->post_type, $this->args));
         $data['rest_url'] = get_rest_url();
 
-
         $customerGroups = get_terms('customer_group', array('hide_empty' => false));
         $data['customerGroups'] = !empty($customerGroups) ? array_map(function ($group) {
             return array(
@@ -39,6 +38,10 @@ class RegistrationForm extends \Modularity\Module
         }, $customerGroups) : array();
 
         $data['customerGroups'] = json_encode($data['customerGroups']);
+
+        if (!isset($data['google_recaptcha_site_key']) && defined('G_RECAPTCHA_KEY') && is_string(G_RECAPTCHA_KEY) && !empty(G_RECAPTCHA_KEY)) {
+            $data['google_recaptcha_site_key'] = G_RECAPTCHA_KEY;
+        }
 
         return $data;
     }

@@ -5,7 +5,7 @@ const translation = modRegistrationForm;
 
 for (let i = 0; i < domElements.length; i++) {
     const element = domElements[i];
-    const { restUrl } = element.dataset;
+    const { restUrl, recaptchaKey } = element.dataset;
     let { customerGroups } = element.dataset;
 
     customerGroups = JSON.parse(customerGroups);
@@ -23,6 +23,7 @@ for (let i = 0; i < domElements.length; i++) {
             translation={translation}
             restUrl={restUrl}
             organisationTypes={customerGroups}
+            recaptchaKey={recaptchaKey}
         />,
         element
     );

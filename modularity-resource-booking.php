@@ -76,7 +76,8 @@ add_action('plugins_loaded', function () {
             'mod-order-resend-mail' => 'group_5c5dc351c1bfc',
             'mod-customer-action-settings' => 'group_5c65d682e3a62',
             'mod-mail-template' => 'group_5c62cadbdf9b5',
-            'mod-order-notice' => 'group_5c7931e1d5479'
+            'mod-order-notice' => 'group_5c7931e1d5479',
+            'mod-registration-form-recaptcha' => 'group_5c828e80a91d5'
         )
     );
     $acfExportManager->import();

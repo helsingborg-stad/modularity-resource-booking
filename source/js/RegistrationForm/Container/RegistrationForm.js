@@ -6,6 +6,7 @@ import Select from '../components/Select';
 class RegistrationForm extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             // User input
             newUser: {
@@ -36,7 +37,7 @@ class RegistrationForm extends React.Component {
             // Lock input
             lockInput: false,
 
-            reCaptchaVerified: false,
+            reCaptchaVerified: !(props.recaptchaKey.length > 0),
             reCaptchaErrorMessage: false,
         };
 
@@ -47,21 +48,23 @@ class RegistrationForm extends React.Component {
     handleFormSubmit(e) {
         e.preventDefault();
         const { newUser, lockInput, reCaptchaVerified, reCaptchaErrorMessage } = this.state;
-        const { restUrl } = this.props;
+        const { restUrl, recaptchaKey } = this.props;
 
         if (lockInput) {
             return;
         }
 
-        // Reset error message
-        if (reCaptchaErrorMessage) {
-            this.setState({ reCaptchaErrorMessage: false });
-        }
+        if (recaptchaKey.length > 0) {
+            // Reset error message
+            if (reCaptchaErrorMessage) {
+                this.setState({ reCaptchaErrorMessage: false });
+            }
 
-        // Recaptcha
-        if (!reCaptchaVerified) {
-            this.setState({ reCaptchaErrorMessage: true });
-            return;
+            // Recaptcha
+            if (!reCaptchaVerified) {
+                this.setState({ reCaptchaErrorMessage: true });
+                return;
+            }
         }
 
         this.setState({ lockInput: true, notice: '' });
@@ -133,7 +136,7 @@ class RegistrationForm extends React.Component {
             organisationType,
         } = this.state.newUser;
 
-        const { translation, organisationTypes } = this.props;
+        const { translation, organisationTypes, recaptchaKey } = this.props;
         const labelPrefix = 'registration_form_';
 
         const { notice, noticeType, accountCreated, lockInput, reCaptchaErrorMessage } = this.state;
@@ -375,19 +378,21 @@ class RegistrationForm extends React.Component {
                             />
                         </div>
 
-                        <div className="grid-xs-12 grid-md-12 u-mb-3">
-                            <ReCAPTCHA
-                                sitekey="6LewZZYUAAAAAO_oT5zQQ0zjO2IsWY_2w3QbyTIF"
-                                onChange={() => {
-                                    this.setState({ reCaptchaVerified: true });
-                                }}
-                            />
-                            {reCaptchaErrorMessage && (
-                                <span className="text-sm text-danger">
-                                    Please verify that you are a human
-                                </span>
-                            )}
-                        </div>
+                        {recaptchaKey.length > 0 && (
+                            <div className="grid-xs-12 grid-md-12 u-mb-3">
+                                <ReCAPTCHA
+                                    sitekey={recaptchaKey}
+                                    onChange={() => {
+                                        this.setState({ reCaptchaVerified: true });
+                                    }}
+                                />
+                                {reCaptchaErrorMessage && (
+                                    <span className="text-sm text-danger">
+                                        Please verify that you are a human
+                                    </span>
+                                )}
+                            </div>
+                        )}
 
                         <div className="grid-xs-12">
                             <Button
