@@ -398,7 +398,9 @@ class Orders extends \ModularityResourceBooking\Entity\PostType
             'order-status',
             array(self::$postTypeSlug),
             array(
-                'hierarchical' => false
+                'hierarchical' => false,
+                'show_in_nav_menus' => false,
+                'publicly_queryable' => false
             )
         );
 
